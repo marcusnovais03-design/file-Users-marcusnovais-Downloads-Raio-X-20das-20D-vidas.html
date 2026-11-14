@@ -1,0 +1,28 @@
+"""Roteiro do vídeo 'Ajuste fiscal'. Cada fala: (id, capítulo, narração p/ TTS, legenda na tela).
+Na legenda, *palavra* = destaque laranja. Dados conferidos em 14/nov/2026 (ver README.md)."""
+CAPS = [('00', 'A PERGUNTA'), ('01', 'A CONTA'), ('02', 'O BURACO'), ('03', 'A DÍVIDA'),
+        ('04', 'A INFLAÇÃO'), ('05', 'OS JUROS'), ('06', 'O CÍRCULO'), ('07', 'RESUMINDO'), ('08', 'FIM')]
+FALAS = [
+ ('a1', 0, 'Toda semana alguém repete que o governo precisa fazer ajuste fiscal.', 'Toda semana: *ajuste* *fiscal*.'),
+ ('a2', 0, 'Mas será que isso é mesmo necessário?', 'Mas é mesmo *necessário?*'),
+ ('b1', 1, 'Pense no orçamento do governo como o de uma casa. De um lado, o que entra: os impostos. Do outro, o que sai: os gastos.', 'Entra: *impostos.* Sai: *gastos.*'),
+ ('b2', 1, 'O problema é que, de cada cem reais gastos, sem contar os juros, noventa e dois já são obrigatórios.', 'De cada R$ 100, *R$ 92* são obrigatórios.'),
+ ('b3', 1, 'Aposentadorias, salários, saúde e educação. Sobra muito pouco espaço para cortar.', 'Sobra pouco *espaço* para cortar.'),
+ ('c1', 2, 'E ainda falta a maior conta: os juros da dívida.', 'E falta a maior conta: os *juros.*'),
+ ('c2', 2, 'Em doze meses, o setor público pagou um trilhão e duzentos bilhões de reais, só de juros.', '*R$ 1,2 trilhão* de juros em 12 meses.'),
+ ('c3', 2, 'A arrecadação não cobre tudo isso. Então, o governo toma mais dinheiro emprestado.', 'A arrecadação *não cobre.* A dívida cresce.'),
+ ('d1', 3, 'Resultado: a dívida pública já chega a oitenta e três por cento do Pib. Mais de onze trilhões de reais.', 'Dívida: *82,9% do PIB.* R$ 11 trilhões.'),
+ ('d2', 3, 'E continua subindo.', 'E continua *subindo.*'),
+ ('e1', 4, 'Governo gastando demais aquece a economia, e pressiona os preços.', 'Gasto demais *pressiona* os preços.'),
+ ('e2', 4, 'A inflação está em quatro vírgula seis por cento em doze meses, acima do teto da meta.', 'Inflação: *4,63%.* Acima do teto da meta.'),
+ ('e3', 4, 'E inflação é um imposto invisível. O salário é o mesmo, mas o carrinho volta mais vazio.', 'Inflação é um *imposto* *invisível.*'),
+ ('e4', 4, 'Quem mais sofre é quem ganha menos.', 'Pesa mais em quem *ganha* *menos.*'),
+ ('f1', 5, 'Para segurar os preços, o Banco Central mantém os juros lá em cima. A Selic está em treze vírgula setenta e cinco por cento ao ano.', 'Selic: *13,75%* ao ano.'),
+ ('f2', 5, 'Juro alto encarece o financiamento da casa, o cartão, e o crédito das empresas. E freia o emprego.', 'Crédito *caro.* Menos *emprego.*'),
+ ('g1', 6, 'E tem mais: juro alto aumenta a conta da própria dívida.', 'Juro alto *aumenta* a conta da dívida.'),
+ ('g2', 6, 'Vira um círculo vicioso. Mais gasto, mais dívida, mais juros.', 'Mais *gasto,* mais *dívida,* mais *juros.*'),
+ ('h1', 7, 'Então, ajuste fiscal não é cortar por cortar. É fazer a conta fechar.', 'Ajuste é fazer a conta *fechar.*'),
+ ('h2', 7, 'Para a dívida parar de crescer, a inflação ceder, e os juros poderem cair.', 'Dívida *estável.* Inflação e juros *menores.*'),
+ ('h3', 7, 'Sem ele, quem paga é você: no preço, no crédito, e nos seus investimentos.', 'Sem ajuste, quem paga é *você.*'),
+ ('i1', 8, 'Ajuste fiscal não é ideologia. É aritmética.', ''),
+]
