@@ -17,8 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else '.'
 PAPER = (236, 224, 209); INK = (44, 34, 29); ORANGE = (196, 92, 40); MUTED = (140, 128, 116)
 DARK = (27, 22, 20); CREAM = (240, 230, 216)
-SERIE = 'Economia sem economês · ep. 01'
-ASSINATURA = 'Marcus Novais · @mnovaes'
+ASSINATURA = 'Marcus Novais · @mnovais'
 ASSINATURA_FIM = ASSINATURA
 
 TLJ = json.load(open(os.path.join(OUT, 'timeline.json')))
@@ -416,10 +415,9 @@ def build():
     s.rich([('NÃO É IDEOLOGIA.', CREAM)], 70, 750, T('i1', 0.2), 'DBold', 102)
     s.rich([('É ARITMÉTICA.', ORANGE)], 70, 860, T('i1', 0.62), 'DBold', 102)
     te = T('i1', 1.0)
-    s.text('ECONOMIA SEM ECONOMÊS  ·  EP. 01', 70, 985, te + 0.1, 'monoMedium', 26, MUTED, 'lm', track=3)
-    s.text(ASSINATURA_FIM, 70, 1060, te + 0.3, 'SemiBold', 34, CREAM, 'lm')
-    s.hand('quer proteger os seus investimentos?', 70, 1195, T('i2', 0.05), 62, anchor='lm')
-    s.hand('me chama no direct', 70, 1270, T('i2', 0.6), 62, color=CREAM, anchor='lm')
+    s.text(ASSINATURA_FIM, 70, 1000, te + 0.2, 'SemiBold', 34, CREAM, 'lm')
+    s.hand('quer proteger os seus investimentos?', 70, 1150, T('i2', 0.05), 62, anchor='lm')
+    s.hand('me chama no direct', 70, 1225, T('i2', 0.6), 62, color=CREAM, anchor='lm')
     for i, l in enumerate(('Fontes: Banco Central (estatísticas fiscais, set/2026;', 'Copom, nov/2026) · IBGE (IPCA, out/2026) · PLOA 2027.',
                            'Conteúdo educativo. Não é recomendação de investimento.')):
         s.text(l, 70, 1400 + 34 * i, te + 0.6, 'monoRegular', 21, (130, 118, 108), 'lm')
@@ -475,10 +473,7 @@ def draw_chrome(d, c, t):
         d.text((x, HY), ch, font=f, fill=mix(PAPER, INK, a), anchor='lm'); x += f.getlength(ch) + 4 * SS
     f2 = font('monoMedium', 22); fb = font('monoBold', 22)
     FY = 1472
-    d.line((50 * SS, (FY - 18) * SS, 50 * SS + fb.getlength('SÉRIE'), (FY - 18) * SS), fill=INK, width=2 * SS)
-    d.text((50 * SS, FY * SS), 'SÉRIE', font=fb, fill=INK, anchor='lm')
-    d.text((50 * SS + fb.getlength('SÉRIE '), FY * SS), SERIE, font=f2, fill=MUTED, anchor='lm')
-    d.text((1030 * SS, FY * SS), ASSINATURA, font=f2, fill=MUTED, anchor='rm')
+    d.text((50 * SS, FY * SS), ASSINATURA, font=f2, fill=MUTED, anchor='lm')
 
 # ---------------- render ----------------
 _G = {}
