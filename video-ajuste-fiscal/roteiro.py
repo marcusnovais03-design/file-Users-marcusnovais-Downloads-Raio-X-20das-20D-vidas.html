@@ -3,7 +3,7 @@ Na legenda, *palavra* = destaque laranja. Dados conferidos em 14/nov/2026 (ver R
 CAPS = [('00', 'A PERGUNTA'), ('01', 'A CONTA'), ('02', 'O BURACO'), ('03', 'A DÍVIDA'),
         ('04', 'A INFLAÇÃO'), ('05', 'OS JUROS'), ('06', 'O CÍRCULO'), ('07', 'RESUMINDO'), ('08', 'SEU DINHEIRO'), ('09', 'FIM')]
 FALAS = [
- ('a1', 0, 'Toda semana alguém repete que o governo precisa fazer ajuste fiscal.', 'Toda semana: *ajuste* *fiscal*.'),
+ ('a1', 0, 'Toda semana alguém repete que o governo precisa fazer ajuste fiscal.', 'Toda semana: *ajuste* *fiscal.*'),
  ('a2', 0, 'Mas será que isso é mesmo necessário?', 'Mas é mesmo *necessário?*'),
  ('b1', 1, 'Pense no orçamento do governo como o de uma casa. De um lado, o que entra: os impostos. Do outro, o que sai: os gastos.', 'Entra: *impostos.* Sai: *gastos.*'),
  ('b2', 1, 'O problema é que, de cada cem reais gastos, sem contar os juros, noventa e dois já são obrigatórios.', 'De cada R$ 100, *R$ 92* são obrigatórios.'),
