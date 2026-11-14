@@ -418,7 +418,7 @@ def build():
     te = T('i1', 1.0)
     s.text('ECONOMIA SEM ECONOMÊS  ·  EP. 01', 70, 985, te + 0.1, 'monoMedium', 26, MUTED, 'lm', track=3)
     s.text(ASSINATURA_FIM, 70, 1060, te + 0.3, 'SemiBold', 34, CREAM, 'lm')
-    s.hand('quer proteger a sua carteira?', 70, 1195, T('i2', 0.05), 62, anchor='lm')
+    s.hand('quer proteger os seus investimentos?', 70, 1195, T('i2', 0.05), 62, anchor='lm')
     s.hand('me chama no direct', 70, 1270, T('i2', 0.6), 62, color=CREAM, anchor='lm')
     for i, l in enumerate(('Fontes: Banco Central (estatísticas fiscais, set/2026;', 'Copom, nov/2026) · IBGE (IPCA, out/2026) · PLOA 2027.',
                            'Conteúdo educativo. Não é recomendação de investimento.')):

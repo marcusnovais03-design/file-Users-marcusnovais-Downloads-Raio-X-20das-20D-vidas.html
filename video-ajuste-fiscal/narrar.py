@@ -6,7 +6,7 @@ from piper import PiperVoice, SynthesisConfig
 from roteiro import FALAS
 M, OUT = sys.argv[1], sys.argv[2]
 VOZ = sys.argv[3] if len(sys.argv) > 3 else 'cadu'
-RITMO = {'cadu': 0.95, 'jeff': 0.97, 'faber': 1.08}[VOZ]      # length_scale: maior = mais devagar
+RITMO = {'cadu': 1.0, 'jeff': 0.97, 'faber': 1.08}[VOZ]      # length_scale: maior = mais devagar
 voice = PiperVoice.load(f'{M}/vits-piper-pt_BR-{VOZ}-medium/pt_BR-{VOZ}-medium.onnx')
 SR = voice.config.sample_rate
 CFG = SynthesisConfig(length_scale=RITMO, noise_scale=0.6, noise_w_scale=0.85)
@@ -25,10 +25,10 @@ total = t + 2.2
 v = np.zeros(int(total * SR), np.float32)
 for t0, x in clips: i = int(t0 * SR); v[i:i + len(x)] += x
 sf.write(f'{OUT}/voz_crua.wav', v / np.abs(v).max() * 0.9, SR)
-# tratamento: corta subgrave, encorpa os médios-graves, suaviza sibilância, comprime de leve
+# tratamento leve: corta subgrave, encorpa os médios-graves, realça a dicção, comprime de leve
 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', f'{OUT}/voz_crua.wav', '-af',
-                'highpass=f=70,equalizer=f=160:t=q:w=0.9:g=2.5,equalizer=f=3200:t=q:w=1.2:g=1,equalizer=f=7500:t=q:w=1.5:g=-3,'
-                'acompressor=threshold=-21dB:ratio=2.5:attack=8:release=140:makeup=2,alimiter=limit=0.9',
+                'highpass=f=70,equalizer=f=160:t=q:w=0.9:g=2,equalizer=f=3500:t=q:w=1.2:g=1.5,'
+                'acompressor=threshold=-20dB:ratio=2:attack=15:release=160:makeup=1.5,alimiter=limit=0.9',
                 '-ar', '48000', '-ac', '1', f'{OUT}/voz.wav'], check=True)
 json.dump({'total': round(total, 3), 'voz': VOZ, 'falas': tl}, open(f'{OUT}/timeline.json', 'w'), indent=1)
 print('total', total)

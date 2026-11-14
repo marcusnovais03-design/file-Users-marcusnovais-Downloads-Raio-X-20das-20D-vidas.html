@@ -1,6 +1,6 @@
 # Vídeo: "O governo precisa de ajuste fiscal?"
 
-Reels vertical 1080x1920, 30 fps, cerca de 2min38s. Explicação desenhada à mão (papel bege, traço escuro, destaque laranja), com legenda palavra a palavra e narração em português.
+Reels vertical 1080x1920, 30 fps, cerca de 2min42s. Explicação desenhada à mão (papel bege, traço escuro, destaque laranja), com legenda palavra a palavra e narração em português.
 
 ## Como gerar
 
@@ -29,10 +29,10 @@ ffmpeg -i <saida>/video_mudo.mp4 -i <saida>/mix.wav -c:v copy -c:a aac -b:a 192k
 | 03 A dívida | Resultado: a dívida pública já chega a oitenta e três por cento do PIB. Mais de onze trilhões de reais. E continua subindo. | 82,9% do PIB, curva subindo |
 | 04 A inflação | Governo gastando demais aquece a economia, e pressiona os preços. A inflação está em quatro vírgula seis por cento em doze meses, acima do teto da meta. E inflação é um imposto invisível. O salário é o mesmo, mas o carrinho volta mais vazio. Quem mais sofre é quem ganha menos. | IPCA 4,63% x meta 3% e teto 4,5%, carrinhos |
 | 05 Os juros | Para segurar os preços, o Banco Central mantém os juros lá em cima. A Selic está em treze vírgula setenta e cinco por cento ao ano. Juro alto encarece o financiamento da casa, o cartão, e o crédito das empresas. E freia o emprego. | Selic 13,75%, financiamento, cartão, empresas |
-| 06 O círculo | E tem mais: juro alto aumenta a conta da própria dívida. Vira um círculo vicioso. Mais gasto, mais dívida, mais juros. | Gasto → dívida → juros |
+| 06 O círculo | E tem mais: juro alto aumenta a conta da própria dívida. Isso vira um círculo vicioso. Mais gasto, mais dívida, mais juros. | Gasto → dívida → juros |
 | 07 Resumindo | Então, ajuste fiscal não é cortar por cortar. É fazer a conta fechar. Para a dívida parar de crescer, a inflação ceder, e os juros poderem cair. Sem ele, quem paga é você: no preço, no crédito, e nos seus investimentos. | Balança equilibrada |
 | 08 Seu dinheiro | E o seu dinheiro, nesse cenário? Algumas classes de investimento tendem a se beneficiar. Com juros altos, a renda fixa pós-fixada paga mais. Com a Selic atual, rende mais de um por cento ao mês, antes dos impostos. Contra a inflação, os títulos atrelados ao IPCA protegem o seu poder de compra: pagam a inflação, mais um juro real. E, como o risco fiscal costuma pressionar o câmbio, ter uma parte no exterior, em dólar, ajuda a diversificar. A dose certa de cada um depende do seu perfil, e dos seus objetivos. | Três quadros: renda fixa pós-fixada, títulos IPCA, dólar e exterior |
-| Fim | Ajuste fiscal não é ideologia. É aritmética. Quer entender como proteger a sua carteira? Me chama no direct. | Cartela escura |
+| Fim | Ajuste fiscal não é ideologia. É aritmética. Quer proteger os seus investimentos? Me chama no direct. | Cartela escura |
 
 ## Números usados (conferidos em 14/nov/2026)
 

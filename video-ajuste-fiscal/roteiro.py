@@ -20,7 +20,7 @@ FALAS = [
  ('f1', 5, 'Para segurar os preços, o Banco Central mantém os juros lá em cima. A Selic está em treze vírgula setenta e cinco por cento ao ano.', 'Selic: *13,75%* ao ano.'),
  ('f2', 5, 'Juro alto encarece o financiamento da casa, o cartão, e o crédito das empresas. E freia o emprego.', 'Crédito *caro.* Menos *emprego.*'),
  ('g1', 6, 'E tem mais: juro alto aumenta a conta da própria dívida.', 'Juro alto *aumenta* a conta da dívida.'),
- ('g2', 6, 'Vira um círculo vicioso. Mais gasto, mais dívida, mais juros.', 'Mais *gasto,* mais *dívida,* mais *juros.*'),
+ ('g2', 6, 'Isso vira um círculo vicioso. Mais gasto, mais dívida, mais juros.', 'Mais *gasto,* mais *dívida,* mais *juros.*'),
  ('h1', 7, 'Então, ajuste fiscal não é cortar por cortar. É fazer a conta fechar.', 'Ajuste é fazer a conta *fechar.*'),
  ('h2', 7, 'Para a dívida parar de crescer, a inflação ceder, e os juros poderem cair.', 'Dívida *estável.* Inflação e juros *menores.*'),
  ('h3', 7, 'Sem ele, quem paga é você: no preço, no crédito, e nos seus investimentos.', 'Sem ajuste, quem paga é *você.*'),
@@ -30,5 +30,5 @@ FALAS = [
  ('j4', 8, 'E, como o risco fiscal costuma pressionar o câmbio, ter uma parte no exterior, em dólar, ajuda a diversificar.', 'Risco fiscal: *dólar* e *exterior.*'),
  ('j5', 8, 'A dose certa de cada um depende do seu perfil, e dos seus objetivos.', 'A dose certa depende do *seu* *perfil.*'),
  ('i1', 9, 'Ajuste fiscal não é ideologia. É aritmética.', ''),
- ('i2', 9, 'Quer entender como proteger a sua carteira? Me chama no direct.', ''),
+ ('i2', 9, 'Quer proteger os seus investimentos? Me chama no direct.', ''),
 ]
