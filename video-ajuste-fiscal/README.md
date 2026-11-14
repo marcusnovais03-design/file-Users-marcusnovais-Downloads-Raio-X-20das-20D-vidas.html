@@ -1,15 +1,14 @@
 # Vídeo: "O governo precisa de ajuste fiscal?"
 
-Reels vertical 1080x1920, 30 fps, cerca de 1min54s. Explicação desenhada à mão (papel bege, traço escuro, destaque laranja), com legenda palavra a palavra e narração em português.
+Reels vertical 1080x1920, 30 fps, cerca de 2min38s. Explicação desenhada à mão (papel bege, traço escuro, destaque laranja), com legenda palavra a palavra e narração em português.
 
 ## Como gerar
 
 ```bash
-pip install kokoro-onnx soundfile numpy pillow
-# modelos do Kokoro (uma vez), em <modelos>/
-#   https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
-#   https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
-python3 narrar.py <modelos> <saida>     # voz.wav + timeline.json
+pip install piper-tts soundfile numpy pillow
+# voz (uma vez): baixar e extrair em <modelos>/
+#   https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-pt_BR-cadu-medium.tar.bz2
+python3 narrar.py <modelos> <saida> cadu   # voz.wav + timeline.json (vozes: cadu, jeff, faber)
 python3 mixar.py <saida>                # mix.wav (voz + trilha)
 python3 render.py <saida>               # video_mudo.mp4
 ffmpeg -i <saida>/video_mudo.mp4 -i <saida>/mix.wav -c:v copy -c:a aac -b:a 192k -shortest ajuste-fiscal.mp4
@@ -17,6 +16,7 @@ ffmpeg -i <saida>/video_mudo.mp4 -i <saida>/mix.wav -c:v copy -c:a aac -b:a 192k
 
 - `roteiro.py`: falas, legendas e capítulos. Mudar um texto aqui e rodar os três passos refaz tudo: os desenhos seguem o tempo de cada fala.
 - `render.py`: desenhos de cada capítulo (função `build`), nome da série e assinatura (`SERIE`, `ASSINATURA`).
+- Formato Reels: tudo o que importa fica entre y=150 e y=1490, fora da área coberta pela legenda e pelos botões do Instagram. Para a capa, use um quadro por volta de 0:06.
 - Para usar a sua própria voz, grave a narração, salve como `<saida>/voz.wav` e ajuste os tempos em `timeline.json`.
 
 ## Roteiro
@@ -31,7 +31,8 @@ ffmpeg -i <saida>/video_mudo.mp4 -i <saida>/mix.wav -c:v copy -c:a aac -b:a 192k
 | 05 Os juros | Para segurar os preços, o Banco Central mantém os juros lá em cima. A Selic está em treze vírgula setenta e cinco por cento ao ano. Juro alto encarece o financiamento da casa, o cartão, e o crédito das empresas. E freia o emprego. | Selic 13,75%, financiamento, cartão, empresas |
 | 06 O círculo | E tem mais: juro alto aumenta a conta da própria dívida. Vira um círculo vicioso. Mais gasto, mais dívida, mais juros. | Gasto → dívida → juros |
 | 07 Resumindo | Então, ajuste fiscal não é cortar por cortar. É fazer a conta fechar. Para a dívida parar de crescer, a inflação ceder, e os juros poderem cair. Sem ele, quem paga é você: no preço, no crédito, e nos seus investimentos. | Balança equilibrada |
-| Fim | Ajuste fiscal não é ideologia. É aritmética. | Cartela escura |
+| 08 Seu dinheiro | E o seu dinheiro, nesse cenário? Algumas classes de investimento tendem a se beneficiar. Com juros altos, a renda fixa pós-fixada paga mais. Com a Selic atual, rende mais de um por cento ao mês, antes dos impostos. Contra a inflação, os títulos atrelados ao IPCA protegem o seu poder de compra: pagam a inflação, mais um juro real. E, como o risco fiscal costuma pressionar o câmbio, ter uma parte no exterior, em dólar, ajuda a diversificar. A dose certa de cada um depende do seu perfil, e dos seus objetivos. | Três quadros: renda fixa pós-fixada, títulos IPCA, dólar e exterior |
+| Fim | Ajuste fiscal não é ideologia. É aritmética. Quer entender como proteger a sua carteira? Me chama no direct. | Cartela escura |
 
 ## Números usados (conferidos em 14/nov/2026)
 
@@ -44,6 +45,7 @@ ffmpeg -i <saida>/video_mudo.mp4 -i <saida>/mix.wav -c:v copy -c:a aac -b:a 192k
 | Déficit primário em 12 meses | R$ 70,1 bilhões, 0,52% do PIB | Banco Central |
 | Déficit nominal ("o buraco") | cerca de 9,5% do PIB (0,52% + 8,99%) | cálculo |
 | Despesas obrigatórias | 92,4% das despesas primárias em 2026 | PLOA 2027 |
+| Renda fixa pós-fixada | Selic de 13,75% a.a. equivale a 1,08% ao mês, bruto | cálculo |
 
 Observações:
 
@@ -66,4 +68,4 @@ Observações:
 
 ## Créditos
 
-Fonte manuscrita: Caveat (SIL Open Font License). Voz: Kokoro TTS, voz `pm_alex`.
+Fonte manuscrita: Caveat (SIL Open Font License). Voz: Piper TTS, voz brasileira `pt_BR-cadu-medium`.

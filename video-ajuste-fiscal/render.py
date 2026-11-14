@@ -17,8 +17,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else '.'
 PAPER = (236, 224, 209); INK = (44, 34, 29); ORANGE = (196, 92, 40); MUTED = (140, 128, 116)
 DARK = (27, 22, 20); CREAM = (240, 230, 216)
-SERIE = 'Economia sem economês · ep. 01 · Ajuste fiscal'
-ASSINATURA = 'Marcus Novais · assessor de investimentos'
+SERIE = 'Economia sem economês · ep. 01'
+ASSINATURA = 'Marcus Novais · @mnovaes'
+ASSINATURA_FIM = ASSINATURA
 
 TLJ = json.load(open(os.path.join(OUT, 'timeline.json')))
 TOTAL = TLJ['total']
@@ -311,7 +312,7 @@ def build():
     s.rich([('82,9%', ORANGE)], 60, 360, T('d1', 0.33), 'DBold', 170)
     s.text('do PIB', 610, 318, T('d1', 0.55), 'DBold', 60, INK, 'lm')
     s.hand('R$ 11,1 trilhões', 64, 425, T('d1', 0.78), 56, anchor='lm')
-    s.stroke([(140, 540), (140, 1130), (1010, 1130)], T('d1', 0.0), 0.6)
+    s.stroke([(140, 540), (140, 1130), (965, 1130)], T('d1', 0.0), 0.6)
     pts = [(200, 1010), (330, 985), (450, 940), (570, 905), (690, 850), (800, 790), (890, 720)]
     s.stroke(pts, T('d1', 0.15), 1.6, w=5.5, amp=1.2)
     s.circle(200, 1010, 9, T('d1', 0.15), 0.15)
@@ -353,7 +354,7 @@ def build():
     s.text('13,75%', 540, 665, T('f1', 0.6), 'DBold', 200, ORANGE)
     s.text('SELIC  ·  AO ANO', 540, 800, T('f1', 0.75), 'monoMedium', 28, MUTED, track=3)
     for i, (fn, lab, fr) in enumerate(((s.house, 'financiamento', 0.18), (s.card, 'cartão', 0.42), (s.factory, 'empresas', 0.56))):
-        x = 200 + 340 * i
+        x = 180 + 320 * i
         fn(x, 1010, 130, T('f2', fr))
         s.text(lab, x, 1108, T('f2', fr) + 0.3, 'SemiBold', 27)
         s.arrow((x + 105, 1060), (x + 105, 960), T('f2', fr) + 0.45, 0.25, color=ORANGE, w=4, head=16)
@@ -389,17 +390,39 @@ def build():
     for i, (w_, fr) in enumerate((('no preço', 0.45), ('no crédito', 0.62), ('nos seus investimentos', 0.78))):
         s.hand(w_, 370, 1085 + 58 * i, T('h3', fr), 50, anchor='lm')
 
-    # 08 — FIM (fundo escuro)
-    s = S[8]; s.bg = DARK
-    s.rich([('AJUSTE FISCAL', CREAM)], 70, 770, T('i1', 0.0), 'DBold', 102)
-    s.rich([('NÃO É IDEOLOGIA.', CREAM)], 70, 880, T('i1', 0.2), 'DBold', 102)
-    s.rich([('É ARITMÉTICA.', ORANGE)], 70, 990, T('i1', 0.62), 'DBold', 102)
+    # 08 — SEU DINHEIRO
+    s = S[8]
+    s.rich([('E O SEU ', INK), ('DINHEIRO', ORANGE), ('?', INK)], 50, 310, T('j1', 0.0), 'DBold', 88)
+    rows = [('j2', s.bank, 'JUROS ALTOS', 'Renda fixa pós-fixada', 'Tesouro Selic, CDBs, fundos DI'),
+            ('j3', s.cart, 'INFLAÇÃO ALTA', 'Títulos atrelados ao IPCA', 'Tesouro IPCA+, debêntures'),
+            ('j4', None, 'RISCO FISCAL', 'Dólar e exterior', 'parte da carteira em moeda forte')]
+    for i, (fid, icon, lab, title, note) in enumerate(rows):
+        y = 400 + 275 * i; t0 = T(fid, 0.0)
+        s.rect(60, y, 900, 235, T('j1', 0.45) + 0.25 * i, 0.7, w=3.5)
+        if icon == s.cart: icon(170, y + 128, 120, t0 + 0.1, items=3)
+        elif icon: icon(170, y + 118, 120, t0 + 0.1)
+        else:                                   # globo
+            s.circle(170, y + 118, 58, t0 + 0.1, 0.4)
+            s.circle(170, y + 118, 24, t0 + 0.4, 0.3, ry=57, w=3)
+            s.line((112, y + 118), (228, y + 118), t0 + 0.6, 0.2, w=3)
+        s.text(lab, 290, y + 58, t0 + 0.15, 'monoBold', 25, MUTED, 'lm', track=3)
+        s.text(title, 290, y + 118, t0 + 0.35, 'DBold', 47, INK, 'lm')
+        s.hand(note, 292, y + 180, T(fid, 0.5), 44, anchor='lm')
+    s.hand('não é recomendação: depende do seu perfil', 510, 1262, T('j5', 0.25), 42, color=INK)
+
+    # 09 — FIM (fundo escuro)
+    s = S[9]; s.bg = DARK
+    s.rich([('AJUSTE FISCAL', CREAM)], 70, 640, T('i1', 0.0), 'DBold', 102)
+    s.rich([('NÃO É IDEOLOGIA.', CREAM)], 70, 750, T('i1', 0.2), 'DBold', 102)
+    s.rich([('É ARITMÉTICA.', ORANGE)], 70, 860, T('i1', 0.62), 'DBold', 102)
     te = T('i1', 1.0)
-    s.text('ECONOMIA SEM ECONOMÊS  ·  EP. 01', 70, 1130, te + 0.1, 'monoMedium', 26, MUTED, 'lm', track=3)
-    s.text(ASSINATURA, 70, 1215, te + 0.4, 'SemiBold', 34, CREAM, 'lm')
+    s.text('ECONOMIA SEM ECONOMÊS  ·  EP. 01', 70, 985, te + 0.1, 'monoMedium', 26, MUTED, 'lm', track=3)
+    s.text(ASSINATURA_FIM, 70, 1060, te + 0.3, 'SemiBold', 34, CREAM, 'lm')
+    s.hand('quer proteger a sua carteira?', 70, 1195, T('i2', 0.05), 62, anchor='lm')
+    s.hand('me chama no direct', 70, 1270, T('i2', 0.6), 62, color=CREAM, anchor='lm')
     for i, l in enumerate(('Fontes: Banco Central (estatísticas fiscais, set/2026;', 'Copom, nov/2026) · IBGE (IPCA, out/2026) · PLOA 2027.',
                            'Conteúdo educativo. Não é recomendação de investimento.')):
-        s.text(l, 70, 1690 + 36 * i, te + 0.6, 'monoRegular', 21, (120, 108, 98), 'lm')
+        s.text(l, 70, 1400 + 34 * i, te + 0.6, 'monoRegular', 21, (130, 118, 108), 'lm')
     return S
 
 # ---------------- legendas ----------------
@@ -416,7 +439,7 @@ def layout_caption(words):
         wd = f.getlength(w)
         if lines[-1] and cur + sp + wd > maxw: lines.append([]); cur = 0
         cur += (sp if lines[-1] else 0) + wd; lines[-1].append((w, hl, wd))
-    out = []; y0 = 1425 - (len(lines) - 1) * 34
+    out = []; y0 = 1352 - (len(lines) - 1) * 34
     for li, ln in enumerate(lines):
         tw = sum(w[2] for w in ln) + sp * (len(ln) - 1); x = W * SS / 2 - tw / 2
         for w, hl, wd in ln: out.append((w, hl, x, (y0 + li * 68) * SS)); x += wd + sp
@@ -444,18 +467,18 @@ def draw_chrome(d, c, t):
     tl = t - CH0[c]; a = ease(tl / 0.35)
     f = font('monoMedium', 27)
     num, name = CAPS[c]
-    d.line((50 * SS, 118 * SS, 72 * SS, 118 * SS), fill=mix(PAPER, ORANGE, a), width=3 * SS)
-    d.text((80 * SS, 118 * SS), num, font=f, fill=mix(PAPER, ORANGE, a), anchor='lm')
+    HY = 168 * SS
+    d.line((50 * SS, HY, 72 * SS, HY), fill=mix(PAPER, ORANGE, a), width=3 * SS)
+    d.text((80 * SS, HY), num, font=f, fill=mix(PAPER, ORANGE, a), anchor='lm')
     x = 150 * SS
     for ch in name:
-        d.text((x, 118 * SS), ch, font=f, fill=mix(PAPER, INK, a), anchor='lm'); x += f.getlength(ch) + 4 * SS
+        d.text((x, HY), ch, font=f, fill=mix(PAPER, INK, a), anchor='lm'); x += f.getlength(ch) + 4 * SS
     f2 = font('monoMedium', 22); fb = font('monoBold', 22)
-    d.line((50 * SS, 1688 * SS, 50 * SS + fb.getlength('SÉRIE'), 1688 * SS), fill=INK, width=2 * SS)
-    d.text((50 * SS, 1706 * SS), 'SÉRIE', font=fb, fill=INK, anchor='lm')
-    d.text((50 * SS + fb.getlength('SÉRIE ') , 1706 * SS), SERIE, font=f2, fill=MUTED, anchor='lm')
-    d.ellipse((50 * SS, 1826 * SS, 68 * SS, 1844 * SS), outline=MUTED, width=2 * SS)
-    d.ellipse((56 * SS, 1832 * SS, 62 * SS, 1838 * SS), fill=MUTED)
-    d.text((82 * SS, 1835 * SS), ASSINATURA, font=f2, fill=MUTED, anchor='lm')
+    FY = 1472
+    d.line((50 * SS, (FY - 18) * SS, 50 * SS + fb.getlength('SÉRIE'), (FY - 18) * SS), fill=INK, width=2 * SS)
+    d.text((50 * SS, FY * SS), 'SÉRIE', font=fb, fill=INK, anchor='lm')
+    d.text((50 * SS + fb.getlength('SÉRIE '), FY * SS), SERIE, font=f2, fill=MUTED, anchor='lm')
+    d.text((1030 * SS, FY * SS), ASSINATURA, font=f2, fill=MUTED, anchor='rm')
 
 # ---------------- render ----------------
 _G = {}
