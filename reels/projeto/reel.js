@@ -638,7 +638,7 @@ scene(30, 35, (t, p) => {
 // black beat 35-36 handled in render
 // S8 — dive into fiber optic tunnel / data center (36-40)
 scene(36, 40, (t, p) => {
-  ctx.fillStyle = '#02040a'; ctx.fillRect(0, 0, W, H); HY = 960;
+  if (!window.OVL) { ctx.fillStyle = '#02040a'; ctx.fillRect(0, 0, W, H); } HY = 960;
   const cz = (t - 36) * 40;
   ctx.globalCompositeOperation = 'lighter';
   for (let k = 0; k < 50; k++) {
@@ -861,7 +861,7 @@ const TX = [
   { a: 36.6, b: 39.8, stamp: '2026', title: 'Hoje, a guerra não faz *barulho*.' },
   { a: 40.6, b: 45.8, stamp: '13 NOV 2026 · EUA · 15H54', title: 'Todos os voos dos EUA *no chão*.', cap: 'Mais de 4 horas parados. Milhares de cancelamentos. Nem foi um ataque: bastou uma pane.', size: 84 },
   { a: 46.3, b: 50.8, stamp: '29 OUT 2026 · CORRETORA DE CRIPTO', title: 'US$ 6,3 bilhões em *~20 minutos*.', cap: 'O FBI aponta hackers da Coreia do Norte.', size: 84 },
-  { a: 51.3, b: 54.8, stamp: '04 NOV 2026 · FRANÇA', title: 'Um banco perde *~€100 milhões*.', cap: 'Crédit Mutuel Arkéa: aplicativos fora do ar por horas.', size: 84 },
+  { a: 51.3, b: 54.8, stamp: '04 NOV 2026 · FRANÇA', title: '€ 100 milhões *desviados*.', cap: 'Ataque hacker ao banco Crédit Mutuel Arkéa. Aplicativos fora do ar por horas.', size: 92 },
   { a: 55.3, b: 58.8, stamp: '06 NOV 2026 · JAPÃO', title: 'Pacote de *emergência*: ¥10 bilhões.', cap: 'Contra uma onda de invasões a empresas e órgãos públicos.', size: 84 },
   { a: 59.3, b: 62.8, stamp: '22 OUT 2026 · REINO UNIDO', title: '“Guardem *dinheiro vivo*.”', cap: 'Governo pede 3 dias de água, comida, rádio e cédulas em casa.', size: 84 },
   { a: 63.3, b: 67.8, stamp: 'BRASIL', title: '*55,2%* dos pagamentos passam pelo Pix.', cap: 'Em julho de 2025, bastou invadir um único fornecedor.', size: 84 },
@@ -886,7 +886,9 @@ function render(t) {
   }
   const sc = S.find(s => t >= s.a && t < s.b) || S[S.length - 1];
   const p = (t - sc.a) / (sc.b - sc.a);
-  sc.fn(t, p);
+  const ph = PHOTOS.find(e => t >= e.a && t < e.b);
+  if (ph && IMG[ph.k]) { drawPhoto(ph, t); if (ph.ov) ph.ov(t, (t - ph.a) / (ph.b - ph.a)); }
+  else sc.fn(t, p);
 
   // grading per era
   if (t < 20) grade([255, 190, 120], .22);
@@ -913,6 +915,12 @@ function render(t) {
   if (t >= 64.6 && t < 66) gl = Math.max(gl, .6);
   glitch(gl, t);
 
+  // photo credit
+  if (ph && IMG[ph.k] && CREDITS[ph.k]) {
+    const a = Math.min(clamp((t - ph.a) / .3), clamp((ph.b - t) / .2)) * .75;
+    ctx.font = '500 21px MO'; ctx.fillStyle = `rgba(230,225,215,${a})`; ctx.textAlign = 'left';
+    ctx.fillText(CREDITS[ph.k], 84, 1600);
+  }
   // text
   for (const b of TX) textBlock(b, t);
   // big question
@@ -941,4 +949,5 @@ function render(t) {
   grain(t, t > 36 && t < 68 ? .09 : .07);
 }
 window.render = render;
-window.ready = document.fonts.ready.then(() => Promise.all(['500 40px PF', 'italic 500 40px PF', '400 40px IN', '500 40px MO'].map(f => document.fonts.load(f))));
+window.ready = Promise.all(Object.values(IMGP)).then(() => document.fonts.ready).then(() => Promise.all(['500 40px PF', 'italic 500 40px PF', '400 40px IN', '500 40px MO'].map(f => document.fonts.load(f))));
+

@@ -1,0 +1,128 @@
+{
+ "s2a": {
+  "file": "AbuSimbelTempleEgypt 2007jan9-42 byDanielCsorfoly.JPG",
+  "artist": "Daniel Csörföly",
+  "license": "Domínio público",
+  "page": "https://commons.wikimedia.org/wiki/File:AbuSimbelTempleEgypt_2007jan9-42_byDanielCsorfoly.JPG"
+ },
+ "s2b": {
+  "file": "AbuSimbelTempleEgypt 2007jan9-43 byDanielCsorfoly.JPG",
+  "artist": "Daniel Csörföly",
+  "license": "Domínio público",
+  "page": "https://commons.wikimedia.org/wiki/File:AbuSimbelTempleEgypt_2007jan9-43_byDanielCsorfoly.JPG"
+ },
+ "s3a": {
+  "file": "Легио Абритус 01.jpg",
+  "artist": "Litev",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:%D0%9B%D0%B5%D0%B3%D0%B8%D0%BE_%D0%90%D0%B1%D1%80%D0%B8%D1%82%D1%83%D1%81_01.jpg"
+ },
+ "s3b": {
+  "file": "Legionaris romans Barcino Oriens.jpg",
+  "artist": "Marionaaragay",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Legionaris_romans_Barcino_Oriens.jpg"
+ },
+ "s4a": {
+  "file": "Ramparts of the historic fortified city of Carcassone 09.jpg",
+  "artist": "Krzysztof Golik",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ramparts_of_the_historic_fortified_city_of_Carcassone_09.jpg"
+ },
+ "s4b": {
+  "file": "Ramparts of the historic fortified city of Carcassone 05.jpg",
+  "artist": "Krzysztof Golik",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ramparts_of_the_historic_fortified_city_of_Carcassone_05.jpg"
+ },
+ "s5": {
+  "file": "Cheshire Regiment trench Somme 1916.jpg",
+  "artist": "John Warwick Brooke",
+  "license": "Domínio público",
+  "page": "https://commons.wikimedia.org/wiki/File:Cheshire_Regiment_trench_Somme_1916.jpg"
+ },
+ "s6": {
+  "file": "BB61 USS Iowa BB61 broadside USN.jpg",
+  "artist": "U.S. Navy",
+  "license": "Domínio público",
+  "page": "https://commons.wikimedia.org/wiki/File:BB61_USS_Iowa_BB61_broadside_USN.jpg"
+ },
+ "s7": {
+  "file": "Titan Nuclear Missile in ICBM Launch Silo.jpg",
+  "artist": "Zcobb99",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Titan_Nuclear_Missile_in_ICBM_Launch_Silo.jpg"
+ },
+ "s8a": {
+  "file": "Rear of rack at NERSC data center - closeup.jpg",
+  "artist": "Derrick Coetzee",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Rear_of_rack_at_NERSC_data_center_-_closeup.jpg"
+ },
+ "s8b": {
+  "file": "Datacenter Server Racks (22370909788).jpg",
+  "artist": "Carl Lender",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Datacenter_Server_Racks_%2822370909788%29.jpg"
+ },
+ "air": {
+  "file": "Parked Planes at Antonio Rivera Rodriguez Airport VQS Vieques PR 2021-08-06 12-57-05 1.jpg",
+  "artist": "G. Edward Johnson",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Parked_Planes_at_Antonio_Rivera_Rodriguez_Airport_VQS_Vieques_PR_2021-08-06_12-57-05_1.jpg"
+ },
+ "btc": {
+  "file": "Bitcoin mining farm.jpg",
+  "artist": "Marko Ahtisaari",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Bitcoin_mining_farm.jpg"
+ },
+ "btc2": {
+  "file": "Argo Blockchain Mirabel Facility.jpg",
+  "artist": "MikeBogosian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Argo_Blockchain_Mirabel_Facility.jpg"
+ },
+ "fr": {
+  "file": "Siège du Crédit Mutuel Arkéa au Relecq-Kerhuon.jpg",
+  "artist": "FJaffres",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Si%C3%A8ge_du_Cr%C3%A9dit_Mutuel_Ark%C3%A9a_au_Relecq-Kerhuon.jpg"
+ },
+ "jp": {
+  "file": "Night in Shinjuku 3.JPG",
+  "artist": "Martin Falbisoner",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Night_in_Shinjuku_3.JPG"
+ },
+ "jp2": {
+  "file": "Colorful neon street signs in Kabukichō, Shinjuku, Tokyo.jpg",
+  "artist": "Basile Morin",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Colorful_neon_street_signs_in_Kabukich%C5%8D%2C_Shinjuku%2C_Tokyo.jpg"
+ },
+ "uk": {
+  "file": "Tesco empty shelves December 2024.jpeg",
+  "artist": "Cnbrb",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Tesco_empty_shelves_December_2024.jpeg"
+ },
+ "uk2": {
+  "file": "Tesco without bread (5228922199).jpg",
+  "artist": "Simon Harriyott",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Tesco_without_bread_%285228922199%29.jpg"
+ },
+ "br": {
+  "file": "Avenida Paulista à noite, São Paulo.jpg",
+  "artist": "@rodrigocfavero",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Avenida_Paulista_%C3%A0_noite%2C_S%C3%A3o_Paulo.jpg"
+ },
+ "s1": {
+  "file": "Lascaux, replica 03.JPG",
+  "artist": "HTO",
+  "license": "Domínio público",
+  "page": "https://commons.wikimedia.org/wiki/File:Lascaux%2C_replica_03.JPG"
+ }
+}
