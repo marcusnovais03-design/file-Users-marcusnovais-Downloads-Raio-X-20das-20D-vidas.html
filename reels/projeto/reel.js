@@ -852,18 +852,18 @@ function roundRect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.a
 // ---------- text timeline ----------
 const TX = [
   { a: .9, b: 4.8, stamp: 'PRÉ-HISTÓRIA', title: 'Durante milênios, a guerra teve um *rosto*.' },
-  { a: 5.4, b: 9.8, stamp: 'ANTIGUIDADE · 1500 a.C.', title: 'Lanças. *Bigas.*', cap: 'Exércitos que se viam de longe.' },
-  { a: 10.4, b: 14.8, stamp: 'ROMA · 50 a.C.', title: 'Legiões. *Catapultas.*' },
-  { a: 15.4, b: 19.6, stamp: 'IDADE MÉDIA · 1200', title: 'Muralhas que levavam *anos* para cair.' },
-  { a: 20.4, b: 24.8, stamp: '1914', title: 'Depois, as *trincheiras…*' },
-  { a: 25.4, b: 29.8, stamp: '1942', title: '…os navios, os *aviões…*' },
-  { a: 30.4, b: 34.8, stamp: '1962', title: '…e a bomba que mudou *tudo*.' },
-  { a: 36.6, b: 39.8, stamp: '2026', title: 'Hoje, a guerra não faz *barulho*.' },
-  { a: 40.6, b: 45.8, stamp: '13 NOV 2026 · EUA · 15H54', title: 'Todos os voos dos EUA *no chão*.', cap: 'Mais de 4 horas parados. Milhares de cancelamentos. Nem foi um ataque: bastou uma pane.', size: 84 },
-  { a: 46.3, b: 50.8, stamp: '29 OUT 2026 · CORRETORA DE CRIPTO', title: 'US$ 6,3 bilhões em *~20 minutos*.', cap: 'O FBI aponta hackers da Coreia do Norte.', size: 84 },
-  { a: 51.3, b: 54.8, stamp: '04 NOV 2026 · FRANÇA', title: '€ 100 milhões *desviados*.', cap: 'Ataque hacker ao banco Crédit Mutuel Arkéa. Aplicativos fora do ar por horas.', size: 92 },
-  { a: 55.3, b: 58.8, stamp: '06 NOV 2026 · JAPÃO', title: 'Pacote de *emergência*: ¥10 bilhões.', cap: 'Contra uma onda de invasões a empresas e órgãos públicos.', size: 84 },
-  { a: 59.3, b: 62.8, stamp: '22 OUT 2026 · REINO UNIDO', title: '“Guardem *dinheiro vivo*.”', cap: 'Governo pede 3 dias de água, comida, rádio e cédulas em casa.', size: 84 },
+  { a: 5.4, b: 9.8, stamp: 'ANTIGUIDADE', title: 'Lanças. *Bigas.*', cap: 'Exércitos que se viam de longe.' },
+  { a: 10.4, b: 14.8, stamp: 'ROMA', title: 'Legiões. *Catapultas.*' },
+  { a: 15.4, b: 19.6, stamp: 'IDADE MÉDIA', title: 'Muralhas que levavam *anos* para cair.' },
+  { a: 20.4, b: 24.8, stamp: '1ª GUERRA MUNDIAL', title: 'Depois, as *trincheiras…*' },
+  { a: 25.4, b: 29.8, stamp: '2ª GUERRA MUNDIAL', title: '…os navios, os *aviões…*' },
+  { a: 30.4, b: 34.8, stamp: 'GUERRA FRIA', title: '…e a bomba que mudou *tudo*.' },
+  { a: 36.6, b: 39.8, stamp: 'GUERRA CIBERNÉTICA', title: 'Hoje, a guerra não faz *barulho*.' },
+  { a: 40.4, b: 43.8, stamp: 'REINO UNIDO', title: '“Guardem *dinheiro vivo*.”', cap: 'Governo pede 3 dias de água, comida, rádio e cédulas em casa.', size: 84 },
+  { a: 44.3, b: 48.8, stamp: 'CORRETORA DE CRIPTO', title: 'US$ 6,3 bilhões em *~20 minutos*.', cap: 'O FBI aponta hackers da Coreia do Norte.', size: 84 },
+  { a: 49.3, b: 52.8, stamp: 'FRANÇA', title: '€ 100 milhões *desviados*.', cap: 'Ataque hacker ao banco Crédit Mutuel Arkéa. Aplicativos fora do ar por horas.', size: 92 },
+  { a: 53.3, b: 56.8, stamp: 'JAPÃO', title: 'Pacote de *emergência*: ¥10 bilhões.', cap: 'Contra uma onda de invasões a empresas e órgãos públicos.', size: 84 },
+  { a: 57.4, b: 62.8, stamp: 'ESTADOS UNIDOS · 15H54', title: 'Todos os voos dos EUA *no chão*.', cap: 'Mais de 4 horas parados. Milhares de cancelamentos. Nem foi um ataque: bastou uma pane.', size: 84 },
   { a: 63.3, b: 67.8, stamp: 'BRASIL', title: '*55,2%* dos pagamentos passam pelo Pix.', cap: 'Em julho de 2025, bastou invadir um único fornecedor.', size: 84 },
   { a: 68.5, b: 70.9, title: 'A 3ª Guerra não derruba a sua casa.', size: 80, align: 'center', y: 1560 },
   { a: 70.9, b: 72.9, title: 'Ela tira o seu *acesso* ao dinheiro.', size: 80, align: 'center', y: 1560 },
@@ -873,6 +873,46 @@ const VERSE = [
   { a: 74.6, t: 'parte para outra,', y: 850 },
   { a: 75.6, t: 'e a ciência se *multiplicará*.”', y: 960 },
 ];
+
+
+// ---------- timeline graphic ----------
+const TL_ERA = [[0, 'PRÉ-HIST.'], [5, '1500 a.C.'], [10, '50 a.C.'], [15, '1200'], [20, '1914'], [25, '1942'], [30, '1962'], [36, '2026']].map((n, i) => ({ t: n[0], l: n[1], x: 110 + i * 860 / 7 }));
+const TL_CY = [[40, '22 OUT', 0], [44, '29 OUT', 7], [49, '04 NOV', 13], [53, '06 NOV', 15], [57, '13 NOV', 22]].map(n => ({ t: n[0], l: n[1], x: 110 + n[2] / 22 * 690 }));
+TL_CY.push({ t: 63, l: 'BRASIL', x: 960, dashed: true });
+function drawTL(nodes, t, alpha, head) {
+  if (alpha <= 0) return;
+  const Y = 345; let ci = 0; for (let i = 0; i < nodes.length; i++) if (t >= nodes[i].t) ci = i;
+  const prevX = ci > 0 ? nodes[ci - 1].x : nodes[0].x;
+  const mx = lerp(prevX, nodes[ci].x, eio(clamp((t - nodes[ci].t) / .7)));
+  ctx.save(); ctx.globalAlpha = alpha;
+  const g = ctx.createLinearGradient(0, 0, 0, 520); g.addColorStop(0, 'rgba(0,0,0,.72)'); g.addColorStop(.7, 'rgba(0,0,0,.45)'); g.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, 520);
+  ctx.font = '500 27px MO'; ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(214,176,116,.95)';
+  if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '5px'; ctx.fillText(head, 84, 222); if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
+  const x0 = nodes[0].x, last = nodes[nodes.length - 1];
+  ctx.lineCap = 'round'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,.28)';
+  const solidEnd = last.dashed ? nodes[nodes.length - 2].x : last.x;
+  ctx.beginPath(); ctx.moveTo(x0, Y); ctx.lineTo(solidEnd, Y); ctx.stroke();
+  if (last.dashed) { ctx.setLineDash([10, 12]); ctx.beginPath(); ctx.moveTo(solidEnd, Y); ctx.lineTo(last.x, Y); ctx.stroke(); ctx.setLineDash([]); }
+  ctx.strokeStyle = 'rgba(226,186,120,1)'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(x0, Y); ctx.lineTo(mx, Y); ctx.stroke();
+  ctx.textAlign = 'center';
+  nodes.forEach((n, i) => {
+    const cur = i === ci, done = i < ci || (cur && t - n.t > .5); const up = i % 2 === 1;
+    const k = cur ? eo(clamp((t - n.t - .35) / .45)) : 0;
+    ctx.strokeStyle = 'rgba(255,255,255,.2)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(n.x, Y); ctx.lineTo(n.x, Y + (up ? -24 : 24)); ctx.stroke();
+    ctx.beginPath(); ctx.arc(n.x, Y, 8 + 5 * k, 0, 7);
+    if (done) { ctx.fillStyle = 'rgba(226,186,120,1)'; ctx.fill(); } else { ctx.fillStyle = '#0a0a0c'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.stroke(); }
+    const fs = 25 + 17 * k; ctx.font = `500 ${fs}px MO`;
+    ctx.fillStyle = k > 0 ? `rgba(${lerp(200, 255, k)},${lerp(200, 226, k)},${lerp(200, 170, k)},1)` : (done ? 'rgba(226,186,120,.75)' : 'rgba(255,255,255,.5)');
+    ctx.fillText(n.l, clamp(n.x, 90, W - 90), up ? Y - 38 - 6 * k : Y + 56 + 12 * k);
+  });
+  ctx.globalAlpha = alpha; glow(mx, Y, 46 + 8 * Math.sin(t * 6), [255, 200, 120], .55);
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(mx, Y, 5, 0, 7); ctx.fill();
+  ctx.restore(); ctx.textAlign = 'left';
+}
+function timeline(t) {
+  if (t < 40) drawTL(TL_ERA, t, Math.min(clamp((t - .6) / .6), clamp((40 - t) / .25)), 'A HISTÓRIA DA GUERRA');
+  else if (t < 68) drawTL(TL_CY, t, Math.min(clamp((t - 40) / .4), clamp((68 - t) / .4)), 'OUT — NOV 2026 · A GUERRA SEM ROSTO');
+}
 
 // ---------- master render ----------
 function render(t) {
@@ -898,7 +938,7 @@ function render(t) {
 
   // speed / motion feel
   const into = (x, a) => clamp(1 - Math.abs(t - x) / a);
-  const bounds = [5, 10, 15, 20, 25, 30, 36, 40, 46, 51, 55, 59, 63, 68, 73];
+  const bounds = [5, 10, 15, 20, 25, 30, 36, 40, 44, 49, 53, 57, 63, 68, 73];
   let tr = 0; for (const b of bounds) tr = Math.max(tr, into(b, .35));
   if (t < 35) zoomBlur(.6 + tr * 1.6);
   else if (t >= 36 && t < 40) zoomBlur(1.2);
@@ -911,16 +951,11 @@ function render(t) {
   let gl = 0;
   if (t >= 36 && t < 40) gl = .35 + .6 * (hash(Math.floor(t * 8)) > .7 ? 1 : 0);
   if (t >= 40 && t < 68) gl = hash(Math.floor(t * 10)) > .86 ? .7 : 0;
-  for (const b of [40, 46, 51, 55, 59, 63, 68]) gl = Math.max(gl, into(b, .22) * 1.2);
+  for (const b of [40, 44, 49, 53, 57, 63, 68]) gl = Math.max(gl, into(b, .22) * 1.2);
   if (t >= 64.6 && t < 66) gl = Math.max(gl, .6);
   glitch(gl, t);
 
-  // photo credit
-  if (ph && IMG[ph.k] && CREDITS[ph.k]) {
-    const a = Math.min(clamp((t - ph.a) / .3), clamp((ph.b - t) / .2)) * .75;
-    ctx.font = '500 21px MO'; ctx.fillStyle = `rgba(230,225,215,${a})`; ctx.textAlign = 'left';
-    ctx.fillText(CREDITS[ph.k], 84, 1600);
-  }
+  timeline(t);
   // text
   for (const b of TX) textBlock(b, t);
   // big question
@@ -938,7 +973,7 @@ function render(t) {
 
   // transitions
   for (const b of [5, 10, 15, 20, 25, 30]) flash(into(b, .12) * .85, [255, 236, 210]);
-  for (const b of [40, 46, 51, 55, 59, 63]) flash(into(b, .08) * .5, [255, 60, 70]);
+  for (const b of [40, 44, 49, 53, 57, 63]) flash(into(b, .08) * .5, [255, 60, 70]);
   flash(into(68, .1) * .6, [255, 220, 170]);
   fadeBlack(clamp((t - 34.4) / .6) * (t < 35 ? 1 : 0));
   fadeBlack(clamp(1 - (t - 36) / .3) * (t >= 36 && t < 36.3 ? 1 : 0));

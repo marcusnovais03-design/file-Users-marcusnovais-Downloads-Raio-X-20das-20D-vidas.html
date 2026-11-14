@@ -118,10 +118,10 @@ P(25, 30, 's6', { z0: 1.0, z1: 1.4, fx: .3, fy: .55, filter: 'grayscale(.6) cont
 P(30, 35, 's7', { z0: 1.0, z1: 1.35, fx: .5, fy: .5, pow: 1, filter: 'saturate(.5) contrast(1.15) brightness(.75) hue-rotate(-10deg)', tint: 'rgba(20,40,90,.25)', ov: OV.snow });
 P(36, 38, 's8a', { z0: 1.05, z1: 1.6, fx: .5, fy: .5, filter: 'saturate(.6) brightness(.6) contrast(1.2)', tint: 'rgba(0,30,80,.35)', ov: OV.tunnel });
 P(38, 40, 's8b', { z0: 1.05, z1: 1.7, fx: .5, fy: .5, filter: 'saturate(.6) brightness(.6) contrast(1.2)', tint: 'rgba(0,30,80,.35)', ov: OV.tunnel });
-P(40, 46, 'air', { z0: 1.05, z1: 1.45, fx: .5, fy: .5, pow: 1, filter: 'saturate(.8) contrast(1.1) brightness(.8)', tint: 'rgba(120,30,30,.18)' });
-P(46, 48.5, 'btc', { z0: 1.05, z1: 1.5, fx: .5, fy: .5, filter: 'saturate(.8) contrast(1.15) brightness(.75)', ov: OV.multi(OV.alarm, OV.coins) });
-P(48.5, 51, 'btc2', { z0: 1.05, z1: 1.5, fx: .5, fy: .5, filter: 'saturate(.8) contrast(1.15) brightness(.75)', ov: OV.multi(OV.alarm, OV.coins) });
-P(51, 55, 'fr', { z0: 1.05, z1: 1.4, fx: .5, fy: .5, pow: 1, filter: 'saturate(.7) contrast(1.15) brightness(.65)', tint: 'rgba(10,20,50,.3)', ov: OV.multi(OV.rain, OV.alarm) });
-P(55, 59, 'jp2', { z0: 1.05, z1: 1.45, fx: .5, fy: .5, filter: 'contrast(1.1) brightness(.8)', ov: OV.alarm });
-P(59, 63, 'uk2', { z0: 1.05, z1: 1.45, fx: .5, fy: .5, filter: 'saturate(.7) contrast(1.1) brightness(.85)', tint: 'rgba(80,120,140,.12)' });
+P(40, 44, 'uk2', { z0: 1.05, z1: 1.45, fx: .5, fy: .5, filter: 'saturate(.7) contrast(1.1) brightness(.85)', tint: 'rgba(80,120,140,.12)' });
+P(44, 46.5, 'btc', { z0: 1.05, z1: 1.5, fx: .5, fy: .5, filter: 'saturate(.8) contrast(1.15) brightness(.75)', ov: OV.multi(OV.alarm, OV.coins) });
+P(46.5, 49, 'btc2', { z0: 1.05, z1: 1.5, fx: .5, fy: .5, filter: 'saturate(.8) contrast(1.15) brightness(.75)', ov: OV.multi(OV.alarm, OV.coins) });
+P(49, 53, 'fr', { z0: 1.05, z1: 1.4, fx: .5, fy: .5, pow: 1, filter: 'saturate(.7) contrast(1.15) brightness(.65)', tint: 'rgba(10,20,50,.3)', ov: OV.multi(OV.rain, OV.alarm) });
+P(53, 57, 'jp2', { z0: 1.05, z1: 1.45, fx: .5, fy: .5, filter: 'contrast(1.1) brightness(.8)', ov: OV.alarm });
+P(57, 63, 'air', { z0: 1.05, z1: 1.45, fx: .5, fy: .5, pow: 1, filter: 'saturate(.8) contrast(1.1) brightness(.8)', tint: 'rgba(120,30,30,.18)' });
 P(63, 65.5, 'br', { z0: 1.0, z1: 1.35, fx: .5, fy: .5, pow: 1, filter: 'contrast(1.1) brightness(1.05)', ov: OV.blackout });
