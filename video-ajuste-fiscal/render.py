@@ -470,11 +470,7 @@ def draw_chrome(d, c, t):
     f = font('monoMedium', 27)
     num, name = CAPS[c]
     HY = (150 if HORIZ else 168) * SS; X0 = (120 if HORIZ else 50) * SS
-    d.line((X0, HY, X0 + 22 * SS, HY), fill=mix(PAPER, ORANGE, a), width=3 * SS)
-    d.text((X0 + 30 * SS, HY), num, font=f, fill=mix(PAPER, ORANGE, a), anchor='lm')
-    x = X0 + 100 * SS
-    for ch in name:
-        d.text((x, HY), ch, font=f, fill=mix(PAPER, INK, a), anchor='lm'); x += f.getlength(ch) + 4 * SS
+    # (marcação de capítulo no topo removida a pedido)
     f2 = font('monoMedium', 22); fb = font('monoBold', 22)
     FY = 950 if HORIZ else 1472
     d.text((X0, FY * SS), ASSINATURA, font=f2, fill=MUTED, anchor='lm')
