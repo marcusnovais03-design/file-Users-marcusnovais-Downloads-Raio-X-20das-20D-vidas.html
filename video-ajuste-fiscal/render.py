@@ -2,7 +2,8 @@
 """Vídeo vertical 'Ajuste fiscal' — explicação desenhada à mão (papel bege, traço escuro, destaque laranja).
 
 Uso:
-  python3 render.py <dir_saida>                  # renderiza <dir_saida>/video_mudo.mp4 (lê timeline.json de lá)
+  python3 render.py <dir_saida>                  # vertical 1080x1920 -> <dir_saida>/video_mudo.mp4 (lê timeline.json de lá)
+  python3 render.py <dir_saida> --horizontal     # horizontal 1920x1080 -> <dir_saida>/video_mudo_h.mp4
   python3 render.py <dir_saida> --frame 12.5 f.png   # salva um quadro para conferência
 """
 import sys, os, json, math, subprocess
@@ -12,7 +13,9 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from roteiro import FALAS, CAPS
 
-W, H, FPS, SS = 1080, 1920, 30, 2
+W, H, FPS, SS = 1080, 1920, 30, 2          # tela de desenho (vertical)
+HORIZ = '--horizontal' in sys.argv
+OW, OH = (1920, 1080) if HORIZ else (W, H)  # quadro de saída
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else '.'
 PAPER = (236, 224, 209); INK = (44, 34, 29); ORANGE = (196, 92, 40); MUTED = (140, 128, 116)
@@ -429,18 +432,19 @@ def parse_caption(txt):
     for i, seg in enumerate(txt.split('*')):
         for w in seg.split(): words.append((w, i % 2 == 1))
     return words
-CAPF = ('Medium', 52)
+CAPF = ('Medium', 64) if HORIZ else ('Medium', 52)
 def layout_caption(words):
-    f = font(*CAPF); sp = f.getlength(' '); maxw = 900 * SS
+    f = font(*CAPF); sp = f.getlength(' '); maxw = (720 if HORIZ else 900) * SS
     lines = [[]]; cur = 0
     for w, hl in words:
         wd = f.getlength(w)
         if lines[-1] and cur + sp + wd > maxw: lines.append([]); cur = 0
         cur += (sp if lines[-1] else 0) + wd; lines[-1].append((w, hl, wd))
-    out = []; y0 = 1352 - (len(lines) - 1) * 34
+    step = 84 if HORIZ else 68
+    out = []; y0 = (540 if HORIZ else 1352) - (len(lines) - 1) * step / 2
     for li, ln in enumerate(lines):
-        tw = sum(w[2] for w in ln) + sp * (len(ln) - 1); x = W * SS / 2 - tw / 2
-        for w, hl, wd in ln: out.append((w, hl, x, (y0 + li * 68) * SS)); x += wd + sp
+        tw = sum(w[2] for w in ln) + sp * (len(ln) - 1); x = 120 * SS if HORIZ else W * SS / 2 - tw / 2
+        for w, hl, wd in ln: out.append((w, hl, x, (y0 + li * step) * SS)); x += wd + sp
     return out
 CAPTIONS = []
 def build_captions():
@@ -465,32 +469,39 @@ def draw_chrome(d, c, t):
     tl = t - CH0[c]; a = ease(tl / 0.35)
     f = font('monoMedium', 27)
     num, name = CAPS[c]
-    HY = 168 * SS
-    d.line((50 * SS, HY, 72 * SS, HY), fill=mix(PAPER, ORANGE, a), width=3 * SS)
-    d.text((80 * SS, HY), num, font=f, fill=mix(PAPER, ORANGE, a), anchor='lm')
-    x = 150 * SS
+    HY = (150 if HORIZ else 168) * SS; X0 = (120 if HORIZ else 50) * SS
+    d.line((X0, HY, X0 + 22 * SS, HY), fill=mix(PAPER, ORANGE, a), width=3 * SS)
+    d.text((X0 + 30 * SS, HY), num, font=f, fill=mix(PAPER, ORANGE, a), anchor='lm')
+    x = X0 + 100 * SS
     for ch in name:
         d.text((x, HY), ch, font=f, fill=mix(PAPER, INK, a), anchor='lm'); x += f.getlength(ch) + 4 * SS
     f2 = font('monoMedium', 22); fb = font('monoBold', 22)
-    FY = 1472
-    d.text((50 * SS, FY * SS), ASSINATURA, font=f2, fill=MUTED, anchor='lm')
+    FY = 950 if HORIZ else 1472
+    d.text((X0, FY * SS), ASSINATURA, font=f2, fill=MUTED, anchor='lm')
 
 # ---------------- render ----------------
 _G = {}
 def init():
     _G['S'] = build(); build_captions()
     r = np.random.default_rng(3)
-    n = r.normal(0, 1, (H // 2, W // 2)).astype(np.float32)
-    n = np.asarray(Image.fromarray(((n * 20) + 128).clip(0, 255).astype(np.uint8)).resize((W, H), Image.BICUBIC), np.float32) - 128
-    fine = r.normal(0, 1.6, (H, W)).astype(np.float32)
-    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
-    vig = 1 - 0.05 * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2)
+    n = r.normal(0, 1, (OH // 2, OW // 2)).astype(np.float32)
+    n = np.asarray(Image.fromarray(((n * 20) + 128).clip(0, 255).astype(np.uint8)).resize((OW, OH), Image.BICUBIC), np.float32) - 128
+    fine = r.normal(0, 1.6, (OH, OW)).astype(np.float32)
+    yy, xx = np.mgrid[0:OH, 0:OW].astype(np.float32)
+    vig = 1 - 0.05 * (((xx - OW / 2) / (OW / 2)) ** 2 + ((yy - OH / 2) / (OH / 2)) ** 2)
     _G['tex'] = (n * 0.22 + fine)[..., None]; _G['vig'] = vig[..., None]
 
 def frame(i):
     t = i / FPS; c = chapter(t); sc = _G['S'][c]
     im = Image.new('RGB', (W * SS, H * SS), sc.bg); d = ImageDraw.Draw(im)
     sc.draw(d, t)
+    if HORIZ:
+        # desenho (tela vertical) recortado e encaixado à direita; legenda e cabeçalho à esquerda
+        if c < NCH - 1: box, sc_, pos = (40, 185, 1040, 1300), 0.86, (980, 60)
+        else: box, sc_, pos = (40, 540, 1040, 1500), 1.0, (140, 60)
+        crop = im.crop(tuple(v * SS for v in box))
+        crop = crop.resize((int(crop.width * sc_), int(crop.height * sc_)), Image.LANCZOS)
+        im = Image.new('RGB', (OW * SS, OH * SS), sc.bg); im.paste(crop, (pos[0] * SS, pos[1] * SS)); d = ImageDraw.Draw(im)
     if c < NCH - 1:
         draw_chrome(d, c, t); draw_caption(d, t)
     arr = np.asarray(im.reduce(SS), np.float32)
@@ -509,10 +520,10 @@ def frame(i):
 if __name__ == '__main__':
     if '--frame' in sys.argv:
         k = sys.argv.index('--frame'); init()
-        Image.frombytes('RGB', (W, H), frame(int(float(sys.argv[k + 1]) * FPS))).save(sys.argv[k + 2]); sys.exit()
+        Image.frombytes('RGB', (OW, OH), frame(int(float(sys.argv[k + 1]) * FPS))).save(sys.argv[k + 2]); sys.exit()
     n = int(TOTAL * FPS)
-    ff = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-',
-                           '-c:v', 'libx264', '-preset', 'medium', '-crf', '17', '-pix_fmt', 'yuv420p', os.path.join(OUT, 'video_mudo.mp4')], stdin=subprocess.PIPE)
+    ff = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{OW}x{OH}', '-r', str(FPS), '-i', '-',
+                           '-c:v', 'libx264', '-preset', 'medium', '-crf', '17', '-pix_fmt', 'yuv420p', os.path.join(OUT, 'video_mudo_h.mp4' if HORIZ else 'video_mudo.mp4')], stdin=subprocess.PIPE)
     with Pool(os.cpu_count(), initializer=init) as p:
         for j, b in enumerate(p.imap(frame, range(n), chunksize=8)):
             ff.stdin.write(b)

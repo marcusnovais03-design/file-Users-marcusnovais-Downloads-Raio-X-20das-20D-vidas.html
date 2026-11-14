@@ -11,11 +11,12 @@ pip install piper-tts soundfile numpy pillow
 python3 narrar.py <modelos> <saida> cadu   # voz.wav + timeline.json (vozes: cadu, jeff, faber)
 python3 mixar.py <saida>                # mix.wav (voz + trilha)
 python3 render.py <saida>               # video_mudo.mp4
+python3 render.py <saida> --horizontal  # versão 1920x1080 -> video_mudo_h.mp4
 ffmpeg -i <saida>/video_mudo.mp4 -i <saida>/mix.wav -c:v copy -c:a aac -b:a 192k -shortest ajuste-fiscal.mp4
 ```
 
 - `roteiro.py`: falas, legendas e capítulos. Mudar um texto aqui e rodar os três passos refaz tudo: os desenhos seguem o tempo de cada fala.
-- `render.py`: desenhos de cada capítulo (função `build`), nome da série e assinatura (`SERIE`, `ASSINATURA`).
+- `render.py`: desenhos de cada capítulo (função `build`), assinatura (`ASSINATURA`).
 - Formato Reels: tudo o que importa fica entre y=150 e y=1490, fora da área coberta pela legenda e pelos botões do Instagram. Para a capa, use um quadro por volta de 0:06.
 - Para usar a sua própria voz, grave a narração, salve como `<saida>/voz.wav` e ajuste os tempos em `timeline.json`.
 
