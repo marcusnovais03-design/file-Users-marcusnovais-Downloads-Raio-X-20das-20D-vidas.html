@@ -26,7 +26,7 @@ FALAS = [
  ('h3', 7, 'Sem ele, quem paga é você: no preço, no crédito, e nos seus investimentos.', 'Sem ajuste, quem paga é *você.*'),
  ('j1', 8, 'E o seu dinheiro, nesse cenário? Algumas classes de investimento tendem a se beneficiar.', 'E o *seu* *dinheiro* nesse cenário?'),
  ('j2', 8, 'Com juros altos, a renda fixa pós-fixada paga mais. Com a Selic atual, rende mais de um por cento ao mês, antes dos impostos.', 'Juros altos: *renda* *fixa* pós-fixada.'),
- ('j3', 8, 'Contra a inflação, os títulos atrelados ao IPCA protegem o seu poder de compra: pagam a inflação, mais um juro real.', 'Inflação: títulos *atrelados* *ao* *IPCA.*'),
+ ('j3', 8, 'Contra a inflação, os títulos atrelados ao ipê-cê-á protegem o seu poder de compra: pagam a inflação, mais um juro real.', 'Inflação: títulos *atrelados* *ao* *IPCA.*'),
  ('j4', 8, 'E, como o risco fiscal costuma pressionar o câmbio, ter uma parte no exterior, em dólar, ajuda a diversificar.', 'Risco fiscal: *dólar* e *exterior.*'),
  ('j5', 8, 'A dose certa de cada um depende do seu perfil, e dos seus objetivos.', 'A dose certa depende do *seu* *perfil.*'),
  ('i1', 9, 'Ajuste fiscal não é ideologia. É aritmética.', ''),

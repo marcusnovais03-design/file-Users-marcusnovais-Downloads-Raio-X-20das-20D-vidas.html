@@ -1,14 +1,16 @@
 # Vídeo: "O governo precisa de ajuste fiscal?"
 
-Reels vertical 1080x1920, 30 fps, cerca de 2min42s. Explicação desenhada à mão (papel bege, traço escuro, destaque laranja), com legenda palavra a palavra e narração em português.
+Reels vertical 1080x1920, 30 fps, cerca de 2min29s. Explicação desenhada à mão (papel bege, traço escuro, destaque laranja), com legenda palavra a palavra e narração em português.
 
 ## Como gerar
 
 ```bash
-pip install piper-tts soundfile numpy pillow
+pip install kokoro-onnx piper-tts soundfile numpy pillow
+# voz padrão (Kokoro): kokoro-v1.0.onnx e voices-v1.0.bin em <modelos>/
+#   https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0
 # voz (uma vez): baixar e extrair em <modelos>/
 #   https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-pt_BR-cadu-medium.tar.bz2
-python3 narrar.py <modelos> <saida> cadu   # voz.wav + timeline.json (vozes: cadu, jeff, faber)
+python3 narrar.py <modelos> <saida> alex   # voz.wav + timeline.json (vozes: alex = Kokoro; cadu, jeff, faber = Piper)
 python3 mixar.py <saida>                # mix.wav (voz + trilha)
 python3 render.py <saida>               # video_mudo.mp4
 python3 render.py <saida> --horizontal  # versão 1920x1080 -> video_mudo_h.mp4
@@ -69,4 +71,4 @@ Observações:
 
 ## Créditos
 
-Fonte manuscrita: Caveat (SIL Open Font License). Voz: Piper TTS, voz brasileira `pt_BR-cadu-medium`.
+Fonte manuscrita: Caveat (SIL Open Font License). Voz: Kokoro TTS, voz `pm_alex` (padrão). Alternativas: vozes Piper `cadu`, `jeff`, `faber`.
