@@ -1,0 +1,597 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Lances no consórcio</title>
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script>
+/* Animação "As 4 pistas do consórcio". window.TL (timeline.json) é injetada pelo render.js;
+   window.renderAt(t) desenha o quadro do instante t (segundos). */
+const W = 1080, H = 1920, cv = document.getElementById('c'), g = cv.getContext('2d');
+const FONT = "'Inter Display','Inter',sans-serif";
+const CREAM = '#F4EFE6', GOLD = '#F5C542', INK = '#0B0F1A';
+const LANES = [
+  { k: 'sorteio', tab: 'SORTEIO', name: 'SORTEIO', c: '#2EC4B6' },
+  { k: 'livre', tab: 'LIVRE', name: 'LANCE LIVRE', c: '#FF6B5B' },
+  { k: 'fixo', tab: 'FIXO', name: 'LANCE FIXO', c: '#6C9BFF' },
+  { k: 'fidelidade', tab: 'FIDELIDADE', name: 'LANCE FIDELIDADE', c: '#F5C542' }];
+const SHIRTS = ['#2EC4B6', '#FF6B5B', '#6C9BFF', '#F5C542', '#B388FF', '#FF9F43', '#5ED67A', '#FF7EB6', '#EDEDED'];
+const SKINS = ['#F2C9A5', '#D9A37C', '#B97E57', '#8A5A3C', '#6B4329', '#E8B48E'];
+const HAIRS = ['#1C1410', '#3A2618', '#0E0E12', '#5B3A1E', '#2A2A30'];
+
+// ---------- utilidades ----------
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const mix = (a, b, u) => a + (b - a) * u;
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const eo = u => 1 - Math.pow(1 - clamp(u), 3);
+const ei = u => Math.pow(clamp(u), 2.4);
+const eio = u => { u = clamp(u); return u * u * (3 - 2 * u); };
+const back = u => { u = clamp(u); const c = 1.9; return 1 + (c + 1) * Math.pow(u - 1, 3) + c * Math.pow(u - 1, 2); };
+function rnd(seed) { let s = seed * 9301 + 49297; return () => { s = (s * 16807 + 12345) % 2147483647; return (s & 0xffffff) / 0x1000000; }; }
+function shade(hex, f) {
+  const n = parseInt(hex.slice(1), 16), r = (n >> 16) & 255, gg = (n >> 8) & 255, b = n & 255;
+  return `rgb(${Math.round(r * f)},${Math.round(gg * f)},${Math.round(b * f)})`;
+}
+function rr(x, y, w, h, r) { g.beginPath(); g.roundRect(x, y, w, h, r); }
+function font(wt, px) { g.font = `${wt} ${px}px ${FONT}`; }
+function text(s, x, y, wt, px, col, align = 'center', ls = 0) {
+  font(wt, px); g.letterSpacing = ls + 'px'; g.textAlign = align; g.textBaseline = 'middle'; g.fillStyle = col; g.fillText(s, x, y); g.letterSpacing = '0px';
+}
+function tw(s, wt, px, ls = 0) { font(wt, px); g.letterSpacing = ls + 'px'; const w = g.measureText(s).width; g.letterSpacing = '0px'; return w; }
+
+// ---------- pista / projeção oblíqua ----------
+const Y_FRONT = 1200, Y_BACK = 1035, SLANT = 120, V = 540, XL = 760;
+const proj = (wx, d) => ({ x: wx + d * SLANT, y: Y_FRONT - d * (Y_FRONT - Y_BACK), s: (1 - 0.13 * d) * 1.3 });
+
+let TL, S = [], RUNT = [], DT = 1 / 120;
+function speedAt(t) {
+  for (const L of LANES) {
+    const sc = TL.scenes[L.k];
+    if (t > sc.win - 0.5 && t < sc.e + 0.45) {
+      if (t < sc.win + 0.4) return V * (1 - seg(t, sc.win - 0.5, sc.win + 0.4));
+      if (t < sc.e) return 0;
+      return V * eio(seg(t, sc.e, sc.e + 0.45));
+    }
+  }
+  return V;
+}
+function init(tl) {
+  TL = tl; S = [0];
+  for (let i = 1; i <= Math.ceil((TL.total + 1) / DT); i++) S.push(S[i - 1] + speedAt(i * DT) * DT);
+  for (const L of LANES) { const sc = TL.scenes[L.k]; sc.lineW = scroll(sc.win + 0.4) + XL; }
+  TL.scenes.intro.lineW = scroll(TL.seg.i1.s + 3.3) + 560;
+}
+function scroll(t) { const f = clamp(t, 0, TL.total + 0.9) / DT, i = Math.floor(f); return mix(S[i], S[Math.min(i + 1, S.length - 1)], f - i); }
+
+// ---------- cenário ----------
+function background(t) {
+  const sc = scroll(t);
+  let gr = g.createLinearGradient(0, 0, 0, 1040);
+  gr.addColorStop(0, '#070B18'); gr.addColorStop(0.55, '#141C3C'); gr.addColorStop(1, '#2A2C5A');
+  g.fillStyle = gr; g.fillRect(0, 0, W, 1040);
+  const r = rnd(7);
+  for (let i = 0; i < 70; i++) {
+    const x = r() * W, y = r() * 720, a = 0.25 + 0.5 * r(), tws = 0.6 + 0.4 * Math.sin(t * (1 + r() * 2) + r() * 6);
+    g.fillStyle = `rgba(255,255,255,${a * tws})`; g.fillRect(x, y, 3, 3);
+  }
+  // torres de luz (paralaxe lenta)
+  for (let i = -1; i < 4; i++) {
+    const x = ((i * 620 - sc * 0.12) % 1860 + 1860) % 1860 - 300;
+    gr = g.createRadialGradient(x, 790, 0, x, 790, 300);
+    gr.addColorStop(0, 'rgba(255,236,190,0.30)'); gr.addColorStop(1, 'rgba(255,236,190,0)');
+    g.fillStyle = gr; g.fillRect(x - 300, 490, 600, 600);
+    g.fillStyle = '#0A0E1C'; g.fillRect(x - 5, 800, 10, 180);
+    rr(x - 46, 772, 92, 34, 6); g.fill();
+    g.fillStyle = '#FFF1C9';
+    for (let k = 0; k < 4; k++) { g.beginPath(); g.arc(x - 30 + k * 20, 789, 6, 0, 7); g.fill(); }
+  }
+  // arquibancada
+  const off = (sc * 0.3) % 240;
+  g.fillStyle = '#0C1124';
+  g.beginPath(); g.moveTo(0, 905);
+  for (let x = -off - 240; x < W + 240; x += 240) { g.lineTo(x, 905); g.lineTo(x + 30, 880); g.lineTo(x + 210, 880); g.lineTo(x + 240, 905); }
+  g.lineTo(W, 1000); g.lineTo(0, 1000); g.fill();
+  const r2 = rnd(11);
+  for (let row = 0; row < 4; row++) for (let i = 0; i < 60; i++) {
+    const x = ((i * 31 + row * 13 - sc * 0.3) % 1860 + 1860) % 1860 - 300, cc = SHIRTS[Math.floor(r2() * SHIRTS.length)];
+    g.globalAlpha = 0.33 + 0.2 * r2(); g.fillStyle = cc; g.beginPath(); g.arc(x, 916 + row * 19 + 2 * Math.sin(t * 5 + i), 5, 0, 7); g.fill();
+  }
+  g.globalAlpha = 1;
+  // placas na beira da pista
+  const o2 = sc % 360, cols = ['#1B2550', '#232F66'];
+  for (let x = -o2 - 360, i = Math.floor(sc / 360); x < W + 360; x += 360, i++) {
+    g.fillStyle = cols[((i % 2) + 2) % 2]; g.fillRect(x + SLANT, 992, 360, 44);
+    g.fillStyle = 'rgba(245,197,66,0.55)'; g.fillRect(x + SLANT + 40, 1010, 90, 8);
+    g.fillStyle = 'rgba(255,255,255,0.18)'; g.fillRect(x + SLANT + 150, 1010, 170, 8);
+  }
+  // pista
+  gr = g.createLinearGradient(0, Y_BACK, 0, 1240);
+  gr.addColorStop(0, '#9A3F30'); gr.addColorStop(1, '#C65A41');
+  g.fillStyle = gr; g.fillRect(0, Y_BACK, W, 1240 - Y_BACK);
+  g.strokeStyle = 'rgba(255,255,255,0.75)'; g.lineWidth = 4;
+  for (let i = 0; i <= 4; i++) { const y = Y_BACK + 4 + i * ((1232 - Y_BACK) / 4); g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+  // marcas inclinadas que passam (sensação de movimento)
+  const o3 = sc % 270;
+  g.strokeStyle = 'rgba(255,255,255,0.20)'; g.lineWidth = 6;
+  for (let x = -o3 - 270; x < W + 270; x += 270) { g.beginPath(); g.moveTo(x + SLANT + 16, Y_BACK + 4); g.lineTo(x - 22, 1232); g.stroke(); }
+  // guia (zebra)
+  const o4 = sc % 120;
+  for (let x = -o4 - 120, i = Math.floor(sc / 120); x < W + 120; x += 120, i++) {
+    g.fillStyle = ((i % 2) + 2) % 2 ? '#EDE7DB' : '#C7402F'; g.fillRect(x, 1236, 120, 16);
+  }
+  // gramado
+  gr = g.createLinearGradient(0, 1252, 0, H);
+  gr.addColorStop(0, '#0E2A22'); gr.addColorStop(0.25, '#0A1719'); gr.addColorStop(1, '#070B14');
+  g.fillStyle = gr; g.fillRect(0, 1252, W, H - 1252);
+}
+
+function finishLine(lineW, t, a = 1) {
+  const x = lineW - scroll(t);
+  if (x < -400 || x > W + 200) return;
+  g.save(); g.globalAlpha = a;
+  const n = 8, wBand = 44;
+  for (let i = 0; i < n; i++) for (let j = 0; j < 2; j++) {
+    const d0 = 1 - i / n, d1 = 1 - (i + 1) / n, p0 = proj(x + j * wBand / 2, d0), p1 = proj(x + j * wBand / 2, d1);
+    g.fillStyle = (i + j) % 2 ? '#111' : '#fff';
+    g.beginPath(); g.moveTo(p0.x, p0.y + 4); g.lineTo(p0.x + wBand / 2, p0.y + 4); g.lineTo(p1.x + wBand / 2, p1.y + 34 * (i === n - 1)); g.lineTo(p1.x, p1.y + 34 * (i === n - 1)); g.fill();
+  }
+  // pórtico
+  const pb = proj(x + wBand / 2, 1), pf = proj(x + wBand / 2, 0);
+  g.strokeStyle = '#E9E3D6'; g.lineWidth = 12; g.lineCap = 'round';
+  g.beginPath(); g.moveTo(pb.x, pb.y); g.lineTo(pb.x, pb.y - 262); g.stroke();
+  g.fillStyle = INK; rr(pb.x - 150, pb.y - 336, 300, 78, 12); g.fill();
+  g.strokeStyle = GOLD; g.lineWidth = 4; rr(pb.x - 150, pb.y - 336, 300, 78, 12); g.stroke();
+  text('CONTEMPLAÇÃO', pb.x, pb.y - 296, 800, 30, GOLD, 'center', 2);
+  g.restore();
+}
+function finishPostFront(lineW, t, a = 1) {
+  const x = lineW - scroll(t); if (x < -400 || x > W + 200) return;
+  const pf = proj(x + 22, 0);
+  g.save(); g.globalAlpha = a; g.strokeStyle = '#E9E3D6'; g.lineWidth = 14; g.lineCap = 'round';
+  g.beginPath(); g.moveTo(pf.x, pf.y + 34); g.lineTo(pf.x, pf.y - 150); g.stroke();
+  g.fillStyle = GOLD; g.beginPath(); g.arc(pf.x, pf.y - 158, 13, 0, 7); g.fill(); g.restore();
+}
+
+// ---------- corredor ----------
+function limb(ax, ay, bx, by, cx, cy, w, col) {
+  g.strokeStyle = col; g.lineWidth = w; g.lineCap = 'round'; g.lineJoin = 'round';
+  g.beginPath(); g.moveTo(ax, ay); g.lineTo(bx, by); g.lineTo(cx, cy); g.stroke();
+}
+function runner(wx, d, ph, amp, o) {
+  const p = proj(wx, d), s = p.s * 1.0, a = o.alpha ?? 1;
+  if (a <= 0.01 || p.x < -150 || p.x > W + 150) return p;
+  const gray = o.gray || 0;
+  const tone = c => gray ? mixCol(c, '#565B6B', gray) : c;
+  const shirt = tone(o.shirt), skin = tone(o.skin), hair = tone(o.hair), shorts = tone('#141A30');
+  const L1 = 58, L2 = 60, hipY0 = -114;
+  const legPts = phs => {
+    const an = 0.85 * amp * Math.sin(phs), bend = amp * (0.25 + 1.15 * Math.max(0, Math.cos(phs)));
+    const kx = L1 * Math.sin(an), ky = L1 * Math.cos(an), fx = kx + L2 * Math.sin(an - bend), fy = ky + L2 * Math.cos(an - bend);
+    return { kx, ky, fx, fy, toe: an - bend };
+  };
+  const A = legPts(ph), B = legPts(ph + Math.PI);
+  const lift = -(Math.max(A.fy, B.fy) + hipY0);       // pé mais baixo encosta no chão
+  const lean = 0.16 * amp + 0.02;
+  g.save(); g.globalAlpha = a; g.translate(p.x, p.y); g.scale(s, s);
+  if (o.glow) {
+    const gr = g.createRadialGradient(0, -120, 10, 0, -120, 230);
+    gr.addColorStop(0, `rgba(255,214,102,${0.55 * o.glow})`); gr.addColorStop(1, 'rgba(255,214,102,0)');
+    g.fillStyle = gr; g.beginPath(); g.arc(0, -120, 228, 0, 7); g.fill();
+    g.strokeStyle = `rgba(245,197,66,${o.glow})`; g.lineWidth = 6; g.beginPath(); g.ellipse(0, 6, 78, 20, 0, 0, 7); g.stroke();
+  }
+  g.fillStyle = 'rgba(0,0,0,0.30)'; g.beginPath(); g.ellipse(4, 8, 58, 13, 0, 0, 7); g.fill();
+  g.translate(0, lift);
+  const hx = 0, hy = hipY0, sx = hx + 86 * Math.sin(lean), sy = hy - 86 * Math.cos(lean);
+  const arm = (phs, col, wdt) => {
+    let ua = -0.95 * amp * Math.sin(phs) + 0.1, fa = ua + 0.35 + 1.25 * amp;
+    if (o.cheer) { const sgn = phs === ph ? 1 : -1; ua = mix(ua, Math.PI - 0.45 * sgn + 0.15 * Math.sin(o.cheerT * 11), o.cheer); fa = mix(fa, Math.PI - 0.15 * sgn, o.cheer); }
+    const ex = sx + 46 * Math.sin(ua), ey = sy + 8 + 46 * Math.cos(ua);
+    limb(sx, sy + 8, ex, ey, ex + 42 * Math.sin(fa), ey + 42 * Math.cos(fa), wdt, col);
+  };
+  const leg = (P, col, shoe) => {
+    limb(hx, hy, hx + P.kx, hy + P.ky, hx + P.fx, hy + P.fy, 21, col);
+    limb(hx, hy, hx + P.kx * 0.55, hy + P.ky * 0.55, hx + P.kx * 0.55, hy + P.ky * 0.55, 27, shorts);
+    const tx = hx + P.fx, ty = hy + P.fy;
+    limb(tx - 4, ty, tx + 20 * Math.cos(P.toe * 0.6), ty - 20 * Math.sin(P.toe * 0.6) * 0.6, tx + 20 * Math.cos(P.toe * 0.6), ty - 12 * Math.sin(P.toe * 0.6), 15, shoe);
+  };
+  arm(ph + Math.PI, shade2(skin, 0.72), 15);
+  leg(B, shade2(skin, 0.72), tone('#B9B4AA'));
+  limb(hx, hy - 6, sx, sy + 14, sx, sy + 14, 50, shirt);          // tronco
+  leg(A, skin, tone('#F4EFE6'));
+  // número de peito
+  const mx = (hx + sx) / 2 + 3, my = (hy + sy) / 2 + 4;
+  g.fillStyle = gray ? '#B5B7C0' : '#fff'; rr(mx - 19, my - 14, 38, 28, 5); g.fill();
+  text(o.bib, mx, my + 1, 800, 18, '#141A30');
+  // cabeça
+  const cx = sx + 9, cy = sy - 34;
+  limb(sx + 2, sy + 2, cx - 2, cy + 14, cx - 2, cy + 14, 17, skin);
+  g.fillStyle = hair; g.beginPath(); g.arc(cx - 4, cy - 5, 25, 0, 7); g.fill();
+  g.fillStyle = skin; g.beginPath(); g.arc(cx + 2, cy + 1, 23, 0, 7); g.fill();
+  arm(ph, skin, 16);
+  g.restore();
+  return p;
+}
+function hex2(c) { if (c.startsWith('rgb')) return c.match(/\d+/g).map(Number); const n = parseInt(c.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+function mixCol(a, b, u) { const A = hex2(a), B = hex2(b); return `rgb(${A.map((v, i) => Math.round(mix(v, B[i], u))).join(',')})`; }
+function shade2(c, f) { const A = hex2(c); return `rgb(${A.map(v => Math.round(v * f)).join(',')})`; }
+
+function tag(p, label, pop, col = CREAM, tcol = INK, star = false, lift = 0) {
+  if (pop <= 0) return;
+  const k = back(pop), w = tw(label, 800, 34) + 40 + (star ? 40 : 0), h = 58, x = p.x + 8, y = p.y - 296 * p.s - lift;
+  g.save(); g.translate(x, y); g.scale(k, k); g.globalAlpha *= clamp(pop * 3);
+  g.fillStyle = 'rgba(0,0,0,0.35)'; rr(-w / 2 + 3, -h / 2 + 5, w, h, 16); g.fill();
+  g.fillStyle = col; rr(-w / 2, -h / 2, w, h, 16); g.fill();
+  g.beginPath(); g.moveTo(-12, h / 2 - 1); g.lineTo(12, h / 2 - 1); g.lineTo(0, h / 2 + 15); g.fill();
+  if (star) drawStar(-w / 2 + 34, 0, 15, tcol);
+  text(label, star ? 20 : 0, 2, 800, 34, tcol);
+  g.restore();
+}
+function drawStar(x, y, r, col) {
+  g.fillStyle = col; g.beginPath();
+  for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, q = i % 2 ? r * 0.45 : r; g.lineTo(x + q * Math.cos(a), y + q * Math.sin(a)); }
+  g.fill();
+}
+
+// ---------- globo do sorteio ----------
+function drum(x, y, pop, t, c) {
+  if (pop <= 0) return;
+  g.save(); g.translate(x, y); g.scale(back(pop), back(pop));
+  g.fillStyle = '#0A0E1C'; g.beginPath(); g.moveTo(-58, 132); g.lineTo(58, 132); g.lineTo(26, 84); g.lineTo(-26, 84); g.fill();
+  g.fillStyle = 'rgba(255,255,255,0.10)'; g.beginPath(); g.arc(0, 0, 96, 0, 7); g.fill();
+  const r = rnd(5);
+  for (let i = 0; i < 14; i++) {
+    const a0 = r() * 6.28, rad = 22 + r() * 56, sp = (1.8 + r() * 2.4) * (i % 2 ? 1 : -1), a = a0 + t * sp;
+    const bx = Math.cos(a) * rad, by = Math.sin(a * 1.3 + i) * rad * 0.9;
+    g.fillStyle = i % 3 ? '#F4EFE6' : c; g.beginPath(); g.arc(bx, by, 15, 0, 7); g.fill();
+  }
+  g.strokeStyle = GOLD; g.lineWidth = 8; g.beginPath(); g.arc(0, 0, 96, 0, 7); g.stroke();
+  g.strokeStyle = 'rgba(255,255,255,0.5)'; g.lineWidth = 5; g.beginPath(); g.arc(0, 0, 78, 3.5, 4.5); g.stroke();
+  g.restore();
+}
+function ball(x0, y0, p, u, label) {   // voa do globo até acima do corredor p
+  if (u <= 0) return;
+  const k = eo(u), x1 = p.x + 8, y1 = p.y - 300 * p.s, x = mix(x0, x1, k), y = mix(y0, y1, k) - 170 * Math.sin(Math.PI * k), r = mix(16, 44, k);
+  g.fillStyle = 'rgba(0,0,0,0.3)'; g.beginPath(); g.arc(x + 3, y + 5, r, 0, 7); g.fill();
+  g.fillStyle = '#fff'; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
+  g.strokeStyle = GOLD; g.lineWidth = 6; g.stroke();
+  if (k > 0.5) text(label, x, y + 2, 800, 36, INK);
+}
+
+// ---------- confete e cartão ----------
+function confetti(x, y, t0, t) {
+  const u = t - t0; if (u < 0 || u > 2.2) return;
+  const r = rnd(31);
+  for (let i = 0; i < 90; i++) {
+    const a = -Math.PI / 2 + (r() - 0.5) * 2.6, v = 500 + r() * 900, cx = x + Math.cos(a) * v * u * 0.75, cy = y + Math.sin(a) * v * u + 900 * u * u, rot = r() * 6 + u * (4 + r() * 8);
+    g.save(); g.translate(cx, cy); g.rotate(rot); g.globalAlpha = clamp(2.2 - u) * 0.95;
+    g.fillStyle = [GOLD, '#fff', '#2EC4B6', '#FF6B5B', '#6C9BFF'][i % 5]; g.fillRect(-9, -5, 18, 10 * Math.cos(rot * 1.7)); g.restore();
+  }
+}
+function winCard(t0, t, c) {
+  const u = t - t0; if (u < 0) return;
+  const k = back(u / 0.45), w = 700, h = 170;
+  g.save(); g.translate(540, 690); g.scale(k, k); g.globalAlpha = clamp(u * 6);
+  g.fillStyle = 'rgba(0,0,0,0.4)'; rr(-w / 2 + 6, -h / 2 + 10, w, h, 30); g.fill();
+  g.fillStyle = CREAM; rr(-w / 2, -h / 2, w, h, 30); g.fill();
+  g.fillStyle = c; rr(-w / 2, -h / 2, 22, h, [30, 0, 0, 30]); g.fill();
+  g.fillStyle = '#17A673'; g.beginPath(); g.arc(-w / 2 + 104, 0, 46, 0, 7); g.fill();
+  g.strokeStyle = '#fff'; g.lineWidth = 11; g.lineCap = 'round'; g.lineJoin = 'round';
+  const ck = clamp((u - 0.2) / 0.3);
+  g.beginPath(); g.moveTo(-w / 2 + 84, 2); g.lineTo(-w / 2 + 84 + 14 * Math.min(1, ck * 2), 2 + 16 * Math.min(1, ck * 2));
+  if (ck > 0.5) g.lineTo(-w / 2 + 98 + 28 * (ck - 0.5) * 2, 18 - 34 * (ck - 0.5) * 2); g.stroke();
+  text('CONTEMPLADO!', -w / 2 + 176, -24, 900, 58, INK, 'left', 0.5);
+  text('Carta de crédito na mão', -w / 2 + 178, 36, 600, 32, '#4A4F5E', 'left');
+  g.restore();
+}
+
+// ---------- interface ----------
+function tabs(active, a) {
+  if (a <= 0) return;
+  g.save(); g.globalAlpha = a;
+  const ws = LANES.map(L => tw(L.tab, 800, 27, 1.5) + 50), gap = 14, tot = ws.reduce((x, y) => x + y) + gap * 3;
+  let x = (W - tot) / 2;
+  LANES.forEach((L, i) => {
+    const on = i === active;
+    if (on) { g.fillStyle = L.c; rr(x, 246, ws[i], 58, 29); g.fill(); }
+    else { g.strokeStyle = 'rgba(244,239,230,0.28)'; g.lineWidth = 2.5; rr(x, 246, ws[i], 58, 29); g.stroke(); }
+    text(L.tab, x + ws[i] / 2, 276, 800, 27, on ? INK : (i < active ? 'rgba(244,239,230,0.75)' : 'rgba(244,239,230,0.45)'), 'center', 1.5);
+    x += ws[i] + gap;
+  });
+  g.restore();
+}
+function fitText(s, x, y, wt, px, col, maxW, ls = 0) { const w = tw(s, wt, px, ls); if (w > maxW) px = px * maxW / w; text(s, x, y, wt, px, col, 'center', ls); }
+function laneTitle(i, t, t0, a) {
+  const L = LANES[i], u1 = eo(seg(t, t0, t0 + 0.45)), u2 = eo(seg(t, t0 + 0.12, t0 + 0.6));
+  g.save(); g.globalAlpha = a * u1; text('PISTA ' + (i + 1), 540, 386 + 30 * (1 - u1), 800, 38, L.c, 'center', 8); g.restore();
+  g.save(); g.globalAlpha = a * u2; fitText(L.name, 540, 482 + 40 * (1 - u2), 900, 124, CREAM, 960, -1);
+  g.fillStyle = L.c; rr(540 - 70 * u2, 556, 140 * u2, 8, 4); g.fill(); g.restore();
+}
+function chip(label, c, t, t0, t1, a = 1) {
+  if (t < t0 || t > t1 + 0.2) return;
+  const k = back(seg(t, t0, t0 + 0.35)), out = 1 - seg(t, t1, t1 + 0.2), w = tw(label, 700, 38) + 96, h = 76;
+  g.save(); g.translate(540, 1318); g.scale(k, k); g.globalAlpha = a * out * clamp((t - t0) * 6);
+  g.fillStyle = 'rgba(244,239,230,0.10)'; rr(-w / 2, -h / 2, w, h, 38); g.fill();
+  g.strokeStyle = c; g.lineWidth = 3; rr(-w / 2, -h / 2, w, h, 38); g.stroke();
+  g.fillStyle = c; g.beginPath(); g.arc(-w / 2 + 38, 0, 10, 0, 7); g.fill();
+  text(label, 22, 2, 700, 38, CREAM); g.restore();
+}
+function captions(t) {
+  for (const id in TL.seg) {
+    const sgm = TL.seg[id]; if (t < sgm.s - 0.05 || t > sgm.e + 0.18) continue;
+    const words = sgm.cap.split(' '), chunks = []; let cur = '';
+    for (const w of words) { if (cur && (cur + ' ' + w).length > 25) { chunks.push(cur); cur = w; } else cur = cur ? cur + ' ' + w : w; }
+    chunks.push(cur);
+    const tot = chunks.reduce((n, c) => n + c.length + 2, 0); let acc = sgm.s;
+    for (let i = 0; i < chunks.length; i++) {
+      const d = (sgm.e - sgm.s) * (chunks[i].length + 2) / tot, end = i === chunks.length - 1 ? sgm.e + 0.18 : acc + d;
+      if (t >= acc - 0.05 && t < end) {
+        const k = eo(seg(t, acc - 0.05, acc + 0.12)), w = tw(chunks[i], 800, 52) + 64;
+        g.save(); g.translate(540, 1462 + 14 * (1 - k)); g.globalAlpha = k;
+        g.fillStyle = 'rgba(5,8,16,0.72)'; rr(-w / 2, -48, w, 96, 22); g.fill();
+        text(chunks[i], 0, 3, 800, 52, CREAM); g.restore(); return;
+      }
+      acc += d;
+    }
+  }
+}
+
+// ---------- elenco ----------
+function cast(n, seed, xs, ds) {
+  const r = rnd(seed), out = [];
+  for (let i = 0; i < n; i++) out.push({
+    wx: xs[i], d: ds[i], ph: r() * 6.28, cad: 0.94 + r() * 0.12,
+    shirt: SHIRTS[(i * 2 + seed) % SHIRTS.length], skin: SKINS[Math.floor(r() * SKINS.length)], hair: HAIRS[Math.floor(r() * HAIRS.length)],
+    bib: String(10 + Math.floor(r() * 89))
+  });
+  return out;
+}
+const CAST = {
+  intro: cast(9, 3, [70, 150, 235, 300, 380, 455, 520, 600, 690], [0.9, 0.2, 0.6, 0.0, 1.0, 0.35, 0.75, 0.1, 0.55]),
+  sorteio: cast(8, 4, [60, 130, 215, 290, 365, 440, 520, 600], [0.5, 0.0, 0.95, 0.3, 0.7, 0.05, 1.0, 0.4]),
+  livre: cast(7, 6, [66, 88, 230, 390, 370, 548, 606], [0.2, 0.85, 0.5, 0.0, 1.0, 0.35, 0.7]),
+  fixo: cast(6, 8, [38, 235, 240, 437, 514, 711], [0.6, 0.0, 1.0, 0.4, 0.8, 0.2]),
+  fidelidade: cast(8, 9, [60, 135, 215, 290, 365, 440, 520, 600], [0.5, 0.0, 0.95, 0.3, 0.7, 0.05, 1.0, 0.4]),
+  recap: cast(8, 12, [90, 170, 250, 330, 420, 500, 590, 680], [0.9, 0.2, 0.6, 0.0, 1.0, 0.35, 0.75, 0.1])
+};
+CAST.sorteio[3].bib = '27';
+const BIDS = [18, 31, 12, 45, 24, 52, 38];                // lance livre: corredor 5 dá o maior
+const runT = t => scroll(t) / V;
+function drawPack(list, t, fn) {
+  const rt = runT(t), amp = clamp(speedAt(t) / V, 0, 1);
+  const items = list.map((r, i) => { const st = fn ? fn(r, i) : {}; return { r, i, st, d: st.d ?? r.d }; }).sort((a, b) => b.d - a.d);
+  const pos = [];
+  for (const it of items) {
+    const { r, st } = it, a2 = st.amp ?? amp;
+    pos[it.i] = runner(st.wx ?? r.wx, it.d, r.ph + rt * 15.5 * r.cad + (st.extraPh || 0), Math.max(a2, st.cheer ? 0.05 : 0), { ...r, ...st });
+  }
+  return pos;
+}
+function fade(t, sc) { return eio(seg(t, sc.s, sc.s + 0.35)) * (1 - eio(seg(t, sc.e - 0.3, sc.e))); }
+// posição do vencedor: dispara até a linha e cruza
+function winnerX(t, sc, x0, tGo) {
+  const lineAtWin = sc.lineW - scroll(sc.win);
+  if (t <= sc.win) return mix(x0, lineAtWin - 6, ei(seg(t, tGo, sc.win)));
+  return mix(lineAtWin - 6, XL + 95, eo(seg(t, sc.win, sc.win + 0.7)));
+}
+function winFx(st, t, sc) {
+  st.glow = seg(t, st.tGlow, st.tGlow + 0.3);
+  st.cheer = eo(seg(t, sc.win + 0.05, sc.win + 0.4)); st.cheerT = t;
+  st.amp = t > sc.win ? Math.max(0.0, 1 - seg(t, sc.win, sc.win + 0.6)) : 1;
+  st.extraPh = 6 * ei(seg(t, st.tGo, sc.win));
+}
+
+// ---------- cenas ----------
+function sceneIntro(t) {
+  const sc = TL.scenes.intro, K = TL.seg, a = fade(t, { s: -1, e: sc.e });
+  finishLine(sc.lineW, t, a);
+  g.save(); g.globalAlpha = a; drawPack(CAST.intro, t); g.restore();
+  finishPostFront(sc.lineW, t, a);
+  confetti(560 + 60, 900, K.i1.s + 3.3, t);
+  // título do gancho
+  const out = 1 - eio(seg(t, K.i2.s - 0.35, K.i2.s));
+  if (out > 0) {
+    const u0 = eo(seg(t, 0.1, 0.6)), u1 = eo(seg(t, 0.25, 0.8)), u2 = back(seg(t, 0.45, 1.0));
+    g.save(); g.globalAlpha = out * u0; text('CONSÓRCIO', 540, 300 + 20 * (1 - u0), 800, 38, GOLD, 'center', 10); g.restore();
+    g.save(); g.globalAlpha = out * u1; text('Qual é o melhor', 540, 410 + 30 * (1 - u1), 800, 104, CREAM, 'center', -1); g.restore();
+    g.save(); g.globalAlpha = out * clamp(seg(t, 0.45, 0.7)); g.translate(540, 540); g.scale(u2, u2);
+    const w = tw('LANCE?', 900, 132) + 90; g.fillStyle = GOLD; rr(-w / 2, -84, w, 168, 34); g.fill(); text('LANCE?', 0, 6, 900, 132, INK); g.restore();
+    const u3 = eo(seg(t, 1.0, 1.5));
+    g.save(); g.globalAlpha = out * u3 * 0.85 * (1 - seg(t, K.i1.s + 2.2, K.i1.s + 2.6)); text('Sorteio · Livre · Fixo · Fidelidade', 540, 672, 600, 40, CREAM); g.restore();
+  }
+  // as 4 pistas
+  if (t > K.i2.s - 0.1) {
+    const tease = K.i2.s + (K.i2.e - K.i2.s) * 0.55, hop = t > tease ? Math.floor((t - tease) / 0.28) % 4 : -1;
+    g.save(); g.globalAlpha = a * eo(seg(t, K.i2.s - 0.1, K.i2.s + 0.3));
+    text('4 PISTAS ATÉ A CONTEMPLAÇÃO', 540, 290, 800, 36, GOLD, 'center', 4); g.restore();
+    LANES.forEach((L, i) => {
+      const t0 = K.i2.s + 0.25 + i * 0.3, k = back(seg(t, t0, t0 + 0.4)); if (t < t0) return;
+      const x = 60, y = 350 + i * 104, w = 960, h = 88, hot = hop === i;
+      g.save(); g.translate(540, y + h / 2); g.scale(k * (hot ? 1.03 : 1), k * (hot ? 1.03 : 1)); g.globalAlpha = a;
+      g.fillStyle = hot ? L.c : 'rgba(10,14,28,0.72)'; rr(-w / 2, -h / 2, w, h, 24); g.fill();
+      g.strokeStyle = L.c; g.lineWidth = 3; rr(-w / 2, -h / 2, w, h, 24); g.stroke();
+      g.fillStyle = hot ? INK : L.c; g.beginPath(); g.arc(-w / 2 + 58, 0, 28, 0, 7); g.fill();
+      text(String(i + 1), -w / 2 + 58, 2, 900, 34, hot ? L.c : INK);
+      text(L.name, -w / 2 + 112, 3, 800, 46, hot ? INK : CREAM, 'left', 0.5);
+      if (t > tease) text('?', w / 2 - 58, 3, 900, 50, hot ? INK : 'rgba(244,239,230,0.35)');
+      g.restore();
+    });
+  }
+}
+
+function sceneSorteio(t) {
+  const sc = TL.scenes.sorteio, K = TL.seg, a = fade(t, sc), c = LANES[0].c, WI = 3, tGo = K.s4.s + 0.45;
+  finishLine(sc.lineW, t, a);
+  g.save(); g.globalAlpha = a;
+  const pos = drawPack(CAST.sorteio, t, (r, i) => {
+    const st = {};
+    if (i === WI) { st.wx = winnerX(t, sc, r.wx, tGo); st.tGo = tGo; st.tGlow = K.s4.s + 0.35; winFx(st, t, sc); }
+    else st.gray = 0.7 * seg(t, K.s4.s + 0.4, K.s4.s + 0.8);
+    return st;
+  });
+  g.restore();
+  finishPostFront(sc.lineW, t, a);
+  g.save(); g.globalAlpha = a;
+  drum(170, 800, seg(t, K.s3.s, K.s3.s + 0.4) * (1 - seg(t, sc.win + 0.2, sc.win + 0.5)), t, c);
+  if (t < sc.win + 0.15) ball(170, 800, pos[WI], seg(t, K.s4.s - 0.25, K.s4.s + 0.4), '27');
+  g.restore();
+  tabs(0, a); laneTitle(0, t, sc.s + 0.1, a * (1 - seg(t, sc.win, sc.win + 0.2)));
+  chip('Custo extra: nenhum', c, t, K.s2.s, K.s3.s - 0.1, a);
+  chip('Mesma chance para todos em dia', c, t, K.s3.s, K.s4.s - 0.1, a);
+  chip('Critério: sorte', c, t, K.s4.s, sc.e, a);
+  confetti(XL + 60, 900, sc.win, t); if (t < sc.e - 0.05) { g.save(); g.globalAlpha = a; winCard(sc.win + 0.1, t, c); g.restore(); }
+}
+
+function sceneLivre(t) {
+  const sc = TL.scenes.livre, K = TL.seg, a = fade(t, sc), c = LANES[1].c, WI = 5, tGo = K.l3.e - 0.9;
+  const order = BIDS.map((b, i) => i).sort((x, y) => BIDS[x] - BIDS[y]), rank = []; order.forEach((idx, rnk) => rank[idx] = rnk);
+  const tPop = i => K.l3.s + 0.15 + rank[i] * 0.2, tSort = K.l3.s + 1.5;
+  finishLine(sc.lineW, t, a);
+  g.save(); g.globalAlpha = a;
+  const states = [];
+  const pos = drawPack(CAST.livre, t, (r, i) => {
+    const st = {}, sorted = mix(r.wx, 60 + rank[i] * 100 - r.d * SLANT, eio(seg(t, tSort, tSort + 1.3)));
+    st.wx = sorted;
+    if (i === WI) { st.wx = winnerX(t, sc, sorted, tGo); st.tGo = tGo; st.tGlow = tGo; winFx(st, t, sc); }
+    else st.gray = 0.7 * seg(t, tGo + 0.2, tGo + 0.6);
+    states[i] = st; return st;
+  });
+  CAST.livre.forEach((r, i) => {
+    const win = i === WI && t > tGo;
+    g.globalAlpha = a * (1 - 0.55 * (states[i].gray || 0)); tag(pos[i], BIDS[i] + '%', seg(t, tPop(i), tPop(i) + 0.3), win ? GOLD : CREAM, INK, false, (rank[i] % 2) * 62 * eio(seg(t, tSort, tSort + 1.3)) + (i % 2) * 40 * (1 - eio(seg(t, tSort, tSort + 1.3))));
+  });
+  g.restore();
+  finishPostFront(sc.lineW, t, a);
+  tabs(1, a); laneTitle(1, t, sc.s + 0.1, a * (1 - seg(t, sc.win, sc.win + 0.2)));
+  chip('Funciona como um leilão', c, t, K.l2.s, K.l3.s + 1.3, a);
+  chip('Maior percentual leva', c, t, K.l3.s + 1.5, K.l4.s - 0.1, a);
+  chip('A pista mais disputada', c, t, K.l4.s, sc.e, a);
+  confetti(XL + 60, 900, sc.win, t); if (t < sc.e - 0.05) { g.save(); g.globalAlpha = a; winCard(sc.win + 0.1, t, c); g.restore(); }
+}
+
+function sceneFixo(t) {
+  const sc = TL.scenes.fixo, K = TL.seg, a = fade(t, sc), c = LANES[2].c, WI = 3;
+  const tAl = K.f4.s + 0.1, tDrum = K.f4.s + (K.f4.e - K.f4.s) * 0.5, tBall = K.f4.e - 0.35, tGo = tBall + 0.5;
+  const ds = [0.6, 0.0, 1.0, 0.4, 0.8, 0.2];
+  finishLine(sc.lineW, t, a);
+  g.save(); g.globalAlpha = a;
+  const states = [];
+  const pos = drawPack(CAST.fixo, t, (r, i) => {
+    const st = {}, al = mix(r.wx, 290 + r.d * 150, eio(seg(t, tAl, tAl + 1.1)));
+    st.wx = al;
+    if (i === WI) { st.wx = winnerX(t, sc, al, tGo); st.tGo = tGo; st.tGlow = tGo - 0.2; winFx(st, t, sc); }
+    else st.gray = 0.7 * seg(t, tGo, tGo + 0.4);
+    states[i] = st; return st;
+  });
+  // linha de empate
+  const eu = eo(seg(t, tAl + 0.9, tAl + 1.3)) * (1 - seg(t, tGo, tGo + 0.3));
+  if (eu > 0) {
+    const p0 = proj(290 + 62 + 1.08 * 150, 1.08), p1 = proj(290 + 62 - 0.12 * 150, -0.12);
+    g.save(); g.globalAlpha = a * eu; g.strokeStyle = CREAM; g.lineWidth = 5; g.setLineDash([14, 12]);
+    g.beginPath(); g.moveTo(p0.x, p0.y); g.lineTo(mix(p0.x, p1.x, eu), mix(p0.y, p1.y, eu)); g.stroke(); g.setLineDash([]);
+    g.restore();
+  }
+  CAST.fixo.forEach((r, i) => {
+    g.globalAlpha = a * (1 - seg(t, tAl + 0.5, tAl + 0.9));
+    tag(pos[i], '30%', seg(t, K.f3.s + 0.1 + i * 0.05, K.f3.s + 0.4 + i * 0.05), CREAM, INK, false, (i % 2) * 58);
+  });
+  g.globalAlpha = a * (1 - seg(t, tGo, tGo + 0.3));
+  tag({ x: 500, y: Y_BACK, s: 1.3 }, 'todos: 30%', seg(t, tAl + 0.9, tAl + 1.25), CREAM, INK, false, 40);
+  g.globalAlpha = a;
+  drum(170, 800, seg(t, tDrum, tDrum + 0.4) * (1 - seg(t, sc.win + 0.2, sc.win + 0.5)), t, c);
+  if (t < sc.win + 0.15 && t > tBall) {
+    const u = eo(seg(t, tBall, tBall + 0.55)), p = pos[WI], x = mix(170, p.x + 8, u), y = mix(800, p.y - 300 * p.s, u) - 120 * Math.sin(Math.PI * u), r = mix(16, 30, u);
+    g.fillStyle = '#fff'; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); g.strokeStyle = GOLD; g.lineWidth = 6; g.stroke();
+    if (u > 0.5) drawStar(x, y, 15, INK);
+  }
+  g.restore();
+  finishPostFront(sc.lineW, t, a);
+  tabs(2, a); laneTitle(2, t, sc.s + 0.1, a * (1 - seg(t, sc.win, sc.win + 0.2)));
+  chip('Percentual definido pela administradora', c, t, K.f2.s, K.f3.s - 0.1, a);
+  chip('Todos ofertam o mesmo: 30%', c, t, K.f3.s, tAl + 1.0, a);
+  chip('Empatou? Decide o sorteio', c, t, tAl + 1.2, sc.e, a);
+  confetti(XL + 60, 900, sc.win, t); if (t < sc.e - 0.05) { g.save(); g.globalAlpha = a; winCard(sc.win + 0.1, t, c); g.restore(); }
+}
+
+function sceneFidelidade(t) {
+  const sc = TL.scenes.fidelidade, K = TL.seg, a = fade(t, sc), c = LANES[3].c, VET = [2, 5], WI = 5;
+  const dd = K.d2.e - K.d2.s, tStar = K.d2.s + dd * 0.38, tDrop = K.d2.s + dd * 0.62, tGo = K.d3.e - 1.3;
+  finishLine(sc.lineW, t, a);
+  g.save(); g.globalAlpha = a;
+  const states = [];
+  const pos = drawPack(CAST.fidelidade, t, (r, i) => {
+    const st = {};
+    if (VET.includes(i)) {
+      const x1 = i === WI ? 430 : 300; st.wx = mix(r.wx, x1, eio(seg(t, tDrop, tDrop + 1.6)));
+      if (i === WI) { st.wx = winnerX(t, sc, st.wx, tGo); st.tGo = tGo; st.tGlow = tGo; winFx(st, t, sc); }
+    } else {
+      const u = seg(t, tDrop, tDrop + 2.2);
+      st.gray = seg(t, tDrop - 0.3, tDrop + 0.3) * 0.85; st.wx = r.wx - 900 * ei(u);
+    }
+    states[i] = st; return st;
+  });
+  VET.forEach(i => { g.globalAlpha = a; tag(pos[i], 'veterano', seg(t, tStar + (i === WI ? 0.15 : 0), tStar + 0.35 + (i === WI ? 0.15 : 0)), GOLD, INK, true); });
+  g.restore();
+  finishPostFront(sc.lineW, t, a);
+  tabs(3, a); laneTitle(3, t, sc.s + 0.1, a * (1 - seg(t, sc.win, sc.win + 0.2)));
+  chip('Pista reservada', c, t, K.d2.s, tStar - 0.05, a);
+  chip('Mais tempo de grupo + parcelas em dia', c, t, tStar, K.d3.s - 0.1, a);
+  chip('Menos gente, menos concorrência', c, t, K.d3.s, sc.e, a);
+  confetti(XL + 60, 900, sc.win, t); if (t < sc.e - 0.05) { g.save(); g.globalAlpha = a; winCard(sc.win + 0.1, t, c); g.restore(); }
+}
+
+function sceneEnd(t) {
+  const r = TL.scenes.recap, ct = TL.scenes.cta, K = TL.seg;
+  const a = eio(seg(t, r.s, r.s + 0.4));
+  g.save(); g.globalAlpha = a; drawPack(CAST.recap, t); g.restore();
+  const outR = 1 - eio(seg(t, ct.s - 0.05, ct.s + 0.3));
+  if (outR > 0) {
+    const u0 = eo(seg(t, K.r1.s - 0.2, K.r1.s + 0.3));
+    g.save(); g.globalAlpha = outR * u0;
+    text('E qual é a', 540, 300 + 24 * (1 - u0), 800, 84, CREAM, 'center', -1);
+    text('melhor pista?', 540, 400 + 24 * (1 - u0), 900, 104, GOLD, 'center', -1); g.restore();
+    const items = ['Do seu caixa', 'Do seu prazo', 'Das regras do seu grupo'], dd = K.r2.e - K.r2.s, ts = [K.r2.s + 0.3, K.r2.s + dd * 0.38, K.r2.s + dd * 0.62];
+    const ud = eo(seg(t, K.r2.s - 0.1, K.r2.s + 0.3));
+    g.save(); g.globalAlpha = outR * ud * 0.8; text('DEPENDE...', 540, 500, 800, 32, CREAM, 'center', 6); g.restore();
+    items.forEach((s, i) => {
+      if (t < ts[i]) return; const k = back(seg(t, ts[i], ts[i] + 0.35)), w = 760, h = 76, col = LANES[i].c;
+      g.save(); g.translate(540, 578 + i * 92); g.scale(k, k); g.globalAlpha = outR;
+      g.fillStyle = 'rgba(10,14,28,0.75)'; rr(-w / 2, -h / 2, w, h, 22); g.fill(); g.strokeStyle = col; g.lineWidth = 3; rr(-w / 2, -h / 2, w, h, 22); g.stroke();
+      g.fillStyle = col; g.beginPath(); g.arc(-w / 2 + 46, 0, 12, 0, 7); g.fill();
+      text(s, -w / 2 + 84, 3, 700, 42, CREAM, 'left'); g.restore();
+    });
+  }
+  if (t > ct.s) {
+    const u0 = eo(seg(t, ct.s + 0.15, ct.s + 0.6)), u1 = back(seg(t, ct.s + 0.35, ct.s + 0.85)), u2 = eo(seg(t, ct.s + 0.9, ct.s + 1.4));
+    g.save(); g.globalAlpha = u0; text('Comenta', 540, 330 + 24 * (1 - u0), 800, 88, CREAM, 'center', -1); g.restore();
+    const pulse = 1 + 0.03 * Math.sin((t - ct.s) * 6.5);
+    g.save(); g.translate(540, 500); g.scale(u1 * pulse, u1 * pulse); g.globalAlpha = clamp(seg(t, ct.s + 0.35, ct.s + 0.55));
+    const w = tw('LANCE', 900, 150) + 120;
+    g.fillStyle = 'rgba(245,197,66,0.25)'; rr(-w / 2 - 14, -112, w + 28, 224, 50); g.fill();
+    g.fillStyle = GOLD; rr(-w / 2, -98, w, 196, 40); g.fill(); text('LANCE', 0, 8, 900, 150, INK, 'center', 2); g.restore();
+    g.save(); g.globalAlpha = u2;
+    text('e eu te ajudo a montar', 540, 668, 600, 46, CREAM); text('a sua estratégia', 540, 728, 800, 50, CREAM); g.restore();
+  }
+  // aviso
+  const ua = eo(seg(t, r.s + 0.5, r.s + 1.0)) * 0.62;
+  g.save(); g.globalAlpha = ua;
+  text('Conteúdo educativo. As regras de lance variam conforme', 540, 1302, 500, 26, CREAM);
+  text('a administradora e o grupo. Não há garantia de data de contemplação.', 540, 1338, 500, 26, CREAM); g.restore();
+}
+
+window.renderAt = function (t) {
+  g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1;
+  background(t);
+  const s = TL.scenes;
+  if (t < s.intro.e) sceneIntro(t);
+  else if (t < s.sorteio.e) sceneSorteio(t);
+  else if (t < s.livre.e) sceneLivre(t);
+  else if (t < s.fixo.e) sceneFixo(t);
+  else if (t < s.fidelidade.e) sceneFidelidade(t);
+  else sceneEnd(t);
+  captions(t);
+  // vinheta + fade final
+  const gr = g.createRadialGradient(540, 900, 600, 540, 900, 1250);
+  gr.addColorStop(0, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(0,0,0,0.38)'); g.fillStyle = gr; g.fillRect(0, 0, W, H);
+  const fo = seg(t, TL.total - 0.5, TL.total); if (fo > 0) { g.fillStyle = `rgba(4,6,12,${fo})`; g.fillRect(0, 0, W, H); }
+  const fi = 1 - seg(t, 0, 0.3); if (fi > 0) { g.fillStyle = `rgba(4,6,12,${fi})`; g.fillRect(0, 0, W, H); }
+};
+window.setup = function (tl) { init(tl); return document.fonts.ready.then(() => true); };
+</script></body></html>
