@@ -12,8 +12,8 @@ VOICE, SPEED, SR = 'pm_alex', 1.12, 48000
 # cena -> [(id, texto falado, legenda)]
 ROTEIRO = [
  ('intro', [
-  ('i1', 'Todo mês, tem gente cruzando a linha de chegada do consórcio, com a carta de crédito na mão.',
-         'Todo mês, tem gente cruzando a linha de chegada do consórcio, com a carta de crédito na mão.'),
+  ('i1', 'A todo momento, tem gente querendo ser contemplado no consórcio.',
+         'A todo momento, tem gente querendo ser contemplado no consórcio.'),
   ('i2', 'Mas existem quatro pistas pra chegar lá. E em uma delas, a concorrência é bem menor.',
          'Mas existem 4 pistas pra chegar lá. E em uma delas, a concorrência é bem menor.')]),
  ('sorteio', [
