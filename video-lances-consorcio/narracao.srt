@@ -1,80 +1,80 @@
 1
-00:00:00,450 --> 00:00:04,081
+00:00:00,510 --> 00:00:03,710
 A todo momento, tem gente querendo ser contemplado no consórcio.
 
 2
-00:00:04,321 --> 00:00:08,944
+00:00:04,180 --> 00:00:09,320
 Mas existem 4 pistas pra chegar lá. E em uma delas, a concorrência é bem menor.
 
 3
-00:00:09,944 --> 00:00:11,196
+00:00:10,380 --> 00:00:11,900
 Pista 1: o sorteio.
 
 4
-00:00:11,436 --> 00:00:13,279
+00:00:12,340 --> 00:00:13,750
 Aqui, você não paga nada a mais.
 
 5
-00:00:13,519 --> 00:00:16,720
+00:00:14,240 --> 00:00:17,280
 Todo mundo com a parcela em dia concorre, com a mesma chance.
 
 6
-00:00:16,960 --> 00:00:17,990
+00:00:17,500 --> 00:00:18,320
 É pura sorte.
 
 7
-00:00:20,440 --> 00:00:22,029
+00:00:20,830 --> 00:00:22,860
 Pista 2: o lance livre.
 
 8
-00:00:22,269 --> 00:00:23,715
+00:00:23,350 --> 00:00:24,510
 Funciona como um leilão.
 
 9
-00:00:23,955 --> 00:00:27,991
+00:00:24,870 --> 00:00:29,040
 Você oferta o percentual da carta que quiser, e leva quem der o maior lance.
 
 10
-00:00:28,231 --> 00:00:30,711
+00:00:29,310 --> 00:00:31,930
 Por isso, costuma ser a pista mais disputada.
 
 11
-00:00:31,711 --> 00:00:33,343
+00:00:32,990 --> 00:00:35,120
 Pista 3: o lance fixo.
 
 12
-00:00:33,583 --> 00:00:36,683
+00:00:35,440 --> 00:00:37,910
 O percentual já vem definido pela administradora.
 
 13
-00:00:36,923 --> 00:00:38,646
+00:00:38,330 --> 00:00:39,740
 Por exemplo, 30%.
 
 14
-00:00:38,886 --> 00:00:42,336
+00:00:40,200 --> 00:00:44,210
 Todo mundo oferta o mesmo valor, e o desempate é por sorteio.
 
 15
-00:00:44,986 --> 00:00:47,039
+00:00:46,920 --> 00:00:49,160
 Pista 4: o lance fidelidade.
 
 16
-00:00:47,279 --> 00:00:51,848
+00:00:49,600 --> 00:00:54,850
 É uma pista reservada pra quem já está há mais tempo no grupo, com as parcelas em dia.
 
 17
-00:00:52,088 --> 00:00:55,434
+00:00:55,410 --> 00:00:59,430
 Como pouca gente pode entrar, a concorrência é bem menor.
 
 18
-00:00:57,734 --> 00:00:59,192
+00:01:01,790 --> 00:01:03,610
 E qual é a melhor pista?
 
 19
-00:00:59,432 --> 00:01:02,956
+00:01:03,920 --> 00:01:07,500
 Depende do seu caixa, do seu prazo e das regras do seu grupo.
 
 20
-00:01:03,956 --> 00:01:06,729
+00:01:08,560 --> 00:01:11,790
 Comenta LANCE que eu te ajudo a montar a sua estratégia.
 
