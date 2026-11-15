@@ -466,15 +466,28 @@ window.renderAt = function (t) {
     }
     const ua = eo(seg(t, r.s + 0.5, r.s + 1.0)) * 0.7;
     g.save(); g.globalAlpha = ua;
-    text('Conteúdo educativo. Número de participantes ilustrativo. As regras de lance', 540, 1340, 500, 25, CREAM);
-    text('variam conforme a administradora e o grupo. Não há garantia de data de contemplação.', 540, 1374, 500, 25, CREAM); g.restore();
+    text('Conteúdo educativo. Número de participantes ilustrativo. As regras de lance', 540, 1346, 500, 25, CREAM);
+    text('variam conforme a administradora e o grupo. Não há garantia de data de contemplação.', 540, 1380, 500, 25, CREAM); g.restore();
   }
+  handle(t);
   captions(t);
   gr = g.createRadialGradient(540, 900, 600, 540, 900, 1250);
   gr.addColorStop(0, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(0,0,0,0.38)'); g.fillStyle = gr; g.fillRect(0, 0, W, H);
   const fo = seg(t, TL.total - 0.5, TL.total); if (fo > 0) { g.fillStyle = `rgba(4,6,12,${fo})`; g.fillRect(0, 0, W, H); }
   const fi = 1 - seg(t, 0, 0.3); if (fi > 0) { g.fillStyle = `rgba(4,6,12,${fi})`; g.fillRect(0, 0, W, H); }
 };
+// assinatura fixa: @perfil + Siga
+const HANDLE = '@mnovais';
+function handle(t) {
+  const a = eo(seg(t, 0.4, 0.9)), end = t > TL.scenes.cta.s + 1.2, pulse = end ? 1 + 0.04 * Math.sin((t - TL.scenes.cta.s) * 6.5) : 1;
+  const w1 = tw(HANDLE, 800, 40), w2 = tw('Siga', 800, 30) + 44, gap = 18, tot = w1 + gap + w2 + 56;
+  g.save(); g.translate(540, 1268); g.scale(pulse, pulse); g.globalAlpha = a * 0.96;
+  g.fillStyle = 'rgba(6,8,16,0.62)'; rr(-tot / 2, -40, tot, 80, 40); g.fill();
+  text(HANDLE, -tot / 2 + 28, 2, 800, 40, CREAM, 'left');
+  g.fillStyle = GOLD; rr(tot / 2 - 22 - w2, -26, w2, 52, 26); g.fill();
+  text('Siga', tot / 2 - 22 - w2 / 2, 2, 800, 30, INK);
+  g.restore();
+}
 function miniConfetti(x, y, t0, t, seed) {
   const u = t - t0; if (u < 0 || u > 1.2) return; const r = rnd(40 + seed);
   for (let i = 0; i < 26; i++) { const a = -Math.PI / 2 + (r() - 0.5) * 2.4, v = 250 + r() * 420;
