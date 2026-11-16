@@ -57,7 +57,10 @@
 
 <!-- 01 CAPA -->
 <section class="slide">
-  <div class="photo" style="height:500px"><img src="img/soja.jpg" style="object-position:50% 62%"></div>
+  <div class="photo" style="height:500px; display:flex">
+    <svg id="flag" viewBox="0 0 13.2 20" preserveAspectRatio="xMinYMid slice" style="width:37%; height:100%; flex:none; border-right:5px solid var(--navy)"><rect width="30" height="20" fill="#EE1C25"/></svg>
+    <img src="img/soja.jpg" style="object-position:38% 62%; width:63%; flex:1">
+  </div>
   <h1>A China abriu a porta para o agro da África.</h1>
   <p>E o Brasil precisa prestar atenção.</p>
 </section>
@@ -166,9 +169,9 @@
 <!-- 12 CTA -->
 <section class="slide">
   <div class="photo" style="height:510px"><img src="img/marcus.jpg" style="object-position:50% 20%"></div>
-  <h1>E a sua carteira?</h1>
+  <h1>Diversificar é proteger</h1>
   <p>Um bom patrimônio não depende de <b>um setor só</b>.</p>
-  <p>Quer saber quanto do seu depende do agro? <b>Acesse o link na BIO</b> e vamos conversar.</p>
+  <p>Quer saber se sua carteira está concentrada em algum setor? <b>Acesse o link na BIO</b> e vamos conversar.</p>
 </section>
 
 <script>
@@ -177,6 +180,14 @@ slides.forEach((s,i)=>{
   const n=String(i+1).padStart(2,'0')+'/'+String(N).padStart(2,'0');
   s.insertAdjacentHTML('beforeend',`<div class="count">${n}</div><div class="foot"><div class="who">Marcus Novais<span></span>Finanças e Economia</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#0e1f5b" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`);
 });
+// bandeira da China: estrela grande em (5,5) e quatro menores apontando para ela
+(function(){
+  const f=document.getElementById('flag');
+  const star=(cx,cy,r,rot)=>{let p=[];for(let i=0;i<10;i++){const a=rot+i*Math.PI/5,q=i%2?r*0.382:r;p.push((cx+q*Math.sin(a)).toFixed(3)+','+(cy-q*Math.cos(a)).toFixed(3));}
+    f.insertAdjacentHTML('beforeend',`<polygon points="${p.join(' ')}" fill="#FFFF00"/>`);};
+  star(5,5,3,0);
+  [[10,2],[12,4],[12,7],[10,9]].forEach(([x,y])=>star(x,y,1,Math.atan2(5-x,-(5-y))));
+})();
 const dots=document.getElementById('v3d'); for(let i=0;i<53;i++) dots.appendChild(document.createElement('i'));
 
 const $=id=>document.getElementById(id);

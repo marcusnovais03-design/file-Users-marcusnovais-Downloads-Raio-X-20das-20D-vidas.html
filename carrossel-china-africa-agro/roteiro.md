@@ -4,7 +4,7 @@
 
 | # | Tipo | Título | Texto |
 |---|---|---|---|
-| 01 | Foto | A China abriu a porta para o agro da África. | E o Brasil precisa prestar atenção. |
+| 01 | Bandeira da China + foto | A China abriu a porta para o agro da África. | E o Brasil precisa prestar atenção. |
 | 02 | Foto | O que mudou | Desde 1º de maio de 2026, a China zerou a tarifa de importação para 53 países africanos. Café, cacau, castanhas, frutas e carnes ficaram mais baratos para o comprador chinês. |
 | 03 | **Vídeo** | 53 | Contador de 0 a 53 países africanos vendendo para a China sem imposto de importação. |
 | 04 | Cards | Já aparece nos números | 1º tri de 2026: +70% no café africano e +57% no cacau em grão importados pela China. |
@@ -15,7 +15,7 @@
 | 09 | Foto | E o seu patrimônio? | Quando o agro perde fôlego, o efeito chega ao dólar, à renda, ao crédito e à bolsa. |
 | 10 | Lista | Onde o agro se esconde na carteira | LCA, CRA e Fiagro; ações ligadas à safra; terra e negócio da família; renda de região agrícola. |
 | 11 | Texto | Sem alarmismo | Brasil segue líder, produção africana ainda é pequena. Risco de longo prazo: dá tempo de diversificar por setor, indexador e geografia. |
-| 12 | CTA | E a sua carteira? | Um bom patrimônio não depende de um setor só. Quer saber quanto do seu depende do agro? Acesse o link na BIO e vamos conversar. |
+| 12 | CTA | Diversificar é proteger | Um bom patrimônio não depende de um setor só. Quer saber se sua carteira está concentrada em algum setor? Acesse o link na BIO e vamos conversar. |
 
 ## Sugestão de legenda
 
