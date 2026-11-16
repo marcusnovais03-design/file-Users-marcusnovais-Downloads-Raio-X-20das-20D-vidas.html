@@ -1,6 +1,6 @@
 # Carrossel: "Os Correios perderam R$ 7,5 bilhões em 9 meses"
 
-12 slides em 1080x1350. Os slides 04, 06 e 08 são vídeos (MP4, sem som). Arquivos prontos em `out/`.
+11 slides em 1080x1350. Os slides 04, 06 e 08 são vídeos (MP4, sem som). Arquivos prontos em `out/`.
 
 | # | Tipo | Título | Texto |
 |---|---|---|---|
@@ -14,8 +14,7 @@
 | 08 | **Vídeo (7 s)** | De cada R$ 100 que os Correios gastam | R$ 62 vão para a folha; R$ 90 são gastos fixos. |
 | 09 | Cards | A conta chegou | Empréstimo de R$ 12 bi em dez/2025 com garantia do Tesouro; pedido de mais R$ 7 bi em 2026. |
 | 10 | Lista | Encolher para sobreviver | Fechar cerca de 1.000 agências, reduzir 15 mil funcionários até 2027, vender imóveis. |
-| 11 | Texto | A lição vale para o seu bolso | A receita caiu, o custo fixo não, e a saída foi a dívida. Com o orçamento de uma família, a conta é a mesma. |
-| 12 | CTA | E as suas contas? | Planejamento financeiro é o que evita chegar nesse ponto. Quer saber se o seu orçamento e os seus investimentos estão no caminho certo? Acesse o link na BIO e vamos conversar. |
+| 11 | CTA | Como está o seu planejamento financeiro? | Quando a conta não fecha, nem uma empresa de 360 anos escapa. Me siga para mais conteúdos como este. |
 
 ## Sugestão de legenda
 
@@ -25,7 +24,7 @@
 >
 > O que aconteceu? A receita caiu, o custo fixo ficou do mesmo tamanho e a dívida virou a saída.
 >
-> Parece distante, mas é a mesma conta do orçamento de qualquer família. Quer revisar a sua? Link na bio.
+> Parece distante, mas é a mesma conta do orçamento de qualquer família. Como está o seu planejamento financeiro? Me siga para mais conteúdos como este.
 >
 > *Conteúdo informativo. Não é recomendação de investimento.*
 
