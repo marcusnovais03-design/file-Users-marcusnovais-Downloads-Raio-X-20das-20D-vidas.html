@@ -5,14 +5,14 @@
 | # | Tipo | Título | Texto |
 |---|---|---|---|
 | 01 | Foto | Os Correios perderam R$ 7,5 bilhões em 9 meses. | Como uma empresa de 360 anos chegou até aqui? |
-| 02 | Foto histórica | Mais antigos que o Brasil | Nasceram em 1663, ainda na colônia. Na independência, já tinham 159 anos. |
+| 02 | Número em destaque | Mais antigos que o Brasil | Nasceram em 1663, ainda na colônia. Na independência, já tinham 159 anos. |
 | 03 | Lista | A empresa que chegava a todo lugar | 1969: vira a estatal ECT. 1982: nasce o Sedex. Presença em todos os 5.570 municípios. |
 | 04 | **Vídeo (8 s)** | Do auge ao rombo | Linha do tempo animada: 1663, 1969, 1982, 2021 (lucro recorde de R$ 3,7 bi), 2025 (maior prejuízo, R$ 8,5 bi). |
-| 05 | Foto | O melhor ano da história | Em 2021, com o Brasil comprando pela internet, lucro de R$ 3,7 bilhões. |
+| 05 | Número em destaque | O melhor ano da história | Em 2021, com o Brasil comprando pela internet, lucro de R$ 3,7 bilhões. |
 | 06 | **Vídeo (8 s)** | Em 4 anos, tudo virou | Gráfico de barras ano a ano, de 2020 a 2026 (jan–set). |
 | 07 | Lista | Três golpes ao mesmo tempo | Importados (encomendas internacionais −65,6%), concorrência privada e custos que não caíram. |
 | 08 | **Vídeo (7 s)** | De cada R$ 100 que os Correios gastam | R$ 62 vão para a folha; R$ 90 são gastos fixos. |
-| 09 | Foto | A conta chegou | Empréstimo de R$ 12 bi em dez/2025 com garantia do Tesouro; pedido de mais R$ 7 bi em 2026. |
+| 09 | Cards | A conta chegou | Empréstimo de R$ 12 bi em dez/2025 com garantia do Tesouro; pedido de mais R$ 7 bi em 2026. |
 | 10 | Lista | Encolher para sobreviver | Fechar cerca de 1.000 agências, reduzir 15 mil funcionários até 2027, vender imóveis. |
 | 11 | Texto | A lição vale para o seu bolso | A receita caiu, o custo fixo não, e a saída foi a dívida. Com o orçamento de uma família, a conta é a mesma. |
 | 12 | CTA | E as suas contas? | Planejamento financeiro é o que evita chegar nesse ponto. Quer saber se o seu orçamento e os seus investimentos estão no caminho certo? Acesse o link na BIO e vamos conversar. |
@@ -45,6 +45,10 @@
 - Empréstimo de R$ 12 bi (dez/2025) e pedido de mais R$ 7 bi (2026): Mercado & Consumo, Acessa.
 - Plano: cerca de 1.000 agências fechadas, 15 mil desligamentos voluntários até 2027 e venda de imóveis: InvestNews, Movimento Econômico.
 - 1663, 1969 (ECT) e 1982 (Sedex): linha do tempo oficial dos Correios.
+
+## Foto
+
+Slide 01: van do Sedex, de Mateusmatsuda, Wikimedia Commons, licença CC BY 4.0 (o crédito já aparece no canto da foto).
 
 ## Pontos de atenção
 
