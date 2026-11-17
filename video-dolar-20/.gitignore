@@ -9,3 +9,4 @@ out/*-voz.wav
 out/*-mix.wav
 out/*-alinhamento.txt
 voz/*-bruto.wav
+out/ep*-com-trilha.mp4
