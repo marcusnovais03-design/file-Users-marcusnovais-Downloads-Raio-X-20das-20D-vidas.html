@@ -65,12 +65,13 @@
   .cmp .p { font-size:40px; line-height:1.2; margin-top:8px; color:var(--soft); }
   .cmp svg { width:820px; height:120px; margin-top:16px; }
   /* para quem */
-  .who .card { height:560px; border-radius:40px; overflow:hidden; border:6px solid var(--gold); margin-bottom:34px; flex:none; }
+  .who .card { height:470px; border-radius:40px; overflow:hidden; border:6px solid var(--gold); margin-bottom:34px; flex:none; }
   .who .card img { width:100%; height:100%; object-fit:cover; display:block; }
-  .who h1 { font-size:80px; }
-  .who .cta { margin-top:30px; display:flex; align-items:center; gap:18px; font-size:40px; font-weight:800; }
+  .who h1 { font-size:76px; }
+  .who h1.long { font-size:64px; }
+  .who .cta { margin-top:24px; display:flex; align-items:center; gap:18px; font-size:40px; font-weight:800; }
   .who .badge { margin-top:22px; align-self:flex-start; border:4px solid var(--gold); color:var(--gold); font-weight:900; font-size:34px; letter-spacing:.06em; padding:12px 26px; border-radius:20px; }
-  .who .disc { position:absolute !important; left:90px; right:90px; top:1420px; font-size:22px; color:rgba(255,255,255,.5); }
+  .who .disc { margin-top:20px; font-size:22px; color:rgba(255,255,255,.5); }
 </style>
 </head>
 <body>
@@ -156,7 +157,7 @@ B.bars=(c)=>{ const max=Math.max(...c.bars.map(b=>b[1])), min=c.bars[0][1]*0.0; 
     const rs=el.querySelectorAll('.br'), vs=el.querySelectorAll('.bv');
     c.bars.forEach((b,i)=>{ const k=seg(l,.9+i*1.6,2.4+i*1.6); const h=(H-60)*(b[1]/max)*k; rs[i].setAttribute('y',H+40-h); rs[i].setAttribute('height',h); vs[i].setAttribute('y',H+40-h-24); vs[i].textContent=k>0?brl(b[1]*(.8+.2*k)):''; vs[i].setAttribute('opacity',k>0?1:0); });
     el.querySelector('.note').style.opacity=seg(l,4.5,5.2)*.9; }}; };
-B.curve=(c)=>{ const W=760,X0=110,Y0=640,Y1=60; const ends=c.series.map(s=>s[1]); const vmax=Math.max(...ends)*1.06, vmin=c.start*0.94;
+B.curve=(c)=>{ const W=760,X0=110,Y0=640,Y1=60; const ends=c.series.map(s=>s[1]); const vmax=Math.max(...ends)*(c.series.length>1?1.06:1.16), vmin=c.start*0.94;
   const gx=m=>X0+W*m/c.months, gy=v=>Y0-(Y0-Y1)*(v-vmin)/(vmax-vmin);
   let ticks=''; const step=c.months>60?24:c.months>24?6:6; for(let m=0;m<=c.months;m+=step){ ticks+=`<text x="${gx(m)}" y="${Y0+50}" text-anchor="middle" font-family="Inter" font-size="28" fill="rgba(255,255,255,.6)">${m===0?'hoje':(c.months>36?(m/12)+' anos':m+' meses')}</text>`; }
   const html=bgPhoto()+`<h2>${c.title}</h2><svg class="ch" viewBox="0 0 900 760" height="760">
@@ -251,7 +252,7 @@ B.compare=(c)=>({html:bgPhoto()+`<h2>Qual a diferença?</h2>
   up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6)); pop(el.querySelector('.ca'),seg(l,.6,1.1)); pop(el.querySelector('.cb2'),seg(l,2.6,3.1));
     const h1=110*seg(l,1.4,2.4); const r1=el.querySelector('.r1'); r1.setAttribute('y',114-h1); r1.setAttribute('height',h1);
     el.querySelectorAll('.r2').forEach((r,i)=>{ const h=40*seg(l,3.4+i*.15,3.7+i*.15); r.setAttribute('y',114-h); r.setAttribute('height',h); }); }});
-B.forwho=(c)=>({html:`<div class="card"><img src="${FT.f}" style="object-position:${FT.pos}; transform-origin:${FT.o}"></div><div class="pill">Pra quem é?</div><h1>${c.answer}</h1>
+B.forwho=(c)=>({html:`<div class="card"><img src="${FT.f}" style="object-position:${FT.pos}; transform-origin:${FT.o}"></div><div class="pill">Pra quem é?</div><h1 class="${c.answer.length>30?'long':''}">${c.answer}</h1>
   <div class="cta"><svg width="44" height="34" viewBox="0 0 38 28" fill="none" stroke="#e3b65a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg>${c.cta}</div><div class="badge">Comenta TESOURO</div>
   <div class="disc">Simulações hipotéticas com taxas de novembro de 2026. Não é recomendação de investimento.</div>`, cls:'who',
   up(el,l){ const cd=el.querySelector('.card'); pop(cd,seg(l,.05,.6),60); cd.querySelector('img').style.transform=`scale(${1.25-.012*l*10/ (10)})`;
