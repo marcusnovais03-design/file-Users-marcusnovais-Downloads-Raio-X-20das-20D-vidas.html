@@ -19,7 +19,7 @@ Leia em tom de conversa, sem pressa. Cada fala tem uma janela de tempo; se sobra
 | 0:28 – 0:38 | Barras dos juros: **13,75%**, **64%**, **435,9%** | "E os juros alimentam esse ciclo. A Selic está em treze e setenta e cinco. O crédito pras famílias, sessenta e quatro por cento ao ano. E o rotativo do cartão... passa de quatrocentos e trinta por cento." |
 | 0:38 – 0:45 | Curva subindo: **R$ 1.000 → R$ 5.359** | "Mil reais esquecidos no rotativo viram mais de cinco mil em um ano." |
 | 0:45 – 0:52 | Sua foto sorrindo: **Dívida tem saída.** + 3 checks | "Mas dívida tem saída. Tudo numa folha só, prioridade certa e renegociação com estratégia." |
-| 0:52 – 0:59 | Arte **Saia da Dívida** + botão | "Eu sou Marcus Novais, planejador financeiro CFP. Acessa o link na bio e clica em Saia da Dívida." |
+| 0:52 – 0:59 | Arte **Saia da Dívida** + botão | "Eu sou Marcus Novais, planejador financeiro CFP. Acessa o link na bio e clica em Saia das Dívidas." |
 
 ### Momentos de sincronia
 
@@ -44,7 +44,7 @@ Leia em tom de conversa, sem pressa. Cada fala tem uma janela de tempo; se sobra
 >
 > ✅ Mas dívida tem saída.
 >
-> 👉 Acesse o link na BIO e clique em "Saia da Dívida".
+> 👉 Acesse o link na BIO e clique em "Saia das Dívidas".
 >
 > #endividamento #saiadadivida #planejamentofinanceiro #educacaofinanceira #financaspessoais
 
