@@ -1,0 +1,169 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Carrossel</title>
+<style>
+@font-face{font-family:Spartan;font-weight:600;src:url(fonts/league-spartan-latin-600-normal.woff2)}
+@font-face{font-family:Spartan;font-weight:700;src:url(fonts/league-spartan-latin-700-normal.woff2)}
+@font-face{font-family:Spartan;font-weight:800;src:url(fonts/league-spartan-latin-800-normal.woff2)}
+@font-face{font-family:Poppins;font-weight:400;src:url(fonts/poppins-latin-400-normal.woff2)}
+@font-face{font-family:Poppins;font-weight:500;src:url(fonts/poppins-latin-500-normal.woff2)}
+@font-face{font-family:Poppins;font-weight:600;src:url(fonts/poppins-latin-600-normal.woff2)}
+@font-face{font-family:Poppins;font-weight:700;src:url(fonts/poppins-latin-700-normal.woff2)}
+@font-face{font-family:Caveat;font-weight:700;src:url(fonts/caveat-latin-700-normal.woff2)}
+:root{--bg:#0d141f;--cream:#f7edcb;--gold:#f3c44f;--blue:#b3cdff;--coral:#ff9d8a;--white:#f4f2ee;--card:#f4ecdc;--ink:#1a2434}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;display:flex;flex-direction:column;gap:30px;align-items:center;padding:30px}
+.slide{width:1080px;height:1350px;position:relative;overflow:hidden;background:var(--bg);font-family:Poppins;color:var(--white)}
+.ph,.ov{position:absolute;inset:0;background-repeat:no-repeat}
+.c{position:absolute;inset:0;padding:96px 84px 84px}
+.num{font:800 92px/0.9 Spartan;}
+h2{font:700 74px/1.02 Spartan;letter-spacing:-.5px;margin-top:6px}
+p{font-size:35px;line-height:1.42;font-weight:400}
+.cream{color:var(--cream)}.gold{color:var(--gold)}.blue{color:var(--blue)}.coral{color:var(--coral)}
+b{font-weight:700}
+.hand{font:700 52px/1 Caveat}
+.card{background:var(--card);color:var(--ink);border-radius:26px;padding:40px 44px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.pg{position:absolute;top:44px;right:48px;background:rgba(20,26,36,.72);color:#eee;font:500 26px Poppins;padding:8px 20px;border-radius:30px}
+.pill{display:inline-block;border-radius:10px;padding:8px 18px;font:600 27px Poppins}
+.note{position:absolute;left:84px;right:84px;bottom:40px;font-size:20px;line-height:1.35;color:rgba(255,255,255,.55)}
+.arrow{font:700 60px Spartan}
+</style></head><body>
+
+<!-- 1 CAPA -->
+<div class="slide" id="s1">
+ <div class="ph" style="background-image:url(fotos/sorrindo.png);background-size:1180px auto;background-position:-50px -90px"></div>
+ <div class="ov" style="background:linear-gradient(180deg,rgba(13,20,31,.25) 0%,rgba(13,20,31,0) 22%,rgba(13,20,31,.55) 48%,rgba(13,20,31,.96) 68%,#0d141f 100%)"></div>
+ <div class="pg">1/7</div>
+ <div class="c" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:92px">
+  <div style="font:800 100px/0.98 Spartan;letter-spacing:-1px" class="blue">FINANCIAMENTO<br>IMOBILIÁRIO</div>
+  <div style="font:700 66px/1.06 Spartan;margin-top:18px" class="cream">e você não vê<br>a hora de acabar?</div>
+  <p style="margin-top:30px;font-size:36px">Veja quanto ele ainda vai te custar</p>
+  <div class="hand gold" style="margin-top:14px;font-size:58px">(e como pagar menos da metade disso) →</div>
+ </div>
+</div>
+
+<!-- 2 QUANTO CUSTA FICAR -->
+<div class="slide" id="s2">
+ <div class="ph" style="background-image:url(fotos/serio.jpg);background-size:auto 1350px;background-position:-380px 0"></div>
+ <div class="ov" style="background:linear-gradient(90deg,rgba(13,20,31,.93) 0%,rgba(13,20,31,.78) 45%,rgba(13,20,31,.15) 80%),linear-gradient(180deg,rgba(13,20,31,0) 40%,rgba(13,20,31,.9) 62%)"></div>
+ <div class="pg">2/7</div>
+ <div class="c">
+  <div class="num cream">1º</div>
+  <h2 class="cream">Quanto custa<br>ficar</h2>
+  <p style="margin-top:34px;width:500px">Financiamento de <b>R$ 320 mil</b> em 35 anos, a 13,87% ao ano.</p>
+  <div class="hand blue" style="position:absolute;left:92px;top:612px">No fim, a conta fica assim ↓</div>
+  <div class="card" style="position:absolute;left:84px;right:84px;top:690px;padding:44px">
+   <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:22px">
+    <span style="font-size:32px;font-weight:500">Valor que você pegou</span><span class="pill" style="background:#22304a;color:#fff;font-size:32px">R$ 320 mil</span></div>
+   <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-top:2px solid rgba(26,36,52,.15)">
+    <span style="font-size:32px;font-weight:500">Juros e encargos</span><span class="pill" style="background:#c8452f;color:#fff;font-size:32px">R$ 724 mil</span></div>
+   <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:26px;border-top:2px solid rgba(26,36,52,.15)">
+    <span style="font:700 40px Spartan">Total pago</span><span style="font:800 66px Spartan;color:#1a2434">R$ 1,04 milhão</span></div>
+   <div style="display:flex;height:34px;border-radius:10px;overflow:hidden;margin-top:26px;gap:4px">
+    <div style="flex:320;background:#22304a"></div><div style="flex:724;background:#c8452f"></div></div>
+  </div>
+  <div style="position:absolute;left:84px;bottom:84px;font:700 50px/1.1 Spartan" class="gold">Você paga o imóvel três vezes.</div>
+ </div>
+</div>
+
+<!-- 3 A IDEIA -->
+<div class="slide" id="s3">
+ <div class="ph" style="background-image:url(fotos/mesa.jpg);background-size:760px auto;background-position:380px -40px;-webkit-mask-image:linear-gradient(90deg,transparent 36%,#000 62%);mask-image:linear-gradient(90deg,transparent 36%,#000 62%)"></div>
+ <div class="ov" style="background:linear-gradient(180deg,rgba(13,20,31,0) 30%,#0d141f 50%)"></div>
+ <div class="pg">3/7</div>
+ <div class="c">
+  <div class="num gold">2º</div>
+  <h2 class="gold">A ideia</h2>
+  <p style="margin-top:28px;width:520px">Trocar a <b class="coral">dívida cara</b> por uma <b class="blue">dívida barata</b>.</p>
+  <p style="margin-top:22px;width:520px;font-size:29px;color:rgba(244,242,238,.85)">Consórcio não cobra juros. Cobra taxa de administração, diluída no prazo.</p>
+  <div class="hand blue" style="position:absolute;left:92px;top:640px">Como funciona:</div>
+  <div class="card" style="position:absolute;left:84px;right:84px;top:712px;padding:36px 40px;display:flex;flex-direction:column;gap:22px">
+   <div class="st"><i>1</i><span>Você contrata uma carta de <b>R$ 450 mil</b>.</span></div>
+   <div class="st"><i>2</i><span>Na contemplação, usa <b>30% da própria carta</b> como lance.</span></div>
+   <div class="st"><i>3</i><span>Os <b>70% restantes</b> quitam o banco.</span></div>
+   <div class="st"><i>4</i><span>Você passa a dever para o consórcio, a um <b>custo muito menor</b>.</span></div>
+  </div>
+  <div style="position:absolute;left:84px;right:84px;bottom:70px;font:700 40px/1.12 Spartan" class="cream">O que muda é o custo total da sua dívida.</div>
+ </div>
+</div>
+<style>.st{display:flex;align-items:center;gap:22px;font-size:31px;line-height:1.3}.st i{flex:none;width:58px;height:58px;border-radius:14px;background:#22304a;color:var(--gold);font:800 34px/62px Spartan;text-align:center;font-style:normal}</style>
+
+<!-- 4 ESFORÇO -->
+<div class="slide" id="s4">
+ <div class="ph" style="background-image:url(fotos/sorrindo.png);background-size:700px auto;background-position:440px 0;-webkit-mask-image:linear-gradient(90deg,transparent 40%,#000 66%);mask-image:linear-gradient(90deg,transparent 40%,#000 66%)"></div>
+ <div class="ov" style="background:linear-gradient(180deg,rgba(13,20,31,0) 30%,#0d141f 52%)"></div>
+ <div class="pg">4/7</div>
+ <div class="c">
+  <div class="num blue">3º</div>
+  <h2 class="blue">O esforço<br>que reduz<br>o custo</h2>
+  <p style="margin-top:30px;font-size:31px;width:560px">Até a contemplação, você paga <b>as duas parcelas</b> ao mesmo tempo: financiamento + consórcio.</p>
+  <div style="position:absolute;left:84px;right:84px;top:640px;display:flex;gap:20px">
+   <div style="flex:1;border:2px solid rgba(179,205,255,.5);border-radius:22px;padding:24px 28px"><div style="font:800 50px Spartan" class="cream">≈ R$ 1.160</div><div style="font-size:25px;margin-top:4px">a mais por mês</div></div>
+   <div style="flex:1;border:2px solid rgba(179,205,255,.5);border-radius:22px;padding:24px 28px"><div style="font:800 50px Spartan" class="cream">12 a 24 meses</div><div style="font-size:25px;margin-top:4px">esforço temporário, neste exemplo</div></div>
+  </div>
+  <div style="position:absolute;left:84px;right:84px;top:856px;font:700 40px/1.15 Spartan" class="gold">É ele que troca R$ 724 mil de juros por cerca de R$ 300 mil de custo.</div>
+  <div class="card" style="position:absolute;left:84px;right:84px;bottom:76px;padding:34px 40px">
+   <div style="font:800 38px/1.05 Spartan">Sem tirar dinheiro do bolso? <span style="color:#c8452f">Lance fidelidade.</span></div>
+   <div style="font-size:26px;line-height:1.4;margin-top:14px">Só concorre quem já pagou de <b>6 a 12 parcelas em dia</b>, conforme a administradora. Menos concorrentes, mais chance de contemplar cedo.</div>
+  </div>
+ </div>
+</div>
+
+<!-- 5 CENÁRIOS -->
+<div class="slide" id="s5">
+ <div class="ph" style="background-image:url(fotos/serio.jpg);background-size:auto 1000px;background-position:-200px 0"></div>
+ <div class="ov" style="background:linear-gradient(90deg,rgba(13,20,31,.94) 0%,rgba(13,20,31,.8) 48%,rgba(13,20,31,.1) 85%),linear-gradient(180deg,rgba(13,20,31,0) 25%,#0d141f 44%)"></div>
+ <div class="pg">5/7</div>
+ <div class="c">
+  <div class="num cream">4º</div>
+  <h2 class="cream">A conta,<br>cenário<br>a cenário</h2>
+  <p style="margin-top:26px;font-size:30px;width:540px">Valor quitado: <b class="gold">R$ 320 mil</b> em todos os cenários.</p>
+  <div class="card" style="position:absolute;left:84px;right:84px;top:600px;padding:14px 40px">
+   <div class="sc"><div><span class="pill" style="background:#22304a;color:#fff">Contemplado no mês 12</span><div class="eq">R$ 320 mil + R$ 296 mil de custo</div></div><div class="tot">R$ 616 mil</div></div>
+   <div class="sc"><div><span class="pill" style="background:#22304a;color:var(--gold)">Contemplado no mês 18</span><div class="eq">R$ 320 mil + R$ 294 mil de custo</div></div><div class="tot">R$ 614 mil</div></div>
+   <div class="sc" style="border:0"><div><span class="pill" style="background:#22304a;color:#fff">Contemplado no mês 24</span><div class="eq">R$ 320 mil + R$ 313 mil de custo</div></div><div class="tot">R$ 633 mil</div></div>
+  </div>
+  <div style="position:absolute;left:84px;right:84px;bottom:92px;font:700 40px/1.12 Spartan" class="blue">No financiamento, essa mesma conta fecha em R$ 1,04 milhão.</div>
+ </div>
+ <div class="note">Simulação ilustrativa. A contemplação depende de sorteio ou lance e não é garantida.</div>
+</div>
+<style>.sc{display:flex;justify-content:space-between;align-items:center;padding:26px 0;border-bottom:2px solid rgba(26,36,52,.15)}.eq{font-size:26px;margin-top:12px;color:#3a4558}.tot{font:800 54px Spartan;white-space:nowrap}</style>
+
+<!-- 6 LADO A LADO -->
+<div class="slide" id="s6">
+ <div class="ph" style="background-image:url(fotos/mesa.jpg);background-size:700px auto;background-position:430px -30px;-webkit-mask-image:linear-gradient(90deg,transparent 40%,#000 66%);mask-image:linear-gradient(90deg,transparent 40%,#000 66%)"></div>
+ <div class="ov" style="background:linear-gradient(180deg,rgba(13,20,31,0) 22%,#0d141f 38%)"></div>
+ <div class="pg">6/7</div>
+ <div class="c">
+  <div class="num gold">5º</div>
+  <h2 class="gold">Lado a lado</h2>
+  <div class="hand cream" style="margin-top:26px">Mesma dívida, outro custo</div>
+  <div class="card" style="position:absolute;left:84px;right:84px;top:500px;padding:36px 40px">
+   <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:700 34px Spartan">Financiamento</span><span style="font:800 46px Spartan">R$ 1,04 milhão</span></div>
+   <div class="bar"><div style="flex:320;background:#22304a">320 mil</div><div style="flex:724;background:#c8452f">+ 724 mil de juros</div></div>
+   <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:34px"><span style="font:700 34px Spartan">Consórcio</span><span style="font:800 46px Spartan">≈ R$ 620 mil</span></div>
+   <div class="bar"><div style="flex:320;background:#22304a">320 mil</div><div style="flex:300;background:#d9a521;color:#1a2434">+ ≈ 300 mil</div><div style="flex:424;background:transparent"></div></div>
+  </div>
+  <div style="position:absolute;left:84px;right:84px;top:925px;font:800 54px/1.05 Spartan" class="blue">Mais de R$ 400 mil a menos no custo total.</div>
+  <div style="position:absolute;left:84px;right:84px;bottom:96px;border-left:6px solid var(--gold);padding-left:26px">
+   <div style="font:700 36px Spartan" class="gold">Até quando vale?</div>
+   <div style="font-size:26px;line-height:1.42;margin-top:8px">Se a contemplação passar de <b>3 anos</b>, o custo empata com o do financiamento e a troca deixa de compensar. Por isso a estratégia de lance vem <b>antes</b> da contratação.</div>
+  </div>
+ </div>
+ <div class="note">Simulação ilustrativa. A contemplação depende de sorteio ou lance e não é garantida.</div>
+</div>
+<style>.bar{display:flex;height:66px;border-radius:12px;overflow:hidden;margin-top:14px;gap:4px}.bar div{display:flex;align-items:center;padding-left:18px;color:#fff;font:600 25px Poppins;white-space:nowrap}</style>
+
+<!-- 7 CTA -->
+<div class="slide" id="s7">
+ <div class="ph" style="background-image:url(fotos/sorrindo.png);background-size:900px auto;background-position:330px -60px;-webkit-mask-image:linear-gradient(90deg,transparent 30%,#000 62%);mask-image:linear-gradient(90deg,transparent 30%,#000 62%)"></div>
+ <div class="ov" style="background:linear-gradient(180deg,rgba(13,20,31,0) 45%,rgba(13,20,31,.9) 66%,#0d141f 80%)"></div>
+ <div class="pg">7/7</div>
+ <div class="c">
+  <div style="font:800 82px/1.0 Spartan;width:560px;margin-top:40px" class="cream">Quer sair<br>do crédito<br>imobiliário</div>
+  <div style="font:800 82px/1.0 Spartan;margin-top:6px" class="blue">pagando<br>menos?</div>
+  <div style="position:absolute;left:84px;right:84px;bottom:90px">
+   <p style="font-size:33px">Vamos fazer um estudo para entender como você pode sair do financiamento <b>reduzindo o seu custo total</b>.</p>
+   <div style="margin-top:36px;font:800 60px/1.05 Spartan" class="gold">Acesse o link na bio. <span class="hand coral" style="font-size:70px">↗</span></div>
+  </div>
+ </div>
+</div>
+</body></html>
