@@ -1,6 +1,8 @@
 # Reels: "Saia da dívida"
 
-Vídeo vertical 1080x1920, 59 segundos, com gráficos animados e trilha de fundo.
+Vídeo vertical 1080x1920, 57,7 segundos, com gráficos animados, trilha de fundo e a voz do Marcus.
+
+- `out/reels-final-com-voz.mp4`: **versão final para postar**, com a voz limpa e a trilha abaixando quando ele fala.
 
 - `out/reels-com-trilha.mp4`: versão com trilha, pronta para receber a voz.
 - `out/reels-sem-audio.mp4`: só a imagem, caso prefira usar uma música do Instagram.
@@ -56,9 +58,16 @@ Leia em tom de conversa, sem pressa. Cada fala tem uma janela de tempo; se sobra
 - Crédito às famílias a 64% ao ano: Banco Central, divulgado em julho de 2026.
 - Rotativo do cartão a 435,9% ao ano: Banco Central, fevereiro de 2026. R$ 1.000 sem pagamento por 12 meses = R$ 5.359.
 
+## Voz
+
+- Gravação original: `voz/gravacao-original.m4a`.
+- Limpeza (`mixar.py`): filtro de graves, redução de ruído, gate entre as falas, equalização, compressão e normalização. O ruído de fundo passou de 33 dB para 57 dB abaixo da voz.
+- As cenas foram reajustadas para cair nas pausas da gravação (lista `SC` em `reels.html`).
+
 ## Como gerar de novo
 
 - Imagem: `NODE_PATH=/opt/node-tools/node_modules node render.mjs`.
 - Trilha: `python3 trilha.py`.
-- Juntar as duas: `ffmpeg -i out/reels-sem-audio.mp4 -i out/trilha.wav -c:v copy -c:a aac -shortest out/reels-com-trilha.mp4`.
+- Voz limpa + trilha: `python3 mixar.py voz/gravacao-original.m4a`.
+- Juntar imagem e som: `ffmpeg -i out/reels-sem-audio.mp4 -i out/mix-final.wav -c:v copy -c:a aac -shortest out/reels-final-com-voz.mp4`.
 - Os tempos de cada cena estão na lista `SC`, no fim de `reels.html`.

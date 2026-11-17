@@ -168,8 +168,9 @@
 
 <script>
 // Linha do tempo (segundos). Ajustar aqui quando a voz chegar.
-const SC=[['s1',0,4.5],['s2',4.5,10],['s3',10,14],['s4',14,20.5],['s5',20.5,28.5],['s6',28.5,38.5],['s7',38.5,45.5],['s8',45.5,52],['s9',52,59]];
-window.TOTAL=59;
+// Tempos casados com a gravação do Marcus (voz deslocada 1,1 s para trás).
+const SC=[['s1',0,3.1],['s2',3.1,7.76],['s3',7.76,10.51],['s4',10.51,17.26],['s5',17.26,23.91],['s6',23.91,36.25],['s7',36.25,41.21],['s8',41.21,47.77],['s9',47.77,57.7]];
+window.TOTAL=57.7;
 const $=id=>document.getElementById(id);
 const clamp=x=>Math.max(0,Math.min(1,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
@@ -217,26 +218,26 @@ window.setT=function(t){
   // S1
   let l=L('s1');
   pop($('s1h'),seg(l,.1,.7));
-  [...houses.children].forEach((d,i)=>{const k=clamp((l-.8-i*.22)/.3); setHouse(d,i<8&&k>0,k);});
+  [...houses.children].forEach((d,i)=>{const k=clamp((l-.6-i*.2)/.3); setHouse(d,i<8&&k>0,k);});
   // S2
   l=L('s2');
   pop($('s2n'),seg(l,.1,.6));
   const k2=seg(l,.6,3.0); $('s2v').textContent=br(28.9*k2)+'%';
   const C2=2*Math.PI*260; $('arc2').setAttribute('stroke-dasharray',`${C2*.289*k2} ${C2}`);
-  const ks=clamp((l-3.2)/.35); $('stamp').style.opacity=ks; $('stamp').style.transform=`rotate(12deg) scale(${2.2-1.2*ease(ks)})`;
+  const ks=clamp((l-3.5)/.35); $('stamp').style.opacity=ks; $('stamp').style.transform=`rotate(12deg) scale(${2.2-1.2*ease(ks)})`;
   // S3
   l=L('s3');
   $('s3i').style.transform=`scale(${1.05+.012*l})`;
-  pop($('s3a'),seg(l,.15,.7)); pop($('s3b'),seg(l,1.6,2.2));
+  pop($('s3a'),seg(l,.1,.6)); pop($('s3b'),seg(l,1.4,1.9));
   // S4 túnel
   l=L('s4');
   $('s4i').style.transform=`scaleX(-1) scale(${1.6+.04*l})`;
   const r=78-38*seg(l,.3,4.5);
   $('tunnel').style.background=`radial-gradient(ellipse at 50% 32%, rgba(7,13,36,0) ${r*.55}%, rgba(7,13,36,.96) ${r}%), linear-gradient(180deg, rgba(7,13,36,0) 45%, rgba(7,13,36,.95) 62%)`;
-  pop($('s4l'),seg(l,2.4,3.0));
+  pop($('s4l'),seg(l,4.25,4.8));
   // S5 ciclo: 2 voltas
   l=L('s5');
-  const T0=.6, laps=[3.6,3.0]; let tt=Math.max(0,l-T0), lap=0, f=0;
+  const T0=.4, laps=[3.2,2.8]; let tt=Math.max(0,l-T0), lap=0, f=0;
   while(lap<laps.length && tt>laps[lap]){tt-=laps[lap]; lap++;}
   if(lap>=laps.length){lap=laps.length-1; f=1;} else f=tt/laps[lap];
   if(l<T0) f=0;
@@ -248,14 +249,14 @@ window.setT=function(t){
   const done=lap+f; $('hope').style.width=(100-done*42)+'%'; $('hope').style.background=done>1.3?'#ff5a6a':'#e3b65a';
   // S6 juros
   l=L('s6');
-  const W=900, MAX=435.9, a1=seg(l,2.0,2.9), a2=seg(l,4.2,5.2), a3=seg(l,6.6,8.4);
-  $('r1').style.opacity=seg(l,1.8,2.1); $('r2').style.opacity=seg(l,4.0,4.3); $('r3').style.opacity=seg(l,6.4,6.7);
+  const W=900, MAX=435.9, a1=seg(l,2.0,2.9), a2=seg(l,4.8,5.8), a3=seg(l,8.6,10.8);
+  $('r1').style.opacity=seg(l,1.8,2.1); $('r2').style.opacity=seg(l,4.6,4.9); $('r3').style.opacity=seg(l,8.4,8.7);
   $('j1').textContent=br(13.75*a1,2)+'%'; $('j1b').style.width=Math.max(14,W*13.75/MAX)*a1+'px';
   $('j2').textContent=Math.round(64*a2)+'%'; $('j2b').style.width=W*64/MAX*a2+'px';
   $('j3').textContent=br(435.9*a3)+'%'; $('j3b').style.width=W*a3+'px';
   // S7 curva
   l=L('s7');
-  const mm=12*seg(l,.6,4.4); let d='';
+  const mm=12*seg(l,.3,3.4); let d='';
   for(let m=0;m<=mm+1e-6;m+=.1) d+=(d?'L':'M')+gx(Math.min(m,mm)).toFixed(1)+' '+gy(val(Math.min(m,mm))).toFixed(1);
   d+='L'+gx(mm).toFixed(1)+' '+gy(val(mm)).toFixed(1);
   $('line7').setAttribute('d',d); $('area7').setAttribute('d',d+`L${gx(mm)} ${G.y0} L${G.x0} ${G.y0} Z`);
@@ -264,15 +265,15 @@ window.setT=function(t){
   const tw=txt.length*36+40, tx=Math.min(Math.max(vx-tw/2,G.x0), G.x1-tw), ty=vy-130;
   $('tagr').setAttribute('x',tx); $('tagr').setAttribute('y',ty); $('tagr').setAttribute('width',tw);
   $('tagt').setAttribute('x',tx+20); $('tagt').setAttribute('y',ty+68);
-  $('x5').setAttribute('opacity',seg(l,4.6,5.2));
+  $('x5').setAttribute('opacity',seg(l,3.5,4.0));
   // S8
   l=L('s8');
   $('s8i').style.transform=`scale(${1.22+.01*l})`;
-  [...$('checks').children].forEach((c,i)=>pop(c,seg(l,1.4+i*.9,1.9+i*.9),30));
+  [1.9,3.25,4.2].forEach((a,i)=>pop($('checks').children[i],seg(l,a,a+.5),30));
   // S9
   l=L('s9');
   pop($('s9c'),seg(l,.1,.8),60);
-  const kb=seg(l,2.6,3.2); $('btn').style.opacity=kb; $('btn').style.transform=`scale(${(.9+.1*back(kb))*(1+.025*Math.sin(Math.max(0,l-3.2)*5))})`;
+  const kb=seg(l,3.7,4.3); $('btn').style.opacity=kb; $('btn').style.transform=`scale(${(.9+.1*back(kb))*(1+.025*Math.sin(Math.max(0,l-4.3)*5))})`;
 };
 setT(new URLSearchParams(location.search).has('t')?+new URLSearchParams(location.search).get('t'):0);
 </script>
