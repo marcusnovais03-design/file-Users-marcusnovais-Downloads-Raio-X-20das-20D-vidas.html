@@ -1,0 +1,4 @@
+out/log-*.txt
+out/.st*
+out/*-trilha.wav
+out/*-sem-audio.mp4
