@@ -5,7 +5,7 @@
 **Em todos os vídeos**
 - **@mnovais discreto:** canto inferior, dentro da área segura, em branco com 60% de opacidade.
 - **Selo da série:** "TESOURO SEM MISTÉRIO · EP X/8" no topo.
-- **Simulação:** sempre R$ 10 mil investidos hoje.
+- **Simulação:** R$ 10 mil investidos hoje (EPs 1 a 6) e R$ 100 mil (EPs 7 e 8).
 - **Encerramento:** "Me segue pra ver o próximo título da série" + "Comenta TESOURO".
 - **Rodapé da simulação:** "Simulação hipotética. Taxas de novembro de 2026. Não é recomendação de investimento."
 
@@ -31,7 +31,7 @@
 
 ---
 
-## EP 1: Tesouro Reserva (cerca de 50 s)
+## EP 1: Tesouro Reserva (cerca de 58 s)
 **Gancho:** "Seu dinheiro parado na conta está perdendo pra um título que você resgata até domingo à noite."
 
 | Tempo | Na tela | Você fala |
@@ -41,8 +41,9 @@
 | 0:12–0:20 | Linha subindo dia a dia + "100% da Selic" | "Ele rende a Selic, que hoje está em 13,75% ao ano, e rende todo dia. Começa com um real." |
 | 0:20–0:27 | Calendário com 24h / 7 dias acendendo | "E o diferencial: você resgata a qualquer hora, inclusive à noite, fim de semana e feriado." |
 | 0:27–0:37 | **Gráfico de barras em 1 ano:** poupança ≈ R$ 10.790; Tesouro Reserva ≈ R$ 11.133 líquido | "Dez mil reais em um ano: na poupança, uns dez mil e setecentos. No Tesouro Reserva, já descontado o imposto, cerca de onze mil e cem." |
-| 0:37–0:44 | Checklist de custos | "Até dez mil reais não tem taxa de custódia. Tem imposto de renda só sobre o lucro, e IOF se tirar antes de 30 dias." |
-| 0:44–0:50 | Para quem: "reserva de emergência" + CTA | "Pra quem é? Pra quem quer dinheiro seguro e à mão. Me segue pra ver o próximo título da série." |
+| 0:37–0:42 | Checklist de custos | "Até dez mil reais não tem taxa de custódia, e o imposto de renda é só sobre o lucro." |
+| 0:42–0:52 | **Alerta IOF:** barras caindo do 1º ao 30º dia (96% → 0%), placa vermelha "ATENÇÃO" | "Mas atenção ao IOF: se você resgatar antes de 30 dias, ele pode levar até 96% do que rendeu. No primeiro dia é 96%, e vai caindo até zerar no trigésimo dia." |
+| 0:52–0:58 | Para quem: "reserva de emergência" + CTA | "Pra quem é? Pra quem quer dinheiro seguro e à mão. Me segue pra ver o próximo título da série." |
 
 ## EP 2: Tesouro Selic (cerca de 50 s)
 **Gancho:** "O investimento mais seguro do Brasil rende mais que a poupança. Por que você ainda não usa?"
@@ -108,26 +109,26 @@
 | 0:42–0:50 | Para quem + CTA | "Pra quem é? Pra quem já vive de renda ou quer complementar a aposentadoria. Me segue pra ver o próximo." |
 
 ## EP 7: Tesouro Renda+ Aposentadoria Extra (cerca de 55 s)
-**Gancho:** "Quanto R$ 10 mil investidos hoje viram por mês na sua aposentadoria?"
+**Gancho:** "Quanto R$ 100 mil investidos hoje viram por mês na sua aposentadoria?"
 
 | Tempo | Na tela | Você fala |
 |---|---|---|
-| 0:00–0:05 | "R$ 10.000 hoje = ? por mês" | "Quanto dez mil reais investidos hoje viram por mês na sua aposentadoria?" |
+| 0:00–0:05 | "R$ 100.000 hoje = ? por mês" | "Quanto cem mil reais investidos hoje viram por mês na sua aposentadoria?" |
 | 0:05–0:13 | Foto + "TESOURO RENDA+" | "O Tesouro Renda+ foi feito pra isso. Você escolhe o ano em que quer se aposentar e ele vira uma renda mensal por 20 anos." |
-| 0:13–0:27 | **Gráfico de dois momentos:** acumula até 2050, depois 240 barras mensais de ≈ R$ 420 | "Dez mil reais hoje no Renda+ 2050, a inflação mais 7,5%, viram uns quatrocentos e vinte reais por mês, durante 20 anos, em dinheiro de hoje." |
-| 0:27–0:37 | Três cenários: 2040 ≈ R$ 204 · 2050 ≈ R$ 420 · 2060 ≈ R$ 866 | "Quanto mais cedo você começa, maior a renda. No Renda+ 2060, a mesma aplicação vira quase oitocentos e setenta por mês." |
+| 0:13–0:27 | **Gráfico de dois momentos:** acumula até 2050 (≈ R$ 531 mil em dinheiro de hoje), depois 240 barras mensais de ≈ R$ 4.200 | "Cem mil reais hoje no Renda+ 2050, a inflação mais 7,5%, viram uns quatro mil e duzentos reais por mês, durante 20 anos, em dinheiro de hoje." |
+| 0:27–0:37 | Três cenários: 2040 ≈ R$ 2.040 · 2050 ≈ R$ 4.200 · 2060 ≈ R$ 8.660 | "Quanto mais cedo você começa, maior a renda. No Renda+ 2060, a mesma aplicação vira mais de oito mil e seiscentos por mês." |
 | 0:37–0:46 | Custos: custódia zero até 6 salários mínimos por mês | "E se levar até o fim, não paga taxa de custódia pra renda de até seis salários mínimos. O imposto é descontado em cada parcela." |
 | 0:46–0:55 | Para quem + CTA | "Pra quem é? Pra quem quer complementar o INSS. Me segue pra ver o último episódio." |
 
 ## EP 8: Tesouro Educa+ (cerca de 50 s)
-**Gancho:** "O título que ajuda a pagar a faculdade do seu filho."
+**Gancho:** "R$ 100 mil hoje podem pagar a faculdade do seu filho inteira?"
 
 | Tempo | Na tela | Você fala |
 |---|---|---|
-| 0:00–0:05 | Capelo de formatura + "R$ 10.000" | "Esse título do governo foi criado pra ajudar a pagar a faculdade do seu filho." |
+| 0:00–0:05 | Capelo de formatura + "R$ 100.000" | "Cem mil reais hoje podem pagar a faculdade do seu filho? Esse título do governo foi criado pra isso." |
 | 0:05–0:13 | Foto + "TESOURO EDUCA+" | "É o Tesouro Educa+. Você escolhe o ano em que seu filho vai entrar na faculdade, e ele paga uma renda mensal por cinco anos." |
-| 0:13–0:27 | **Gráfico:** acumula até 2036 e depois 60 parcelas de ≈ R$ 383 | "Dez mil reais hoje no Educa+ 2036, a inflação mais 7,46%, viram uns trezentos e oitenta reais por mês, durante cinco anos, em dinheiro de hoje." |
-| 0:27–0:35 | Educa+ 2041: ≈ R$ 549 por mês | "Se o seu filho for mais novo, o dinheiro rende por mais tempo: no Educa+ 2041, passa de quinhentos e quarenta por mês." |
+| 0:13–0:27 | **Gráfico:** acumula até 2036 (≈ R$ 192 mil em dinheiro de hoje) e depois 60 parcelas de ≈ R$ 3.830 | "Cem mil reais hoje no Educa+ 2036, a inflação mais 7,46%, viram uns três mil e oitocentos reais por mês, durante cinco anos, em dinheiro de hoje." |
+| 0:27–0:35 | Educa+ 2041: ≈ R$ 5.490 por mês | "Se o seu filho for mais novo, o dinheiro rende por mais tempo: no Educa+ 2041, quase cinco mil e quinhentos por mês." |
 | 0:35–0:43 | Custos | "Levando até o fim, não paga taxa de custódia pra renda de até quatro salários mínimos. O imposto é descontado em cada parcela." |
 | 0:43–0:50 | Para quem + CTA da série | "Pra quem é? Pra pais que querem planejar o estudo dos filhos. Essa foi a série completa. Comenta TESOURO e me segue pra mais conteúdos assim." |
 
@@ -143,6 +144,7 @@
 - **Educa+ 2044 a IPCA + 7,46%:** 12/11/2026. Usei 7,46% para os outros vencimentos.
 - **Tesouro Reserva:** lançado em maio de 2026; 100% da Selic, resgate 24 h por dia, 7 dias por semana, aplicação a partir de R$ 1, custódia isenta até R$ 10 mil.
 - **Custódia:** 0,20% ao ano. Tesouro Selic isento até R$ 10 mil por CPF. Renda+ isento para renda de até 6 salários mínimos e Educa+ para renda de até 4, levando até o vencimento.
+- **IOF:** tabela regressiva sobre o rendimento em resgates antes de 30 dias: 96% no 1º dia, 66% no 10º, 33% no 20º e 0% a partir do 30º.
 - **Poupança:** estimada em cerca de 7,9% ao ano (0,5% ao mês + TR).
 - **Juros semestrais:** os valores dos cupons são estimativas a partir do preço do título na taxa atual.
 - **Renda+ e Educa+:** as rendas mensais estão em valores de hoje. No vencimento, as parcelas são corrigidas pela inflação.
