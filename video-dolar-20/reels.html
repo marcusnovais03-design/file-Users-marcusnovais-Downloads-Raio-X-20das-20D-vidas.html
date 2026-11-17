@@ -269,7 +269,7 @@ B.forwho=(c)=>({html:`${EP.semFoto?'':`<div class="card"><img src="${FT.f}" styl
 B.series=(c)=>{ const W=760,X0=110,Y0=640,Y1=70; const n=c.a.length; const vmax=Math.max(...c.a,...c.b)*1.12, vmin=Math.min(...c.a,...c.b)*0.85;
   const gx=i=>X0+W*i/(n-1), gy=v=>Y0-(Y0-Y1)*(v-vmin)/(vmax-vmin);
   let ticks=''; c.anos.forEach(([i,t])=>{ ticks+=`<text x="${gx(i)}" y="${Y0+50}" text-anchor="middle" font-family="Inter" font-size="28" fill="rgba(255,255,255,.6)">${t}</text>`; });
-  [200000,400000,600000,800000].forEach(v=>{ if(v<vmax&&v>vmin) ticks+=`<line x1="${X0}" x2="${X0+W}" y1="${gy(v)}" y2="${gy(v)}" stroke="rgba(255,255,255,.12)" stroke-width="2"/><text x="${X0-16}" y="${gy(v)+10}" text-anchor="end" font-family="Inter" font-size="28" fill="rgba(255,255,255,.6)">${v/1000} mil</text>`; });
+  (c.ticks||[200000,400000,600000,800000]).forEach(v=>{ if(v<vmax&&v>vmin) ticks+=`<line x1="${X0}" x2="${X0+W}" y1="${gy(v)}" y2="${gy(v)}" stroke="rgba(255,255,255,.12)" stroke-width="2"/><text x="${X0-16}" y="${gy(v)+10}" text-anchor="end" font-family="Inter" font-size="28" fill="rgba(255,255,255,.6)">${v/1000} mil</text>`; });
   const html=bgPhoto()+`<h2>${c.title}</h2>${c.desc?`<div class="lead" style="margin:-8px 0 6px; font-size:${c.descSize||34}px">${c.desc}</div>`:''}<svg class="ch" viewBox="0 0 900 760" style="height:${c.chartH||550}px; width:${(c.chartH||550)*900/760}px">${ticks}
     <line x1="${X0}" y1="${Y0}" x2="${X0+W}" y2="${Y0}" stroke="rgba(255,255,255,.6)" stroke-width="4"/>
     <path class="la" fill="none" stroke="#8d93a8" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/><path class="lb" fill="none" stroke="#e3b65a" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
@@ -284,7 +284,7 @@ B.series=(c)=>{ const W=760,X0=110,Y0=640,Y1=70; const n=c.a.length; const vmax=
     el.querySelector('.la').setAttribute('d',pa); el.querySelector('.lb').setAttribute('d',pb);
     const x=gx(k); el.querySelector('.da').setAttribute('cx',x); el.querySelector('.da').setAttribute('cy',gy(va)); el.querySelector('.db').setAttribute('cx',x); el.querySelector('.db').setAttribute('cy',gy(vb));
     const ta=el.querySelector('.ta'), tb=el.querySelector('.tb'), tla=el.querySelector('.tla'), tlb=el.querySelector('.tlb');
-    const tx=Math.max(x-24,X0+330); ta.textContent=brl(va); ta.setAttribute('x',tx); ta.setAttribute('y',Y0-80); tla.setAttribute('x',tx); tla.setAttribute('y',Y0-44); const lo=seg(k/(n-1),.22,.32); [ta,tla,tb,tlb].forEach(t=>t.setAttribute('opacity',lo));
+    const tx=X0+W-24; ta.textContent=brl(va); ta.setAttribute('x',tx); ta.setAttribute('y',Y0-80); tla.setAttribute('x',tx); tla.setAttribute('y',Y0-44); const lo=seg(k/(n-1),.22,.32); [ta,tla,tb,tlb].forEach(t=>t.setAttribute('opacity',lo));
     tb.textContent=brl(vb); tb.setAttribute('x',tx); tb.setAttribute('y',gy(vb)-62); tlb.setAttribute('x',tx); tlb.setAttribute('y',gy(vb)-26);
     pop(el.querySelector('.lead'),seg(l,.4,.9)); pop(el.querySelector('.final'),seg(l,8.0,8.7)); el.querySelector('.note').style.opacity=seg(l,8.6,9.2)*.9; }}; };
 B.crises=(c)=>{ const max=Math.max(...c.items.map(x=>x[1]));
