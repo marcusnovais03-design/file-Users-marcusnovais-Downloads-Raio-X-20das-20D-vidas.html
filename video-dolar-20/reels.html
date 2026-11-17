@@ -270,22 +270,22 @@ B.series=(c)=>{ const W=760,X0=110,Y0=640,Y1=70; const n=c.a.length; const vmax=
   const gx=i=>X0+W*i/(n-1), gy=v=>Y0-(Y0-Y1)*(v-vmin)/(vmax-vmin);
   let ticks=''; c.anos.forEach(([i,t])=>{ ticks+=`<text x="${gx(i)}" y="${Y0+50}" text-anchor="middle" font-family="Inter" font-size="28" fill="rgba(255,255,255,.6)">${t}</text>`; });
   [200000,400000,600000,800000].forEach(v=>{ if(v<vmax&&v>vmin) ticks+=`<line x1="${X0}" x2="${X0+W}" y1="${gy(v)}" y2="${gy(v)}" stroke="rgba(255,255,255,.12)" stroke-width="2"/><text x="${X0-16}" y="${gy(v)+10}" text-anchor="end" font-family="Inter" font-size="28" fill="rgba(255,255,255,.6)">${v/1000} mil</text>`; });
-  const html=bgPhoto()+`<h2>${c.title}</h2>${c.desc?`<div class="lead" style="margin:-8px 0 6px; font-size:34px">${c.desc}</div>`:''}<svg class="ch" viewBox="0 0 900 760" style="height:550px; width:651px">${ticks}
+  const html=bgPhoto()+`<h2>${c.title}</h2>${c.desc?`<div class="lead" style="margin:-8px 0 6px; font-size:${c.descSize||34}px">${c.desc}</div>`:''}<svg class="ch" viewBox="0 0 900 760" style="height:${c.chartH||550}px; width:${(c.chartH||550)*900/760}px">${ticks}
     <line x1="${X0}" y1="${Y0}" x2="${X0+W}" y2="${Y0}" stroke="rgba(255,255,255,.6)" stroke-width="4"/>
     <path class="la" fill="none" stroke="#8d93a8" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/><path class="lb" fill="none" stroke="#e3b65a" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
     <circle class="da" r="13" fill="#fff"/><circle class="db" r="15" fill="#fff"/>
     <text class="ta tagv" text-anchor="end" font-size="50" fill="#fff"></text><text class="tla" text-anchor="end" font-family="Inter" font-weight="700" font-size="28" fill="rgba(255,255,255,.8)">${c.la}</text>
     <text class="tb tagv" text-anchor="end" font-size="56" fill="#e3b65a"></text><text class="tlb" text-anchor="end" font-family="Inter" font-weight="700" font-size="28" fill="rgba(255,255,255,.8)">${c.lb}</text>
   </svg><div class="final">${c.delta}</div><div class="note">${c.note}</div>`;
-  return {html, up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6));
+  return {html, up(el,l){ l*=(c.ritmo||1); pop(el.querySelector('h2'),seg(l,.1,.6));
     const k=seg(l,.8,7.5)*(n-1), j=Math.floor(k), f=k-j;
     const path=arr=>{ let d=''; for(let i=0;i<=j;i++) d+=(d?'L':'M')+gx(i).toFixed(1)+' '+gy(arr[i]).toFixed(1); if(j<n-1){ const v=arr[j]+(arr[j+1]-arr[j])*f; d+='L'+gx(k).toFixed(1)+' '+gy(v).toFixed(1); return [d,v]; } return [d,arr[n-1]]; };
     const [pa,va]=path(c.a), [pb,vb]=path(c.b);
     el.querySelector('.la').setAttribute('d',pa); el.querySelector('.lb').setAttribute('d',pb);
     const x=gx(k); el.querySelector('.da').setAttribute('cx',x); el.querySelector('.da').setAttribute('cy',gy(va)); el.querySelector('.db').setAttribute('cx',x); el.querySelector('.db').setAttribute('cy',gy(vb));
     const ta=el.querySelector('.ta'), tb=el.querySelector('.tb'), tla=el.querySelector('.tla'), tlb=el.querySelector('.tlb');
-    ta.textContent=brl(va); ta.setAttribute('x',x-24); ta.setAttribute('y',Math.max(gy(va)+125,Y0-80)); tla.setAttribute('x',x-24); tla.setAttribute('y',Math.max(gy(va)+160,Y0-44));
-    tb.textContent=brl(vb); tb.setAttribute('x',x-24); tb.setAttribute('y',gy(vb)-62); tlb.setAttribute('x',x-24); tlb.setAttribute('y',gy(vb)-26);
+    const tx=Math.max(x-24,X0+330); ta.textContent=brl(va); ta.setAttribute('x',tx); ta.setAttribute('y',Y0-80); tla.setAttribute('x',tx); tla.setAttribute('y',Y0-44); const lo=seg(k/(n-1),.22,.32); [ta,tla,tb,tlb].forEach(t=>t.setAttribute('opacity',lo));
+    tb.textContent=brl(vb); tb.setAttribute('x',tx); tb.setAttribute('y',gy(vb)-62); tlb.setAttribute('x',tx); tlb.setAttribute('y',gy(vb)-26);
     pop(el.querySelector('.lead'),seg(l,.4,.9)); pop(el.querySelector('.final'),seg(l,8.0,8.7)); el.querySelector('.note').style.opacity=seg(l,8.6,9.2)*.9; }}; };
 B.crises=(c)=>{ const max=Math.max(...c.items.map(x=>x[1]));
   const html=bgPhoto()+`<h2>${c.title}</h2><div class="lead" style="margin:-6px 0 18px; font-size:42px">${c.sub}</div>
