@@ -67,6 +67,7 @@
   .cmp .h { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:58px; letter-spacing:-.04em; color:var(--gold); }
   .cmp .p { font-size:40px; line-height:1.2; margin-top:8px; color:var(--soft); }
   .cmp svg { width:820px; height:120px; margin-top:16px; }
+  .nofoto .title, .nofoto .stat, .nofoto .who { justify-content:center; padding-bottom:420px; }
   /* para quem */
   .who .card { height:470px; border-radius:40px; overflow:hidden; border:6px solid var(--gold); margin-bottom:34px; flex:none; }
   .who .card img { width:100%; height:100%; object-fit:cover; display:block; }
@@ -99,7 +100,7 @@ const FOTOS={
 const FT=FOTOS[EP.foto];
 const stage=document.getElementById('stage');
 document.getElementById('epl').textContent=EP.tag||`EP ${EP.ep}/8`; document.querySelector('.top .s').textContent=EP.serie||'TESOURO SEM MISTÉRIO';
-document.getElementById('hav').src=FT.f;
+document.getElementById('hav').src=FT.f; if(EP.semFoto) document.getElementById('hav').style.display='none'; if(EP.semFoto) stage.classList.add('nofoto');
 
 const clamp=x=>Math.max(0,Math.min(1,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
@@ -113,6 +114,7 @@ const CHECK='<svg width="42" height="42" viewBox="0 0 40 40"><path d="M8 21l8 8 
 let photoN=0;
 function bgPhoto(kind){
   photoN++;
+  if(EP.semFoto) return '';
   const mir=photoN%2===0?'scaleX(-1) ':'';
   if(kind==='title') return `<div class="bg"><img data-kb="1.06,1.16" style="object-position:${FT.pos}; transform-origin:${FT.o}; filter:contrast(1.05)"></div>
     <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.92) 0%, rgba(7,13,36,.55) 20%, rgba(7,13,36,.1) 34%, rgba(7,13,36,.9) 60%, rgba(7,13,36,.97) 100%)"></div>`;
@@ -257,10 +259,10 @@ B.compare=(c)=>({html:bgPhoto()+`<h2>Qual a diferença?</h2>
   up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6)); pop(el.querySelector('.ca'),seg(l,.6,1.1)); pop(el.querySelector('.cb2'),seg(l,2.6,3.1));
     const h1=110*seg(l,1.4,2.4); const r1=el.querySelector('.r1'); r1.setAttribute('y',114-h1); r1.setAttribute('height',h1);
     el.querySelectorAll('.r2').forEach((r,i)=>{ const h=40*seg(l,3.4+i*.15,3.7+i*.15); r.setAttribute('y',114-h); r.setAttribute('height',h); }); }});
-B.forwho=(c)=>({html:`<div class="card"><img src="${FT.f}" style="object-position:${FT.pos}; transform-origin:${FT.o}"></div><div class="pill">Pra quem é?</div><h1 class="${c.answer.length>30?'long':''}">${c.answer}</h1>
+B.forwho=(c)=>({html:`${EP.semFoto?'':`<div class="card"><img src="${FT.f}" style="object-position:${FT.pos}; transform-origin:${FT.o}"></div>`}<div class="pill">Pra quem é?</div><h1 class="${c.answer.length>30?'long':''}">${c.answer}</h1>
   <div class="cta"><svg width="44" height="34" viewBox="0 0 38 28" fill="none" stroke="#e3b65a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg>${c.cta}</div><div class="badge">${c.badge||"Comenta TESOURO"}</div>
   <div class="disc">${c.disc||"Simulações hipotéticas com taxas de novembro de 2026. Não é recomendação de investimento."}</div>`, cls:'who',
-  up(el,l){ const cd=el.querySelector('.card'); pop(cd,seg(l,.05,.6),60); cd.querySelector('img').style.transform=`scale(${1.25-.012*l*10/ (10)})`;
+  up(el,l){ const cd=el.querySelector('.card'); if(cd){ pop(cd,seg(l,.05,.6),60); } if(cd) cd.querySelector('img').style.transform=`scale(${1.25-.012*l*10/ (10)})`;
     pop(el.querySelector('.pill'),seg(l,.5,.9)); pop(el.querySelector('h1'),seg(l,.7,1.3)); pop(el.querySelector('.cta'),seg(l,2.0,2.5));
     const b=el.querySelector('.badge'); pop(b,seg(l,2.8,3.3)); b.style.transform+=` scale(${1+.03*Math.sin(Math.max(0,l-3.3)*5)})`; }});
 
@@ -268,7 +270,7 @@ B.series=(c)=>{ const W=760,X0=110,Y0=640,Y1=70; const n=c.a.length; const vmax=
   const gx=i=>X0+W*i/(n-1), gy=v=>Y0-(Y0-Y1)*(v-vmin)/(vmax-vmin);
   let ticks=''; c.anos.forEach(([i,t])=>{ ticks+=`<text x="${gx(i)}" y="${Y0+50}" text-anchor="middle" font-family="Inter" font-size="28" fill="rgba(255,255,255,.6)">${t}</text>`; });
   [200000,400000,600000,800000].forEach(v=>{ if(v<vmax&&v>vmin) ticks+=`<line x1="${X0}" x2="${X0+W}" y1="${gy(v)}" y2="${gy(v)}" stroke="rgba(255,255,255,.12)" stroke-width="2"/><text x="${X0-16}" y="${gy(v)+10}" text-anchor="end" font-family="Inter" font-size="28" fill="rgba(255,255,255,.6)">${v/1000} mil</text>`; });
-  const html=bgPhoto()+`<h2>${c.title}</h2><svg class="ch" viewBox="0 0 900 760" style="height:640px; width:758px">${ticks}
+  const html=bgPhoto()+`<h2>${c.title}</h2>${c.desc?`<div class="lead" style="margin:-8px 0 6px; font-size:34px">${c.desc}</div>`:''}<svg class="ch" viewBox="0 0 900 760" style="height:550px; width:651px">${ticks}
     <line x1="${X0}" y1="${Y0}" x2="${X0+W}" y2="${Y0}" stroke="rgba(255,255,255,.6)" stroke-width="4"/>
     <path class="la" fill="none" stroke="#8d93a8" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/><path class="lb" fill="none" stroke="#e3b65a" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
     <circle class="da" r="13" fill="#fff"/><circle class="db" r="15" fill="#fff"/>
@@ -282,9 +284,9 @@ B.series=(c)=>{ const W=760,X0=110,Y0=640,Y1=70; const n=c.a.length; const vmax=
     el.querySelector('.la').setAttribute('d',pa); el.querySelector('.lb').setAttribute('d',pb);
     const x=gx(k); el.querySelector('.da').setAttribute('cx',x); el.querySelector('.da').setAttribute('cy',gy(va)); el.querySelector('.db').setAttribute('cx',x); el.querySelector('.db').setAttribute('cy',gy(vb));
     const ta=el.querySelector('.ta'), tb=el.querySelector('.tb'), tla=el.querySelector('.tla'), tlb=el.querySelector('.tlb');
-    ta.textContent=brl(va); ta.setAttribute('x',x-24); ta.setAttribute('y',gy(va)+125); tla.setAttribute('x',x-24); tla.setAttribute('y',gy(va)+160);
+    ta.textContent=brl(va); ta.setAttribute('x',x-24); ta.setAttribute('y',Math.max(gy(va)+125,Y0-80)); tla.setAttribute('x',x-24); tla.setAttribute('y',Math.max(gy(va)+160,Y0-44));
     tb.textContent=brl(vb); tb.setAttribute('x',x-24); tb.setAttribute('y',gy(vb)-62); tlb.setAttribute('x',x-24); tlb.setAttribute('y',gy(vb)-26);
-    pop(el.querySelector('.final'),seg(l,8.0,8.7)); el.querySelector('.note').style.opacity=seg(l,8.6,9.2)*.9; }}; };
+    pop(el.querySelector('.lead'),seg(l,.4,.9)); pop(el.querySelector('.final'),seg(l,8.0,8.7)); el.querySelector('.note').style.opacity=seg(l,8.6,9.2)*.9; }}; };
 B.crises=(c)=>{ const max=Math.max(...c.items.map(x=>x[1]));
   const html=bgPhoto()+`<h2>${c.title}</h2><div class="lead" style="margin:-6px 0 18px; font-size:42px">${c.sub}</div>
   <svg class="ch" viewBox="0 0 900 640" height="640"><line x1="0" y1="540" x2="900" y2="540" stroke="rgba(255,255,255,.6)" stroke-width="4"/>

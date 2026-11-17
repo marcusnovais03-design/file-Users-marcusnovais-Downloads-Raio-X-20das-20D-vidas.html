@@ -1,6 +1,6 @@
 # Reels: "20% em dólar muda o resultado da sua carteira?"
 
-Vídeo vertical 1080x1920, cerca de 62 segundos, gráficos com dados reais. Grave um áudio só, com um segundo de pausa entre as frases. Eu limpo o som e encaixo cada frase na cena certa.
+Vídeo vertical 1080x1920, 62 segundos, só gráficos e texto (sem foto), com @mnovais discreto. Arquivo: `out/dolar-20-com-trilha.mp4`. Grave um áudio só, com um segundo de pausa entre as frases. Eu limpo o som e encaixo cada frase na cena certa.
 
 ## EP 1 · 20% em dólar
 1. Colocar só 20% da sua carteira em dólar muda o resultado? Eu fiz a conta.
