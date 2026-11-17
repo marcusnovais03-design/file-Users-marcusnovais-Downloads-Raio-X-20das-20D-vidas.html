@@ -266,7 +266,7 @@ B.forwho=(c)=>({html:`<div class="card"><img src="${FT.f}" style="object-positio
 // ---------- montagem ----------
 let t0=0; const SC=EP.cenas.map((c,i)=>{ const b=B[c.t](c); const el=document.createElement('section'); el.className='sc '+(b.cls||''); el.innerHTML=b.html; stage.appendChild(el);
   el.querySelectorAll('.bg img').forEach(im=>im.src=FT.f);
-  const r={el,up:b.up,s:t0,e:t0+c.d}; t0+=c.d; return r; });
+  const d=(window.TEMPOS&&window.TEMPOS[i])||c.d; const r={el,up:b.up,s:t0,e:t0+d,f:Math.max(1,c.d/d)}; t0+=d; return r; });
 window.TOTAL=t0;
 window.fitAll=function(){ document.querySelectorAll('.hook .hname, .hook .big, .hook .ln, .fitw, .stat .big').forEach(el=>{
   const sc=el.closest('.sc'); const v=sc.style.visibility; sc.style.visibility='visible';
@@ -280,7 +280,7 @@ window.setT=function(t){
     s.el.style.opacity=o; s.el.style.visibility=o>0?'visible':'hidden';
     if(o>0){ const l=t-s.s;
       s.el.querySelectorAll('.bg img').forEach(im=>{ const [a,b]=(im.dataset.kb||'1.1,1.2').split(',').map(Number); const k=clamp(l/(s.e-s.s)); im.style.transform=`${im.dataset.mir||''}scale(${a+(b-a)*k})`; });
-      s.up(s.el,l); } });
+      s.up(s.el,l*s.f); } });
 };
 setT(Q.has('t')?+Q.get('t'):0);
 </script>

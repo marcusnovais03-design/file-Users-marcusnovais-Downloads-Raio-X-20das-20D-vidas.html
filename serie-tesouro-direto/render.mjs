@@ -21,6 +21,8 @@ const ep = +epArg;
 const tag = 'ep' + String(ep).padStart(2, '0');
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
+const tempos = path.join(dir, 'out', `ep${String(ep).padStart(2, '0')}-tempos.json`);
+if (fs.existsSync(tempos) && !process.env.SEM_VOZ) await page.addInitScript(t => { window.TEMPOS = t; }, JSON.parse(fs.readFileSync(tempos, 'utf8')));
 await page.goto('file://' + path.join(dir, 'reels.html') + '?ep=' + ep);
 await page.evaluate(() => document.fonts.ready);
 await page.evaluate(() => fitAll());
