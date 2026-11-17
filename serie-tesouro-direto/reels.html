@@ -26,9 +26,9 @@
   .bg img { width:100%; height:100%; object-fit:cover; display:block; }
   .shade { position:absolute !important; inset:0; z-index:1 !important; }
 
-  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:104px; line-height:.92; letter-spacing:-.055em; word-spacing:.12em; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:104px; line-height:1.04; letter-spacing:-.055em; word-spacing:.12em; }
   h1 em { font-style:normal; color:var(--gold); }
-  h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:76px; line-height:.95; letter-spacing:-.05em; word-spacing:.12em; margin-bottom:26px; }
+  h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:76px; line-height:1.06; letter-spacing:-.05em; word-spacing:.12em; margin-bottom:26px; }
   .pill { align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:800; font-size:30px; letter-spacing:.12em; text-transform:uppercase; padding:13px 30px 12px; border-radius:40px; margin-bottom:30px; }
   .pill.red { background:var(--red); color:#fff; }
   .lead { font-size:48px; line-height:1.2; color:var(--soft); margin-top:24px; }
@@ -38,9 +38,12 @@
 
   /* hook */
   .hook { justify-content:center; padding-bottom:420px; align-items:flex-start; }
-  .hook svg.ic { width:230px; height:230px; margin-bottom:40px; }
+  .hook svg.ic { width:190px; height:190px; margin-bottom:34px; }
+  .hook .hname { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:128px; line-height:1.02; letter-spacing:-.055em; color:var(--gold); white-space:nowrap; margin-bottom:22px; }
+  .hook .big { margin:6px 0 14px; }
+  .fitw { white-space:nowrap; }
   .hook .big { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:170px; line-height:.9; letter-spacing:-.06em; color:var(--gold); white-space:nowrap; transform-origin:0 50%; }
-  .hook .ln { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:92px; line-height:.95; letter-spacing:-.05em; }
+  .hook .ln { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:84px; line-height:1.08; white-space:nowrap; letter-spacing:-.05em; }
   /* title */
   .title { justify-content:flex-end; padding-bottom:520px; }
   /* stat */
@@ -131,17 +134,18 @@ const ICONS={
 
 // ---------- construtores de cena ----------
 const B={};
-B.hook=(c)=>({html:`<svg class="ic" viewBox="0 0 200 200">${ICONS[c.icon]}</svg><div class="pill">${c.kicker}</div><div class="big">${c.big}</div>${c.lines.map(l=>`<div class="ln">${l}</div>`).join('')}`, cls:'hook',
+B.hook=(c)=>({html:`<svg class="ic" viewBox="0 0 200 200">${ICONS[c.icon]}</svg>${c.kicker?`<div class="pill">${c.kicker}</div>`:''}${(c.name||[]).map(n=>`<div class="hname">${n}</div>`).join('')}${c.big?`<div class="big">${c.big}</div>`:''}${c.lines.map(l=>`<div class="ln">${l}</div>`).join('')}`, cls:'hook',
   up(el,l){ const ic=el.querySelector('.ic'); pop(ic,seg(l,.05,.5));
     const sp=el.querySelector('.spin'); if(sp) sp.setAttribute('transform',`rotate(${l*240} 100 100)`);
     const sh=el.querySelector('.shackle'); if(sh) sh.setAttribute('transform',`translate(0 ${-26*(1-seg(l,.9,1.3))})`);
     const dn=el.querySelector('.dotn'); if(dn) dn.setAttribute('r',22+4*Math.sin(l*8));
     const upa=el.querySelector('.up'); if(upa) upa.setAttribute('transform',`translate(0 ${-8*Math.abs(Math.sin(l*4))})`);
     pop(el.querySelector('.pill'),seg(l,.25,.7));
-    const bg=el.querySelector('.big'); const kb=seg(l,.45,.95); bg.style.opacity=clamp(kb*1.5); bg.style.transform=`scale(${1.25-.25*back(kb)})`;
-    el.querySelectorAll('.ln').forEach((x,i)=>pop(x,seg(l,1.0+i*.35,1.5+i*.35)));
+    el.querySelectorAll('.hname').forEach((x,i)=>{ const k=seg(l,.25+i*.2,.75+i*.2); x.style.opacity=clamp(k*1.5); x.style.transform=`scale(${1.2-.2*back(k)})`; x.style.transformOrigin='0 50%'; });
+    const bg=el.querySelector('.big'); if(bg){ const kb=seg(l,.6,1.1); bg.style.opacity=clamp(kb*1.5); bg.style.transform=`scale(${1.25-.25*back(kb)})`; }
+    el.querySelectorAll('.ln').forEach((x,i)=>pop(x,seg(l,1.1+i*.35,1.6+i*.35)));
   }});
-B.title=(c)=>({html:bgPhoto('title')+`<div class="pill">EP ${EP.ep}/8</div><h1>${c.title[0]}<br><em>${c.title[1]}</em></h1><div class="lead">${c.sub}</div>`, cls:'title',
+B.title=(c)=>({html:bgPhoto('title')+`<div class="pill">EP ${EP.ep}/8</div><h1><span class="fitw" style="display:block">${c.title[0]}</span><em class="fitw" style="display:block">${c.title[1]}</em></h1><div class="lead">${c.sub}</div>`, cls:'title',
   up(el,l){ pop(el.querySelector('.pill'),seg(l,.15,.6)); pop(el.querySelector('h1'),seg(l,.35,.95)); pop(el.querySelector('.lead'),seg(l,1.2,1.8)); }});
 B.stat=(c)=>({html:bgPhoto('stat')+`<div class="pill">${c.pill}</div><div class="big">${c.big}</div><div class="cap">${c.cap}</div>${c.spark?'<svg viewBox="0 0 900 150"><path class="sp" fill="none" stroke="#e3b65a" stroke-width="10" stroke-linecap="round"/></svg>':''}`, cls:'stat',
   up(el,l){ pop(el.querySelector('.pill'),seg(l,.1,.5)); pop(el.querySelector('.big'),seg(l,.3,.9),60); pop(el.querySelector('.cap'),seg(l,1.0,1.6));
@@ -264,6 +268,11 @@ let t0=0; const SC=EP.cenas.map((c,i)=>{ const b=B[c.t](c); const el=document.cr
   el.querySelectorAll('.bg img').forEach(im=>im.src=FT.f);
   const r={el,up:b.up,s:t0,e:t0+c.d}; t0+=c.d; return r; });
 window.TOTAL=t0;
+window.fitAll=function(){ document.querySelectorAll('.hook .hname, .hook .big, .hook .ln, .fitw, .stat .big').forEach(el=>{
+  const sc=el.closest('.sc'); const v=sc.style.visibility; sc.style.visibility='visible';
+  let fs=parseFloat(getComputedStyle(el).fontSize); el.style.display=el.style.display||'block'; el.style.width='max-content';
+  while(el.getBoundingClientRect().width>900/ (parseFloat(getComputedStyle(el).transform.split(',')[0].replace('matrix(',''))||1) && fs>30){ fs-=2; el.style.fontSize=fs+'px'; }
+  el.style.width=''; sc.style.visibility=v; }); };
 window.SCENES=SC.map((s,i)=>({t:EP.cenas[i].t,s:s.s,e:s.e}));
 window.setT=function(t){
   document.getElementById('prog').style.width=clamp(t/TOTAL)*100+'%';

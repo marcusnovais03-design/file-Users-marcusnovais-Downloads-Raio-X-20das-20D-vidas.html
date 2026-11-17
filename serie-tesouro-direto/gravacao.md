@@ -5,8 +5,8 @@ Grave um áudio por episódio. Pode ler tudo de uma vez, com um segundo de pausa
 Dica: celular a um palmo da boca, lugar silencioso, tom de conversa.
 
 ## EP 1 · Tesouro Reserva
-1. Seu dinheiro parado na conta está perdendo pra um título que você resgata até domingo à noite.
-2. É o Tesouro Reserva, o título mais novo do Tesouro Direto, lançado em 2026 pra ser a sua reserva de emergência.
+1. Tesouro Reserva: pra que serve? Ele rende mais que o dinheiro parado na conta, e você resgata até domingo à noite.
+2. É o título mais novo do Tesouro Direto, lançado em 2026 pra ser a sua reserva de emergência.
 3. Ele rende a Selic, que hoje está em 13,75% ao ano, e rende todo dia. Começa com um real.
 4. E o diferencial: você resgata a qualquer hora, inclusive à noite, fim de semana e feriado.
 5. Dez mil reais em um ano: na poupança, uns dez mil e setecentos. No Tesouro Reserva, já descontado o imposto, cerca de onze mil e cem.
@@ -15,8 +15,8 @@ Dica: celular a um palmo da boca, lugar silencioso, tom de conversa.
 8. Pra quem é? Pra quem quer dinheiro seguro e à mão. Me segue pra ver o próximo título da série.
 
 ## EP 2 · Tesouro Selic
-1. O investimento mais seguro do Brasil rende mais que a poupança. Por que você ainda não usa?
-2. É o Tesouro Selic. Você empresta dinheiro pro governo e ele te paga a taxa Selic.
+1. Tesouro Selic é melhor do que a poupança? Ele é o investimento mais seguro do Brasil, e rende mais.
+2. Funciona assim: você empresta dinheiro pro governo e ele te paga a taxa Selic.
 3. Se a Selic sobe, ele rende mais. Se cai, rende menos. Mas quase nunca oscila pra baixo.
 4. Dez mil reais em dois anos: a poupança chega perto de onze mil e seiscentos. O Tesouro Selic, já sem o imposto, passa de doze mil e quatrocentos.
 5. O imposto cai com o tempo: começa em 22,5% e chega a 15% depois de dois anos. Até dez mil reais, sem taxa de custódia.
@@ -24,8 +24,8 @@ Dica: celular a um palmo da boca, lugar silencioso, tom de conversa.
 7. Pra quem é? Reserva e objetivos de curto prazo. Me segue pra ver o próximo.
 
 ## EP 3 · Tesouro Prefixado
-1. E se você pudesse travar 14,75% ao ano, aconteça o que acontecer com a economia?
-2. Esse é o Tesouro Prefixado. Você já sabe, no dia da compra, quanto vai receber no vencimento.
+1. Tesouro Prefixado: e se você pudesse travar 14,75% ao ano, aconteça o que acontecer com a economia?
+2. Com ele, você já sabe, no dia da compra, quanto vai receber no vencimento.
 3. Dez mil reais no Prefixado 2029, a 14,75% ao ano. No vencimento, você recebe cerca de doze mil e oitocentos, já descontado o imposto e a taxa.
 4. No de 2032, a 15,3%: quase dezenove mil.
 5. Mas atenção: se vender antes do vencimento, o preço muda todo dia. Se os juros sobem um ponto, ele cai uns 4%. Levando até o fim, recebe o combinado.
@@ -33,7 +33,7 @@ Dica: celular a um palmo da boca, lugar silencioso, tom de conversa.
 7. Pra quem é? Pra quem tem um objetivo com data marcada e acredita que os juros vão cair. Me segue pra ver o próximo.
 
 ## EP 4 · Tesouro Prefixado com Juros Semestrais
-1. Um investimento que deposita dinheiro na sua conta a cada seis meses.
+1. Seiscentos e quarenta e sete reais a cada seis meses, direto na sua conta.
 2. É o Tesouro Prefixado com Juros Semestrais. A taxa também é travada, mas você não espera o fim pra receber.
 3. Com dez mil reais a 15% ao ano, você recebe uns seiscentos e quarenta reais a cada seis meses até 2037. E no vencimento, mais treze mil e duzentos.
 4. O imposto é descontado em cada pagamento: começa em 22,5% e cai até 15% com o tempo.
@@ -50,7 +50,7 @@ Dica: celular a um palmo da boca, lugar silencioso, tom de conversa.
 7. Pra quem é? Pra objetivos de longo prazo: aposentadoria, imóvel, independência financeira. Me segue pra ver o próximo.
 
 ## EP 6 · Tesouro IPCA+ com Juros Semestrais
-1. Um salário extra a cada seis meses que sobe junto com a inflação.
+1. Trezentos e trinta e oito reais a cada seis meses, corrigidos pela inflação.
 2. É o Tesouro IPCA+ com Juros Semestrais. Ele protege da inflação e ainda paga juros a cada seis meses.
 3. Com dez mil reais, você recebe uns trezentos e quarenta reais a cada seis meses. E esse valor vai sendo corrigido pela inflação até o vencimento.
 4. O imposto é descontado em cada pagamento, e a taxa de custódia é de 0,2% ao ano.
@@ -58,16 +58,16 @@ Dica: celular a um palmo da boca, lugar silencioso, tom de conversa.
 6. Pra quem é? Pra quem já vive de renda ou quer complementar a aposentadoria. Me segue pra ver o próximo.
 
 ## EP 7 · Tesouro Renda+ Aposentadoria Extra
-1. Quanto cem mil reais investidos hoje viram por mês na sua aposentadoria?
-2. O Tesouro Renda+ foi feito pra isso. Você escolhe o ano em que quer se aposentar e ele vira uma renda mensal por 20 anos.
+1. Tesouro aposentadoria: quanto cem mil reais investidos hoje viram por mês quando você se aposentar?
+2. O nome oficial é Tesouro Renda+. Você escolhe o ano em que quer se aposentar e ele vira uma renda mensal por 20 anos.
 3. Cem mil reais hoje no Renda+ 2050, a inflação mais 7,5%, viram uns quatro mil e duzentos reais por mês, durante 20 anos, em dinheiro de hoje.
 4. Quanto mais cedo você começa, maior a renda. No Renda+ 2060, a mesma aplicação vira mais de oito mil e seiscentos por mês.
 5. E se levar até o fim, não paga taxa de custódia pra renda de até seis salários mínimos. O imposto é descontado em cada parcela.
 6. Pra quem é? Pra quem quer complementar o INSS. Me segue pra ver o último episódio.
 
 ## EP 8 · Tesouro Educa+
-1. Cem mil reais hoje podem pagar a faculdade do seu filho? Esse título do governo foi criado pra isso.
-2. É o Tesouro Educa+. Você escolhe o ano em que seu filho vai entrar na faculdade, e ele paga uma renda mensal por cinco anos.
+1. Tesouro pra faculdade: cem mil reais hoje podem pagar os estudos do seu filho?
+2. O nome é Tesouro Educa+. Você escolhe o ano em que seu filho vai entrar na faculdade, e ele paga uma renda mensal por cinco anos.
 3. Cem mil reais hoje no Educa+ 2036, a inflação mais 7,46%, viram uns três mil e oitocentos reais por mês, durante cinco anos, em dinheiro de hoje.
 4. Se o seu filho for mais novo, o dinheiro rende por mais tempo: no Educa+ 2041, quase cinco mil e quinhentos por mês.
 5. Levando até o fim, não paga taxa de custódia pra renda de até quatro salários mínimos. O imposto é descontado em cada parcela.

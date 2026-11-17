@@ -23,6 +23,7 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
 await page.goto('file://' + path.join(dir, 'reels.html') + '?ep=' + ep);
 await page.evaluate(() => document.fonts.ready);
+await page.evaluate(() => fitAll());
 const stage = page.locator('#stage');
 fs.mkdirSync(path.join(dir, 'out'), { recursive: true });
 
