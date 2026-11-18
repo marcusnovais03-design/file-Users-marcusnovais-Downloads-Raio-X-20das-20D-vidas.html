@@ -2,7 +2,7 @@
 import { createRequire } from 'module'; import { spawn, execFileSync } from 'child_process'; import path from 'path'; import { fileURLToPath } from 'url';
 const require=createRequire(import.meta.url); const { chromium }=require('playwright');
 const dir=path.dirname(fileURLToPath(import.meta.url)); const FPS=30;
-const INI=31, FIM=36, FOTO=1.6, FIMCARD=3.5;
+const INI=31, FIM=36, FOTO=0, FIMCARD=3.5;
 const browser=await chromium.launch(); const page=await browser.newPage({viewport:{width:1080,height:1920}});
 async function render(file, n, fn){
   const ff=spawn('ffmpeg',['-y','-loglevel','error','-f','image2pipe','-c:v','mjpeg','-framerate',String(FPS),'-i','-','-c:v','libx264','-pix_fmt','yuv420p','-crf','18','-r',String(FPS),file]);
