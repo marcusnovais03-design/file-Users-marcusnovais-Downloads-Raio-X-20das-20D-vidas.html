@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carrossel 13 anos depois</title>
+<style>
+  :root { --ink:#070d24; --gold:#e3b65a; --white:#fff; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#888; font-family:"Inter",sans-serif; color:#fff; }
+  .slide { width:1080px; height:1350px; position:relative; overflow:hidden; margin:0 auto 40px; background:var(--ink); }
+  body.single .slide { display:none; margin:0; }
+  body.single .slide.on { display:block; }
+  .half { position:absolute; left:0; right:0; height:675px; overflow:hidden; }
+  .half.top { top:0; }
+  .half.bot { top:675px; }
+  .half svg.scene { position:absolute; inset:0; width:100%; height:100%; }
+  .half .yr { position:absolute; left:90px; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:44px; letter-spacing:.04em; padding:10px 26px; border-radius:40px; background:rgba(7,13,36,.78); }
+  .half.top .yr { top:150px; }
+  .half.bot .yr { top:150px; }
+  .half .val { position:absolute; left:90px; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:150px; line-height:.9; letter-spacing:-.05em; text-shadow:0 6px 0 rgba(7,13,36,.9), 0 0 40px rgba(7,13,36,.6); -webkit-text-stroke:5px rgba(7,13,36,.95); paint-order:stroke fill; white-space:nowrap; }
+  .half.top .val { top:250px; }
+  .half.bot .val { top:250px; }
+  .half .sub { position:absolute; left:94px; max-width:520px; line-height:1.15; font-weight:800; font-size:40px; text-shadow:0 3px 10px rgba(7,13,36,.9); }
+  .half.top .sub { top:420px; }
+  .half.bot .sub { top:420px; }
+  .band { position:absolute; left:0; right:0; top:615px; height:120px; background:var(--ink); display:flex; align-items:center; justify-content:center; gap:28px; border-top:5px solid var(--gold); border-bottom:5px solid var(--gold); z-index:4; }
+  .band h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:64px; letter-spacing:-.03em; }
+  .band .chg { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:44px; color:var(--ink); background:var(--gold); padding:6px 22px; border-radius:30px; }
+  .count { position:absolute; top:60px; right:92px; font-weight:800; font-size:25px; letter-spacing:.09em; z-index:6; text-shadow:0 2px 8px rgba(0,0,0,.6); }
+  .foot { position:absolute; left:90px; right:92px; bottom:62px; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:25px; z-index:6; text-shadow:0 2px 8px rgba(0,0,0,.7); }
+  .foot .who span { display:inline-block; width:3px; height:26px; background:#fff; margin:0 9px -4px; }
+  .foot .go { display:flex; align-items:center; gap:16px; font-weight:800; font-size:27px; }
+  .src { position:absolute; left:90px; right:90px; bottom:110px; font-size:20px; color:rgba(255,255,255,.75); z-index:6; text-shadow:0 2px 6px rgba(0,0,0,.8); }
+  /* slides de texto (capa, insight, CTA) */
+  .full { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:150px 90px 170px; z-index:5; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:92px; line-height:1.0; letter-spacing:-.05em; word-spacing:.12em; margin-bottom:28px; }
+  h1 em { font-style:normal; color:var(--gold); }
+  p { font-size:42px; line-height:1.24; color:rgba(255,255,255,.9); }
+  p + p { margin-top:28px; }
+  b { font-weight:800; color:#fff; }
+  b.g { color:var(--gold); }
+  .pill { align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:800; font-size:28px; letter-spacing:.12em; text-transform:uppercase; padding:13px 30px 12px; border-radius:40px; margin-bottom:28px; }
+  .shade { position:absolute; inset:0; z-index:2; }
+  .bgimg { position:absolute; inset:0; z-index:1; }
+  .bgimg img { width:100%; height:100%; object-fit:cover; }
+  .cmp { display:flex; gap:24px; margin-top:30px; }
+  .cmp > div { flex:1; border:5px solid rgba(255,255,255,.85); border-radius:30px; padding:24px 28px; background:rgba(7,13,36,.7); }
+  .cmp .k { font-size:28px; font-weight:700; color:rgba(255,255,255,.85); }
+  .cmp .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:86px; letter-spacing:-.05em; color:var(--gold); line-height:1; margin-top:8px; }
+  .cmp .v.low { color:#ff8a8a; }
+  .cmp .s { font-size:26px; color:rgba(255,255,255,.75); margin-top:6px; }
+  .btn { margin-top:34px; align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:900; font-size:38px; padding:20px 34px; border-radius:24px; }
+</style>
+</head>
+<body>
+<script>
+// ---------- cenários originais (SVG) ----------
+const W=1080, H=675;
+let GID=0; const DAYF=(g)=>`<defs><linearGradient id="sd${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f9be0"/><stop offset=".7" stop-color="#9fd6f7"/><stop offset="1" stop-color="#e8f3f7"/></linearGradient></defs>
+  <rect width="${W}" height="${H}" fill="url(#sd${g})"/>
+  <circle cx="900" cy="140" r="70" fill="#fff6c9" opacity=".9"/>
+  <g fill="#fff" opacity=".85"><ellipse cx="180" cy="120" rx="110" ry="28"/><ellipse cx="260" cy="100" rx="80" ry="30"/><ellipse cx="640" cy="80" rx="90" ry="22"/></g>
+  <path d="M0 560 L120 500 L230 540 L360 470 L520 530 L680 480 L820 540 L960 490 L1080 530 V675 H0 Z" fill="#7bb0c9" opacity=".7"/>
+  <rect y="575" width="${W}" height="100" fill="#e9d7b0"/>`;
+const NIGHTF=(g)=>`<defs><linearGradient id="sn${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a0f5c"/><stop offset=".45" stop-color="#b8327a"/><stop offset=".8" stop-color="#ff8f4a"/><stop offset="1" stop-color="#ffc06a"/></linearGradient></defs>
+  <rect width="${W}" height="${H}" fill="url(#sn${g})"/>
+  <circle cx="860" cy="470" r="120" fill="#ffd27a" opacity=".85"/>
+  <g stroke="#ffd27a" stroke-width="6" opacity=".5"><line x1="720" y1="500" x2="1000" y2="500"/><line x1="740" y1="525" x2="980" y2="525"/><line x1="760" y1="550" x2="960" y2="550"/></g>
+  <g fill="#1a0b33"><rect x="40" y="380" width="70" height="200"/><rect x="120" y="330" width="60" height="250"/><rect x="190" y="400" width="80" height="180"/><rect x="560" y="360" width="64" height="220"/><rect x="630" y="410" width="54" height="170"/></g>
+  <rect y="575" width="${W}" height="100" fill="#2a1240"/>`;
+const PALM=(x,s,c)=>`<g transform="translate(${x} 575) scale(${s})" fill="${c}"><path d="M0 0 C 10 -120 30 -230 60 -320 L72 -316 C 46 -228 28 -120 22 0 Z"/>
+  <path d="M66 -320 C 140 -350 200 -330 240 -290 C 180 -310 120 -305 70 -300Z"/><path d="M66 -320 C 10 -360 -60 -350 -110 -300 C -50 -320 10 -315 62 -302Z"/>
+  <path d="M66 -322 C 120 -400 190 -410 230 -390 C 170 -380 110 -360 70 -318Z"/><path d="M66 -322 C 30 -400 -30 -420 -80 -400 C -20 -390 30 -365 64 -318Z"/><path d="M66 -320 C 100 -280 120 -230 120 -190 C 100 -235 80 -270 62 -305Z"/></g>`;
+const ICON={
+ money:c=>`<g transform="translate(700 270)"><rect x="0" y="40" width="300" height="150" rx="16" fill="#3e9b62" stroke="${c}" stroke-width="8" transform="rotate(-10 150 115)"/><rect x="20" y="70" width="300" height="150" rx="16" fill="#4cb877" stroke="${c}" stroke-width="8"/><circle cx="170" cy="145" r="44" fill="none" stroke="${c}" stroke-width="8"/><text x="170" y="164" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="56" fill="${c}">R$</text></g>`,
+ pump:c=>`<g transform="translate(770 190)"><rect x="0" y="40" width="190" height="345" rx="22" fill="#27a35a" stroke="${c}" stroke-width="8"/><rect x="28" y="80" width="134" height="90" rx="10" fill="#e9fff2" stroke="${c}" stroke-width="6"/><rect x="-20" y="370" width="230" height="20" rx="8" fill="${c}"/><path d="M190 120 h40 a26 26 0 0 1 26 26 v150 a20 20 0 0 1 -40 0 v-60" fill="none" stroke="${c}" stroke-width="12" stroke-linecap="round"/><rect x="40" y="210" width="110" height="18" rx="9" fill="${c}" opacity=".5"/></g>`,
+ car_old:c=>`<g transform="translate(600 360)"><path d="M20 140 V90 L80 80 L130 20 H300 L350 80 L420 90 V140 Z" fill="#f2f2f2" stroke="${c}" stroke-width="8" stroke-linejoin="round"/><path d="M145 34 H215 V82 H100 Z M230 34 H292 L330 82 H230 Z" fill="#9fc9e6" stroke="${c}" stroke-width="6"/><circle cx="110" cy="145" r="40" fill="#222" stroke="${c}" stroke-width="8"/><circle cx="330" cy="145" r="40" fill="#222" stroke="${c}" stroke-width="8"/><circle cx="110" cy="145" r="14" fill="#bbb"/><circle cx="330" cy="145" r="14" fill="#bbb"/></g>`,
+ car_new:c=>`<g transform="translate(590 340)"><path d="M10 160 V100 Q20 80 70 72 L140 20 Q160 10 200 10 H320 Q350 10 370 40 L410 80 Q440 86 446 110 V160 Z" fill="#f4eef8" stroke="${c}" stroke-width="8" stroke-linejoin="round"/><path d="M160 30 H240 V80 H100 Z M255 30 H330 L370 80 H255 Z" fill="#6a4a8c" stroke="${c}" stroke-width="6"/><rect x="380" y="100" width="56" height="16" rx="8" fill="#ffd27a"/><circle cx="110" cy="165" r="44" fill="#151020" stroke="${c}" stroke-width="8"/><circle cx="350" cy="165" r="44" fill="#151020" stroke="${c}" stroke-width="8"/><circle cx="110" cy="165" r="18" fill="#c9c3d4"/><circle cx="350" cy="165" r="18" fill="#c9c3d4"/></g>`,
+ pad:c=>`<g transform="translate(660 300)"><path d="M70 30 H310 Q370 30 390 100 L420 200 Q430 250 390 260 Q360 266 330 220 L300 180 H80 L50 220 Q20 266 -10 260 Q-50 250 -40 200 L-10 100 Q10 30 70 30 Z" fill="#2a2d3a" stroke="${c}" stroke-width="8" stroke-linejoin="round"/><rect x="60" y="80" width="24" height="70" rx="6" fill="#d9d9e3"/><rect x="37" y="103" width="70" height="24" rx="6" fill="#d9d9e3"/><circle cx="300" cy="90" r="16" fill="#d9d9e3"/><circle cx="335" cy="120" r="16" fill="#d9d9e3"/><circle cx="265" cy="120" r="16" fill="#d9d9e3"/><circle cx="300" cy="150" r="16" fill="#d9d9e3"/></g>`,
+ bank:c=>`<g transform="translate(700 150)"><rect x="60" y="0" width="200" height="420" fill="#1f3554" stroke="${c}" stroke-width="8"/>${[...Array(9)].map((_,i)=>`<rect x="78" y="${20+i*44}" width="164" height="26" fill="#7fb3e0" opacity=".85"/>`).join('')}<rect x="0" y="410" width="320" height="20" fill="${c}"/><text x="160" y="-20" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="80" fill="${c}">%</text></g>`,
+ chart:c=>`<g transform="translate(620 160)"><rect x="0" y="0" width="400" height="390" rx="20" fill="#0d1b2e" stroke="${c}" stroke-width="8"/>${[...Array(8)].map((_,i)=>{const h=40+i*30, y=330-h-(i%2)*10; return `<rect x="${30+i*45}" y="${y}" width="26" height="${h}" fill="${i%3===1?'#ff6b6b':'#3ee07a'}"/>`}).join('')}<polyline points="30,320 90,290 140,300 200,230 250,250 300,170 370,90" fill="none" stroke="#3ee07a" stroke-width="10" stroke-linejoin="round"/></g>`,
+ dollar:c=>`<g transform="translate(640 250)"><rect x="0" y="20" width="380" height="190" rx="16" fill="#5f8f5a" stroke="${c}" stroke-width="8" transform="rotate(8 190 115)"/><rect x="0" y="40" width="380" height="190" rx="16" fill="#7fb07a" stroke="${c}" stroke-width="8"/><circle cx="190" cy="135" r="62" fill="#e7f3dc" stroke="${c}" stroke-width="8"/><text x="190" y="162" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="84" fill="#2e5a2a">$</text><text x="30" y="85" font-family="Inter Display,Inter" font-weight="900" font-size="40" fill="#e7f3dc">US$</text></g>`
+};
+const scene=(night,ico)=>`<svg class="scene" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice">${(g=>night?NIGHTF(g):DAYF(g))(++GID)}${PALM(night?30:960,night?1.05:.9,night?'#140826':'#2f6f4e')}${night?PALM(470,.8,'#140826'):''}${ICO(ico,night)}</svg>`;
+const ICO=(ico,night)=>{ if(!ico) return ''; const [a,b]=ico.split('|'); return ICON[night&&b?b:a](night?'#140826':'#0e1f5b'); };
+
+// ---------- conteúdo ----------
+const CMP=[
+ {t:'Salário mínimo', ico:'money', a:'R$ 678', b:'R$ 1.621', sa:'por mês', sb:'por mês', chg:'+139%'},
+ {t:'Gasolina', ico:'pump', a:'R$ 2,83', b:'R$ 6,51', sa:'por litro', sb:'por litro', chg:'+130%'},
+ {t:'Carro zero', ico:'car_old|car_new', a:'R$ 23.560', b:'R$ 82.790', sa:'o mais barato', sb:'o mais barato', chg:'+251%'},
+ {t:'Videogame', ico:'pad', a:'R$ 3.999', b:'R$ 7.999', sa:'PS4 no lançamento', sb:'PS5 Pro hoje', chg:'+100%'},
+ {t:'Selic', ico:'bank', a:'9%', b:'13,75%', sa:'ao ano', sb:'ao ano', chg:'+4,75 p.p.'},
+ {t:'Ibovespa', ico:'chart', a:'54 mil', b:'170 mil', sa:'pontos', sb:'pontos', chg:'+215%'},
+ {t:'Dólar', ico:'dollar', a:'R$ 2,26', b:'R$ 5,79', sa:'17/09/2013, dia do lançamento do GTA V', sb:'17/11/2026, fechamento de ontem', chg:'+156%'}
+];
+const slides=[];
+slides.push(`<div class="half top">${scene(false)}</div><div class="half bot">${scene(true)}</div>
+  <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.15) 0%, rgba(7,13,36,.35) 40%, rgba(7,13,36,.9) 62%, rgba(7,13,36,.96) 100%)"></div>
+  <div class="full"><div class="pill">2013 → 2026</div><h1>13 anos depois, <em>um novo GTA.</em></h1>
+  <p>O GTA VI chega <b>amanhã</b>. Veja o que mudou no seu bolso desde o lançamento do GTA V.</p></div>`);
+CMP.forEach(c=>slides.push(`<div class="half top">${scene(false,c.ico)}<div class="yr">2013</div><div class="val">${c.a}</div><div class="sub">${c.sa}</div></div>
+  <div class="half bot">${scene(true,c.ico)}<div class="yr" style="background:rgba(227,182,90,.95); color:#070d24">2026</div><div class="val">${c.b}</div><div class="sub">${c.sb}</div></div>
+  <div class="band"><h2>${c.t}</h2><span class="chg">${c.chg}</span></div>`));
+slides.push(`<div class="half top">${scene(false,'chart')}</div><div class="half bot">${scene(true,'dollar')}</div>
+  <div class="shade" style="background:rgba(7,13,36,.86)"></div>
+  <div class="full" style="justify-content:center"><div class="pill">Em dólar, a conta muda</div><h1>A bolsa brasileira <em>em dólar</em></h1>
+  <p>Com o dólar subindo 156%, o Ibovespa medido em dólar quase não saiu do lugar.</p>
+  <div class="cmp"><div><div class="k">Ibovespa em US$</div><div class="v low">+23%</div><div class="s">em 13 anos</div></div><div><div class="k">S&amp;P 500 em US$</div><div class="v">+355%</div><div class="s">em 13 anos</div></div></div></div>`);
+slides.push(`<div class="bgimg"><img src="img/sorriso-camiseta.jpg" style="object-position:50% 30%; transform:scale(1.15); transform-origin:50% 30%; filter:brightness(.9)"></div>
+  <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.2) 0%, rgba(7,13,36,.35) 35%, rgba(7,13,36,.92) 58%, rgba(7,13,36,.97) 100%)"></div>
+  <div class="full"><h1>O GTA demorou <em>13 anos</em> pra lançar um novo jogo.</h1>
+  <p>E você, <b class="g">quanto tempo vai esperar</b> pra começar a investir em dólar?</p>
+  <div class="btn">Acesse o link na BIO e vamos conversar</div></div>`);
+
+const N=slides.length;
+slides.forEach((h,i)=>{
+  const s=document.createElement('section'); s.className='slide';
+  const n=String(i+1).padStart(2,'0')+'/'+String(N).padStart(2,'0');
+  const src = (i>=1&&i<=CMP.length) ? `<div class="src">${i===CMP.length?'Dólar: PTAX venda, Banco Central.':i===5?'Selic: Copom. 2013: setembro, lançamento do GTA V.':i===6?'Ibovespa: pontuação aproximada em set/2013 e nov/2026.':'Preços de 2013 e 2026: levantamento de mercado.'}</div>` : (i===N-2?'<div class="src">Ibovespa em pontos convertido pelo dólar PTAX; S&amp;P 500 sem dividendos, set/2013 a set/2026.</div>':'');
+  s.innerHTML=h+src+`<div class="count">${n}</div><div class="foot"><div class="who">Marcus Novais<span></span>Finanças e Economia</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
+  document.body.appendChild(s);
+});
+const all=[...document.querySelectorAll('.slide')];
+window.show=function(i){document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
+window.setT=function(){};
+const q=new URLSearchParams(location.search); if(q.has('s')) show(+q.get('s')-1);
+</script>
+</body>
+</html>
