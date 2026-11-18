@@ -1,6 +1,6 @@
 # Carrossel: "13 anos depois, um novo GTA"
 
-10 slides em 1080x1350. Capas do GTA V e do GTA VI à esquerda (recortadas do post de referência, sem os anos), cenários ilustrados com os valores à direita.
+10 slides em 1080x1350. Slides 02 a 08 são vídeos de 6 s com as barras crescendo e os valores contando (MP4, sem som). Capas do GTA V e do GTA VI à esquerda (recortadas do post de referência, sem os anos), cenários ilustrados com os valores à direita.
 
 | # | Tema | 2013 | 2026 |
 |---|---|---|---|

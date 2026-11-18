@@ -117,15 +117,15 @@ slides.push(`<div class="bgg"><img src="img/gta6.jpg" style="object-position:50%
 CMP.forEach((c,i)=>{
   const img=i%2?'gta5':'gta6', pos=['50% 20%','30% 50%','70% 40%','50% 70%','20% 30%','80% 60%','50% 45%'][i];
   const mx=Math.max(c.na,c.nb), H=440, hA=H*c.na/mx, hB=H*c.nb/mx, base=560;
-  const bar=(x,h,col,lab,yr,sub)=>`<rect x="${x}" y="${base-h}" width="330" height="${h}" rx="22" fill="${col}"/>
-    <text x="${x+165}" y="${base-h-26}" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="72" letter-spacing="-2" fill="${col}">${lab}</text>
+  const bar=(x,h,col,lab,yr,sub,v,k)=>`<rect class="gb gb${k}" data-h="${h}" data-base="${base}" x="${x}" y="${base-h}" width="330" height="${h}" rx="22" fill="${col}"/>
+    <text class="gl gl${k}" data-h="${h}" data-base="${base}" data-v="${v}" data-fmt="${lab}" x="${x+165}" y="${base-h-26}" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="72" letter-spacing="-2" fill="${col}">${lab}</text>
     <text x="${x+165}" y="${base+54}" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="44" fill="#fff">${yr}</text>
     <text x="${x+165}" y="${base+92}" text-anchor="middle" font-family="Inter" font-weight="600" font-size="26" fill="rgba(255,255,255,.75)">${sub}</text>`;
   slides.push(`<div class="bgg"><img src="img/${img}.jpg" style="object-position:${pos}; transform:scale(1.25); filter:blur(3px) brightness(.55) saturate(1.2)"></div>
   <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.75) 0%, rgba(7,13,36,.55) 40%, rgba(7,13,36,.85) 100%)"></div>
   <div class="cpage"><h1>${c.t}</h1><div class="chg2">${c.chg} em 13 anos</div>
   <svg class="bars" viewBox="0 0 900 680"><line x1="0" y1="${base}" x2="900" y2="${base}" stroke="rgba(255,255,255,.7)" stroke-width="4"/>
-  ${bar(60,hA,'#e9ecf5',c.a,'2013',c.sa)}${bar(510,hB,'#e3b65a',c.b,'2026',c.sb)}</svg></div>`);
+  ${bar(60,hA,'#e9ecf5',c.a,'2013',c.sa,c.na,0)}${bar(510,hB,'#e3b65a',c.b,'2026',c.sb,c.nb,1)}</svg></div>`);
 });
 slides.push(`<div class="bgg"><img src="img/gta5.jpg" style="object-position:60% 40%; transform:scale(1.2); filter:blur(3px) brightness(.5)"></div>
   <div class="shade" style="background:rgba(7,13,36,.86)"></div>
@@ -140,7 +140,7 @@ slides.push(`<div class="bgimg"><img src="img/sorriso-camiseta.jpg" style="objec
 
 const N=slides.length;
 slides.forEach((h,i)=>{
-  const s=document.createElement('section'); s.className='slide';
+  const s=document.createElement('section'); s.className='slide'; if(i>=1&&i<=CMP.length) s.dataset.video='6';
   const n=String(i+1).padStart(2,'0')+'/'+String(N).padStart(2,'0');
   const src = (i>=1&&i<=CMP.length) ? `<div class="src">${i===CMP.length?'Dólar: PTAX venda, Banco Central.':i===5?'Selic: Copom. 2013: setembro, lançamento do GTA V.':i===6?'Ibovespa: pontuação aproximada em set/2013 e nov/2026.':'Preços de 2013 e 2026: levantamento de mercado.'}</div>` : (i===N-2?'<div class="src">Ibovespa em pontos convertido pelo dólar PTAX; S&amp;P 500 sem dividendos, set/2013 a set/2026.</div>':'');
   s.innerHTML=h+src+`<div class="count">${n}</div><div class="foot"><div class="who">Marcus Novais<span></span>Finanças e Economia</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
@@ -148,7 +148,17 @@ slides.forEach((h,i)=>{
 });
 const all=[...document.querySelectorAll('.slide')];
 window.show=function(i){document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
-window.setT=function(){};
+const clamp=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-clamp(x),3), seg=(t,a,b)=>ease((t-a)/(b-a));
+const fmtv=(f,v)=>{ if(f.includes('mil')) return Math.round(v)+' mil'; if(f.includes('%')){ const d=(f.split(',')[1]||'').replace('%','').length; return v.toFixed(d).replace('.',',')+'%'; }
+  if(f.includes(',')) return 'R$ '+v.toFixed(2).replace('.',','); return 'R$ '+Math.round(v).toLocaleString('pt-BR'); };
+window.setT=function(t){
+  document.querySelectorAll('.slide').forEach(sl=>{ if(!sl.dataset.video) return;
+    const K=[seg(t,.6,2.0), seg(t,2.2,4.0)];
+    sl.querySelectorAll('.gb').forEach(r=>{ const k=K[r.classList.contains('gb1')?1:0], h=+r.dataset.h*k; r.setAttribute('height',h); r.setAttribute('y',+r.dataset.base-h); });
+    sl.querySelectorAll('.gl').forEach(l=>{ const k=K[l.classList.contains('gl1')?1:0], h=+l.dataset.h*k; l.setAttribute('y',+l.dataset.base-h-26); l.textContent=fmtv(l.dataset.fmt,+l.dataset.v*k); l.setAttribute('opacity',k>0?1:0); });
+    const p=sl.querySelector('.chg2'), kp=seg(t,4.2,4.7); if(p){ p.style.opacity=kp; p.style.transform=`scale(${.7+.3*kp})`; p.style.transformOrigin='0 50%'; }
+  });
+};
 const q=new URLSearchParams(location.search); if(q.has('s')) show(+q.get('s')-1);
 </script>
 </body>
