@@ -18,9 +18,9 @@ await render(path.join(dir,'out','fim.mp4'), Math.round(FIMCARD*FPS), t=> shot(u
 await browser.close();
 const V=path.join(dir,'orig','video.mov');
 execFileSync('ffmpeg',['-y','-loglevel','error','-i',V,'-itsoffset',String(INI),'-i',path.join(dir,'out','trecho.mp4'),'-i',path.join(dir,'out','fim.mp4'),
- '-f','lavfi','-t',String(FIMCARD),'-i','anullsrc=r=48000:cl=stereo',
+ '-f','lavfi','-t',String(FIMCARD),'-i','anullsrc=r=48000:cl=stereo','-i',path.join(dir,'out','voz-limpa.wav'),
  '-filter_complex',
  `[0:v]scale=1080:1920:flags=lanczos,setsar=1,fps=${FPS}[base];[base][1:v]overlay=0:0:eof_action=pass:enable='between(t,${INI},${FIM})'[v0];`+
- `[0:a]aresample=48000,aformat=channel_layouts=stereo[a0];[2:v]fps=${FPS},setsar=1[v1];[3:a]aformat=channel_layouts=stereo[a1];[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]`,
+ `[4:a]aresample=48000,aformat=channel_layouts=stereo[a0];[2:v]fps=${FPS},setsar=1[v1];[3:a]aformat=channel_layouts=stereo[a1];[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]`,
  '-map','[v]','-map','[a]','-c:v','libx264','-pix_fmt','yuv420p','-crf','19','-preset','medium','-c:a','aac','-b:a','160k','-movflags','+faststart',path.join(dir,'out','custo-brasil-final.mp4')]);
 console.log('ok');
