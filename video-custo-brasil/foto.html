@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><title>CNN</title><style>
+*{margin:0;padding:0;box-sizing:border-box} html,body{width:1080px;height:1920px;overflow:hidden;background:#070d24;font-family:"Inter",sans-serif;color:#fff}
+#bg{position:absolute;inset:-40px;background:url(img/cnn-custo-brasil.jpg) center/cover;filter:blur(30px) brightness(.45)}
+#card{position:absolute;left:40px;right:40px;top:640px;height:560px;border-radius:30px;overflow:hidden;border:5px solid #e3b65a;box-shadow:0 30px 70px rgba(0,0,0,.6)}
+#card img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;transform-origin:50% 50%}
+.k{position:absolute;left:90px;top:520px;font-weight:800;font-size:30px;letter-spacing:.12em;color:#e3b65a}
+.h{position:absolute;right:90px;top:1655px;font-size:26px;font-weight:700;color:rgba(255,255,255,.7)}
+</style></head><body><div id="bg"></div><div class="k">NA CNN BRASIL</div><div id="card"><img id="im" src="img/cnn-custo-brasil.jpg"></div><div class="h">@mnovais</div>
+<script>window.setT=t=>{document.getElementById('im').style.transform=`scale(${1+.06*t})`;const c=document.getElementById('card');const k=Math.min(1,t/.35);c.style.opacity=k;c.style.transform=`scale(${.92+.08*k})`;};setT(1)</script></body></html>
