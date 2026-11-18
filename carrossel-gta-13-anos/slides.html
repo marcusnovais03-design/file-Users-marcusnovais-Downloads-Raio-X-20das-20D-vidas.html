@@ -32,6 +32,12 @@
   .half.bot.cmp2 .cov { bottom:150px; }
   .half.bot.cmp2::after { content:''; position:absolute; left:0; right:0; bottom:0; height:150px; background:#070d24; z-index:2; }
   .half.bot.cmp2 .val, .half.bot.cmp2 .sub, .half.bot.cmp2 .yr { transform:translateY(-40px); }
+  .bgg { position:absolute; inset:0; z-index:1; overflow:hidden; }
+  .bgg img { width:100%; height:100%; object-fit:cover; display:block; }
+  .cpage { position:absolute; inset:0; z-index:5; display:flex; flex-direction:column; justify-content:center; padding:150px 90px 170px; }
+  .cpage h1 { margin-bottom:10px; }
+  .cpage .chg2 { align-self:flex-start; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:40px; color:#070d24; background:var(--gold); padding:8px 24px; border-radius:30px; margin-bottom:24px; }
+  svg.bars { width:900px; height:640px; }
   .band { position:absolute; left:0; right:0; top:615px; height:120px; background:var(--ink); display:flex; align-items:center; justify-content:center; gap:28px; border-top:5px solid var(--gold); border-bottom:5px solid var(--gold); z-index:4; }
   .band h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:64px; letter-spacing:-.03em; }
   .band .chg { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:44px; color:var(--ink); background:var(--gold); padding:6px 22px; border-radius:30px; }
@@ -95,23 +101,33 @@ const ICO=(ico,night)=>{ if(!ico) return ''; const [a,b]=ico.split('|'); return 
 
 // ---------- conteúdo ----------
 const CMP=[
- {t:'Salário mínimo', ico:'money', a:'R$ 678', b:'R$ 1.621', sa:'por mês', sb:'por mês', chg:'+139%'},
- {t:'Gasolina', ico:'pump', a:'R$ 2,83', b:'R$ 6,51', sa:'por litro', sb:'por litro', chg:'+130%'},
- {t:'Carro zero', ico:'car_old|car_new', a:'R$ 23.560', b:'R$ 82.790', sa:'o mais barato', sb:'o mais barato', chg:'+251%'},
- {t:'Videogame', ico:'pad', a:'R$ 3.999', b:'R$ 7.999', sa:'PS4 no lançamento', sb:'PS5 Pro hoje', chg:'+100%'},
- {t:'Selic', ico:'bank', a:'9%', b:'13,75%', sa:'ao ano', sb:'ao ano', chg:'+4,75 p.p.'},
- {t:'Ibovespa', ico:'chart', a:'54 mil', b:'170 mil', sa:'pontos', sb:'pontos', chg:'+215%'},
- {t:'Dólar', ico:'dollar', a:'R$ 2,26', b:'R$ 5,79', sa:'17/09/2013, dia do lançamento do GTA V', sb:'17/11/2026, fechamento de ontem', chg:'+156%'}
+ {t:'Salário mínimo', ico:'money', a:'R$ 678', b:'R$ 1.621', sa:'por mês', sb:'por mês', chg:'+139%', na:678, nb:1621},
+ {t:'Gasolina', ico:'pump', a:'R$ 2,83', b:'R$ 6,51', sa:'por litro', sb:'por litro', chg:'+130%', na:2.83, nb:6.51},
+ {t:'Carro zero', ico:'car_old|car_new', a:'R$ 23.560', b:'R$ 82.790', sa:'o mais barato', sb:'o mais barato', chg:'+251%', na:23560, nb:82790},
+ {t:'Videogame', ico:'pad', a:'R$ 3.999', b:'R$ 7.999', sa:'PS4 no lançamento', sb:'PS5 Pro hoje', chg:'+100%', na:3999, nb:7999},
+ {t:'Selic', ico:'bank', a:'9%', b:'13,75%', sa:'ao ano', sb:'ao ano', chg:'+4,75 p.p.', na:9, nb:13.75},
+ {t:'Ibovespa', ico:'chart', a:'54 mil', b:'170 mil', sa:'pontos', sb:'pontos', chg:'+215%', na:54, nb:170},
+ {t:'Dólar', ico:'dollar', a:'R$ 2,26', b:'R$ 5,79', sa:'dia do lançamento do GTA V', sb:'fechamento de ontem', chg:'+156%', na:2.26, nb:5.79}
 ];
 const slides=[];
-slides.push(`<div class="half top"><div class="cov" style="width:100%"><img src="img/gta5.jpg" style="object-position:50% 45%"></div></div><div class="half bot"><div class="cov" style="width:100%"><img src="img/gta6.jpg" style="object-position:50% 40%"></div></div>
+slides.push(`<div class="bgg"><img src="img/gta6.jpg" style="object-position:50% 30%"></div>
   <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.15) 0%, rgba(7,13,36,.35) 40%, rgba(7,13,36,.9) 62%, rgba(7,13,36,.96) 100%)"></div>
   <div class="full"><div class="pill">2013 → 2026</div><h1>13 anos depois, <em>um novo GTA.</em></h1>
   <p>O GTA VI chega <b>amanhã</b>. Veja o que mudou no seu bolso desde o lançamento do GTA V.</p></div>`);
-CMP.forEach(c=>slides.push(`<div class="half top cmp2">${scene(false)}<div class="cov"><img src="img/gta5.jpg"></div><div class="yr">2013</div><div class="val">${c.a}</div><div class="sub">${c.sa}</div></div>
-  <div class="half bot cmp2">${scene(true)}<div class="cov"><img src="img/gta6.jpg"></div><div class="yr" style="background:rgba(227,182,90,.95); color:#070d24">2026</div><div class="val">${c.b}</div><div class="sub">${c.sb}</div></div>
-  <div class="band"><h2>${c.t}</h2><span class="chg">${c.chg}</span></div>`));
-slides.push(`<div class="half top">${scene(false,'chart')}</div><div class="half bot">${scene(true,'dollar')}</div>
+CMP.forEach((c,i)=>{
+  const img=i%2?'gta5':'gta6', pos=['50% 20%','30% 50%','70% 40%','50% 70%','20% 30%','80% 60%','50% 45%'][i];
+  const mx=Math.max(c.na,c.nb), H=440, hA=H*c.na/mx, hB=H*c.nb/mx, base=560;
+  const bar=(x,h,col,lab,yr,sub)=>`<rect x="${x}" y="${base-h}" width="330" height="${h}" rx="22" fill="${col}"/>
+    <text x="${x+165}" y="${base-h-26}" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="72" letter-spacing="-2" fill="${col}">${lab}</text>
+    <text x="${x+165}" y="${base+54}" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="44" fill="#fff">${yr}</text>
+    <text x="${x+165}" y="${base+92}" text-anchor="middle" font-family="Inter" font-weight="600" font-size="26" fill="rgba(255,255,255,.75)">${sub}</text>`;
+  slides.push(`<div class="bgg"><img src="img/${img}.jpg" style="object-position:${pos}; transform:scale(1.25); filter:blur(3px) brightness(.55) saturate(1.2)"></div>
+  <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.75) 0%, rgba(7,13,36,.55) 40%, rgba(7,13,36,.85) 100%)"></div>
+  <div class="cpage"><h1>${c.t}</h1><div class="chg2">${c.chg} em 13 anos</div>
+  <svg class="bars" viewBox="0 0 900 680"><line x1="0" y1="${base}" x2="900" y2="${base}" stroke="rgba(255,255,255,.7)" stroke-width="4"/>
+  ${bar(60,hA,'#e9ecf5',c.a,'2013',c.sa)}${bar(510,hB,'#e3b65a',c.b,'2026',c.sb)}</svg></div>`);
+});
+slides.push(`<div class="bgg"><img src="img/gta5.jpg" style="object-position:60% 40%; transform:scale(1.2); filter:blur(3px) brightness(.5)"></div>
   <div class="shade" style="background:rgba(7,13,36,.86)"></div>
   <div class="full" style="justify-content:center"><div class="pill">Em dólar, a conta muda</div><h1>A bolsa brasileira <em>em dólar</em></h1>
   <p>Com o dólar subindo 156%, o Ibovespa medido em dólar quase não saiu do lugar.</p>
