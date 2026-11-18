@@ -23,6 +23,15 @@
   .half .sub { position:absolute; left:94px; max-width:520px; line-height:1.15; font-weight:800; font-size:40px; text-shadow:0 3px 10px rgba(7,13,36,.9); }
   .half.top .sub { top:420px; }
   .half.bot .sub { top:420px; }
+  .half .cov { position:absolute; left:0; top:0; bottom:0; width:470px; z-index:2; border-right:6px solid #070d24; }
+  .half .cov img { width:100%; height:100%; object-fit:cover; object-position:30% 40%; display:block; }
+  .half.cmp2 .yr, .half.cmp2 .val, .half.cmp2 .sub { left:510px; }
+  .half.cmp2 .val { font-size:108px; }
+  .half.cmp2 .sub { max-width:520px; font-size:36px; }
+  .half.cmp2 .yr { z-index:3; }
+  .half.bot.cmp2 .cov { bottom:150px; }
+  .half.bot.cmp2::after { content:''; position:absolute; left:0; right:0; bottom:0; height:150px; background:#070d24; z-index:2; }
+  .half.bot.cmp2 .val, .half.bot.cmp2 .sub, .half.bot.cmp2 .yr { transform:translateY(-40px); }
   .band { position:absolute; left:0; right:0; top:615px; height:120px; background:var(--ink); display:flex; align-items:center; justify-content:center; gap:28px; border-top:5px solid var(--gold); border-bottom:5px solid var(--gold); z-index:4; }
   .band h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:64px; letter-spacing:-.03em; }
   .band .chg { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:44px; color:var(--ink); background:var(--gold); padding:6px 22px; border-radius:30px; }
@@ -95,12 +104,12 @@ const CMP=[
  {t:'Dólar', ico:'dollar', a:'R$ 2,26', b:'R$ 5,79', sa:'17/09/2013, dia do lançamento do GTA V', sb:'17/11/2026, fechamento de ontem', chg:'+156%'}
 ];
 const slides=[];
-slides.push(`<div class="half top">${scene(false)}</div><div class="half bot">${scene(true)}</div>
+slides.push(`<div class="half top"><div class="cov" style="width:100%"><img src="img/gta5.jpg" style="object-position:50% 45%"></div></div><div class="half bot"><div class="cov" style="width:100%"><img src="img/gta6.jpg" style="object-position:50% 40%"></div></div>
   <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.15) 0%, rgba(7,13,36,.35) 40%, rgba(7,13,36,.9) 62%, rgba(7,13,36,.96) 100%)"></div>
   <div class="full"><div class="pill">2013 → 2026</div><h1>13 anos depois, <em>um novo GTA.</em></h1>
   <p>O GTA VI chega <b>amanhã</b>. Veja o que mudou no seu bolso desde o lançamento do GTA V.</p></div>`);
-CMP.forEach(c=>slides.push(`<div class="half top">${scene(false,c.ico)}<div class="yr">2013</div><div class="val">${c.a}</div><div class="sub">${c.sa}</div></div>
-  <div class="half bot">${scene(true,c.ico)}<div class="yr" style="background:rgba(227,182,90,.95); color:#070d24">2026</div><div class="val">${c.b}</div><div class="sub">${c.sb}</div></div>
+CMP.forEach(c=>slides.push(`<div class="half top cmp2">${scene(false)}<div class="cov"><img src="img/gta5.jpg"></div><div class="yr">2013</div><div class="val">${c.a}</div><div class="sub">${c.sa}</div></div>
+  <div class="half bot cmp2">${scene(true)}<div class="cov"><img src="img/gta6.jpg"></div><div class="yr" style="background:rgba(227,182,90,.95); color:#070d24">2026</div><div class="val">${c.b}</div><div class="sub">${c.sb}</div></div>
   <div class="band"><h2>${c.t}</h2><span class="chg">${c.chg}</span></div>`));
 slides.push(`<div class="half top">${scene(false,'chart')}</div><div class="half bot">${scene(true,'dollar')}</div>
   <div class="shade" style="background:rgba(7,13,36,.86)"></div>

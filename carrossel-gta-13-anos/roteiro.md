@@ -1,6 +1,6 @@
 # Carrossel: "13 anos depois, um novo GTA"
 
-10 slides em 1080x1350. Cenários ilustrados (dia em 2013, pôr do sol em 2026), sem arte oficial do jogo.
+10 slides em 1080x1350. Capas do GTA V e do GTA VI à esquerda (recortadas do post de referência, sem os anos), cenários ilustrados com os valores à direita.
 
 | # | Tema | 2013 | 2026 |
 |---|---|---|---|
