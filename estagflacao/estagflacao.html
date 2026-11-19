@@ -47,11 +47,13 @@
   .blk{display:grid;grid-template-columns:92mm 1fr;gap:7mm;align-items:center;padding:5mm 0;border-bottom:1px solid var(--line)}
   .blk:last-of-type{border-bottom:none}
   .blk p{font-size:10.8pt}
+  .avatar{width:30mm;height:30mm;border-radius:50%;object-fit:cover;object-position:center 18%;border:1.2mm solid var(--y);flex:none}
   /* capa */
   .cover{padding:0;background:#141414;color:#fff}
   .cover .bg{position:absolute;inset:0}
-  .cover .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(1) contrast(1.05)}
-  .cover .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.15) 45%,rgba(0,0,0,.75) 100%)}
+  .cover .photo{position:absolute;right:0;bottom:0;height:82%;width:auto;filter:grayscale(1) contrast(1.05);opacity:.38;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 35%),linear-gradient(0deg,#000 70%,transparent 100%);
+    -webkit-mask-composite:source-in;mask-composite:intersect}
   .cover .content{position:absolute;left:16mm;right:16mm;top:70mm}
   .cover h1{color:#fff;font-size:46pt}
   .cover h2{color:#E4E4E4;font-size:15.5pt;max-width:150mm}
@@ -104,7 +106,6 @@
       fill="none" stroke="#F6C100" stroke-opacity=".55" stroke-width=".7"/>
   </svg>
   <img class="photo" src="foto.jpg" alt="" onerror="this.remove()">
-  <div class="shade"></div>
   <div class="content">
     <div class="tag">Material exclusivo · Novembro 2026</div>
     <h1>Estagflação</h1>
@@ -409,7 +410,8 @@
 
   <div class="bio">
     <div class="row" style="align-items:center;gap:4mm">
-      <div style="width:1.2mm;height:16mm;background:var(--y)"></div>
+      <img class="avatar" src="foto.jpg" alt="Marcus Novais" onerror="this.nextElementSibling.style.display='block';this.remove()">
+      <div style="width:1.2mm;height:16mm;background:var(--y);display:none"></div>
       <div><div style="font-style:italic;font-size:19pt">Marcus Novais</div><div style="font-style:italic;font-size:10pt;color:var(--mut)">Fundador e sócio da Private Investimentos XP · CFP®, CGA</div></div>
     </div>
     <div class="mt6">
