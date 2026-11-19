@@ -1,0 +1,10 @@
+{
+  "titulo": ["Cliente perdeu 75% em", "DEBÊNTURES, CRA e CRI"],
+  "caixas": [
+    ["Investiu R$ 200 mil em debêntures,", "CRA e CRI → as taxas estavam altas"],
+    ["Uma das empresas quebrou.", "Resultado → perdeu 75% do capital"],
+    ["Se você investe em debêntures, CRA", "e CRI, precisa saber disso antes"]
+  ],
+  "rodape": "Leia a legenda",
+  "rodape_em": 0.6
+}
