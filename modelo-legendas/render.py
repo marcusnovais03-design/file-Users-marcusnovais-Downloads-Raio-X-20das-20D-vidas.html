@@ -43,7 +43,8 @@ def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400", 
             l, t, r, b = font.getbbox(line, anchor="mt")
             px, py = 12 * S, 6 * S
             dt.rectangle([W / 2 + l - px, cy + t - py, W / 2 + r + px, cy + b + py], fill=bg)
-            dark = sum(ImageColor.getrgb(bg)) < 450
+            r_, g_, b_ = ImageColor.getrgb(bg)[:3]
+            dark = 0.299 * r_ + 0.587 * g_ + 0.114 * b_ < 150
             dt.text((W / 2, cy), line, font=font, fill="white" if dark else (15, 15, 15), anchor="mt")
             continue
         ds.text((W / 2 + 2, cy + 3), line, font=font, fill=(0, 0, 0, 150), anchor="mt")
