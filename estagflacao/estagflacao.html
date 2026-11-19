@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Estagflação: como se posicionar</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,300;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  @page { size: 210mm 297mm; margin: 0; }
+  :root{
+    --y:#F6C100; --ink:#1F1F1F; --mut:#5A5A5A; --soft:#8A8A8A;
+    --card:#EFEFEF; --line:#D9D9D9; --bar:#9B9B9B; --red:#C0392B; --green:#2E7D32;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Lato','Carlito',sans-serif;color:var(--ink);background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{width:210mm;height:297mm;position:relative;overflow:hidden;page-break-after:always;padding:20mm 16mm 22mm}
+  .page:last-child{page-break-after:auto}
+  h1{font-style:italic;font-weight:400;font-size:30pt;line-height:1.12;letter-spacing:-.2px}
+  h2{font-style:italic;font-weight:400;font-size:15pt;color:var(--mut);margin-top:4mm;line-height:1.3}
+  h3{font-style:italic;font-weight:700;font-size:14pt;margin-bottom:1.5mm}
+  p{font-size:11.5pt;line-height:1.55;color:var(--mut)}
+  p.lead{font-size:12.5pt;color:var(--ink)}
+  b,strong{color:var(--ink)}
+  em{font-style:italic}
+  .brand{position:absolute;top:13mm;right:16mm;font-size:8.5pt;letter-spacing:.3px;display:flex;align-items:center;gap:2mm}
+  .brand .box{background:#1F1F1F;color:#fff;font-weight:900;font-size:7.5pt;padding:1.2mm 1.8mm;border-radius:1mm;letter-spacing:.5px}
+  .brand span.t{color:#333}
+  .foot{position:absolute;left:16mm;right:16mm;bottom:10mm;display:flex;justify-content:space-between;font-size:7.5pt;font-style:italic;color:var(--soft)}
+  .src{position:absolute;left:16mm;right:16mm;bottom:17mm;font-size:7.3pt;font-style:italic;color:var(--soft);line-height:1.4}
+  .tick{display:block;width:11mm;height:1.6mm;background:var(--y);border-radius:1mm;margin:3.5mm 0}
+  .card{background:var(--card);padding:7mm 6.5mm}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+  .kpi .v{font-style:italic;font-size:25pt;line-height:1.05}
+  .kpi p{font-size:10.8pt;font-style:italic}
+  .mt4{margin-top:4mm}.mt6{margin-top:6mm}.mt8{margin-top:8mm}.mt10{margin-top:10mm}
+  .num{width:11mm;height:11mm;border-radius:50%;background:var(--y);display:flex;align-items:center;justify-content:center;font-style:italic;font-size:15pt;flex:none}
+  .row{display:flex;gap:5mm;align-items:flex-start}
+  .chartTitle{font-size:10pt;color:var(--mut);text-align:center;margin-bottom:2mm}
+  svg text{font-family:'Lato','Carlito',sans-serif}
+  table{width:100%;border-collapse:collapse;font-size:10.3pt}
+  th{background:var(--card);text-align:left;font-weight:700;padding:2.6mm 2.4mm;border:1px solid var(--line)}
+  td{padding:2.6mm 2.4mm;border:1px solid var(--line);vertical-align:top;color:#333;line-height:1.4}
+  .note{border-left:1.4mm solid var(--y);padding:3mm 4.5mm;background:#FAFAFA}
+  .check li{list-style:none;padding-left:6mm;position:relative;font-size:11pt;color:var(--mut);line-height:1.5;margin-bottom:1.8mm}
+  .check li::before{content:"";position:absolute;left:0;top:1.8mm;width:2.6mm;height:2.6mm;background:var(--y);border-radius:50%}
+  .eyebrow{font-size:8.5pt;letter-spacing:1.6px;text-transform:uppercase;color:var(--soft);font-weight:700;margin-bottom:2mm}
+
+  /* capa */
+  .cover{padding:0;background:#141414;color:#fff}
+  .cover .bg{position:absolute;inset:0}
+  .cover .content{position:absolute;left:16mm;right:16mm;top:70mm}
+  .cover h1{color:#fff;font-size:46pt}
+  .cover h2{color:#E4E4E4;font-size:15.5pt;max-width:150mm}
+  .cover .sig{position:absolute;right:16mm;bottom:28mm;width:85mm}
+  .cover .sig .ln{height:.6mm;background:var(--y);margin-bottom:4mm}
+  .cover .sig div.n{font-style:italic;font-size:14pt}
+  .cover .sig div.r{font-style:italic;font-size:9.5pt;color:#CFCFCF;margin-top:1mm}
+  .cover .brand{top:auto;bottom:28mm;left:16mm;right:auto}
+  .cover .brand span.t{color:#ddd}
+  .cover .brand .box{background:#fff;color:#111}
+  .cover .tag{display:inline-block;border:1px solid rgba(255,255,255,.35);font-size:8.5pt;letter-spacing:1.6px;text-transform:uppercase;padding:1.6mm 3mm;margin-bottom:7mm;color:#ddd}
+
+  /* CTA */
+  .cta{padding:0}
+  .cta .top{background:#141414;color:#fff;padding:22mm 16mm 14mm;position:relative}
+  .cta .top h1{color:#fff;font-size:30pt}
+  .cta .top p{color:#D5D5D5;font-size:11.5pt;margin-top:4mm}
+  .cta .opts{display:grid;grid-template-columns:1fr 1fr;gap:4mm;padding:0 16mm;margin-top:-7mm;position:relative}
+  .cta .opt{background:#fff;border:1px solid var(--line);padding:6mm;box-shadow:0 1mm 3mm rgba(0,0,0,.06)}
+  .cta .opt .act{display:inline-block;margin-top:4mm;background:var(--y);color:#111;font-weight:700;font-size:10.5pt;padding:2.6mm 4mm;border-radius:1mm}
+  .bio{padding:0 16mm;margin-top:9mm}
+  .bio p{font-size:10.6pt;margin-bottom:2.2mm}
+  .disc{position:absolute;left:16mm;right:16mm;bottom:17mm;font-size:6.6pt;line-height:1.4;color:var(--soft)}
+</style>
+</head>
+<body>
+
+<!-- 1 CAPA -->
+<section class="page cover">
+  <svg class="bg" viewBox="0 0 210 297" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#2b2b2b"/><stop offset=".55" stop-color="#4a4a4a"/><stop offset="1" stop-color="#121212"/>
+      </linearGradient>
+      <radialGradient id="glow" cx=".75" cy=".42" r=".55">
+        <stop offset="0" stop-color="#8d8d8d" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="210" height="297" fill="url(#sky)"/>
+    <rect width="210" height="297" fill="url(#glow)"/>
+    <g fill="none" stroke="#fff" stroke-opacity=".07" stroke-width=".5">
+      <path d="M0 215 C 40 205, 70 225, 110 212 S 180 200, 210 210"/>
+      <path d="M0 225 C 45 215, 80 236, 120 222 S 185 212, 210 220"/>
+      <path d="M0 236 C 50 226, 85 246, 125 233 S 190 224, 210 231"/>
+      <path d="M0 247 C 45 238, 90 257, 130 244 S 190 236, 210 242"/>
+      <path d="M0 258 C 50 249, 90 268, 135 255 S 195 248, 210 253"/>
+    </g>
+    <!-- linha de "mercado" estilizada -->
+    <polyline points="0,190 18,184 30,188 46,170 60,176 74,160 88,166 102,150 118,158 132,140 148,152 162,134 178,146 194,126 210,132"
+      fill="none" stroke="#F6C100" stroke-opacity=".55" stroke-width=".7"/>
+  </svg>
+  <div class="content">
+    <div class="tag">Material exclusivo · Novembro 2026</div>
+    <h1>Estagflação</h1>
+    <h2>Juros altos por mais tempo, inflação pressionada e dólar forte: como posicionar seus investimentos para 2027</h2>
+  </div>
+  <div class="brand"><span class="box">XP</span><span class="t">Private Investimentos</span></div>
+  <div class="sig"><div class="ln"></div><div class="n">Marcus Novais</div><div class="r">Assessor de Investimentos · CFA Nível 3, CFP®, CGA</div></div>
+</section>
+
+<!-- 2 RESUMO -->
+<section class="page">
+  <div class="brand"><span class="box">XP</span><span class="t">Private Investimentos</span></div>
+  <h1>O cenário em 4 números</h1>
+  <h2>Onde estamos no fim de 2026</h2>
+  <div class="grid2 mt8">
+    <div class="card kpi"><div class="v">13,75%</div><span class="tick"></span><p>Selic ao ano. O Copom interrompeu os cortes em novembro e o mercado já vê <b>12,75% no fim de 2027</b> (antes eram 12,50%).</p></div>
+    <div class="card kpi"><div class="v">5,0%</div><span class="tick"></span><p>IPCA projetado para 2027, <b>acima do teto da meta</b> (4,5%). Foi a quinta alta seguida da projeção no Focus.</p></div>
+    <div class="card kpi"><div class="v">R$ 5,89</div><span class="tick"></span><p>Dólar em 19/11, <b>maior cotação em cerca de 19 meses</b>, pressionado pelas dúvidas sobre o ajuste fiscal.</p></div>
+    <div class="card kpi"><div class="v">82,9%</div><span class="tick"></span><p>Dívida bruta sobre o PIB (set/26). Subiu <b>4,3 pontos</b> só em 2026 e o Tesouro projeta 83,7% no fim do ano.</p></div>
+  </div>
+  <div class="note mt8">
+    <p class="lead"><b>Leitura:</b> crescimento perdendo força (PIB de 2027 projetado em ~1%), inflação acima da meta e um Banco Central que não consegue cortar juros. É o ambiente que o mercado chama de <b>estagflação</b>. Para o investidor, a pergunta deixa de ser "quanto rende?" e passa a ser "<b>como protejo o meu poder de compra?</b>"</p>
+  </div>
+  <div class="src">Fontes: Banco Central (Copom 04/11/2026 e Boletim Focus 16/11/2026), BC/Estatísticas Fiscais (set/2026), Tesouro Nacional (Relatório de Riscos Fiscais), PTAX BC 19/11/2026.</div>
+  <div class="foot"><span>Private Investimentos XP | Estagflação: como se posicionar | Novembro 2026</span><span>2</span></div>
+</section>
+
+<!-- 3 O QUE É -->
+<section class="page">
+  <div class="brand"><span class="box">XP</span><span class="t">Private Investimentos</span></div>
+  <h1>O que é estagflação?</h1>
+  <h2>Estagnação + inflação, ao mesmo tempo</h2>
+  <p class="lead mt8">É quando a economia <b>cresce pouco</b> (ou para) e, mesmo assim, os <b>preços continuam subindo</b>. Normalmente uma coisa alivia a outra: economia fraca derruba a inflação. Na estagflação, as duas pioram juntas, e o Banco Central fica sem saída fácil: se corta juros, a inflação acelera; se mantém juros altos, a atividade sofre ainda mais.</p>
+
+  <div class="mt8">
+    <svg viewBox="0 0 178 112" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- eixos -->
+      <line x1="22" y1="100" x2="172" y2="100" stroke="#999" stroke-width=".4"/>
+      <line x1="22" y1="100" x2="22" y2="6" stroke="#999" stroke-width=".4"/>
+      <line x1="97" y1="6" x2="97" y2="100" stroke="#D9D9D9" stroke-width=".3" stroke-dasharray="1.5 1.5"/>
+      <line x1="22" y1="53" x2="172" y2="53" stroke="#D9D9D9" stroke-width=".3" stroke-dasharray="1.5 1.5"/>
+      <!-- quadrantes -->
+      <rect x="23" y="7" width="73" height="45" fill="#F6C100" fill-opacity=".9"/>
+      <rect x="98" y="7" width="73" height="45" fill="#EFEFEF"/>
+      <rect x="23" y="54" width="73" height="45" fill="#EFEFEF"/>
+      <rect x="98" y="54" width="73" height="45" fill="#EFEFEF"/>
+      <text x="59.5" y="24" text-anchor="middle" font-size="6.2" font-style="italic" font-weight="700" fill="#1F1F1F">Estagflação</text>
+      <text x="59.5" y="32" text-anchor="middle" font-size="3.6" fill="#1F1F1F">crescimento baixo + inflação alta</text>
+      <text x="59.5" y="42" text-anchor="middle" font-size="3.4" font-style="italic" fill="#1F1F1F">← Brasil 2027 (projeção)</text>
+      <text x="134.5" y="27" text-anchor="middle" font-size="5" font-style="italic" fill="#333">Superaquecimento</text>
+      <text x="134.5" y="34" text-anchor="middle" font-size="3.4" fill="#5A5A5A">cresce muito + inflação alta</text>
+      <text x="59.5" y="74" text-anchor="middle" font-size="5" font-style="italic" fill="#333">Recessão</text>
+      <text x="59.5" y="81" text-anchor="middle" font-size="3.4" fill="#5A5A5A">cresce pouco + inflação baixa</text>
+      <text x="134.5" y="74" text-anchor="middle" font-size="5" font-style="italic" fill="#333">Cenário ideal</text>
+      <text x="134.5" y="81" text-anchor="middle" font-size="3.4" fill="#5A5A5A">cresce bem + inflação controlada</text>
+      <text x="97" y="107" text-anchor="middle" font-size="3.6" fill="#5A5A5A">Crescimento da economia →</text>
+      <text x="12" y="53" text-anchor="middle" font-size="3.6" fill="#5A5A5A" transform="rotate(-90 12 53)">Inflação →</text>
+    </svg>
+  </div>
+
+  <div class="grid2 mt6">
+    <div class="card"><h3>Por que preocupa</h3><p>O dinheiro parado perde valor rápido, a renda variável doméstica sofre com lucros menores e juros altos, e o real tende a se desvalorizar.</p></div>
+    <div class="card"><h3>O que funciona</h3><p>Ativos que <b>acompanham os juros</b>, ativos que <b>pagam acima da inflação</b> e uma parcela em <b>moeda forte</b>. São exatamente os três pilares das próximas páginas.</p></div>
+  </div>
+  <div class="src">Projeções Boletim Focus 16/11/2026: PIB 2027 de 1,02% e IPCA 2027 de 5,0%. Quadro ilustrativo.</div>
+  <div class="foot"><span>Private Investimentos XP | Estagflação: como se posicionar | Novembro 2026</span><span>3</span></div>
+</section>
+
+<!-- 4 FISCAL -->
+<section class="page">
+  <div class="brand"><span class="box">XP</span><span class="t">Private Investimentos</span></div>
+  <h1>O Brasil fiscal: a raiz do problema</h1>
+  <h2>O governo gasta mais do que arrecada, e a dívida não para de crescer</h2>
+
+  <div class="mt8">
+    <div class="chartTitle">Dívida bruta do governo geral (% do PIB)</div>
+    <svg viewBox="0 0 178 92" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <line x1="10" y1="80" x2="170" y2="80" stroke="#999" stroke-width=".4"/>
+      <!-- escala 70 a 86: 0..60 de altura; y=80 - (v-70)*(60/16) -->
+      <rect x="22" y="47.75" width="30" height="32.25" fill="#9B9B9B"/>
+      <text x="37" y="44" text-anchor="middle" font-size="5">78,6%</text>
+      <text x="37" y="87" text-anchor="middle" font-size="3.8" fill="#5A5A5A">Dez/2025</text>
+      <rect x="74" y="31.6" width="30" height="48.4" fill="#F6C100"/>
+      <text x="89" y="28" text-anchor="middle" font-size="5" font-weight="700">82,9%</text>
+      <text x="89" y="87" text-anchor="middle" font-size="3.8" fill="#5A5A5A">Set/2026</text>
+      <rect x="126" y="28.6" width="30" height="51.4" fill="#F6C100" fill-opacity=".45" stroke="#F6C100" stroke-width=".5" stroke-dasharray="1.5 1"/>
+      <text x="141" y="25" text-anchor="middle" font-size="5">83,7%</text>
+      <text x="141" y="87" text-anchor="middle" font-size="3.8" fill="#5A5A5A">Dez/2026 (projeção)</text>
+      <text x="63" y="20" text-anchor="middle" font-size="3.6" font-style="italic" fill="#C0392B">+4,3 p.p. em 9 meses</text>
+      <text x="10" y="8" font-size="3.2" fill="#8A8A8A">eixo iniciando em 70% para evidenciar a variação</text>
+    </svg>
+  </div>
+
+  <div class="mt6">
+    <div class="row mt4"><div class="num">1</div><div><h3>Mais dívida, mais risco</h3><p>Quanto maior a dívida, mais o investidor exige para financiar o governo. Isso pressiona os juros longos e encarece o crédito para todo o país. O FMI, em sua metodologia, já projeta a dívida brasileira perto de 100% do PIB em 2027.</p></div></div>
+    <div class="row mt4"><div class="num">2</div><div><h3>Gasto público alimenta a inflação</h3><p>Estímulos fiscais mantêm a demanda aquecida e dificultam o trabalho do Banco Central, que precisa segurar a Selic alta por mais tempo.</p></div></div>
+    <div class="row mt4"><div class="num">3</div><div><h3>Desconfiança derruba o real</h3><p>O dólar bateu a maior cotação em ~19 meses justamente nos dias de dúvida sobre o ajuste fiscal no Congresso. Fiscal fraco é moeda fraca.</p></div></div>
+  </div>
+  <div class="src">Fontes: Banco Central (Estatísticas Fiscais, set/2026; dez/2025 calculado a partir da alta de 4,3 p.p. informada pelo BC), Tesouro Nacional (projeção para dez/2026), FMI (metodologia própria, não comparável diretamente).</div>
+  <div class="foot"><span>Private Investimentos XP | Estagflação: como se posicionar | Novembro 2026</span><span>4</span></div>
+</section>
+
+<!-- 5 JUROS + INFLAÇÃO -->
+<section class="page">
+  <div class="brand"><span class="box">XP</span><span class="t">Private Investimentos</span></div>
+  <h1>Juros altos por mais tempo e inflação pressionada</h1>
+  <h2>O mercado empurrou para frente a queda da Selic e para cima a inflação</h2>
+
+  <div class="mt8">
+    <div class="chartTitle">Selic e IPCA: atual e projeções do mercado (% a.a.)</div>
+    <svg viewBox="0 0 178 96" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- escala 0..15 -> altura 66 ; y = 80 - v*4.4 -->
+      <line x1="10" y1="80" x2="172" y2="80" stroke="#999" stroke-width=".4"/>
+      <line x1="10" y1="60.2" x2="172" y2="60.2" stroke="#C0392B" stroke-width=".35" stroke-dasharray="2 1.4"/>
+      <line x1="106" y1="4.6" x2="113" y2="4.6" stroke="#C0392B" stroke-width=".5" stroke-dasharray="2 1.4"/><text x="115" y="5.9" font-size="3.6" fill="#C0392B">Teto da meta: 4,5%</text>
+      <!-- grupo 1: hoje -->
+      <rect x="20" y="19.5" width="18" height="60.5" fill="#F6C100"/><text x="29" y="16.5" text-anchor="middle" font-size="4.2">13,75%</text>
+      <rect x="40" y="59.6" width="18" height="20.4" fill="#9B9B9B"/><text x="49" y="56.6" text-anchor="middle" font-size="4.2">4,63%</text>
+      <text x="39" y="86" text-anchor="middle" font-size="3.8" fill="#5A5A5A">Hoje</text>
+      <text x="39" y="90.5" text-anchor="middle" font-size="3" fill="#8A8A8A">(IPCA 12m até out)</text>
+      <!-- grupo 2: fim 2026 -->
+      <rect x="74" y="19.5" width="18" height="60.5" fill="#F6C100"/><text x="83" y="16.5" text-anchor="middle" font-size="4.2">13,75%</text>
+      <rect x="94" y="57.5" width="18" height="22.5" fill="#9B9B9B"/><text x="103" y="54.5" text-anchor="middle" font-size="4.2">5,11%</text>
+      <text x="93" y="86" text-anchor="middle" font-size="3.8" fill="#5A5A5A">Fim de 2026</text>
+      <!-- grupo 3: fim 2027 -->
+      <rect x="128" y="23.9" width="18" height="56.1" fill="#F6C100"/><text x="137" y="20.9" text-anchor="middle" font-size="4.2">12,75%</text>
+      <rect x="148" y="58" width="18" height="22" fill="#9B9B9B"/><text x="157" y="55" text-anchor="middle" font-size="4.2">5,0%</text>
+      <text x="147" y="86" text-anchor="middle" font-size="3.8" fill="#5A5A5A">Fim de 2027</text>
+      <!-- legenda -->
+      <rect x="52" y="3" width="3.2" height="3.2" fill="#F6C100"/><text x="57" y="5.9" font-size="3.6">Selic</text>
+      <rect x="74" y="3" width="3.2" height="3.2" fill="#9B9B9B"/><text x="79" y="5.9" font-size="3.6">IPCA</text>
+    </svg>
+  </div>
+
+  <div class="grid2 mt6">
+    <div class="card"><h3>Juros: "higher for longer"</h3><p>O Copom manteve a Selic em 13,75% por unanimidade e interrompeu o ciclo de cortes. Para 2027, a projeção subiu de 12,50% para <b>12,75%</b>, e parte dos bancos já fala em 13%.</p></div>
+    <div class="card"><h3>Inflação acima do teto</h3><p>O próprio Copom elevou sua projeção de IPCA 2026 de 5,2% para <b>5,6%</b>. Alimentos e serviços seguem pressionados, e o fiscal expansionista não ajuda.</p></div>
+  </div>
+  <div class="note mt6"><p><b>O que isso significa para você:</b> com Selic perto de 13% e inflação perto de 5%, o <b>juro real</b> (o que sobra acima da inflação) passa de 7% ao ano. Poucas vezes foi tão bem pago esperar com segurança, desde que o dinheiro esteja no lugar certo.</p></div>
+  <div class="src">Fontes: Banco Central (Copom 04/11/2026; Boletim Focus 16/11/2026), IBGE (IPCA out/2026).</div>
+  <div class="foot"><span>Private Investimentos XP | Estagflação: como se posicionar | Novembro 2026</span><span>5</span></div>
+</section>
+
+<!-- 6 DÓLAR -->
+<section class="page">
+  <div class="brand"><span class="box">XP</span><span class="t">Private Investimentos</span></div>
+  <h1>Dólar: Brasil fraco + Estados Unidos subindo juros</h1>
+  <h2>As duas forças empurram o câmbio para o mesmo lado</h2>
+
+  <div class="mt8">
+    <div class="chartTitle">Cotação do dólar em 2026 (R$)</div>
+    <svg viewBox="0 0 178 84" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- escala 5.0..6.0 -> altura 60; y = 72 - (v-5)*60 -->
+      <line x1="10" y1="72" x2="172" y2="72" stroke="#999" stroke-width=".4"/>
+      <rect x="18" y="58.8" width="28" height="13.2" fill="#9B9B9B"/><text x="32" y="55.5" text-anchor="middle" font-size="4.4">R$ 5,22</text><text x="32" y="78.5" text-anchor="middle" font-size="3.7" fill="#5A5A5A">02/jul</text>
+      <rect x="57" y="49.2" width="28" height="22.8" fill="#F6C100"/><text x="71" y="45.9" text-anchor="middle" font-size="4.4">R$ 5,38</text><text x="71" y="78.5" text-anchor="middle" font-size="3.7" fill="#5A5A5A">31/out</text>
+      <rect x="96" y="25.8" width="28" height="46.2" fill="#F6C100"/><text x="110" y="22.5" text-anchor="middle" font-size="4.4">R$ 5,77</text><text x="110" y="78.5" text-anchor="middle" font-size="3.7" fill="#5A5A5A">16/nov</text>
+      <rect x="135" y="18.7" width="28" height="53.3" fill="#F6C100"/><text x="149" y="15.4" text-anchor="middle" font-size="4.4" font-weight="700">R$ 5,89</text><text x="149" y="78.5" text-anchor="middle" font-size="3.7" fill="#5A5A5A">19/nov</text>
+      <text x="10" y="6" font-size="3.2" fill="#8A8A8A">eixo iniciando em R$ 5,00</text>
+      <text x="172" y="6" text-anchor="end" font-size="4" font-style="italic" fill="#1F1F1F">+12,8% desde julho</text>
+    </svg>
+  </div>
+
+  <div class="grid2 mt6">
+    <div class="card"><h3>Do lado do Brasil</h3><p>Dívida crescendo e dúvida sobre o ajuste fiscal afastam o investidor estrangeiro. Quando ele sai, vende reais e compra dólares.</p></div>
+    <div class="card"><h3>Do lado dos EUA</h3><p>O Fed manteve os juros entre <b>3,75% e 4,00%</b>, mas a ata mostrou que quase todos os diretores esperam <b>novas altas</b>. O mercado precifica ~94% de chance de alta já em 8–9 de dezembro.</p></div>
+  </div>
+  <div class="note mt6"><p><b>Por que isso fortalece o dólar no mundo:</b> juros mais altos nos EUA atraem capital global para a maior e mais segura economia do planeta. Para moedas de países com fiscal frágil, como o real, a tendência é de pressão contínua.</p></div>
+  <div class="src">Fontes: PTAX Banco Central (02/07, 31/10, 16/11 e 19/11/2026), Federal Reserve (decisão de outubro e ata de 18/11/2026), CME FedWatch (19/11/2026). Variação cambial isolada.</div>
+  <div class="foot"><span>Private Investimentos XP | Estagflação: como se posicionar | Novembro 2026</span><span>6</span></div>
+</section>
+
+<!-- 7 ALMOÇO -->
+<section class="page">
+  <div class="brand"><span class="box">XP</span><span class="t">Private Investimentos</span></div>
+  <div class="eyebrow">Na prática</div>
+  <h1>"Marcus, e como eu me posiciono?"</h1>
+  <h2>A pergunta que um cliente me fez durante um almoço</h2>
+  <p class="lead mt8">Ele tinha acompanhado as notícias sobre juros, inflação e dólar, e queria saber o que fazer com o patrimônio. A resposta que dei foi organizada em <b>três frentes</b>, cada uma protegendo contra um dos riscos do cenário:</p>
+
+  <div class="mt8">
+    <div class="card row"><div class="num">1</div><div><h3>Pós-fixado: quem manda no jogo</h3><p>Protege contra <b>juros altos por mais tempo</b>. Enquanto a Selic estiver em dois dígitos, o pós-fixado entrega retorno alto com baixa oscilação.</p></div></div>
+    <div class="card row mt4"><div class="num">2</div><div><h3>Inflação: travar juro real elevado</h3><p>Protege contra a <b>inflação pressionada</b>. Títulos atrelados ao IPCA garantem um ganho real acima da inflação, hoje em níveis historicamente altos.</p></div></div>
+    <div class="card row mt4"><div class="num">3</div><div><h3>Internacional: o dólar como seguro</h3><p>Protege contra o <b>risco Brasil</b>. Uma parcela do patrimônio atrelada à maior economia do mundo, em moeda forte.</p></div></div>
+  </div>
+  <div class="note mt8"><p>O peso de cada frente depende do <b>seu perfil, prazos e objetivos</b>. A lógica é a mesma para todos; a dose é individual.</p></div>
+  <div class="foot"><span>Private Investimentos XP | Estagflação: como se posicionar | Novembro 2026</span><span>7</span></div>
+</section>
+
+<!-- 8 PÓS -->
+<section class="page">
+  <div class="brand"><span class="box">XP</span><span class="t">Private Investimentos</span></div>
+  <div class="eyebrow">Frente 1</div>
+  <h1>Pós-fixado: quem manda no jogo</h1>
+  <h2>Juro alto por mais tempo é o cenário perfeito para quem acompanha o CDI</h2>
+
+  <div class="mt6">
+    <div class="chartTitle">Rendimento líquido em 12 meses (ilustrativo, CDI de 13,65% a.a.)</div>
+    <svg viewBox="0 0 178 70" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- escala 0..13 -> largura 110 ; x0=52 -->
+      <text x="50" y="13" text-anchor="end" font-size="3.8">CDB 100% do CDI</text>
+      <text x="50" y="17.2" text-anchor="end" font-size="3" fill="#8A8A8A">IR 17,5%</text>
+      <rect x="52" y="8" width="95.3" height="10" fill="#9B9B9B"/><text x="149.5" y="14.6" font-size="4.2">11,26%</text>
+      <text x="50" y="33" text-anchor="end" font-size="3.8">CDB 110% do CDI</text>
+      <text x="50" y="37.2" text-anchor="end" font-size="3" fill="#8A8A8A">IR 17,5%</text>
+      <rect x="52" y="28" width="104.8" height="10" fill="#9B9B9B"/><text x="159" y="34.6" font-size="4.2">12,39%</text>
+      <text x="50" y="53" text-anchor="end" font-size="3.8">LCA/LCI 92% do CDI</text>
+      <text x="50" y="57.2" text-anchor="end" font-size="3" fill="#8A8A8A">isento de IR</text>
+      <rect x="52" y="48" width="106.3" height="10" fill="#F6C100"/><text x="160.5" y="54.6" font-size="4.2" font-weight="700">12,56%</text>
+      <line x1="52" y1="4" x2="52" y2="62" stroke="#999" stroke-width=".4"/>
+    </svg>
+  </div>
+
+  <div class="grid2 mt4">
+    <div class="card"><h3>1º Isentos de IR</h3><p>LCI, LCA e LCD. Um isento de 92% do CDI rende mais do que um CDB de 110% depois do imposto. Sempre compare pelo <b>líquido</b>.</p></div>
+    <div class="card"><h3>2º CDBs</h3><p>Ótimos para completar a carteira, especialmente os de liquidez diária para reserva e os de bancos médios com taxa acima de 100% do CDI.</p></div>
+  </div>
+  <div class="mt6">
+    <h3>Atenção ao FGC e ao emissor</h3>
+    <ul class="check mt4">
+      <li><b>Limite do FGC:</b> R$ 250 mil por CPF, por instituição, com teto global de R$ 1 milhão a cada 4 anos. Distribua entre emissores.</li>
+      <li><b>FGC é a última linha de defesa</b>, não a primeira. Avalie a saúde do banco: rating, capital e histórico.</li>
+      <li><b>Taxa alta demais é sinal de alerta.</b> Quem paga muito acima do mercado geralmente precisa muito do dinheiro.</li>
+    </ul>
+  </div>
+  <div class="src">Simulação ilustrativa: CDI considerado de 13,65% a.a. (Selic de 13,75%), prazo de 12 meses, IR regressivo de 17,5% (361 a 720 dias). Não considera custos. Taxas reais variam por emissor, prazo e data.</div>
+  <div class="foot"><span>Private Investimentos XP | Estagflação: como se posicionar | Novembro 2026</span><span>8</span></div>
+</section>
+
+<!-- 9 INFLAÇÃO -->
+<section class="page">
+  <div class="brand"><span class="box">XP</span><span class="t">Private Investimentos</span></div>
+  <div class="eyebrow">Frente 2</div>
+  <h1>Inflação: travar juro real elevado</h1>
+  <h2>As NTN-Bs pagam hoje quase 8% ao ano acima da inflação</h2>
+
+  <div class="row mt8" style="gap:6mm">
+    <div style="flex:1.15">
+      <div class="chartTitle">Como se forma o retorno de uma NTN-B (% a.a.)</div>
+      <svg viewBox="0 0 96 92" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <!-- escala 0..14 -> 70 ; y = 80 - v*5 -->
+        <line x1="6" y1="80" x2="92" y2="80" stroke="#999" stroke-width=".4"/>
+        <rect x="18" y="55" width="26" height="25" fill="#9B9B9B"/>
+        <text x="31" y="69" text-anchor="middle" font-size="4" fill="#fff">IPCA ~5,0%</text>
+        <rect x="18" y="16" width="26" height="39" fill="#F6C100"/>
+        <text x="31" y="35" text-anchor="middle" font-size="4">+ 7,8%</text>
+        <text x="31" y="40" text-anchor="middle" font-size="3" fill="#333">juro real</text>
+        <text x="31" y="12" text-anchor="middle" font-size="4.6" font-weight="700">≈ 13,2%</text>
+        <text x="31" y="86" text-anchor="middle" font-size="3.4" fill="#5A5A5A">NTN-B</text>
+        <rect x="56" y="11.75" width="26" height="68.25" fill="#EFEFEF" stroke="#BDBDBD" stroke-width=".3"/>
+        <text x="69" y="8" text-anchor="middle" font-size="4.6">13,65%</text>
+        <text x="69" y="86" text-anchor="middle" font-size="3.4" fill="#5A5A5A">CDI hoje</text>
+      </svg>
+    </div>
+    <div style="flex:1">
+      <table>
+        <tr><th>Título</th><th style="text-align:right">Taxa</th></tr>
+        <tr><td>Tesouro IPCA+ 2030 (juros semestrais)</td><td style="text-align:right"><b>IPCA + 7,71%</b></td></tr>
+        <tr><td>Tesouro IPCA+ 2035 (juros semestrais)</td><td style="text-align:right"><b>IPCA + 7,85%</b></td></tr>
+      </table>
+      <p class="mt4" style="font-size:9.5pt">Diferente do CDI, que cai quando a Selic cair, a NTN-B <b>trava</b> esse juro real até o vencimento. Se a inflação subir, o título acompanha.</p>
+    </div>
+  </div>
+
+  <div class="note mt6"><p><b>Explicando de forma simples:</b> com IPCA + 7,8%, se a inflação for 5%, você recebe cerca de 13,2% no ano. Se for 7%, recebe cerca de 15,3%. O seu ganho <b>acima</b> dos preços está garantido, levando ao vencimento. No caminho há <b>marcação a mercado</b>: o preço oscila, por isso o prazo do título deve casar com o seu objetivo.</p></div>
+
+  <div class="mt6">
+    <h3>Crédito privado: Debêntures, CRA e CRI</h3>
+    <p>Pagam IPCA + um prêmio sobre a NTN-B e muitos são <b>isentos de IR</b> (debêntures incentivadas, CRA e CRI). Mas <b>não têm FGC</b> e não é qualquer emissor que serve. Antes de investir, analise:</p>
+    <ul class="check mt4" style="columns:2;column-gap:6mm">
+      <li>Endividamento e geração de caixa</li>
+      <li>Rating e histórico do emissor</li>
+      <li>Garantias da operação</li>
+      <li>Setor e sensibilidade a juros</li>
+      <li>Prêmio sobre a NTN-B de prazo similar</li>
+      <li>Liquidez no mercado secundário</li>
+    </ul>
+  </div>
+  <div class="src">Taxas indicativas de 13/11/2026 (Tesouro Direto, via calculadora.com.br); sujeitas a variação diária. Retorno nominal ilustrativo: (1 + IPCA) × (1 + juro real) − 1, antes do IR. Títulos públicos e crédito privado sujeitos a marcação a mercado.</div>
+  <div class="foot"><span>Private Investimentos XP | Estagflação: como se posicionar | Novembro 2026</span><span>9</span></div>
+</section>
+
+<!-- 10 INTERNACIONAL -->
+<section class="page">
+  <div class="brand"><span class="box">XP</span><span class="t">Private Investimentos</span></div>
+  <div class="eyebrow">Frente 3</div>
+  <h1>Internacional: o dólar como seguro</h1>
+  <h2>Atrelar parte do patrimônio à maior economia do mundo</h2>
+
+  <div class="mt8">
+    <div class="chartTitle">De 02/07 a 19/11/2026: quanto rendeu cada alternativa</div>
+    <svg viewBox="0 0 178 56" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- escala 0..14 -> 100 ; x0=46 -->
+      <line x1="46" y1="4" x2="46" y2="50" stroke="#999" stroke-width=".4"/>
+      <text x="44" y="16" text-anchor="end" font-size="3.9">CDI no período</text>
+      <rect x="46" y="9" width="35.7" height="11" fill="#9B9B9B"/><text x="84" y="16.3" font-size="4.4">≈ 5,0%</text>
+      <text x="44" y="38" text-anchor="end" font-size="3.9">Dólar (só o câmbio)</text>
+      <rect x="46" y="31" width="91.4" height="11" fill="#F6C100"/><text x="140" y="38.3" font-size="4.4" font-weight="700">+12,8%</text>
+    </svg>
+  </div>
+
+  <p class="lead mt6">O dólar não é aposta, é <b>seguro</b>. Ele tende a subir justamente quando o Brasil vai mal: crise fiscal, fuga de capital, incerteza política. É a parte da carteira que <b>protege as outras</b>.</p>
+
+  <div class="grid2 mt6">
+    <div class="card"><h3>Por que agora</h3><p>Fed sinalizando alta de juros e fiscal brasileiro frágil apontam para um dólar mais forte daqui para frente. Além do câmbio, a renda fixa americana paga cerca de <b>4% ao ano em dólar</b>.</p></div>
+    <div class="card"><h3>Como fazer</h3><p>Conta global com investimentos nos EUA (Treasuries, ETFs, ações), fundos cambiais e BDRs. A escolha depende de prazo, valor e da sua necessidade de liquidez.</p></div>
+  </div>
+  <div class="note mt6"><p><b>Quanto ter fora?</b> Não existe número mágico, mas para a maioria dos investidores uma fatia entre <b>10% e 20%</b> do patrimônio em moeda forte já reduz bastante a dependência do risco Brasil. Montamos isso em etapas, sem tentar acertar o "dólar perfeito".</p></div>
+  <div class="src">Câmbio: PTAX BC de R$ 5,22 (02/07) para R$ 5,89 (19/11). CDI estimado a 13,65% a.a. por ~97 dias úteis. Renda fixa americana: fed funds efetivo de 3,88% (Federal Reserve H.15, 18/11/2026). Faixa de alocação meramente referencial; investimentos no exterior envolvem risco cambial.</div>
+  <div class="foot"><span>Private Investimentos XP | Estagflação: como se posicionar | Novembro 2026</span><span>10</span></div>
+</section>
+
+<!-- 11 MAPA -->
+<section class="page">
+  <div class="brand"><span class="box">XP</span><span class="t">Private Investimentos</span></div>
+  <h1>Mapa do posicionamento</h1>
+  <h2>As três frentes em uma página</h2>
+  <table class="mt8">
+    <tr><th style="width:22%">Frente</th><th style="width:26%">Protege contra</th><th style="width:28%">Onde olhar</th><th>Cuidado com</th></tr>
+    <tr><td><b>Pós-fixado</b></td><td>Juros altos por mais tempo</td><td>1º LCI/LCA/LCD isentas<br>2º CDBs</td><td>Limite do FGC e qualidade do emissor</td></tr>
+    <tr><td><b>Inflação</b></td><td>IPCA acima da meta</td><td>NTN-B (Tesouro IPCA+)<br>Debêntures, CRA, CRI</td><td>Marcação a mercado; crédito privado não tem FGC</td></tr>
+    <tr><td><b>Internacional</b></td><td>Risco Brasil e real fraco</td><td>Conta global, Treasuries, ETFs, fundos cambiais</td><td>Entrar em etapas; casar com o seu prazo</td></tr>
+  </table>
+
+  <div class="mt10">
+    <div class="eyebrow">O que evitar em um cenário de estagflação</div>
+    <div class="grid2 mt4">
+      <div class="card"><h3>Dinheiro parado</h3><p>Conta corrente e poupança perdem para a inflação com facilidade.</p></div>
+      <div class="card"><h3>Prefixado longo sem estratégia</h3><p>Se a inflação surpreender e os juros subirem, o título perde valor no caminho.</p></div>
+      <div class="card"><h3>Concentração em um emissor</h3><p>Taxa alta em um único banco ou empresa é risco concentrado, não oportunidade.</p></div>
+      <div class="card"><h3>Patrimônio 100% em reais</h3><p>Todo o seu futuro fica exposto a um único país e a uma única moeda.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Private Investimentos XP | Estagflação: como se posicionar | Novembro 2026</span><span>11</span></div>
+</section>
+
+<!-- 12 CTA + BIO -->
+<section class="page cta">
+  <div class="top">
+    <div class="brand" style="top:12mm"><span class="box" style="background:#fff;color:#111">XP</span><span class="t" style="color:#ddd">Private Investimentos</span></div>
+    <div class="eyebrow" style="color:#bbb">Para 2027</div>
+    <h1>Em 2027, você vai precisar de alguém próximo</h1>
+    <p>Juros, inflação e câmbio vão se mover rápido. Cada decisão do Copom, do Fed ou de Brasília pode exigir um ajuste na sua carteira. Ter um especialista acompanhando todas essas movimentações faz diferença no resultado.</p>
+  </div>
+  <div class="opts">
+    <div class="opt"><h3>Ainda não tem conta na XP?</h3><p>Abra sua conta e tenha minha assessoria para montar e acompanhar a sua estratégia.</p><span class="act">Abrir conta com minha assessoria</span></div>
+    <div class="opt"><h3>Já é cliente XP?</h3><p>Me chame no WhatsApp e vamos revisar o seu posicionamento para 2027.</p><span class="act">WhatsApp: (XX) XXXXX-XXXX</span></div>
+  </div>
+
+  <div class="bio">
+    <div class="row" style="align-items:center;gap:4mm">
+      <div style="width:1.2mm;height:16mm;background:var(--y)"></div>
+      <div><div style="font-style:italic;font-size:19pt">Marcus Novais</div><div style="font-style:italic;font-size:10pt;color:var(--mut)">Fundador e sócio da Private Investimentos XP · CFA Nível 3, CFP®, CGA</div></div>
+    </div>
+    <div class="mt6">
+      <p>Fundador e sócio da Private Investimentos XP, atuando na assessoria de clientes e na gestão de equipes.</p>
+      <p>Com mais de <b>14 anos de experiência</b> no mercado financeiro, especializado em gestão de investimentos e planejamento financeiro para clientes de alta renda e private banking.</p>
+      <p>Formado em Administração com ênfase em Comércio Exterior, possui MBA em Gestão de Pessoas e Liderança Estratégica pela <b>FGV</b> e Pós-Graduação em Finanças Corporativas e Investment Banking pela <b>FIA</b>. Ao longo da carreira, acumulou certificações relevantes como <b>CFP®</b> e <b>CGA</b>.</p>
+      <p>A trajetória profissional inclui passagens por instituições como <b>Santander, HSBC e Itaú Unibanco</b>, onde desenvolveu sólida expertise em análise de investimentos, operações no mercado de capitais e gestão de portfólios de clientes private.</p>
+    </div>
+  </div>
+  <div class="disc">Material de caráter exclusivamente informativo, elaborado com base em dados públicos disponíveis em 19/11/2026. Não constitui oferta, solicitação ou recomendação individual de investimento. As projeções são do mercado (Boletim Focus) e podem não se confirmar. Rentabilidade passada não é garantia de rentabilidade futura. Investimentos estão sujeitos a riscos, incluindo perda do capital investido, risco de crédito, de mercado e cambial. Antes de investir, verifique a adequação ao seu perfil (suitability). A garantia do FGC está sujeita aos limites e condições vigentes. Títulos de crédito privado como debêntures, CRA e CRI não contam com garantia do FGC. Assessor de investimentos registrado na CVM, vinculado à XP Investimentos CCTVM S.A.</div>
+  <div class="foot"><span>Private Investimentos XP | Estagflação: como se posicionar | Novembro 2026</span><span>12</span></div>
+</section>
+
+</body>
+</html>
