@@ -69,7 +69,8 @@ def main(spec_path, src, out):
         y += bh + gap
 
     foot = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    shadow_text(foot, [spec.get("rodape", "Leia a legenda")], f_foot, spec.get("rodape_y", 0.852) * H, 0)
+    shadow_text(foot, [spec.get("rodape", "Leia a legenda")], f_foot, spec.get("rodape_y", 0.852) * H, 0,
+                0 if spec.get("rodape_destaque") else None, spec.get("cor_destaque", "#F5C400"))
 
     tmp = os.path.splitext(out)[0]
     base.save(tmp + "_base.png"); foot.save(tmp + "_rodape.png")

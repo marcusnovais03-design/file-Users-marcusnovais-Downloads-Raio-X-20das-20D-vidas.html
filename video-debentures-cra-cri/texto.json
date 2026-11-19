@@ -21,5 +21,6 @@
   "rodape_em": 0.6,
   "titulo_destaque": 1,
   "cor_destaque": "#F5C400",
-  "titulo_pitch": 40
+  "titulo_pitch": 40,
+  "rodape_destaque": true
 }
