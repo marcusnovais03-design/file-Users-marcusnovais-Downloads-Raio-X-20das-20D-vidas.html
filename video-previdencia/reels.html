@@ -113,7 +113,7 @@ const FOTOS={
 const FT=FOTOS[EP.foto];
 const stage=document.getElementById('stage');
 document.getElementById('epl').textContent=EP.tag||`EP ${EP.ep}/8`; document.querySelector('.top .s').textContent=EP.serie||'TESOURO SEM MISTÉRIO';
-document.getElementById('hav').src=FT.f; if(EP.semFoto) document.getElementById('hav').style.display='none'; if(EP.semFoto) stage.classList.add('nofoto');
+document.getElementById('hav').src=FT.f; if(EP.semFoto) document.getElementById('hav').style.display='none'; if(EP.semFoto) stage.classList.add('nofoto'); if(EP.semTopo){ document.querySelector('.top').style.display='none'; document.querySelector('.prog').style.display='none'; }
 
 const clamp=x=>Math.max(0,Math.min(1,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
