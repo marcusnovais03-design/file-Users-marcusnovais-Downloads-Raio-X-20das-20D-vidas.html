@@ -30,12 +30,19 @@ f_box = fit(BOX_FONT, "Dos 40 aos 45 invista R$ 1.000 por mês,", 354 * S)
 f_foot = fit(TITLE_FONT, "Leia a legenda", 125 * S)
 
 
-def shadow_text(img, lines, font, y, pitch):
+def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400"):
+    """highlight: índice da linha que vai dentro de uma caixa colorida (texto preto)."""
     sh = Image.new("RGBA", img.size, (0, 0, 0, 0))
     tx = Image.new("RGBA", img.size, (0, 0, 0, 0))
     ds, dt = ImageDraw.Draw(sh), ImageDraw.Draw(tx)
     for i, line in enumerate(lines):
         cy = y + i * pitch
+        if i == highlight:
+            l, t, r, b = font.getbbox(line, anchor="mt")
+            px, py = 12 * S, 6 * S
+            dt.rectangle([W / 2 + l - px, cy + t - py, W / 2 + r + px, cy + b + py], fill=hl_color)
+            dt.text((W / 2, cy), line, font=font, fill=(15, 15, 15), anchor="mt")
+            continue
         ds.text((W / 2 + 2, cy + 3), line, font=font, fill=(0, 0, 0, 150), anchor="mt")
         dt.text((W / 2, cy), line, font=font, fill="white", anchor="mt")
     img.alpha_composite(sh.filter(ImageFilter.GaussianBlur(6)))
@@ -45,7 +52,9 @@ def shadow_text(img, lines, font, y, pitch):
 def main(spec_path, src, out):
     spec = json.load(open(spec_path, encoding="utf-8"))
     base = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    shadow_text(base, spec["titulo"], f_title, spec.get("titulo_y", 0.18) * H, 35 * S)
+    shadow_text(base, spec["titulo"], f_title, spec.get("titulo_y", 0.18) * H,
+                spec.get("titulo_pitch", 35) * S, spec.get("titulo_destaque"),
+                spec.get("cor_destaque", "#F5C400"))
 
     d = ImageDraw.Draw(base)
     pitch, pad_x, pad_y, gap = 26 * S, 12 * S, 11 * S, 25 * S

@@ -6,6 +6,7 @@ Medidas tomadas no modelo de 576x1024; aplicar em proporção.
 1. **Título** (aparece desde o início e fica até o fim)
    - Serifada condensada branca (fonte: `fonts/InstrumentSerif-Regular.ttf`), sem fundo, com sombra leve.
    - Duas linhas centralizadas, com a palavra-chave em CAIXA ALTA ("1 MILHÃO").
+   - Opcional: uma linha do título pode ir dentro de uma caixa amarela (#F5C400) com texto preto (`titulo_destaque`).
    - Posição: cerca de 18% a 24% da altura, ocupando uns 62% da largura.
 2. **Caixas de conteúdo** (aparecem desde o início e ficam até o fim)
    - Fundo branco sólido, cantos retos, texto preto em serifada regular (fonte: `fonts/SourceSerif4-Regular.ttf`).
