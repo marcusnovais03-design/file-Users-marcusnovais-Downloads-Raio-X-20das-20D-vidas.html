@@ -9,10 +9,10 @@
     ["Recessão vindo à frente?"]
   ],
   "caixa_escala": 1.6,
-  "caixas_y": 0.5,
+  "caixas_y": 0.29,
   "rodape": ["Qual a sua opinião?", "Comente embaixo"],
   "rodape_destaque": true,
   "rodape_escala": 1.6,
-  "rodape_y": 0.8,
+  "rodape_y": 0.565,
   "rodape_em": 0.6
 }
