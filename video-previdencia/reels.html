@@ -322,13 +322,13 @@ B.linhas=(c)=>{ const W=700,X0=120,Y0=560,Y1=40; const n=c.series[0][1].length; 
     ${c.series.map((x,i)=>`<path class="ln${i}" fill="none" stroke="${x[2]}" stroke-width="${i===0?11:8}" ${i===1?'stroke-dasharray="18 14"':''} stroke-linejoin="round" stroke-linecap="round"/><circle class="dt${i}" r="${i===0?14:11}" fill="#fff"/>`).reverse().join('')}
   </svg><div class="tab tab4">${c.series.map((x,i)=>`<div class="tr"><i style="background:${x[2]}"></i><span>${x[0]}</span><b class="tv${i}" style="color:${x[2]}"></b></div>`).join('')}</div><div class="note">${c.note}</div>${c.cta?`<div class="ctax">${c.cta}</div>`:''}`;
   return {html, up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6)); pop(el.querySelector('.lead'),seg(l,.4,.9));
-    const cx=el.querySelector('.ctax'); if(cx){ const kc=seg(l,(c.d||12)-3,(c.d||12)-2.4); cx.style.opacity=kc; cx.style.transform=`translateY(${(1-kc)*20+6*Math.sin(Math.max(0,l-(c.d||12)+2.4)*5)}px)`; }
-    const k=seg(l,.8,(c.d||12)-3.5)*(n-1), j=Math.floor(k), f=k-j;
+    const cx=el.querySelector('.ctax'); if(cx){ const kc=seg(l,(c.anim||c.d||12)-3,(c.anim||c.d||12)-2.4); cx.style.opacity=kc; cx.style.transform=`translateY(${(1-kc)*20+6*Math.sin(Math.max(0,l-(c.anim||c.d||12)+2.4)*5)}px)`; }
+    const k=seg(l,.8,(c.anim||c.d||12)-3.5)*(n-1), j=Math.floor(k), f=k-j;
     c.series.forEach((x,q)=>{ const a=x[1]; let d=''; for(let i=0;i<=j&&i<n;i++) d+=(d?'L':'M')+gx(i).toFixed(1)+' '+gy(a[i]).toFixed(1);
       let v=a[Math.min(j,n-1)]; if(j<n-1){ v=a[j]+(a[j+1]-a[j])*f; d+='L'+gx(k).toFixed(1)+' '+gy(v).toFixed(1); }
       el.querySelector('.ln'+q).setAttribute('d',d); const dt=el.querySelector('.dt'+q); dt.setAttribute('cx',gx(k)); dt.setAttribute('cy',gy(v));
       el.querySelector('.tv'+q).textContent=brl(v); });
-    el.querySelectorAll('.tr').forEach((r,i)=>pop(r,seg(l,.9+i*.2,1.4+i*.2),20)); el.querySelector('.note').style.opacity=seg(l,(c.d||12)-3,(c.d||12)-2.4)*.9; }}; };
+    el.querySelectorAll('.tr').forEach((r,i)=>pop(r,seg(l,.9+i*.2,1.4+i*.2),20)); el.querySelector('.note').style.opacity=seg(l,(c.anim||c.d||12)-3,(c.anim||c.d||12)-2.4)*.9; }}; };
 B.hbars=(c)=>{ const max=Math.max(...c.items.map(x=>x[1]));
   const html=`<h2>${c.title}</h2>${c.desc?`<div class="lead" style="margin:-8px 0 20px; font-size:34px">${c.desc}</div>`:''}
   <div class="hb">${c.items.map((x,i)=>`<div class="hr"><div class="hl"><span>${x[0]}</span><b class="hv${i}" style="color:${x[2]}"></b></div><div class="hk"><div class="hf${i}" style="background:${x[2]}"></div></div>${x[3]?`<div class="hs">${x[3]}</div>`:''}</div>`).join('')}</div><div class="note">${c.note||''}</div>`;
