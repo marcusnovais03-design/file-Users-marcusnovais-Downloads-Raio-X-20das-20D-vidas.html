@@ -5,7 +5,7 @@ texto.json: {"titulo": [l1, l2], "caixas": [[l1, l2], ...], "rodape": "Leia a le
              "rodape_em": 0.6, "titulo_y": 0.18}
 """
 import json, os, subprocess, sys
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageColor, ImageDraw, ImageFont, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 W, H = 1080, 1920
@@ -30,18 +30,21 @@ f_box = fit(BOX_FONT, "Dos 40 aos 45 invista R$ 1.000 por mês,", 354 * S)
 f_foot = fit(TITLE_FONT, "Leia a legenda", 125 * S)
 
 
-def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400"):
-    """highlight: índice da linha que vai dentro de uma caixa colorida (texto preto)."""
+def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400", colors=None):
+    """highlight: índice da linha que vai dentro de uma caixa colorida (texto preto).
+    colors: lista por linha com a cor do fundo (None = texto branco sem fundo)."""
     sh = Image.new("RGBA", img.size, (0, 0, 0, 0))
     tx = Image.new("RGBA", img.size, (0, 0, 0, 0))
     ds, dt = ImageDraw.Draw(sh), ImageDraw.Draw(tx)
     for i, line in enumerate(lines):
         cy = y + i * pitch
-        if highlight == "all" or i == highlight:
+        bg = colors[i] if colors else (hl_color if highlight == "all" or i == highlight else None)
+        if bg:
             l, t, r, b = font.getbbox(line, anchor="mt")
             px, py = 12 * S, 6 * S
-            dt.rectangle([W / 2 + l - px, cy + t - py, W / 2 + r + px, cy + b + py], fill=hl_color)
-            dt.text((W / 2, cy), line, font=font, fill=(15, 15, 15), anchor="mt")
+            dt.rectangle([W / 2 + l - px, cy + t - py, W / 2 + r + px, cy + b + py], fill=bg)
+            dark = sum(ImageColor.getrgb(bg)) < 450
+            dt.text((W / 2, cy), line, font=font, fill="white" if dark else (15, 15, 15), anchor="mt")
             continue
         ds.text((W / 2 + 2, cy + 3), line, font=font, fill=(0, 0, 0, 150), anchor="mt")
         dt.text((W / 2, cy), line, font=font, fill="white", anchor="mt")
@@ -54,7 +57,7 @@ def main(spec_path, src, out):
     base = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     shadow_text(base, spec["titulo"], f_title, spec.get("titulo_y", 0.18) * H,
                 spec.get("titulo_pitch", 35) * S, spec.get("titulo_destaque"),
-                spec.get("cor_destaque", "#F5C400"))
+                spec.get("cor_destaque", "#F5C400"), spec.get("titulo_cores"))
 
     d = ImageDraw.Draw(base)
     k = spec.get("caixa_escala", 1.0)

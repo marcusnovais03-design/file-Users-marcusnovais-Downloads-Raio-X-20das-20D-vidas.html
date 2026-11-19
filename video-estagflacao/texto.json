@@ -1,0 +1,14 @@
+{
+  "titulo": ["$5,84", "POSSÍVEL RECESSÃO EM 2027"],
+  "titulo_cores": ["#D62828", "#F5C400"],
+  "titulo_pitch": 48,
+  "caixas": [
+    ["Estamos à beira de", "uma estagflação"]
+  ],
+  "caixa_escala": 1.2,
+  "rodape": ["E você, o que acha?"],
+  "rodape_destaque": true,
+  "rodape_escala": 1.25,
+  "rodape_y": 0.83,
+  "rodape_em": 0.6
+}
