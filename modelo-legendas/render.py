@@ -56,7 +56,8 @@ def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400", 
 def main(spec_path, src, out):
     spec = json.load(open(spec_path, encoding="utf-8"))
     base = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    shadow_text(base, spec["titulo"], f_title, spec.get("titulo_y", 0.18) * H,
+    ft = ImageFont.truetype(TITLE_FONT, round(f_title.size * spec.get("titulo_escala", 1.0)))
+    shadow_text(base, spec["titulo"], ft, spec.get("titulo_y", 0.18) * H,
                 spec.get("titulo_pitch", 35) * S, spec.get("titulo_destaque"),
                 spec.get("cor_destaque", "#F5C400"), spec.get("titulo_cores"))
 
@@ -78,7 +79,7 @@ def main(spec_path, src, out):
     rod = spec.get("rodape", "Leia a legenda")
     rod = [rod] if isinstance(rod, str) else rod
     ff = ImageFont.truetype(TITLE_FONT, round(f_foot.size * spec.get("rodape_escala", 1.0)))
-    shadow_text(foot, rod, ff, spec.get("rodape_y", 0.852) * H, ff.size * 1.4,
+    shadow_text(foot, rod, ff, spec.get("rodape_y", 0.852) * H, ff.size * 1.6,
                 "all" if spec.get("rodape_destaque") else None, spec.get("cor_destaque", "#F5C400"))
 
     tmp = os.path.splitext(out)[0]
