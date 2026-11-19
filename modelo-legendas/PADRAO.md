@@ -16,3 +16,9 @@ Medidas tomadas no modelo de 576x1024; aplicar em proporção.
 3. **Rodapé "Leia a legenda"**
    - Serifada branca pequena, sem fundo, centralizada a uns 86% da altura.
    - Entra em corte seco por volta de 60% da duração (3,4s num vídeo de 5,6s).
+
+## Padrão aprovado (usar sempre)
+- Linha 2 do título dentro de uma caixa amarela (#F5C400) com texto preto: `"titulo_destaque": 1`.
+- "Leia a legenda" também numa caixa amarela com texto preto: `"rodape_destaque": true`.
+- O vídeo final sai sempre sem som e sem música.
+- Modelo de configuração: `video-debentures-cra-cri/texto.json`.
