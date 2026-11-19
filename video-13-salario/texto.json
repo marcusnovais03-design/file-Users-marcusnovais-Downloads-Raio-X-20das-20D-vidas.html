@@ -1,13 +1,15 @@
 {
-  "titulo": ["Natal e 13º", "ESTÃO CHEGANDO"],
-  "titulo_destaque": 1,
-  "titulo_pitch": 40,
+  "titulo": ["13º ESTÁ CHEGANDO"],
+  "titulo_destaque": 0,
   "cor_destaque": "#F5C400",
   "caixas": [
     ["99% das pessoas vão usar", "o 13º para pagar dívidas"],
     ["Apenas 1% vai usar para fazer", "uma reserva ou investir"]
   ],
-  "rodape": "Mude a mentalidade",
+  "caixa_escala": 1.2,
+  "rodape": ["E você, vai pagar dívida ou investir?", "Comente aqui"],
   "rodape_destaque": true,
+  "rodape_escala": 1.25,
+  "rodape_y": 0.83,
   "rodape_em": 0.6
 }
