@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Carrossel apocalipse 2027</title>
 <style>
-  :root { --ink:#070d24; --gold:#e3b65a; --red:#ff5a6a; --gray:#b9bdcc; }
+  :root { --ink:#070d24; --gold:#e3b65a; --red:#e3141e; --gray:#b9bdcc; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { background:#888; font-family:"Inter",sans-serif; color:#fff; }
   .slide { width:1080px; height:1350px; position:relative; overflow:hidden; margin:0 auto 40px; background:var(--ink);
@@ -50,6 +50,18 @@
   .sl { display:flex; gap:14px; margin-top:12px; }
   .sl div { flex:1; text-align:center; font-size:22px; font-weight:600; line-height:1.2; color:rgba(255,255,255,.75); }
   .tag { margin-top:26px; font-size:30px; font-weight:800; color:var(--red); }
+  .slide.light { background-color:#f2efe8; color:#0e1f5b;
+    background-image:linear-gradient(rgba(14,31,91,.05) 2px, transparent 2px), linear-gradient(90deg, rgba(14,31,91,.05) 2px, transparent 2px); }
+  .light p, .light li { color:rgba(14,31,91,.85); }
+  .light b { color:#0e1f5b; } .light b.g, .light h1 em, .light h2 em { color:#a8761c; }
+  .light .pill { color:#a8761c; text-shadow:none; } .light .pill.red { color:var(--red); }
+  .light li { border-bottom-color:rgba(14,31,91,.15); } .light li::before { background:#a8761c; }
+  .light .hb .bar { background:rgba(14,31,91,.1); }
+  .light .steps { border-bottom-color:rgba(14,31,91,.5); } .light .sl div { color:rgba(14,31,91,.7); }
+  .light .foot, .light .count { color:#0e1f5b; } .light .foot .who span { background:#0e1f5b; }
+  .light .foot .go svg { stroke:#0e1f5b; }
+  .light .steps .s:nth-child(-n+4) b { color:#a8761c !important; } .light .steps .s:nth-child(-n+4) i { background:#c8932e !important; }
+  .pill.red { text-shadow:0 2px 14px rgba(0,0,0,.85); }
 </style>
 </head>
 <body>
@@ -69,7 +81,7 @@ S.push({video:7, h:`<div class="page"><div class="pill">Dividendos</div>
  <p style="font-size:34px">Desde janeiro, dividendos acima de <b>R$ 50 mil por mês</b> de uma mesma empresa pagam <b>10% de IR</b>. A ideia era bancar a isenção de quem ganha até R$ 5 mil.</p>
  <div class="hb" style="margin-top:36px">
   <div class="row"><div class="lab"><span>Arrecadação prevista</span><b style="color:#b9bdcc" id="a1">R$ 29 bi</b></div><div class="bar"><i id="b1" style="background:#b9bdcc"></i></div></div>
-  <div class="row"><div class="lab"><span>Arrecadação real</span><b style="color:#ff5a6a" id="a2">R$ 10,5 bi</b></div><div class="bar"><i id="b2" style="background:#ff5a6a"></i></div></div>
+  <div class="row"><div class="lab"><span>Arrecadação real</span><b style="color:#e3141e" id="a2">R$ 10,5 bi</b></div><div class="bar"><i id="b2" style="background:#e3141e"></i></div></div>
  </div></div>`});
 S.push({video:8, h:`<div class="page"><div class="pill">A resposta: mais imposto</div>
  <h2 style="font-size:58px">PL 5.889/2026: IR sobre dividendos por faixa</h2>
@@ -81,7 +93,7 @@ S.push({video:6, h:`<div class="page"><div class="pill red">O fim da trava</div>
  <p style="font-size:34px">Hoje a lei impede que o imposto da empresa somado ao do sócio passe de <b>34%</b>. O projeto não repete essa trava.</p>
  <div class="hb" style="margin-top:36px">
   <div class="row"><div class="lab"><span>Hoje (com trava)</span><b style="color:#b9bdcc" id="c1">34%</b></div><div class="bar"><i id="d1" style="background:#b9bdcc"></i></div></div>
-  <div class="row"><div class="lab"><span>Com o projeto</span><b style="color:#ff5a6a" id="c2">50,5%</b></div><div class="bar"><i id="d2" style="background:#ff5a6a"></i></div></div>
+  <div class="row"><div class="lab"><span>Com o projeto</span><b style="color:#e3141e" id="c2">50,5%</b></div><div class="bar"><i id="d2" style="background:#e3141e"></i></div></div>
  </div></div>`});
 S.push({h:`<div class="page"><div class="pill">Na minha empresa</div>
  <h2>Eu também <em>vou sentir</em></h2>
@@ -104,11 +116,11 @@ S.push({h:`<div class="bg"><img src="img/marcus.jpg" style="object-position:62% 
  <div class="page end"><h1 style="font-size:74px">É empresário e quer saber como <em>preparar o seu caixa</em> para isso?</h1>
  <div class="btn">Acesse o link na BIO e me chame</div></div>`});
 const N=S.length;
-S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide'; if(x.video) s.dataset.video=x.video;
+S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide'+(i%2===1?' light':''); if(x.video) s.dataset.video=x.video;
   s.innerHTML=x.h+`<div class="count">${String(i+1).padStart(2,'0')}/${String(N).padStart(2,'0')}</div><div class="foot"><div class="who">Marcus Novais<span></span>Finanças e Economia</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
   document.body.appendChild(s); });
 const ST=[[0,'Isento'],[10,'até 10%'],[10,'10%'],[15,'15%'],[20,'20%'],[25,'25%']];
-document.getElementById('st').innerHTML=ST.map((x,i)=>`<div class="s"><b style="color:${i>3?'#ff5a6a':'#e3b65a'}" class="sv">${x[1]}</b><i style="background:${i>3?'#ff5a6a':'#e3b65a'}" data-h="${Math.max(x[0],1)/25*340}"></i></div>`).join('');
+document.getElementById('st').innerHTML=ST.map((x,i)=>`<div class="s"><b style="color:${i>3?'#e3141e':'#e3b65a'}" class="sv">${x[1]}</b><i style="background:${i>3?'#e3141e':'#e3b65a'}" data-h="${Math.max(x[0],1)/25*340}"></i></div>`).join('');
 const clamp=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-clamp(x),3), seg=(t,a,b)=>ease((t-a)/(b-a));
 const br=(v,d)=>v.toFixed(d).replace('.',',');
 window.setT=function(t){
