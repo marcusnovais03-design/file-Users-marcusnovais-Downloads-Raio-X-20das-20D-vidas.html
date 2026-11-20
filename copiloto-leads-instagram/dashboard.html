@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Copiloto de Leads</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="dot"></span>
+      <div>
+        <h1>Copiloto de Leads</h1>
+        <p class="sub" id="subtitle">Instagram · captação qualificada</p>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button class="tab active" data-tab="leads">Leads</button>
+      <button class="tab" data-tab="config">Configuração</button>
+      <button class="tab" data-tab="guia">Como usar</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- LEADS -->
+    <section id="tab-leads" class="panel active">
+      <div class="kpis">
+        <div class="kpi"><span id="kTotal">0</span><label>leads</label></div>
+        <div class="kpi"><span id="kQuentes">0</span><label>quentes (score ≥ 60)</label></div>
+        <div class="kpi"><span id="kAbordados">0</span><label>abordados</label></div>
+        <div class="kpi"><span id="kReunioes">0</span><label>reuniões / clientes</label></div>
+      </div>
+
+      <div class="filters">
+        <input id="fBusca" type="search" placeholder="Buscar @, nome, comentário, bio…">
+        <select id="fSegmento"><option value="">Todos os segmentos</option></select>
+        <select id="fStatus">
+          <option value="">Todos os status</option>
+          <option value="novo">Novo</option>
+          <option value="abordado">Abordado</option>
+          <option value="respondeu">Respondeu</option>
+          <option value="reuniao">Reunião marcada</option>
+          <option value="cliente">Cliente</option>
+          <option value="descartado">Descartado</option>
+        </select>
+        <select id="fIntencao">
+          <option value="">Qualquer intenção (IA)</option>
+          <option value="alta">Alta</option>
+          <option value="media">Média</option>
+          <option value="baixa">Baixa</option>
+          <option value="sem">Ainda não qualificado</option>
+        </select>
+        <label class="range">Score mín. <input id="fScore" type="number" min="0" max="100" value="0"></label>
+        <select id="fOrigem">
+          <option value="">Comentou ou curtiu</option>
+          <option value="comentario">Só quem comentou</option>
+          <option value="curtida">Só curtidas</option>
+        </select>
+      </div>
+
+      <div class="bulk">
+        <label class="chk"><input type="checkbox" id="selAll"> Selecionar visíveis</label>
+        <span id="selCount" class="muted">0 selecionados</span>
+        <span class="grow"></span>
+        <button id="bQualify" class="btn primary">Qualificar com IA</button>
+        <button id="bExport" class="btn">Exportar CSV</button>
+        <button id="bDelete" class="btn danger">Excluir selecionados</button>
+      </div>
+      <div id="status" class="status" hidden></div>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Lead</th>
+              <th>Interação</th>
+              <th>Segmento</th>
+              <th>Score</th>
+              <th>IA</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div id="empty" class="empty" hidden>
+          <h3>Nenhum lead ainda</h3>
+          <p>Abra o Instagram, entre num post de um perfil ou tema do seu nicho e clique em <b>Capturar comentários visíveis</b> no quadro do Copiloto (canto inferior direito).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFIG -->
+    <section id="tab-config" class="panel">
+      <div class="grid2">
+        <div class="card">
+          <h2>Quem é você</h2>
+          <label>Seu @ no Instagram<input id="cArroba" placeholder="@seuperfil"></label>
+          <label>O que você faz (a IA usa isso para qualificar e escrever as mensagens)
+            <textarea id="cAtuacao" rows="4"></textarea></label>
+          <label>Tom das mensagens<input id="cTom"></label>
+        </div>
+        <div class="card">
+          <h2>Inteligência artificial</h2>
+          <label>Chave da API da Anthropic
+            <input id="cKey" type="password" placeholder="sk-ant-..." autocomplete="off"></label>
+          <p class="muted small">Crie em console.anthropic.com → API Keys. Fica salva só neste navegador. A pontuação por palavras-chave funciona mesmo sem chave.</p>
+          <label>Modelo
+            <select id="cModel">
+              <option value="claude-opus-5-5">Claude Opus 5.5 — melhor qualidade</option>
+              <option value="claude-sonnet-5-5">Claude Sonnet 5.5 — ~metade do custo</option>
+              <option value="claude-haiku-5-5">Claude Haiku 5.5 — mais barato, para grandes volumes</option>
+            </select></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cardhead">
+          <h2>Segmentos e produtos</h2>
+          <div>
+            <button id="bAddSeg" class="btn">+ Novo segmento</button>
+            <button id="bResetSeg" class="btn ghost">Restaurar padrão</button>
+          </div>
+        </div>
+        <p class="muted small">Palavras-chave separadas por vírgula. Acentos e maiúsculas não importam. Desative o que não quer priorizar agora.</p>
+        <div id="segList" class="segs"></div>
+      </div>
+
+      <div class="card">
+        <h2>Lista “não contatar” (LGPD)</h2>
+        <p class="muted small">Quem pedir para não ser contatado ou para ter os dados apagados: inclua o @ aqui. O lead é excluído e nunca mais é capturado.</p>
+        <div class="row">
+          <input id="cOptout" placeholder="@usuario">
+          <button id="bOptout" class="btn">Adicionar</button>
+        </div>
+        <div id="optoutList" class="chips"></div>
+      </div>
+
+      <div class="savebar">
+        <span id="saveMsg" class="muted"></span>
+        <button id="bSave" class="btn primary">Salvar configuração</button>
+      </div>
+    </section>
+
+    <!-- GUIA -->
+    <section id="tab-guia" class="panel">
+      <div class="card prose">
+        <h2>Fluxo recomendado (15–20 min por dia)</h2>
+        <ol>
+          <li><b>Escolha onde pescar.</b> Perfis de empresas e temas do seu nicho: associações médicas, contabilidades, perfis de consórcio, notícias de Tesouro Direto e CDB, posts sobre herança e holding, perfis do agro e de empreendedorismo regional.</li>
+          <li><b>Abra um post com muitos comentários</b> e clique em <i>ver mais comentários</i> algumas vezes, você mesmo.</li>
+          <li>No quadro <b>Copiloto de Leads</b>, clique em <b>Capturar comentários visíveis</b>. Repita quando carregar mais.</li>
+          <li>Aqui no painel, filtre por <b>Score ≥ 40</b> e <b>Só quem comentou</b>. Selecione e clique em <b>Qualificar com IA</b>.</li>
+          <li>Para os leads de intenção alta, clique em <b>Abrir perfil</b> e use <b>Capturar / enriquecer perfil</b>: a bio melhora muito a qualificação. Depois qualifique de novo.</li>
+          <li>Abra a mensagem sugerida, <b>ajuste com o seu jeito</b>, copie e envie manualmente pelo direct. Marque o status como <i>Abordado</i>.</li>
+        </ol>
+
+        <h2>Boas práticas para não ter a conta limitada</h2>
+        <ul>
+          <li>Envie poucas mensagens por dia (comece com 10–20) e sempre personalizadas. Volume alto de DMs parecidas é o que mais gera bloqueio.</li>
+          <li>Interaja antes: curta ou responda o comentário da pessoa e siga o perfil, depois mande a mensagem.</li>
+          <li>Prefira quem fez pergunta ou contou uma situação real. Curtida sozinha é um sinal fraco.</li>
+        </ul>
+
+        <h2>Compliance e LGPD</h2>
+        <ul>
+          <li>Os dados ficam <b>somente neste navegador</b> (armazenamento local da extensão). Nada é enviado para servidores, exceto o texto do lead para a API da Anthropic quando você clica em qualificar.</li>
+          <li>Capture apenas o necessário (@, comentário público, bio). Exclua leads descartados periodicamente.</li>
+          <li>Pedido de exclusão ou de “não me chame”: use a lista <i>não contatar</i>.</li>
+          <li>As mensagens sugeridas evitam promessa de rentabilidade e recomendação antes do suitability, mas <b>a revisão final é sua</b>. Valide o modelo de abordagem com o compliance do seu escritório.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <template id="tplSeg">
+    <div class="seg">
+      <div class="seghead">
+        <label class="switch"><input type="checkbox" class="sAtivo"><span></span></label>
+        <input class="sNome" placeholder="Nome do segmento">
+        <button class="btn ghost sDel" title="Remover">Remover</button>
+      </div>
+      <label>Produto / abordagem<input class="sProduto"></label>
+      <label>Palavras-chave<textarea class="sPalavras" rows="4"></textarea></label>
+    </div>
+  </template>
+
+  <script src="scoring.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
