@@ -30,6 +30,24 @@ f_box = fit(BOX_FONT, "Dos 40 aos 45 invista R$ 1.000 por mês,", 354 * S)
 f_foot = fit(TITLE_FONT, "Leia a legenda", 125 * S)
 
 
+EMOJI_FONT = "/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf"
+
+
+def split_emoji(line):
+    """Separa emoji no fim da linha (ex.: 'Veja por que 👇')."""
+    if line and ord(line[-1]) >= 0x1F000:
+        return line[:-1].rstrip(), line[-1]
+    return line, None
+
+
+def emoji_img(ch, height):
+    f = ImageFont.truetype(EMOJI_FONT, 109)
+    im = Image.new("RGBA", (136, 128), (0, 0, 0, 0))
+    ImageDraw.Draw(im).text((0, 0), ch, font=f, embedded_color=True)
+    im = im.crop(im.getbbox())
+    return im.resize((round(im.width * height / im.height), round(height)), Image.LANCZOS)
+
+
 def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400", colors=None):
     """highlight: índice da linha que vai dentro de uma caixa colorida (texto preto).
     colors: lista por linha com a cor do fundo (None = texto branco sem fundo)."""
@@ -40,12 +58,19 @@ def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400", 
         cy = y + i * pitch
         bg = colors[i] if colors else (hl_color if highlight == "all" or i == highlight else None)
         if bg:
-            l, t, r, b = font.getbbox(line, anchor="mt")
+            line, emo = split_emoji(line)
+            l, t, r, b = font.getbbox(line, anchor="lt")
+            em = emoji_img(emo, (b - t) * 1.1) if emo else None
+            gap = font.size * 0.25 if em else 0
+            tw = r + (gap + em.width if em else 0)
+            x0 = W / 2 - tw / 2
             px, py = 12 * S, 6 * S
-            dt.rectangle([W / 2 + l - px, cy + t - py, W / 2 + r + px, cy + b + py], fill=bg)
+            dt.rectangle([x0 - px, cy + t - py, x0 + tw + px, cy + b + py], fill=bg)
             r_, g_, b_ = ImageColor.getrgb(bg)[:3]
             dark = 0.299 * r_ + 0.587 * g_ + 0.114 * b_ < 150
-            dt.text((W / 2, cy), line, font=font, fill="white" if dark else (15, 15, 15), anchor="mt")
+            dt.text((x0, cy), line, font=font, fill="white" if dark else (15, 15, 15), anchor="lt")
+            if em:
+                tx.alpha_composite(em, (round(x0 + r + gap), round(cy + (t + b) / 2 - em.height / 2)))
             continue
         ds.text((W / 2 + 2, cy + 3), line, font=font, fill=(0, 0, 0, 150), anchor="mt")
         dt.text((W / 2, cy), line, font=font, fill="white", anchor="mt")
@@ -86,11 +111,12 @@ def main(spec_path, src, out):
     base.save(tmp + "_base.png"); foot.save(tmp + "_rodape.png")
     dur = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration",
                                          "-of", "csv=p=0", src]).decode())
+    dur = min(dur, spec.get("duracao", dur))
     t = spec.get("rodape_em", 0.6) * dur
     vf = (f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1[v];"
           f"[v][1:v]overlay=0:0[a];[a][2:v]overlay=0:0:enable='gte(t,{t:.2f})',format=yuv420p")
     subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-i", src, "-i", tmp + "_base.png",
-                           "-i", tmp + "_rodape.png", "-filter_complex", vf, "-an",
+                           "-i", tmp + "_rodape.png", "-filter_complex", vf, "-an", "-t", f"{dur:.3f}",
                            "-c:v", "libx264", "-crf", "18", "-preset", "medium",
                            "-movflags", "+faststart", out])
 
