@@ -3,16 +3,16 @@
   "titulo_cores": [null, "#F5C400"],
   "titulo_escala": 1.25,
   "titulo_pitch": 50,
-  "titulo_y": 0.07,
+  "titulo_y": 0.37,
   "caixas": [
     ["Não basta ter R$ 1 milhão"]
   ],
   "caixa_escala": 1.6,
-  "caixas_y": 0.205,
+  "caixas_y": 0.505,
   "rodape": ["Veja por que 👇"],
   "rodape_destaque": true,
   "rodape_escala": 1.6,
-  "rodape_y": 0.29,
+  "rodape_y": 0.59,
   "rodape_em": 0.5,
   "duracao": 10
 }
