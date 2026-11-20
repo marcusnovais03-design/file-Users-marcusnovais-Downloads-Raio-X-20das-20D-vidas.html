@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carrossel China, África e o agro brasileiro</title>
+<style>
+  :root { --navy:#0e1f5b; --bg:#fcfcfe; --grid:rgba(60,70,160,.085); --rule:#dcdde6; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#888; font-family:"Inter",sans-serif; color:var(--navy); }
+  .slide {
+    width:1080px; height:1350px; position:relative; overflow:hidden; margin:0 auto 40px;
+    background-color:var(--bg);
+    background-image:linear-gradient(var(--grid) 2px, transparent 2px), linear-gradient(90deg, var(--grid) 2px, transparent 2px);
+    background-size:54px 54px; background-position:-1px -1px;
+    display:flex; flex-direction:column; justify-content:center; padding:150px 90px 150px;
+  }
+  body.single .slide { display:none; margin:0; }
+  body.single .slide.on { display:flex; }
+  .count { position:absolute; top:60px; right:92px; font-weight:800; font-size:25px; letter-spacing:.09em; }
+  .foot { position:absolute; left:90px; right:92px; bottom:62px; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:25px; }
+  .foot .who span { display:inline-block; width:3px; height:26px; background:var(--navy); margin:0 9px -4px; }
+  .foot .go { display:flex; align-items:center; gap:16px; font-weight:800; font-size:27px; }
+  .photo { width:100%; border:5px solid var(--navy); border-radius:42px; overflow:hidden; margin-bottom:44px; flex:none; }
+  .photo img { width:100%; height:100%; object-fit:cover; display:block; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:90px; line-height:.92; letter-spacing:-.058em; word-spacing:.14em; margin-bottom:34px; }
+  p { font-size:44px; line-height:1.23; letter-spacing:-.005em; }
+  p + p { margin-top:52px; }
+  b { font-weight:800; }
+  .pill { align-self:flex-start; background:var(--navy); color:#fff; font-weight:800; font-size:29px; letter-spacing:.12em; text-transform:uppercase; padding:13px 30px 12px; border-radius:40px; margin-bottom:34px; }
+  ul { list-style:none; margin-top:8px; }
+  li { position:relative; padding:26px 0 26px 60px; font-size:38px; line-height:1.2; border-bottom:3px solid var(--rule); }
+  li::before { content:""; position:absolute; left:0; top:38px; width:28px; height:28px; border-radius:50%; background:var(--navy); }
+  .cards { display:flex; gap:26px; margin-top:40px; }
+  .card { flex:1; border:5px solid var(--navy); border-radius:38px; padding:30px 32px 38px; background:var(--bg); }
+  .card .big { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:104px; letter-spacing:-.06em; line-height:1; margin-bottom:16px; }
+  .card .lbl { font-size:31px; line-height:1.22; }
+  .src { font-size:23px; line-height:1.3; margin-top:30px; opacity:.72; }
+
+  /* ---------- slides animados ---------- */
+  .hero { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:330px; line-height:.82; letter-spacing:-.07em; margin:6px 0 10px -10px; font-variant-numeric:tabular-nums; }
+  .dots { display:grid; grid-template-columns:repeat(11, 1fr); gap:18px 0; margin:44px 0 40px; }
+  .dots i { width:54px; height:54px; border-radius:50%; border:5px solid var(--navy); background:transparent; justify-self:start; }
+  .dots i.f { background:var(--navy); }
+  .chart { border:5px solid var(--navy); border-radius:38px; background:var(--bg); padding:40px 50px 30px; margin-top:34px; display:flex; align-items:flex-end; gap:50px; height:560px; position:relative; }
+  .col { flex:1; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; }
+  .bar { width:100%; background:var(--navy); border-radius:20px 20px 0 0; position:relative; }
+  .ghost { width:100%; border:5px dashed var(--navy); border-bottom:none; border-radius:20px 20px 0 0; display:flex; align-items:center; justify-content:center; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:62px; letter-spacing:-.05em; overflow:hidden; }
+  .col .cap { font-weight:800; font-size:32px; padding-top:16px; letter-spacing:.04em; }
+  .row { margin-top:44px; }
+  .row .num { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:150px; line-height:.9; letter-spacing:-.065em; font-variant-numeric:tabular-nums; }
+  .row .txt { font-size:36px; line-height:1.2; margin:10px 0 18px; }
+  .track { height:44px; border:5px solid var(--navy); border-radius:26px; overflow:hidden; background:var(--bg); }
+  .track div { height:100%; background:var(--navy); width:0; }
+</style>
+</head>
+<body>
+
+<!-- 01 CAPA -->
+<section class="slide">
+  <div class="photo" style="height:500px; display:flex">
+    <svg id="flag" viewBox="0 0 13.2 20" preserveAspectRatio="xMinYMid slice" style="width:37%; height:100%; flex:none; border-right:5px solid var(--navy)"><rect width="30" height="20" fill="#EE1C25"/></svg>
+    <img src="img/soja.jpg" style="object-position:38% 62%; width:63%; flex:1">
+  </div>
+  <h1>A China abriu a porta para o agro da África.</h1>
+  <p>E o Brasil precisa prestar atenção.</p>
+</section>
+
+<!-- 02 O QUE MUDOU -->
+<section class="slide">
+  <div class="photo" style="height:400px"><img src="img/porto.jpg" style="object-position:50% 35%"></div>
+  <h1>O que mudou</h1>
+  <p>Desde <b>1º de maio de 2026</b>, a China zerou a tarifa de importação para <b>53 países africanos</b>. Café, cacau, castanhas, frutas e carnes ficaram mais baratos para o comprador chinês.</p>
+</section>
+
+<!-- 03 VÍDEO: 53 países -->
+<section class="slide" data-video="6">
+  <div class="pill">Tarifa zero</div>
+  <div class="hero" id="v3n">53</div>
+  <p><b>países africanos</b> vendendo para a China <b>sem imposto de importação</b>.</p>
+  <div class="dots" id="v3d"></div>
+  <p class="src" id="v3s" style="margin-top:0">Medida válida até 30 de abril de 2028. Fonte: Comissão Tarifária do Conselho de Estado da China.</p>
+</section>
+
+<!-- 04 NÚMEROS -->
+<section class="slide">
+  <h1>Já aparece nos números</h1>
+  <p>Antes mesmo da ampliação, as compras chinesas na África já aceleravam no <b>1º trimestre de 2026</b>.</p>
+  <div class="cards">
+    <div class="card"><div class="big">+70%</div><div class="lbl">Café africano importado pela China</div></div>
+    <div class="card"><div class="big">+57%</div><div class="lbl">Cacau em grão africano importado pela China</div></div>
+  </div>
+  <p class="src">Variação sobre o 1º trimestre de 2025. Fonte: alfândega chinesa.</p>
+</section>
+
+<!-- 05 PLANO -->
+<section class="slide">
+  <h1>E não é só tarifa</h1>
+  <p>Pequim quer depender menos de comida importada. O plano <b>2026–2030</b> prevê mais produção própria e <b>menos farelo de soja na ração</b>.</p>
+  <p>Analistas estimam que a China pode importar <b>até 25% menos soja</b> até 2030.</p>
+</section>
+
+<!-- 06 VÍDEO: soja -25% -->
+<section class="slide" data-video="6">
+  <div class="pill">Projeção</div>
+  <h1 style="margin-bottom:20px">Menos soja importada</h1>
+  <p>Quanto a China pode comprar de fora em 2030, comparado com hoje.</p>
+  <div class="chart">
+    <div class="col"><div class="bar" id="v6a" style="height:0"></div><div class="cap">HOJE</div></div>
+    <div class="col"><div class="ghost" id="v6g" style="height:0"><span id="v6t">−25%</span></div><div class="bar" id="v6b" style="height:0;border-radius:0"></div><div class="cap">2030</div></div>
+  </div>
+  <p class="src">Estimativa de analistas de mercado. As projeções variam conforme a fonte.</p>
+</section>
+
+<!-- 07 MAIOR CLIENTE -->
+<section class="slide">
+  <div class="pill">Por que importa</div>
+  <h1>O maior cliente do agro</h1>
+  <ul>
+    <li>A China comprou <b>32,7%</b> de tudo o que o agro brasileiro exportou em 2025.</li>
+    <li>Foram <b>US$ 55,3 bilhões</b> em um único ano.</li>
+    <li>De cada 10 toneladas de soja que o Brasil exportou, <b>quase 8</b> foram para lá.</li>
+  </ul>
+  <p class="src">Fonte: Ministério da Agricultura (MAPA), balança do agronegócio 2025.</p>
+</section>
+
+<!-- 08 VÍDEO: peso do agro -->
+<section class="slide" data-video="6">
+  <div class="pill">Brasil</div>
+  <h1 style="margin-bottom:0">O peso do agro na economia</h1>
+  <div class="row">
+    <div class="num" id="v8a">25,1%</div>
+    <div class="txt">do <b>PIB brasileiro</b> em 2025</div>
+    <div class="track"><div id="v8ab"></div></div>
+  </div>
+  <div class="row">
+    <div class="num" id="v8b">48,5%</div>
+    <div class="txt">de tudo o que o <b>Brasil exportou</b> em 2025</div>
+    <div class="track"><div id="v8bb"></div></div>
+  </div>
+  <p class="src">Fontes: Cepea/CNA (PIB do agronegócio) e MAPA (exportações).</p>
+</section>
+
+<!-- 09 PATRIMÔNIO -->
+<section class="slide">
+  <div class="photo" style="height:420px"><img src="img/gado.jpg" style="object-position:50% 78%"></div>
+  <h1>E o seu patrimônio?</h1>
+  <p>Quando o agro perde fôlego, o efeito não fica só no campo. Ele chega ao <b>dólar, à renda, ao crédito e à bolsa</b>.</p>
+</section>
+
+<!-- 10 ONDE O AGRO SE ESCONDE -->
+<section class="slide">
+  <div class="pill">Concentração</div>
+  <h1>Onde o agro se esconde na carteira</h1>
+  <ul>
+    <li><b>LCA, CRA e Fiagro</b>, muitas vezes somados sem perceber.</li>
+    <li><b>Ações</b> de empresas que dependem da safra e da exportação.</li>
+    <li><b>Terra, arrendamento</b> e o próprio negócio da família.</li>
+    <li><b>Renda</b> de quem vive em região movida pelo campo.</li>
+  </ul>
+</section>
+
+<!-- 11 SEM ALARMISMO -->
+<section class="slide">
+  <h1>Sem alarmismo</h1>
+  <p>O Brasil segue líder e a produção africana ainda é pequena. O risco é de <b>longo prazo</b>.</p>
+  <p>Por isso mesmo, dá tempo de <b>diversificar com calma</b>: por setor, por indexador e por geografia.</p>
+</section>
+
+<!-- 12 CTA -->
+<section class="slide">
+  <div class="photo" style="height:510px"><img src="img/marcus.jpg" style="object-position:50% 20%"></div>
+  <h1>Diversificar é proteger</h1>
+  <p>Um bom patrimônio não depende de <b>um setor só</b>.</p>
+  <p>Quer saber se sua carteira está concentrada em algum setor? <b>Acesse o link na BIO</b> e vamos conversar.</p>
+</section>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')], N=slides.length;
+slides.forEach((s,i)=>{
+  const n=String(i+1).padStart(2,'0')+'/'+String(N).padStart(2,'0');
+  s.insertAdjacentHTML('beforeend',`<div class="count">${n}</div><div class="foot"><div class="who">Marcus Novais<span></span>Finanças e Economia</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#0e1f5b" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`);
+});
+// bandeira da China: estrela grande em (5,5) e quatro menores apontando para ela
+(function(){
+  const f=document.getElementById('flag');
+  const star=(cx,cy,r,rot)=>{let p=[];for(let i=0;i<10;i++){const a=rot+i*Math.PI/5,q=i%2?r*0.382:r;p.push((cx+q*Math.sin(a)).toFixed(3)+','+(cy-q*Math.cos(a)).toFixed(3));}
+    f.insertAdjacentHTML('beforeend',`<polygon points="${p.join(' ')}" fill="#FFFF00"/>`);};
+  star(5,5,3,0);
+  [[10,2],[12,4],[12,7],[10,9]].forEach(([x,y])=>star(x,y,1,Math.atan2(5-x,-(5-y))));
+})();
+const dots=document.getElementById('v3d'); for(let i=0;i<53;i++) dots.appendChild(document.createElement('i'));
+
+const $=id=>document.getElementById(id);
+const clamp=x=>Math.max(0,Math.min(1,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const seg=(t,a,b)=>ease((t-a)/(b-a));
+const pct=v=>v.toFixed(1).replace('.',',')+'%';
+// estado final = t grande. setT(t) desenha o quadro do instante t (segundos).
+window.setT=function(t){
+  // 03
+  const k=seg(t,.4,3.6), n=Math.round(53*k);
+  $('v3n').textContent=n;
+  [...dots.children].forEach((d,i)=>d.classList.toggle('f',i<n));
+  $('v3s').style.opacity=.72*seg(t,3.6,4.3);
+  // 06
+  const H=410, a=seg(t,.3,1.5), b=seg(t,.6,1.8), d=seg(t,2.4,4.0);
+  $('v6a').style.height=H*a+'px';
+  $('v6b').style.height=H*b*(1-.25*d)+'px';
+  $('v6g').style.height=H*.25*d+'px';
+  $('v6g').style.borderWidth=d>0.02?'5px':'0';
+  $('v6t').style.opacity=seg(t,3.6,4.2);
+  // 08
+  const p=seg(t,.4,2.4), q=seg(t,2.2,4.2);
+  $('v8a').textContent=pct(25.1*p); $('v8ab').style.width=25.1*p+'%';
+  $('v8b').textContent=pct(48.5*q); $('v8bb').style.width=48.5*q+'%';
+  $('v8b').parentElement.style.opacity=seg(t,1.9,2.4);
+};
+const q=new URLSearchParams(location.search);
+window.show=function(i){document.body.classList.add('single');slides.forEach((s,j)=>s.classList.toggle('on',j===i));};
+if(q.has('s')) show(+q.get('s')-1);
+setT(q.has('t')?+q.get('t'):99);
+</script>
+</body>
+</html>

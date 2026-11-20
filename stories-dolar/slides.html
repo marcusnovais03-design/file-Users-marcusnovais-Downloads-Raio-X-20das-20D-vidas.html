@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Stories dólar parado x investido</title>
+<style>
+  :root { --ink:#070d24; --gold:#e3b65a; --gray:#b9bdcc; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#888; font-family:"Inter",sans-serif; color:#fff; }
+  .slide { width:1080px; height:1920px; position:relative; overflow:hidden; margin:0 auto 40px; background:var(--ink); }
+  body.single .slide { display:none; margin:0; }
+  body.single .slide.on { display:block; }
+  .bg { position:absolute; inset:0; }
+  .bg img { width:100%; height:100%; object-fit:cover; display:block; }
+  .shade { position:absolute; inset:0; }
+  .grid { position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.04) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.04) 2px, transparent 2px); background-size:54px 54px; }
+  .page { position:absolute; inset:0; padding:300px 90px 380px; display:flex; flex-direction:column; z-index:3; }
+  .top { position:absolute; left:90px; right:90px; top:230px; display:flex; justify-content:space-between; font-weight:800; font-size:27px; letter-spacing:.1em; z-index:4; }
+  .top .s { color:var(--gold); }
+  .top .e { background:rgba(255,255,255,.16); padding:8px 18px; border-radius:30px; }
+  .handle { position:absolute; left:90px; bottom:330px; font-weight:700; font-size:28px; opacity:.75; z-index:4; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:100px; line-height:1.04; letter-spacing:-.05em; word-spacing:.12em; }
+  h1 em { font-style:normal; color:var(--gold); }
+  h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:72px; line-height:1.06; letter-spacing:-.045em; word-spacing:.12em; margin-bottom:18px; }
+  p { font-size:46px; line-height:1.24; color:rgba(255,255,255,.9); }
+  b { font-weight:800; color:#fff; } b.g { color:var(--gold); }
+  .pill { align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:800; font-size:30px; letter-spacing:.12em; text-transform:uppercase; padding:13px 30px 12px; border-radius:40px; margin-bottom:30px; }
+  .quote { margin-top:40px; border:5px solid rgba(255,255,255,.85); border-radius:36px; padding:30px 38px; background:rgba(7,13,36,.6); }
+  .quote .k { font-size:32px; font-weight:700; color:rgba(255,255,255,.8); }
+  .quote .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:170px; line-height:1; letter-spacing:-.06em; color:var(--gold); margin-top:6px; }
+  .quote .d { font-size:30px; color:rgba(255,255,255,.75); margin-top:8px; }
+  .row2 { display:flex; gap:24px; margin-top:24px; }
+  .row2 > div { flex:1; border:4px solid rgba(255,255,255,.6); border-radius:28px; padding:20px 26px; background:rgba(7,13,36,.6); }
+  .row2 .k { font-size:28px; font-weight:700; color:rgba(255,255,255,.8); }
+  .row2 .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:66px; letter-spacing:-.04em; }
+  .leg { margin:6px 0 10px; font-size:32px; line-height:1.35; }
+  svg.ch { width:900px; height:700px; }
+  .tab .tr { display:flex; align-items:center; gap:18px; font-size:36px; font-weight:600; padding:14px 0; border-bottom:2px solid rgba(255,255,255,.18); }
+  .tab .tr i { width:28px; height:28px; border-radius:50%; flex:none; }
+  .tab .tr span { flex:1; }
+  .tab .tr b { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:56px; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
+  .note { font-size:24px; line-height:1.3; color:rgba(255,255,255,.62); margin-top:20px; }
+  .big { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:150px; letter-spacing:-.06em; color:var(--gold); line-height:1; }
+  .btn { margin-top:36px; align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:900; font-size:44px; padding:24px 38px; border-radius:28px; }
+</style>
+</head>
+<body>
+<script>
+const R={"parado":85945,"inv":168434,"anual":[["2017-11", 52548, 48082], ["2018-11", 63967, 56952], ["2019-11", 76177, 62270], ["2020-11", 104673, 78599], ["2021-11", 122202, 82848], ["2022-11", 108003, 78045], ["2023-11", 108112, 72758], ["2024-11", 154351, 89240], ["2025-11", 148051, 78630], ["2026-11", 168434, 85945]]};
+const brl=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
+const clamp=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-clamp(x),3), seg=(t,a,b)=>ease((t-a)/(b-a));
+const S=[];
+// 1. o dólar hoje
+S.push({h:`<div class="bg"><img src="fotos/predio.jpg" style="object-position:50% 30%"></div>
+  <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.35) 0%, rgba(7,13,36,.05) 22%, rgba(7,13,36,.1) 40%, rgba(7,13,36,.88) 62%, rgba(7,13,36,.96) 100%)"></div><div class="grid"></div>
+  <div class="page" style="justify-content:flex-end"><div class="pill">Dólar hoje</div>
+  <div class="quote"><div class="k">Dólar americano</div><div class="v">R$ 5,83</div><div class="d">cotação de 18/11/2026</div></div>
+  <div class="row2"><div><div class="k">Em nov/2016</div><div class="v">R$ 3,39</div></div><div><div class="k">Em 10 anos</div><div class="v" style="color:#e3b65a">+72%</div></div></div>
+  <p style="margin-top:36px">Mas comprar dólar e <b>deixar parado</b> é bem diferente de <b class="g">investir em dólar</b>. Veja a conta 👉</p></div>`});
+// 2. gráfico
+S.push({video:9, h:`<div class="bg"><img src="fotos/sao-paulo.jpg" style="object-position:40% 80%; filter:blur(6px) brightness(.45)"></div>
+  <div class="shade" style="background:rgba(7,13,36,.6)"></div><div class="grid"></div>
+  <div class="page"><h2>R$ 50 mil em dólar, 10 anos depois</h2>
+  <div class="leg"><b style="color:#e3b65a">Dourado:</b> dólar investido (60% Treasury + 40% S&amp;P 500)<br><b style="color:#b9bdcc">Cinza:</b> dólar parado</div>
+  <svg class="ch" id="ch" viewBox="0 0 900 700"></svg>
+  <div class="tab"><div class="tr"><i style="background:#e3b65a"></i><span>Dólar investido</span><b id="vb" style="color:#e3b65a"></b></div>
+  <div class="tr"><i style="background:#b9bdcc"></i><span>Dólar parado</span><b id="va" style="color:#b9bdcc"></b></div></div>
+  <div class="note">Compra em 18/11/2016 a R$ 3,39. Treasury: ETF SHY (títulos de 1 a 3 anos); S&amp;P 500: ETF SPY, com dividendos. Rebalanceamento anual, sem IR, IOF e custos. Valores em reais.</div></div>`});
+// 3. conclusão + CTA
+S.push({h:`<div class="bg"><img src="fotos/miami.jpg" style="object-position:50% 100%"></div>
+  <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.96) 0%, rgba(7,13,36,.9) 38%, rgba(7,13,36,.35) 55%, rgba(7,13,36,0) 66%, rgba(7,13,36,0) 82%, rgba(7,13,36,.5) 100%)"></div>
+  <div class="page" style="justify-content:flex-start; padding-top:320px"><div class="pill">A diferença</div><div class="big">+ R$ 82 mil</div>
+  <p style="margin-top:20px">O dólar parado <b>protege</b> o seu dinheiro. O dólar investido <b class="g">faz ele crescer</b>.</p>
+  <div class="btn">Quer começar? Me chama no direct</div></div>`});
+
+S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide'; if(x.video) s.dataset.video=x.video;
+  s.innerHTML=x.h+`<div class="top"><span class="s">DÓLAR PARADO x INVESTIDO</span><span class="e">${i+1}/3</span></div><div class="handle">@mnovais</div>`; document.body.appendChild(s); });
+
+// gráfico de linhas
+const A=[[0,50000,50000],...R.anual.map((p,i)=>[i+1,p[2],p[1]])], n=A.length;
+const X0=120,X1=860,Y0=620,Y1=40,VM=180000, gx=i=>X0+(X1-X0)*i/(n-1), gy=v=>Y0-(Y0-Y1)*v/VM;
+let g=''; [50000,100000,150000].forEach(v=>g+=`<line x1="${X0}" x2="${X1}" y1="${gy(v)}" y2="${gy(v)}" stroke="rgba(255,255,255,.14)" stroke-width="2"/><text x="${X0-16}" y="${gy(v)+10}" text-anchor="end" font-family="Inter" font-size="28" fill="rgba(255,255,255,.65)">${v/1000} mil</text>`);
+[[0,'2016'],[5,'2021'],[10,'2026']].forEach(([i,t])=>g+=`<text x="${gx(i)}" y="${Y0+50}" text-anchor="middle" font-family="Inter" font-size="28" fill="rgba(255,255,255,.65)">${t}</text>`);
+document.getElementById('ch').innerHTML=g+`<line x1="${X0}" x2="${X1}" y1="${Y0}" y2="${Y0}" stroke="rgba(255,255,255,.7)" stroke-width="4"/>
+  <path id="la" fill="none" stroke="#b9bdcc" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/><path id="lb" fill="none" stroke="#e3b65a" stroke-width="11" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle id="da" r="13" fill="#fff"/><circle id="db" r="15" fill="#fff"/>`;
+window.setT=function(t){
+  const k=seg(t,.6,6.5)*(n-1), j=Math.floor(k), f=k-j;
+  const path=c=>{ let d='', v=A[0][c]; for(let i=0;i<=j&&i<n;i++){ d+=(d?'L':'M')+gx(i).toFixed(1)+' '+gy(A[i][c]).toFixed(1); v=A[i][c]; }
+    if(j<n-1){ v=A[j][c]+(A[j+1][c]-A[j][c])*f; d+='L'+gx(k).toFixed(1)+' '+gy(v).toFixed(1); } return [d,v]; };
+  const [pa,va]=path(1), [pb,vb]=path(2);
+  document.getElementById('la').setAttribute('d',pa); document.getElementById('lb').setAttribute('d',pb);
+  ['a','b'].forEach((s,q)=>{ const c=document.getElementById('d'+s); c.setAttribute('cx',gx(k)); c.setAttribute('cy',gy(q?vb:va)); });
+  document.getElementById('va').textContent=brl(va); document.getElementById('vb').textContent=brl(vb);
+};
+const all=[...document.querySelectorAll('.slide')];
+window.show=i=>{document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
+setT(99);
+</script>
+</body>
+</html>

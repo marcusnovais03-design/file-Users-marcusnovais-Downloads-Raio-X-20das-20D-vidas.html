@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Série Tesouro sem mistério</title>
+<style>
+  :root { --ink:#070d24; --navy:#0e1f5b; --gold:#e3b65a; --red:#ff5a6a; --gray:#8d93a8; --soft:rgba(255,255,255,.88); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:1080px; height:1920px; overflow:hidden; background:var(--ink); }
+  body { font-family:"Inter",sans-serif; color:#fff; }
+  #stage { position:relative; width:1080px; height:1920px; overflow:hidden; background:var(--ink); }
+  .grid { position:absolute; inset:0; z-index:5; pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.045) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.045) 2px, transparent 2px);
+    background-size:54px 54px; background-position:-1px -1px; }
+  .top { position:absolute; left:90px; right:90px; top:250px; z-index:20; display:flex; justify-content:space-between; align-items:center; font-weight:800; font-size:27px; letter-spacing:.1em; }
+  .top .s { color:var(--gold); }
+  .top .e { background:rgba(255,255,255,.14); padding:8px 18px; border-radius:30px; letter-spacing:.06em; }
+  .prog { position:absolute; left:90px; right:90px; top:312px; height:6px; border-radius:3px; background:rgba(255,255,255,.18); z-index:20; }
+  .prog div { height:100%; border-radius:3px; background:var(--gold); width:0; }
+  .handle { position:absolute; left:90px; top:1478px; z-index:20; display:flex; align-items:center; gap:14px; opacity:.6; font-weight:700; font-size:28px; letter-spacing:.02em; }
+  .handle img { width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,.7); }
+
+  .sc { position:absolute; inset:0; opacity:0; display:flex; flex-direction:column; padding:400px 90px 0; }
+  .sc > * { position:relative; z-index:6; }
+  .bg { position:absolute !important; inset:0; z-index:0 !important; overflow:hidden; }
+  .bg img { width:100%; height:100%; object-fit:cover; display:block; }
+  .shade { position:absolute !important; inset:0; z-index:1 !important; }
+
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:104px; line-height:1.04; letter-spacing:-.055em; word-spacing:.12em; }
+  h1 em { font-style:normal; color:var(--gold); }
+  h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:76px; line-height:1.06; letter-spacing:-.05em; word-spacing:.12em; margin-bottom:26px; }
+  .pill { align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:800; font-size:30px; letter-spacing:.12em; text-transform:uppercase; padding:13px 30px 12px; border-radius:40px; margin-bottom:30px; }
+  .pill.red { background:var(--red); color:#fff; }
+  .lead { font-size:48px; line-height:1.2; color:var(--soft); margin-top:24px; }
+  .lead b, .cap b { color:#fff; }
+  .note { font-size:25px; color:rgba(255,255,255,.6); line-height:1.3; margin-top:18px; }
+  .num { font-variant-numeric:tabular-nums; }
+
+  /* hook */
+  .hook { justify-content:center; padding-bottom:420px; align-items:flex-start; }
+  .hook svg.ic { width:190px; height:190px; margin-bottom:34px; }
+  .hook .hname { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:128px; line-height:1.02; letter-spacing:-.055em; color:var(--gold); white-space:nowrap; margin-bottom:22px; }
+  .hook .big { margin:6px 0 14px; }
+  .fitw { white-space:nowrap; }
+  .hook .big { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:170px; line-height:.9; letter-spacing:-.06em; color:var(--gold); white-space:nowrap; transform-origin:0 50%; }
+  .hook .ln { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:84px; line-height:1.08; white-space:nowrap; letter-spacing:-.05em; }
+  /* title */
+  .title { justify-content:flex-end; padding-bottom:520px; }
+  /* stat */
+  .stat { justify-content:flex-end; padding-bottom:520px; }
+  .stat .big { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:150px; line-height:.9; letter-spacing:-.06em; color:var(--gold); }
+  .stat .cap { font-size:48px; line-height:1.2; color:var(--soft); margin-top:26px; }
+  .stat svg { width:900px; height:150px; margin-top:30px; }
+  /* charts */
+  svg.ch { width:900px; overflow:visible; }
+  .tagv { font-family:"Inter Display","Inter",sans-serif; font-weight:900; letter-spacing:-.04em; }
+  .readout { font-size:44px; line-height:1.2; margin-top:16px; color:var(--soft); }
+  .readout b { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:60px; color:#fff; }
+  .cardx { border:5px solid rgba(255,255,255,.85); border-radius:32px; padding:26px 34px; margin-top:22px; display:flex; justify-content:space-between; align-items:center; background:rgba(7,13,36,.6); }
+  .cardx .k { font-size:40px; font-weight:700; }
+  .cardx .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:80px; letter-spacing:-.05em; color:var(--gold); }
+  .cardx .v small { font-size:36px; color:var(--soft); letter-spacing:0; font-weight:700; }
+  .final { margin-top:26px; background:var(--gold); color:var(--ink); border-radius:26px; padding:24px 32px; font-weight:900; font-size:44px; line-height:1.15; }
+  .checks .it { display:flex; align-items:center; gap:30px; font-size:50px; font-weight:700; line-height:1.15; padding:30px 0; border-bottom:3px solid rgba(255,255,255,.2); }
+  .checks .it i { flex:none; width:76px; height:76px; border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; }
+  .cmp { border:5px solid rgba(255,255,255,.85); border-radius:32px; padding:28px 34px; margin-top:24px; background:rgba(7,13,36,.6); }
+  .cmp .h { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:58px; letter-spacing:-.04em; color:var(--gold); }
+  .cmp .p { font-size:40px; line-height:1.2; margin-top:8px; color:var(--soft); }
+  .cmp svg { width:820px; height:120px; margin-top:16px; }
+  .nofoto .title, .nofoto .stat, .nofoto .who { justify-content:center; padding-bottom:420px; }
+  .tab { margin-top:14px; }
+  .tab .tr { display:flex; align-items:center; gap:18px; font-size:34px; font-weight:600; padding:10px 0; border-bottom:2px solid rgba(255,255,255,.15); }
+  .tab .tr i { width:26px; height:26px; border-radius:50%; flex:none; }
+  .tab .tr span { flex:1; color:rgba(255,255,255,.88); }
+  .tab .tr b { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:48px; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
+  /* para quem */
+  .who .card { height:470px; border-radius:40px; overflow:hidden; border:6px solid var(--gold); margin-bottom:34px; flex:none; }
+  .who .card img { width:100%; height:100%; object-fit:cover; display:block; }
+  .who h1 { font-size:76px; }
+  .who h1.long { font-size:64px; }
+  .who .cta { margin-top:24px; display:flex; align-items:center; gap:18px; font-size:40px; font-weight:800; }
+  .who .badge { margin-top:22px; align-self:flex-start; border:4px solid var(--gold); color:var(--gold); font-weight:900; font-size:34px; letter-spacing:.06em; padding:12px 26px; border-radius:20px; }
+  .who .disc { margin-top:20px; font-size:22px; color:rgba(255,255,255,.5); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="grid"></div>
+  <div class="top"><span class="s">TESOURO SEM MISTÉRIO</span><span class="e" id="epl">EP 1/8</span></div>
+  <div class="prog"><div id="prog"></div></div>
+  <div class="handle"><img id="hav">@mnovais</div>
+</div>
+<script src="episodios.js"></script>
+<script>
+const Q=new URLSearchParams(location.search);
+const EP=EPISODIOS[(+Q.get('ep')||1)-1];
+const FOTOS={
+  verde_dolar:{f:'fotos/jaqueta-verde-perfil.jpg', pos:'68% 30%', o:'60% 32%'},
+  pensativo:{f:'fotos/pensativo-tablet.jpg', pos:'50% 30%', o:'50% 28%'},
+  terno:{f:'fotos/terno-mesa.jpg', pos:'42% 30%', o:'45% 28%'},
+  camurca:{f:'fotos/jaqueta-camurca.jpg', pos:'50% 20%', o:'50% 22%'},
+  verde:{f:'fotos/jaqueta-verde-perfil.jpg', pos:'68% 30%', o:'60% 32%'},
+  camiseta:{f:'fotos/sorriso-camiseta.jpg', pos:'50% 35%', o:'50% 38%'}
+};
+const FT=FOTOS[EP.foto];
+const stage=document.getElementById('stage');
+document.getElementById('epl').textContent=EP.tag||`EP ${EP.ep}/8`; document.querySelector('.top .s').textContent=EP.serie||'TESOURO SEM MISTÉRIO';
+document.getElementById('hav').src=FT.f; if(EP.semFoto) document.getElementById('hav').style.display='none'; if(EP.semFoto) stage.classList.add('nofoto');
+
+const clamp=x=>Math.max(0,Math.min(1,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const back=x=>{x=clamp(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2);};
+const seg=(t,a,b)=>ease((t-a)/(b-a));
+const brl=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
+const pop=(el,k,dy=40)=>{ if(!el) return; el.style.opacity=clamp(k*1.4); el.style.transform=`translateY(${(1-ease(k))*dy}px) scale(${.94+.06*back(k)})`; };
+const CHECK='<svg width="42" height="42" viewBox="0 0 40 40"><path d="M8 21l8 8 16-17" fill="none" stroke="#070d24" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+// variações da foto
+let photoN=0;
+function bgPhoto(kind){
+  photoN++;
+  if(EP.semFoto) return '';
+  const mir=photoN%2===0?'scaleX(-1) ':'';
+  if(kind==='title') return `<div class="bg"><img data-kb="1.06,1.16" style="object-position:${FT.pos}; transform-origin:${FT.o}; filter:contrast(1.05)"></div>
+    <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.92) 0%, rgba(7,13,36,.55) 20%, rgba(7,13,36,.1) 34%, rgba(7,13,36,.9) 60%, rgba(7,13,36,.97) 100%)"></div>`;
+  if(kind==='stat') return `<div class="bg"><img data-kb="1.45,1.55" data-mir="${mir}" style="object-position:${FT.pos}; transform-origin:${FT.o}; filter:grayscale(1) contrast(1.1) brightness(.8)"></div>
+    <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.92) 0%, rgba(7,13,36,.5) 20%, rgba(7,13,36,.3) 32%, rgba(7,13,36,.93) 56%, rgba(7,13,36,.98) 100%)"></div>`;
+  return `<div class="bg"><img data-kb="1.2,1.28" data-mir="${mir}" style="object-position:${FT.pos}; transform-origin:${FT.o}; filter:grayscale(1) blur(7px) brightness(.6)"></div>
+    <div class="shade" style="background:rgba(7,13,36,.84)"></div>`;
+}
+
+const ICONS={
+  clock:`<circle cx="100" cy="100" r="84" fill="none" stroke="#e3b65a" stroke-width="12"/><line x1="100" y1="100" x2="100" y2="52" stroke="#fff" stroke-width="12" stroke-linecap="round"/><line class="spin" x1="100" y1="100" x2="146" y2="100" stroke="#e3b65a" stroke-width="10" stroke-linecap="round"/><circle cx="100" cy="100" r="9" fill="#fff"/>`,
+  lock:`<rect x="38" y="92" width="124" height="96" rx="20" fill="#e3b65a"/><path class="shackle" d="M64 92 V64 a36 36 0 0 1 72 0 V92" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/><circle cx="100" cy="138" r="13" fill="#070d24"/>`,
+  pix:`<path d="M100 26 a52 52 0 0 1 52 52 v40 l18 26 H30 l18 -26 v-40 a52 52 0 0 1 52 -52z" fill="#e3b65a"/><circle cx="100" cy="166" r="16" fill="#fff"/><circle class="dotn" cx="152" cy="46" r="24" fill="#ff5a6a"/>`,
+  cart:`<path d="M20 40 h28 l22 96 h96 l18 -70 H62" fill="none" stroke="#e3b65a" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="82" cy="164" r="15" fill="#fff"/><circle cx="156" cy="164" r="15" fill="#fff"/><path class="up" d="M110 112 V60 M88 80 l22 -22 22 22" fill="none" stroke="#ff5a6a" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>`,
+  shield:`<path d="M100 18 l70 26 v52 c0 46 -32 76 -70 90 c-38 -14 -70 -44 -70 -90 v-52z" fill="#e3b65a"/><path class="chk" d="M66 102 l24 24 46 -50" fill="none" stroke="#070d24" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>`,
+  calendar:`<rect x="26" y="42" width="148" height="134" rx="20" fill="none" stroke="#e3b65a" stroke-width="12"/><line x1="26" y1="82" x2="174" y2="82" stroke="#e3b65a" stroke-width="12"/><line x1="66" y1="24" x2="66" y2="56" stroke="#fff" stroke-width="12" stroke-linecap="round"/><line x1="134" y1="24" x2="134" y2="56" stroke="#fff" stroke-width="12" stroke-linecap="round"/><text x="100" y="152" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="58" fill="#fff">6M</text>`,
+  question:`<circle cx="100" cy="100" r="84" fill="#e3b65a"/><text x="100" y="140" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="120" fill="#070d24">?</text>`,
+  cap:`<path d="M100 34 L188 76 L100 118 L12 76 Z" fill="#e3b65a"/><path d="M46 94 v44 c30 26 78 26 108 0 v-44 l-54 26z" fill="#fff"/><line x1="176" y1="80" x2="176" y2="140" stroke="#e3b65a" stroke-width="8"/><circle cx="176" cy="146" r="10" fill="#e3b65a"/>`
+};
+
+// ---------- construtores de cena ----------
+const B={};
+B.hook=(c)=>({html:`<svg class="ic" viewBox="0 0 200 200">${ICONS[c.icon]}</svg>${c.kicker?`<div class="pill">${c.kicker}</div>`:''}${(c.name||[]).map(n=>`<div class="hname">${n}</div>`).join('')}${c.big?`<div class="big">${c.big}</div>`:''}${c.lines.map(l=>`<div class="ln">${l}</div>`).join('')}`, cls:'hook',
+  up(el,l){ const ic=el.querySelector('.ic'); pop(ic,seg(l,.05,.5));
+    const sp=el.querySelector('.spin'); if(sp) sp.setAttribute('transform',`rotate(${l*240} 100 100)`);
+    const sh=el.querySelector('.shackle'); if(sh) sh.setAttribute('transform',`translate(0 ${-26*(1-seg(l,.9,1.3))})`);
+    const dn=el.querySelector('.dotn'); if(dn) dn.setAttribute('r',22+4*Math.sin(l*8));
+    const upa=el.querySelector('.up'); if(upa) upa.setAttribute('transform',`translate(0 ${-8*Math.abs(Math.sin(l*4))})`);
+    pop(el.querySelector('.pill'),seg(l,.25,.7));
+    el.querySelectorAll('.hname').forEach((x,i)=>{ const k=seg(l,.25+i*.2,.75+i*.2); x.style.opacity=clamp(k*1.5); x.style.transform=`scale(${1.2-.2*back(k)})`; x.style.transformOrigin='0 50%'; });
+    const bg=el.querySelector('.big'); if(bg){ const kb=seg(l,.6,1.1); bg.style.opacity=clamp(kb*1.5); bg.style.transform=`scale(${1.25-.25*back(kb)})`; }
+    el.querySelectorAll('.ln').forEach((x,i)=>pop(x,seg(l,1.1+i*.35,1.6+i*.35)));
+  }});
+B.title=(c)=>({html:bgPhoto('title')+`<div class="pill">${EP.tag||`EP ${EP.ep}/8`}</div><h1><span class="fitw" style="display:block">${c.title[0]}</span><em class="fitw" style="display:block">${c.title[1]}</em></h1><div class="lead">${c.sub}</div>`, cls:'title',
+  up(el,l){ pop(el.querySelector('.pill'),seg(l,.15,.6)); pop(el.querySelector('h1'),seg(l,.35,.95)); pop(el.querySelector('.lead'),seg(l,1.2,1.8)); }});
+B.stat=(c)=>({html:bgPhoto('stat')+`<div class="pill">${c.pill}</div><div class="big">${c.big}</div><div class="cap">${c.cap}</div>${c.spark?'<svg viewBox="0 0 900 150"><path class="sp" fill="none" stroke="#e3b65a" stroke-width="10" stroke-linecap="round"/></svg>':''}`, cls:'stat',
+  up(el,l){ pop(el.querySelector('.pill'),seg(l,.1,.5)); pop(el.querySelector('.big'),seg(l,.3,.9),60); pop(el.querySelector('.cap'),seg(l,1.0,1.6));
+    const sp=el.querySelector('.sp'); if(sp){ const k=seg(l,1.2,4.5); let d=''; for(let x=0;x<=900*k;x+=10){ const y=130-110*Math.pow(x/900,1.6)+4*Math.sin(x/37); d+=(d?'L':'M')+x+' '+y.toFixed(1);} sp.setAttribute('d',d||'M0 130'); } }});
+B.bars=(c)=>{ const max=Math.max(...c.bars.map(b=>b[1])), min=c.bars[0][1]*0.0; const H=640;
+  const html=bgPhoto()+`<h2>${c.title}</h2><svg class="ch" viewBox="0 0 900 800" height="800">
+    <line x1="0" y1="${H+40}" x2="900" y2="${H+40}" stroke="rgba(255,255,255,.6)" stroke-width="4"/>
+    ${c.bars.map((b,i)=>{const x=110+i*400; return `<rect class="br" x="${x}" width="280" rx="18" fill="${b[2]==='gold'?'#e3b65a':'#8d93a8'}"/>
+      <text class="bv tagv" x="${x+140}" text-anchor="middle" font-size="76" fill="${b[2]==='gold'?'#e3b65a':'#fff'}"></text>
+      <text x="${x+140}" y="${H+100}" text-anchor="middle" font-family="Inter" font-weight="800" font-size="40" fill="#fff">${b[0]}</text>`}).join('')}
+  </svg><div class="note">${c.note||''}</div>`;
+  return {html, up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6));
+    const rs=el.querySelectorAll('.br'), vs=el.querySelectorAll('.bv');
+    c.bars.forEach((b,i)=>{ const k=seg(l,.9+i*1.6,2.4+i*1.6); const h=(H-60)*(b[1]/max)*k; rs[i].setAttribute('y',H+40-h); rs[i].setAttribute('height',h); vs[i].setAttribute('y',H+40-h-24); vs[i].textContent=k>0?brl(b[1]*(.8+.2*k)):''; vs[i].setAttribute('opacity',k>0?1:0); });
+    el.querySelector('.note').style.opacity=seg(l,4.5,5.2)*.9; }}; };
+B.curve=(c)=>{ const W=760,X0=110,Y0=640,Y1=60; const ends=c.series.map(s=>s[1]); const vmax=Math.max(...ends)*(c.series.length>1?1.06:1.16), vmin=c.start*0.94;
+  const gx=m=>X0+W*m/c.months, gy=v=>Y0-(Y0-Y1)*(v-vmin)/(vmax-vmin);
+  let ticks=''; const step=c.months>60?24:c.months>24?6:6; for(let m=0;m<=c.months;m+=step){ ticks+=`<text x="${gx(m)}" y="${Y0+50}" text-anchor="middle" font-family="Inter" font-size="28" fill="rgba(255,255,255,.6)">${m===0?'hoje':(c.months>36?(m/12)+' anos':m+' meses')}</text>`; }
+  const html=bgPhoto()+`<h2>${c.title}</h2><svg class="ch" viewBox="0 0 900 760" height="760">
+    <line x1="${X0}" y1="${Y0}" x2="${X0+W}" y2="${Y0}" stroke="rgba(255,255,255,.6)" stroke-width="4"/>
+    <line x1="${X0}" y1="${gy(c.start)}" x2="${X0+W}" y2="${gy(c.start)}" stroke="rgba(255,255,255,.25)" stroke-width="3" stroke-dasharray="10 10"/>
+    <text x="${X0-16}" y="${gy(c.start)+10}" text-anchor="end" font-family="Inter" font-size="28" fill="rgba(255,255,255,.7)">${(c.start/1000).toLocaleString('pt-BR')} mil</text>
+    ${ticks}
+    ${c.series.map((s,i)=>`<path class="ln${i}" fill="none" stroke="${s[2]==='gold'?'#e3b65a':'#8d93a8'}" stroke-width="10" stroke-linecap="round"/><circle class="dt${i}" r="14" fill="#fff"/>
+      <g class="tg${i}"><text class="tv${i} tagv" font-size="56" fill="${s[2]==='gold'?'#e3b65a':'#fff'}" text-anchor="end"></text><text class="tl${i}" font-family="Inter" font-weight="700" font-size="28" fill="rgba(255,255,255,.8)" text-anchor="end">${s[0]}</text></g>`).join('')}
+    ${c.net?`<g class="netg"><rect x="${X0}" y="20" width="420" height="110" rx="24" fill="#e3b65a"/><text x="${X0+210}" y="64" text-anchor="middle" font-family="Inter" font-weight="800" font-size="28" fill="#070d24">LÍQUIDO NO VENCIMENTO</text><text x="${X0+210}" y="112" text-anchor="middle" class="tagv" font-size="52" fill="#070d24">${brl(c.net)}</text></g>`:''}
+  </svg><div class="note">${c.note||''}</div>`;
+  return {html, up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6));
+    const k=seg(l,.8,6.5)*c.months;
+    c.series.forEach((s,i)=>{ const r=Math.pow(s[1]/c.start,1/c.months); let d='';
+      for(let m=0;m<=k+1e-6;m+=c.months/120){ d+=(d?'L':'M')+gx(m).toFixed(1)+' '+gy(c.start*Math.pow(r,m)).toFixed(1);}
+      const v=c.start*Math.pow(r,k); d+='L'+gx(k).toFixed(1)+' '+gy(v).toFixed(1);
+      el.querySelector('.ln'+i).setAttribute('d',d);
+      const dt=el.querySelector('.dt'+i); dt.setAttribute('cx',gx(k)); dt.setAttribute('cy',gy(v));
+      const tv=el.querySelector('.tv'+i), tl=el.querySelector('.tl'+i), off=(c.series.length>1&&i===0)?70:-60;
+      tv.setAttribute('x',gx(k)-26); tv.setAttribute('y',gy(v)+(off>0?off:-38)); tv.textContent=brl(v);
+      tl.setAttribute('x',gx(k)-26); tl.setAttribute('y',gy(v)+(off>0?off+36:-100));
+    });
+    const ng=el.querySelector('.netg'); if(ng){ const kn=seg(l,7.2,7.9); ng.setAttribute('opacity',clamp(kn*1.4)); ng.setAttribute('transform',`translate(0 ${(1-kn)*30})`); }
+    el.querySelector('.note').style.opacity=seg(l,7.8,8.5)*.9; }}; };
+B.ladder=(c)=>{ const st=[['até 6 meses',22.5],['até 1 ano',20],['até 2 anos',17.5],['acima de 2 anos',15]];
+  const html=bgPhoto()+`<h2>Imposto de renda</h2><div class="lead" style="margin:-6px 0 20px; font-size:42px">${c.sub||'cai com o tempo'}, só sobre o lucro</div>
+  <svg class="ch" viewBox="0 0 900 720" height="720">${st.map((s,i)=>{const x=i*225, h=(s[1]/22.5)*520; return `<g class="st"><rect x="${x+12}" y="${600-h}" width="200" height="${h}" rx="18" fill="${i===3?'#e3b65a':'rgba(255,255,255,.85)'}"/>
+    <text x="${x+112}" y="${600-h-24}" text-anchor="middle" class="tagv" font-size="62" fill="${i===3?'#e3b65a':'#fff'}">${String(s[1]).replace('.',',')}%</text>
+    <text x="${x+112}" y="650" text-anchor="middle" font-family="Inter" font-weight="700" font-size="28" fill="rgba(255,255,255,.8)">${s[0]}</text></g>`}).join('')}</svg>`;
+  return {html, up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6)); pop(el.querySelector('.lead'),seg(l,.4,.9)); el.querySelectorAll('.st').forEach((g,i)=>{const k=seg(l,1.0+i*.8,1.6+i*.8); g.setAttribute('opacity',clamp(k*1.4)); g.setAttribute('transform',`translate(0 ${(1-k)*50})`);}); }}; };
+B.iof=(c)=>{ const T=[96,93,90,86,83,80,76,73,70,66,63,60,56,53,50,46,43,40,36,33,30,26,23,20,16,13,10,6,3,0];
+  const html=bgPhoto()+`<div class="pill red">Atenção</div><h2>IOF antes de 30 dias</h2>
+  <svg class="ch" viewBox="0 0 900 600" height="600"><line x1="0" y1="520" x2="900" y2="520" stroke="rgba(255,255,255,.6)" stroke-width="4"/>
+  ${T.map((v,i)=>`<rect class="ib" x="${i*30+2}" y="${520-v*4.6}" width="24" height="${Math.max(v*4.6,2)}" rx="5"/>`).join('')}
+  <text x="0" y="570" font-family="Inter" font-size="28" fill="rgba(255,255,255,.7)">1º dia</text><text x="900" y="570" text-anchor="end" font-family="Inter" font-size="28" fill="rgba(255,255,255,.7)">30º dia</text></svg>
+  <div class="readout num" id="iofr"></div>`;
+  return {html, up(el,l){ pop(el.querySelector('.pill'),seg(l,.05,.4)); pop(el.querySelector('h2'),seg(l,.2,.7));
+    const k=seg(l,1.0,7.5), day=Math.min(29,Math.floor(k*30));
+    el.querySelectorAll('.ib').forEach((r,i)=>{ r.setAttribute('fill', i===day?'#fff':(i<=day?'#ff5a6a':'rgba(255,90,106,.25)')); r.setAttribute('opacity', l<1?seg(l,.6+i*.01,.9+i*.01):1); });
+    el.querySelector('#iofr').innerHTML = l<.9?'':(day<29?`<b>${day+1}º dia:</b> o IOF leva <b style="color:#ff5a6a">${T[day]}%</b> do que rendeu`:`<b>30º dia:</b> IOF <b style="color:#e3b65a">zero</b>`); }}; };
+B.mtm=(c)=>{ const both=c.mode==='both';
+  const html=bgPhoto()+`<h2>Vendeu antes do vencimento?</h2><svg class="ch" viewBox="0 0 900 640" height="640">
+    <line x1="0" y1="260" x2="900" y2="260" stroke="rgba(255,255,255,.35)" stroke-width="3" stroke-dasharray="12 10"/>
+    <text x="0" y="240" font-family="Inter" font-size="28" fill="rgba(255,255,255,.7)">preço que você pagou</text>
+    <path class="pl" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle class="pd" r="14" fill="#fff"/>
+    ${both?`<text class="lb1" x="900" y="120" text-anchor="end" class="tagv" font-family="Inter Display,Inter" font-weight="900" font-size="46" fill="#e3b65a">acima ↑</text><text class="lb2" x="900" y="440" text-anchor="end" font-family="Inter Display,Inter" font-weight="900" font-size="46" fill="#ff5a6a">abaixo ↓</text>`
+      :`<g class="mk"><line x1="420" y1="40" x2="420" y2="560" stroke="#e3b65a" stroke-width="4" stroke-dasharray="8 8"/><text x="436" y="80" font-family="Inter" font-weight="800" font-size="30" fill="#e3b65a">juros sobem 1 ponto</text></g>
+      <text class="dl" x="900" y="${260+c.drop*38+90}" text-anchor="end" font-family="Inter Display,Inter" font-weight="900" font-size="96" fill="#ff5a6a">−${String(c.drop).replace('.',',')}%</text>`}
+  </svg><div class="lead aft" style="font-size:44px">${c.after}</div>`;
+  return {html, up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6));
+    const k=seg(l,.6,both?5:4.2); let d=''; let lx=0, ly=260;
+    for(let x=0;x<=900*k;x+=6){ let y;
+      if(both){ y=260-150*Math.sin(x/120)*Math.min(1,x/200)+12*Math.sin(x/17); }
+      else { const base=x<420?0:c.drop*38*ease((x-420)/120); y=260+base+8*Math.sin(x/19)+5*Math.sin(x/7); }
+      d+=(d?'L':'M')+x+' '+y.toFixed(1); lx=x; ly=y; }
+    el.querySelector('.pl').setAttribute('d',d||'M0 260'); const pd=el.querySelector('.pd'); pd.setAttribute('cx',lx); pd.setAttribute('cy',ly);
+    if(both){ el.querySelector('.lb1').setAttribute('opacity',seg(l,1.6,2.1)); el.querySelector('.lb2').setAttribute('opacity',seg(l,3.0,3.5)); }
+    else { el.querySelector('.mk').setAttribute('opacity',seg(l,2.0,2.4)); el.querySelector('.dl').setAttribute('opacity',seg(l,3.6,4.1)); el.querySelector('.pl').setAttribute('stroke', l>2.3?'#ff5a6a':'#fff'); }
+    pop(el.querySelector('.aft'),seg(l,both?4.6:6.0,both?5.2:6.6)); }}; };
+B.coupons=(c)=>{ const vals=[...Array(c.n)].map((_,i)=>c.value*Math.pow(1+c.growth,i)); const vmax=Math.max(...vals); const bw=Math.floor(900/c.n);
+  const html=bgPhoto()+`<h2>${c.title}</h2><div class="readout num"><b class="cv">${brl(c.value)}</b> ${c.label}</div>
+  <svg class="ch" viewBox="0 0 900 520" height="520"><line x1="0" y1="470" x2="900" y2="470" stroke="rgba(255,255,255,.6)" stroke-width="4"/>
+  ${vals.map((v,i)=>`<rect class="cb" x="${i*bw+4}" width="${bw-8}" rx="8" fill="#e3b65a"/>`).join('')}
+  <text x="0" y="510" font-family="Inter" font-size="26" fill="rgba(255,255,255,.7)">6 meses</text><text x="900" y="510" text-anchor="end" font-family="Inter" font-size="26" fill="rgba(255,255,255,.7)">vencimento</text></svg>
+  <div class="readout num tot"></div><div class="final">${c.final}</div>`;
+  return {html, up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6)); pop(el.querySelector('.readout'),seg(l,.5,1.0));
+    let tot=0; el.querySelectorAll('.cb').forEach((r,i)=>{ const k=seg(l,1.2+i*(6.5/c.n),1.6+i*(6.5/c.n)); const h=(vals[i]/vmax)*360*(c.growth?1:.75)*k; r.setAttribute('y',470-h); r.setAttribute('height',h); if(k>.5) tot+=vals[i]; });
+    el.querySelector('.tot').innerHTML= tot?`Total recebido: <b>${brl(tot)}</b>`:'';
+    pop(el.querySelector('.final'),seg(l,8.6,9.3)); }}; };
+B.annuity=(c)=>{ const nb=Math.min(c.months,120);
+  const html=bgPhoto()+`<h2>${c.title}</h2><svg class="ch" viewBox="0 0 900 640" height="640">
+    <line x1="0" y1="560" x2="900" y2="560" stroke="rgba(255,255,255,.6)" stroke-width="4"/>
+    <path class="acc" fill="rgba(227,182,90,.25)" stroke="#e3b65a" stroke-width="8"/>
+    <text class="accl tagv" x="372" y="70" text-anchor="end" font-size="40" fill="#e3b65a">${c.accLabel}</text>
+    <line class="dv" x1="388" y1="40" x2="388" y2="560" stroke="rgba(255,255,255,.5)" stroke-width="3" stroke-dasharray="8 8"/>
+    ${[...Array(nb)].map((_,i)=>`<rect class="mb" x="${404+i*(496/nb)}" width="${Math.max(2,496/nb-2)}" y="400" height="0" fill="#fff"/>`).join('')}
+    <text x="0" y="604" font-family="Inter" font-size="28" fill="rgba(255,255,255,.7)">hoje</text>
+    <text x="404" y="604" font-family="Inter" font-size="28" fill="rgba(255,255,255,.7)">começa a renda</text>
+  </svg><div class="final num"><span class="mv">${brl(c.monthly)}</span> ${c.label}</div><div class="note">${c.note}</div>`;
+  return {html, up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6));
+    const k=seg(l,.7,4.6); let d='M0 560 L0 540'; for(let x=0;x<=380*k;x+=5){ const y=540-470*Math.pow(x/380,2.2); d+=` L${x} ${y.toFixed(1)}`;} d+=` L${(380*k).toFixed(1)} 560 Z`;
+    el.querySelector('.acc').setAttribute('d',d); el.querySelector('.accl').setAttribute('opacity',seg(l,4.4,4.9)); el.querySelector('.dv').setAttribute('opacity',seg(l,4.8,5.2));
+    const kb=seg(l,5.2,8.6); el.querySelectorAll('.mb').forEach((r,i)=>{ const on=(i/nb)<kb; r.setAttribute('y',on?400:560); r.setAttribute('height',on?160:0); });
+    pop(el.querySelector('.final'),seg(l,8.8,9.5)); el.querySelector('.note').style.opacity=seg(l,9.5,10)*.9; }}; };
+B.scenarios=(c)=>({html:bgPhoto()+`<h2>${c.title}</h2>${c.cards.map(x=>`<div class="cardx"><div class="k">${x[0]}</div><div class="v num"><span>${brl(x[1])}</span><small>/mês</small></div></div>`).join('')}<div class="note">${c.note}</div>`,
+  up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6)); el.querySelectorAll('.cardx').forEach((cd,i)=>{ const k=seg(l,.8+i*1.4,1.3+i*1.4); pop(cd,k); const kk=seg(l,.8+i*1.4,2.2+i*1.4); cd.querySelector('span').textContent=brl(c.cards[i][1]*kk); }); el.querySelector('.note').style.opacity=seg(l,c.cards.length*1.4+1.2,c.cards.length*1.4+1.8)*.9; }});
+B.checks=(c)=>({html:bgPhoto()+`<h2>${c.title}</h2><div class="checks">${c.items.map(x=>`<div class="it"><i>${CHECK}</i>${x}</div>`).join('')}</div>`,
+  up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6)); el.querySelectorAll('.it').forEach((x,i)=>pop(x,seg(l,.8+i*1.6,1.3+i*1.6),30)); }});
+B.compare=(c)=>({html:bgPhoto()+`<h2>Qual a diferença?</h2>
+  <div class="cmp ca"><div class="h">${c.a[0]}</div><div class="p">${c.a[1]}</div><svg viewBox="0 0 820 120"><rect class="r1" x="760" width="56" rx="8" fill="#e3b65a"/><line x1="0" y1="116" x2="820" y2="116" stroke="rgba(255,255,255,.5)" stroke-width="3"/></svg></div>
+  <div class="cmp cb2"><div class="h">${c.b[0]}</div><div class="p">${c.b[1]}</div><svg viewBox="0 0 820 120">${[...Array(14)].map((_,i)=>`<rect class="r2" x="${i*58+4}" width="40" rx="6" fill="#e3b65a"/>`).join('')}<line x1="0" y1="116" x2="820" y2="116" stroke="rgba(255,255,255,.5)" stroke-width="3"/></svg></div>`,
+  up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6)); pop(el.querySelector('.ca'),seg(l,.6,1.1)); pop(el.querySelector('.cb2'),seg(l,2.6,3.1));
+    const h1=110*seg(l,1.4,2.4); const r1=el.querySelector('.r1'); r1.setAttribute('y',114-h1); r1.setAttribute('height',h1);
+    el.querySelectorAll('.r2').forEach((r,i)=>{ const h=40*seg(l,3.4+i*.15,3.7+i*.15); r.setAttribute('y',114-h); r.setAttribute('height',h); }); }});
+B.forwho=(c)=>({html:`${EP.semFoto?'':`<div class="card"><img src="${FT.f}" style="object-position:${FT.pos}; transform-origin:${FT.o}"></div>`}<div class="pill">Pra quem é?</div><h1 class="${c.answer.length>30?'long':''}">${c.answer}</h1>
+  <div class="cta"><svg width="44" height="34" viewBox="0 0 38 28" fill="none" stroke="#e3b65a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg>${c.cta}</div><div class="badge">${c.badge||"Comenta TESOURO"}</div>
+  <div class="disc">${c.disc||"Simulações hipotéticas com taxas de novembro de 2026. Não é recomendação de investimento."}</div>`, cls:'who',
+  up(el,l){ const cd=el.querySelector('.card'); if(cd){ pop(cd,seg(l,.05,.6),60); } if(cd) cd.querySelector('img').style.transform=`scale(${1.25-.012*l*10/ (10)})`;
+    pop(el.querySelector('.pill'),seg(l,.5,.9)); pop(el.querySelector('h1'),seg(l,.7,1.3)); pop(el.querySelector('.cta'),seg(l,2.0,2.5));
+    const b=el.querySelector('.badge'); pop(b,seg(l,2.8,3.3)); b.style.transform+=` scale(${1+.03*Math.sin(Math.max(0,l-3.3)*5)})`; }});
+
+B.series=(c)=>{ const W=760,X0=110,Y0=640,Y1=70; const n=c.a.length; const all=[...c.a,...c.b,...(c.c||[])]; const vmax=Math.max(...all)*1.12, vmin=Math.min(...all)*0.85;
+  const gx=i=>X0+W*i/(n-1), gy=v=>Y0-(Y0-Y1)*(v-vmin)/(vmax-vmin);
+  let ticks=''; c.anos.forEach(([i,t])=>{ ticks+=`<text x="${gx(i)}" y="${Y0+50}" text-anchor="middle" font-family="Inter" font-size="28" fill="rgba(255,255,255,.6)">${t}</text>`; });
+  (c.ticks||[200000,400000,600000,800000]).forEach(v=>{ if(v<vmax&&v>vmin) ticks+=`<line x1="${X0}" x2="${X0+W}" y1="${gy(v)}" y2="${gy(v)}" stroke="rgba(255,255,255,.12)" stroke-width="2"/><text x="${X0-16}" y="${gy(v)+10}" text-anchor="end" font-family="Inter" font-size="28" fill="rgba(255,255,255,.6)">${v/1000} mil</text>`; });
+  const html=bgPhoto()+`<h2>${c.title}</h2>${c.desc?`<div class="lead" style="margin:-8px 0 6px; font-size:${c.descSize||34}px">${c.desc}</div>`:''}<svg class="ch" viewBox="0 0 900 760" style="height:${c.chartH||550}px; width:${(c.chartH||550)*900/760}px">${ticks}
+    <line x1="${X0}" y1="${Y0}" x2="${X0+W}" y2="${Y0}" stroke="rgba(255,255,255,.6)" stroke-width="4"/>
+    <path class="la" fill="none" stroke="#8d93a8" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>${c.c?'<path class="lc" fill="none" stroke="#5aa8ff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/><circle class="dc" r="13" fill="#fff"/><text class="tc tagv" text-anchor="end" font-size="50" fill="#5aa8ff"></text><text class="tlc" text-anchor="end" font-family="Inter" font-weight="700" font-size="28" fill="rgba(255,255,255,.8)">'+c.lc+'</text>':''}<path class="lb" fill="none" stroke="#e3b65a" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle class="da" r="13" fill="#fff"/><circle class="db" r="15" fill="#fff"/>
+    <text class="ta tagv" text-anchor="end" font-size="50" fill="#fff"></text><text class="tla" text-anchor="end" font-family="Inter" font-weight="700" font-size="28" fill="rgba(255,255,255,.8)">${c.la}</text>
+    <text class="tb tagv" text-anchor="end" font-size="56" fill="#e3b65a"></text><text class="tlb" text-anchor="end" font-family="Inter" font-weight="700" font-size="28" fill="rgba(255,255,255,.8)">${c.lb}</text>
+  </svg>${c.tabela?`<div class="tab">${c.tabela.map((t,i)=>`<div class="tr"><i style="background:${t[1]}"></i><span>${t[0]}</span><b class="tv${i}" style="color:${t[1]}"></b></div>`).join('')}</div>`:''}${c.delta?`<div class="final">${c.delta}</div>`:''}<div class="note">${c.note}</div>`;
+  return {html, up(el,l){ l*=(c.ritmo||1); pop(el.querySelector('h2'),seg(l,.1,.6));
+    const k=seg(l,.8,7.5)*(n-1), j=Math.floor(k), f=k-j;
+    const path=arr=>{ let d=''; for(let i=0;i<=j;i++) d+=(d?'L':'M')+gx(i).toFixed(1)+' '+gy(arr[i]).toFixed(1); if(j<n-1){ const v=arr[j]+(arr[j+1]-arr[j])*f; d+='L'+gx(k).toFixed(1)+' '+gy(v).toFixed(1); return [d,v]; } return [d,arr[n-1]]; };
+    const [pa,va]=path(c.a), [pb,vb]=path(c.b); const [pc,vc]=c.c?path(c.c):['',0];
+    el.querySelector('.la').setAttribute('d',pa); if(c.c){ el.querySelector('.lc').setAttribute('d',pc); el.querySelector('.dc').setAttribute('cx',gx(k)); el.querySelector('.dc').setAttribute('cy',gy(vc)); } el.querySelector('.lb').setAttribute('d',pb);
+    const x=gx(k); el.querySelector('.da').setAttribute('cx',x); el.querySelector('.da').setAttribute('cy',gy(va)); el.querySelector('.db').setAttribute('cx',x); el.querySelector('.db').setAttribute('cy',gy(vb));
+    const ta=el.querySelector('.ta'), tb=el.querySelector('.tb'), tla=el.querySelector('.tla'), tlb=el.querySelector('.tlb');
+    const tx=X0+W-24; ta.textContent=brl(va); ta.setAttribute('x',tx); ta.setAttribute('y',Y0-80); if(c.c){ const tc=el.querySelector('.tc'), tlc=el.querySelector('.tlc'); tc.textContent=brl(vc); tc.setAttribute('x',tx); tc.setAttribute('y',Y0-200); tlc.setAttribute('x',tx); tlc.setAttribute('y',Y0-164); tc.setAttribute('opacity',seg(k/(n-1),.22,.32)); tlc.setAttribute('opacity',seg(k/(n-1),.22,.32)); } tla.setAttribute('x',tx); tla.setAttribute('y',Y0-44); const lo=seg(k/(n-1),.22,.32); [ta,tla,tb,tlb].forEach(t=>t.setAttribute('opacity',lo));
+    tb.textContent=brl(vb); tb.setAttribute('x',tx); tb.setAttribute('y',gy(vb)-62); tlb.setAttribute('x',tx); tlb.setAttribute('y',gy(vb)-26);
+    pop(el.querySelector('.lead'),seg(l,.4,.9)); if(el.querySelector('.final')) pop(el.querySelector('.final'),seg(l,8.0,8.7));
+    if(c.tabela){ [ta,tla,tb,tlb,el.querySelector('.tc'),el.querySelector('.tlc')].forEach(t=>t&&t.setAttribute('opacity',0)); const vals=[vb,vc,va]; c.tabela.forEach((t,i)=>{ el.querySelector('.tv'+i).textContent=brl(vals[i]); }); el.querySelectorAll('.tr').forEach((r,i)=>pop(r,seg(l,1.0+i*.25,1.5+i*.25),20)); } el.querySelector('.note').style.opacity=seg(l,8.6,9.2)*.9; }}; };
+B.crises=(c)=>{ const max=Math.max(...c.items.map(x=>x[1]));
+  const html=bgPhoto()+`<h2>${c.title}</h2><div class="lead" style="margin:-6px 0 18px; font-size:42px">${c.sub}</div>
+  <svg class="ch" viewBox="0 0 900 640" height="640"><line x1="0" y1="540" x2="900" y2="540" stroke="rgba(255,255,255,.6)" stroke-width="4"/>
+  ${c.items.map((x,i)=>{const bx=i*225+20; return `<rect class="cr" x="${bx}" width="185" rx="18" fill="#e3b65a"/><text class="cv tagv" x="${bx+92}" text-anchor="middle" font-size="58" fill="#e3b65a"></text>
+    ${x[0].split(' ').map((w,k)=>`<text x="${bx+92}" y="${584+k*34}" text-anchor="middle" font-family="Inter" font-weight="700" font-size="29" fill="#fff">${w}</text>`).join('')}`}).join('')}
+  </svg><div class="note">${c.note}</div>`;
+  return {html, up(el,l){ pop(el.querySelector('h2'),seg(l,.1,.6)); pop(el.querySelector('.lead'),seg(l,.4,.9));
+    const rs=el.querySelectorAll('.cr'), vs=el.querySelectorAll('.cv');
+    c.items.forEach((x,i)=>{ const k=seg(l,1.2+i*1.5,2.2+i*1.5); const h=440*(x[1]/max)*k; rs[i].setAttribute('y',540-h); rs[i].setAttribute('height',h); vs[i].setAttribute('y',540-h-22); vs[i].textContent=k>0?'+'+Math.round(x[1]*k)+'%':''; });
+    el.querySelector('.note').style.opacity=seg(l,7.4,8)*.9; }}; };
+
+// ---------- montagem ----------
+let t0=0; const SC=EP.cenas.map((c,i)=>{ const b=B[c.t](c); const el=document.createElement('section'); el.className='sc '+(b.cls||''); el.innerHTML=b.html; stage.appendChild(el);
+  el.querySelectorAll('.bg img').forEach(im=>im.src=FT.f);
+  const d=(window.TEMPOS&&window.TEMPOS[i])||c.d; const r={el,up:b.up,s:t0,e:t0+d,f:Math.max(1,c.d/d)}; t0+=d; return r; });
+window.TOTAL=t0;
+window.fitAll=function(){ document.querySelectorAll('.hook .hname, .hook .big, .hook .ln, .fitw, .stat .big').forEach(el=>{
+  const sc=el.closest('.sc'); const v=sc.style.visibility; sc.style.visibility='visible';
+  let fs=parseFloat(getComputedStyle(el).fontSize); el.style.display=el.style.display||'block'; el.style.width='max-content';
+  while(el.getBoundingClientRect().width>900/ (parseFloat(getComputedStyle(el).transform.split(',')[0].replace('matrix(',''))||1) && fs>30){ fs-=2; el.style.fontSize=fs+'px'; }
+  el.style.width=''; sc.style.visibility=v; }); };
+window.SCENES=SC.map((s,i)=>({t:EP.cenas[i].t,s:s.s,e:s.e}));
+window.setT=function(t){
+  document.getElementById('prog').style.width=clamp(t/TOTAL)*100+'%';
+  SC.forEach((s,i)=>{ const last=i===SC.length-1; const o=clamp((t-s.s)/.35)*(last?1:clamp((s.e+.35-t)/.35));
+    s.el.style.opacity=o; s.el.style.visibility=o>0?'visible':'hidden';
+    if(o>0){ const l=t-s.s;
+      s.el.querySelectorAll('.bg img').forEach(im=>{ const [a,b]=(im.dataset.kb||'1.1,1.2').split(',').map(Number); const k=clamp(l/(s.e-s.s)); im.style.transform=`${im.dataset.mir||''}scale(${a+(b-a)*k})`; });
+      s.up(s.el,l*s.f); } });
+};
+setT(Q.has('t')?+Q.get('t'):0);
+</script>
+</body>
+</html>

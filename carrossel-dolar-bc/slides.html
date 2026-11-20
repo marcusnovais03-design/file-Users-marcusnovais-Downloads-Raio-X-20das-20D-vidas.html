@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carrossel BC e o dólar</title>
+<style>
+  :root { --ink:#070d24; --gold:#e3b65a; --red:#ff5a6a; --gray:#b9bdcc; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#888; font-family:"Inter",sans-serif; color:#fff; }
+  .slide { width:1080px; height:1350px; position:relative; overflow:hidden; margin:0 auto 40px; background:var(--ink);
+    background-image:linear-gradient(rgba(255,255,255,.04) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.04) 2px, transparent 2px); background-size:54px 54px; }
+  body.single .slide { display:none; margin:0; }
+  body.single .slide.on { display:block; }
+  .bg { position:absolute; inset:0; } .bg img { width:100%; height:100%; object-fit:cover; display:block; }
+  .shade { position:absolute; inset:0; }
+  .page { position:absolute; inset:0; padding:140px 90px 160px; display:flex; flex-direction:column; justify-content:center; z-index:3; }
+  .page.end { justify-content:flex-end; }
+  .count { position:absolute; top:60px; right:92px; font-weight:800; font-size:25px; letter-spacing:.09em; z-index:6; }
+  .foot { position:absolute; left:90px; right:92px; bottom:62px; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:25px; z-index:6; }
+  .foot .who span { display:inline-block; width:3px; height:26px; background:#fff; margin:0 9px -4px; }
+  .foot .go { display:flex; align-items:center; gap:16px; font-weight:800; font-size:27px; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:86px; line-height:1.02; letter-spacing:-.05em; word-spacing:.12em; margin-bottom:26px; }
+  h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:68px; line-height:1.04; letter-spacing:-.045em; word-spacing:.12em; margin-bottom:24px; }
+  h1 em, h2 em { font-style:normal; color:var(--gold); }
+  h1 .r, h2 .r { color:var(--red); }
+  p { font-size:40px; line-height:1.26; color:rgba(255,255,255,.88); }
+  p + p { margin-top:26px; }
+  b { font-weight:800; color:#fff; } b.g { color:var(--gold); }
+  .pill { align-self:flex-start; color:var(--gold); font-weight:800; font-size:32px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:20px; text-shadow:0 2px 12px rgba(0,0,0,.6); }
+  .pill.red { color:var(--red); }
+  ul { list-style:none; }
+  li { position:relative; padding:20px 0 20px 56px; font-size:36px; line-height:1.22; border-bottom:3px solid rgba(255,255,255,.14); color:rgba(255,255,255,.9); }
+  li::before { content:""; position:absolute; left:0; top:31px; width:26px; height:26px; border-radius:50%; background:var(--gold); }
+  .src { font-size:21px; line-height:1.3; color:rgba(255,255,255,.55); margin-top:22px; }
+  .stats { display:flex; gap:22px; margin-top:28px; }
+  .stats > div { flex:1; border:4px solid rgba(255,255,255,.75); border-radius:28px; padding:22px 26px; }
+  .stats .k { font-size:26px; font-weight:700; color:rgba(255,255,255,.75); }
+  .stats .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:64px; letter-spacing:-.04em; margin-top:4px; }
+  svg.ch { width:900px; height:640px; }
+  .btn { margin-top:30px; align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:900; font-size:36px; line-height:1.15; padding:22px 32px; border-radius:24px; }
+</style>
+</head>
+<body>
+<script>
+const P=[["20/10", 5.014], ["21/10", 5.0277], ["22/10", 5.0383], ["23/10", 5.0377], ["26/10", 5.5007], ["27/10", 5.3346], ["28/10", 5.342], ["29/10", 5.3744], ["30/10", 5.4212], ["03/11", 5.4935], ["04/11", 5.4778], ["05/11", 5.4621], ["06/11", 5.5013], ["09/11", 5.5146], ["10/11", 5.584], ["11/11", 5.5606], ["12/11", 5.6143], ["13/11", 5.6518], ["16/11", 5.7324], ["17/11", 5.7851], ["18/11", 5.8102], ["19/11", 5.94]];   // [[dd/mm, valor], ...]
+const S=[];
+// 1 capa
+S.push({h:`<div class="bg"><img src="img/marcus.jpg" style="object-position:50% 25%; filter:brightness(1.45) contrast(1.05)"></div>
+ <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.25) 0%, rgba(7,13,36,.15) 30%, rgba(7,13,36,.92) 58%, rgba(7,13,36,.98) 100%)"></div>
+ <div class="page end"><div class="pill red">Dólar a R$ 5,94</div>
+ <h1>O Banco Central gastou <em>US$ 1 bilhão</em> pra segurar o dólar.</h1>
+ <p><b>E não conseguiu.</b> Entenda por quê 👉</p></div>`});
+// 2 o que aconteceu
+S.push({h:`<div class="page"><div class="pill">O que aconteceu</div>
+ <h2>Leilão de US$ 1 bilhão <span class="r">e o dólar subiu</span></h2>
+ <ul><li>Na quarta (18/11), o BC vendeu <b>US$ 1 bilhão</b> das reservas em leilões de linha.</li>
+ <li>No mesmo dia, o dólar fechou no <b>maior valor em 19 meses</b>.</li>
+ <li>Na quinta (19/11), subiu de novo: <b>6º dia seguido de alta</b>.</li></ul></div>`});
+// 3 gráfico (vídeo)
+S.push({video:8, h:`<div class="page" style="justify-content:flex-start; padding-top:150px"><div class="pill">Desde o segundo turno</div>
+ <h2 style="font-size:60px">O dólar <em>disparou</em></h2>
+ <svg class="ch" id="ch" viewBox="0 0 900 640"></svg>
+ <div class="stats"><div><div class="k">23/10, antes do 2º turno</div><div class="v">R$ 5,04</div></div><div><div class="k">19/11, ontem</div><div class="v" style="color:#ff5a6a" id="vf">R$ 5,94</div></div></div></div>`});
+// 4 tamanho do leilão
+S.push({video:6, h:`<div class="page"><div class="pill">Pra ter uma ideia</div>
+ <h2>US$ 1 bilhão é só <em>0,27%</em> das reservas</h2>
+ <svg class="ch" id="res" viewBox="0 0 900 360" style="height:360px"></svg>
+ <p style="margin-top:20px">O Brasil tem <b>US$ 364 bilhões</b> em reservas. Dinheiro não falta. O problema é outro.</p></div>`});
+// 5 reserva não resolve
+S.push({h:`<div class="page"><div class="pill">O mito</div>
+ <h2>“É só usar as reservas”</h2>
+ <p>O leilão alivia a pressão por algumas horas. Mas ele <b>trata o sintoma</b>, não a causa.</p>
+ <p>No leilão de linha, o BC <b>vende hoje e recompra depois</b>. É um remédio de curto prazo, não uma cura.</p></div>`});
+// 6 o problema real
+S.push({h:`<div class="page"><div class="pill red">O problema real</div>
+ <h2>Confiança <em>não se compra</em> com reservas</h2>
+ <ul><li><b>Condução fiscal:</b> gastos crescendo e ajuste fiscal travado no Senado.</li>
+ <li><b>Incerteza na política econômica:</b> o investidor não sabe qual será a regra do jogo.</li>
+ <li><b>Resultado:</b> o dinheiro sai do Brasil e o dólar sobe.</li></ul></div>`});
+// 7 bolso
+S.push({h:`<div class="page"><div class="pill">No seu bolso</div>
+ <h2>Dólar alto chega em <em>tudo</em></h2>
+ <ul><li>Combustível, trigo, remédios e eletrônicos ficam mais caros.</li>
+ <li>Inflação sobe, e os <b>juros</b> demoram mais pra cair.</li>
+ <li>Viagens e estudo fora custam muito mais.</li>
+ <li>Quem tem tudo em real <b>perde poder de compra</b>.</li></ul></div>`});
+// 8 proteção
+S.push({h:`<div class="page"><div class="pill">Como se proteger</div>
+ <h2>Não dependa <em>só do Brasil</em></h2>
+ <ul><li>Tenha uma parte do patrimônio em <b>dólar investido</b>, não parado.</li>
+ <li>Diversifique por <b>país, moeda e classe de ativo</b>.</li>
+ <li>Não tente adivinhar a cotação: monte a posição <b>aos poucos</b>.</li>
+ <li>Revise a carteira <b>com estratégia</b>, não no susto.</li></ul></div>`});
+// 9 CTA
+S.push({h:`<div class="bg"><img src="img/marcus.jpg" style="object-position:50% 20%; transform:scale(1.1); transform-origin:50% 25%; filter:brightness(1.45) contrast(1.05)"></div>
+ <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.2) 0%, rgba(7,13,36,.2) 30%, rgba(7,13,36,.92) 58%, rgba(7,13,36,.98) 100%)"></div>
+ <div class="page end"><h1 style="font-size:76px">Quer saber como <em>posicionar a sua carteira?</em></h1>
+ <div class="btn">Acesse o link na BIO e vamos agendar uma reunião</div></div>`});
+
+const N=S.length;
+S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide'; if(x.video) s.dataset.video=x.video;
+  s.innerHTML=x.h+`<div class="count">${String(i+1).padStart(2,'0')}/${String(N).padStart(2,'0')}</div><div class="foot"><div class="who">Marcus Novais<span></span>Finanças e Economia</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
+  document.body.appendChild(s); });
+
+// gráfico do dólar
+const X0=120,X1=860,Y0=560,Y1=40,lo=4.9,hi=6.15, n=P.length, gx=i=>X0+(X1-X0)*i/(n-1), gy=v=>Y0-(Y0-Y1)*(v-lo)/(hi-lo);
+const iEl=P.findIndex(p=>p[0]==='26/10');
+let g=''; [5.0,5.25,5.5,5.75,6.0].forEach(v=>g+=`<line x1="${X0}" x2="${X1}" y1="${gy(v)}" y2="${gy(v)}" stroke="rgba(255,255,255,.12)" stroke-width="2"/><text x="${X0-16}" y="${gy(v)+10}" text-anchor="end" font-family="Inter" font-size="27" fill="rgba(255,255,255,.6)">${v.toFixed(2).replace('.',',')}</text>`);
+[[0,'20/10'],[iEl,'26/10'],[P.findIndex(p=>p[0]==='09/11'),'09/11'],[n-1,'19/11']].forEach(([i,t])=>g+=`<text x="${gx(i)}" y="${Y0+46}" text-anchor="middle" font-family="Inter" font-size="27" fill="rgba(255,255,255,.6)">${t}</text>`);
+document.getElementById('ch').innerHTML=g+`<line x1="${(gx(iEl-1)+gx(iEl))/2}" x2="${(gx(iEl-1)+gx(iEl))/2}" y1="${Y1}" y2="${Y0}" stroke="#e3b65a" stroke-width="3" stroke-dasharray="10 10" id="el"/>
+ <text id="elt" x="${(gx(iEl-1)+gx(iEl))/2+12}" y="${Y1+26}" font-family="Inter" font-weight="800" font-size="26" fill="#e3b65a">2º turno</text>
+ <line x1="${X0}" x2="${X1}" y1="${Y0}" y2="${Y0}" stroke="rgba(255,255,255,.6)" stroke-width="4"/>
+ <path id="ln" fill="none" stroke="#ff5a6a" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/><circle id="dt" r="14" fill="#fff"/>
+ <g id="tag"><rect id="tr" rx="16" height="70" fill="#ff5a6a"/><text id="tt" font-family="Inter Display,Inter" font-weight="900" font-size="44" fill="#fff"></text></g>`;
+// reservas
+document.getElementById('res').innerHTML=`<rect x="0" y="40" width="900" height="120" rx="20" fill="rgba(255,255,255,.12)"/>
+ <rect id="rb" x="0" y="40" height="120" rx="6" fill="#e3b65a"/>
+ <text x="0" y="210" font-family="Inter" font-weight="700" font-size="30" fill="rgba(255,255,255,.8)">Reservas: US$ 364 bilhões</text>
+ <text id="rl" x="0" y="290" font-family="Inter Display,Inter" font-weight="900" font-size="48" fill="#e3b65a">Leilão: US$ 1 bilhão ↑</text>`;
+const clamp=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-clamp(x),3), seg=(t,a,b)=>ease((t-a)/(b-a));
+window.setT=function(t){
+  const k=seg(t,.5,6.2)*(n-1), j=Math.floor(k), f=k-j; let d='', v=P[0][1];
+  for(let i=0;i<=j&&i<n;i++){ d+=(d?'L':'M')+gx(i).toFixed(1)+' '+gy(P[i][1]).toFixed(1); v=P[i][1]; }
+  if(j<n-1){ v=P[j][1]+(P[j+1][1]-P[j][1])*f; d+='L'+gx(k).toFixed(1)+' '+gy(v).toFixed(1); }
+  document.getElementById('ln').setAttribute('d',d); const dt=document.getElementById('dt'); dt.setAttribute('cx',gx(k)); dt.setAttribute('cy',gy(v));
+  const txt='R$ '+v.toFixed(2).replace('.',','), tw=txt.length*25+30, tx=Math.min(gx(k)-tw/2, X1-tw), ty=gy(v)-100;
+  document.getElementById('tr').setAttribute('x',Math.max(X0,tx)); document.getElementById('tr').setAttribute('y',ty); document.getElementById('tr').setAttribute('width',tw);
+  document.getElementById('tt').setAttribute('x',Math.max(X0,tx)+15); document.getElementById('tt').setAttribute('y',ty+50); document.getElementById('tt').textContent=txt;
+  const ke=k>=iEl-.5?1:0; document.getElementById('el').setAttribute('opacity',ke); document.getElementById('elt').setAttribute('opacity',ke);
+  const kr=seg(t,.6,2.4); document.getElementById('rb').setAttribute('width',Math.max(6,900*0.0027*kr*1)); document.getElementById('rl').setAttribute('opacity',seg(t,2.2,2.8));
+};
+const all=[...document.querySelectorAll('.slide')];
+window.show=i=>{document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
+const q=new URLSearchParams(location.search); if(q.has('s')) show(+q.get('s')-1);
+setT(99);
+</script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carrossel apocalipse 2027</title>
+<style>
+  :root { --ink:#070d24; --gold:#e3b65a; --red:#e3141e; --gray:#b9bdcc; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#888; font-family:"Inter",sans-serif; color:#fff; }
+  .slide { width:1080px; height:1350px; position:relative; overflow:hidden; margin:0 auto 40px; background:var(--ink);
+    background-image:linear-gradient(rgba(255,255,255,.04) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.04) 2px, transparent 2px); background-size:54px 54px; }
+  body.single .slide { display:none; margin:0; }
+  body.single .slide.on { display:block; }
+  .bg { position:absolute; inset:0; } .bg img { width:100%; height:100%; object-fit:cover; display:block; }
+  .shade { position:absolute; inset:0; }
+  .page { position:absolute; inset:0; padding:140px 90px 160px; display:flex; flex-direction:column; justify-content:center; z-index:3; }
+  .page.end { justify-content:flex-end; }
+  .count { position:absolute; top:60px; right:92px; font-weight:800; font-size:25px; letter-spacing:.09em; z-index:6; }
+  .foot { position:absolute; left:90px; right:92px; bottom:62px; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:25px; z-index:6; }
+  .foot .who span { display:inline-block; width:3px; height:26px; background:#fff; margin:0 9px -4px; }
+  .foot .go { display:flex; align-items:center; gap:16px; font-weight:800; font-size:27px; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:86px; line-height:1.02; letter-spacing:-.05em; word-spacing:.12em; margin-bottom:26px; }
+  h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:68px; line-height:1.04; letter-spacing:-.045em; word-spacing:.12em; margin-bottom:24px; }
+  h1 em, h2 em { font-style:normal; color:var(--gold); }
+  h1 .r, h2 .r { color:var(--red); }
+  p { font-size:40px; line-height:1.26; color:rgba(255,255,255,.88); }
+  p + p { margin-top:26px; }
+  b { font-weight:800; color:#fff; } b.g { color:var(--gold); }
+  .pill { align-self:flex-start; color:var(--gold); font-weight:800; font-size:32px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:20px; text-shadow:0 2px 12px rgba(0,0,0,.6); }
+  .pill.red { color:var(--red); }
+  ul { list-style:none; }
+  li { position:relative; padding:20px 0 20px 56px; font-size:36px; line-height:1.22; border-bottom:3px solid rgba(255,255,255,.14); color:rgba(255,255,255,.9); }
+  li::before { content:""; position:absolute; left:0; top:31px; width:26px; height:26px; border-radius:50%; background:var(--gold); }
+  .src { font-size:21px; line-height:1.3; color:rgba(255,255,255,.55); margin-top:22px; }
+  .stats { display:flex; gap:22px; margin-top:28px; }
+  .stats > div { flex:1; border:4px solid rgba(255,255,255,.75); border-radius:28px; padding:22px 26px; }
+  .stats .k { font-size:26px; font-weight:700; color:rgba(255,255,255,.75); }
+  .stats .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:64px; letter-spacing:-.04em; margin-top:4px; }
+  svg.ch { width:900px; height:640px; }
+  .btn { margin-top:30px; align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:900; font-size:36px; line-height:1.15; padding:22px 32px; border-radius:24px; }
+  .hb .row { margin-bottom:26px; }
+  .hb .lab { display:flex; justify-content:space-between; align-items:baseline; font-size:32px; font-weight:700; margin-bottom:10px; }
+  .hb .lab b { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:52px; }
+  .hb .bar { height:52px; border-radius:12px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .hb .bar i { display:block; height:100%; width:0; border-radius:12px; }
+  .steps { display:flex; align-items:flex-end; gap:14px; height:430px; border-bottom:4px solid rgba(255,255,255,.6); margin-top:10px; }
+  .steps .s { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; }
+  .steps .s b { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:44px; margin-bottom:8px; }
+  .steps .s i { width:100%; border-radius:12px 12px 0 0; height:0; }
+  .sl { display:flex; gap:14px; margin-top:12px; }
+  .sl div { flex:1; text-align:center; font-size:22px; font-weight:600; line-height:1.2; color:rgba(255,255,255,.75); }
+  .tag { margin-top:26px; font-size:30px; font-weight:800; color:var(--red); }
+  .slide.light { background-color:#f2efe8; color:#0e1f5b;
+    background-image:linear-gradient(rgba(14,31,91,.05) 2px, transparent 2px), linear-gradient(90deg, rgba(14,31,91,.05) 2px, transparent 2px); }
+  .light p, .light li { color:rgba(14,31,91,.85); }
+  .light b { color:#0e1f5b; } .light b.g, .light h1 em, .light h2 em { color:#a8761c; }
+  .light .pill { color:#a8761c; text-shadow:none; } .light .pill.red { color:var(--red); }
+  .light li { border-bottom-color:rgba(14,31,91,.15); } .light li::before { background:#a8761c; }
+  .light .hb .bar { background:rgba(14,31,91,.1); }
+  .light .steps { border-bottom-color:rgba(14,31,91,.5); } .light .sl div { color:rgba(14,31,91,.7); }
+  .light .foot, .light .count { color:#0e1f5b; } .light .foot .who span { background:#0e1f5b; }
+  .light .foot .go svg { stroke:#0e1f5b; }
+  .light .steps .s:nth-child(-n+4) b { color:#a8761c !important; } .light .steps .s:nth-child(-n+4) i { background:#c8932e !important; }
+  .pill.red { text-shadow:0 2px 14px rgba(0,0,0,.85); }
+</style>
+</head>
+<body>
+<script>
+const S=[];
+S.push({h:`<div class="bg"><img src="img/marcus.jpg" style="object-position:62% 20%"></div>
+ <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.1) 0%, rgba(7,13,36,.1) 32%, rgba(7,13,36,.9) 56%, rgba(7,13,36,.98) 100%)"></div>
+ <div class="page end"><div class="pill red">Reforma tributária</div>
+ <h1>Empresário, você está preparado para o <em>apocalipse empresarial</em> de 2027?</h1>
+ <p>Veja o que está vindo 👉</p></div>`});
+S.push({h:`<div class="page"><div class="pill">Sem alarde</div>
+ <h2>O cenário para 2027 é <span class="r">duro</span></h2>
+ <p>Mais imposto sobre <b>dividendos</b>, sobre <b>serviços</b> e uma carga total que pode passar de <b>50%</b>.</p>
+ <p>Na minha leitura, <b class="g">muita empresa não vai aguentar</b>.</p></div>`});
+S.push({video:7, h:`<div class="page"><div class="pill">Dividendos</div>
+ <h2>A conta <span class="r">não fechou</span></h2>
+ <p style="font-size:34px">Desde janeiro, dividendos acima de <b>R$ 50 mil por mês</b> de uma mesma empresa pagam <b>10% de IR</b>. A ideia era bancar a isenção de quem ganha até R$ 5 mil.</p>
+ <div class="hb" style="margin-top:36px">
+  <div class="row"><div class="lab"><span>Arrecadação prevista</span><b style="color:#b9bdcc" id="a1">R$ 29 bi</b></div><div class="bar"><i id="b1" style="background:#b9bdcc"></i></div></div>
+  <div class="row"><div class="lab"><span>Arrecadação real</span><b style="color:#e3141e" id="a2">R$ 10,5 bi</b></div><div class="bar"><i id="b2" style="background:#e3141e"></i></div></div>
+ </div></div>`});
+S.push({video:8, h:`<div class="page"><div class="pill">A resposta: mais imposto</div>
+ <h2 style="font-size:58px">PL 5.889/2026: IR sobre dividendos por faixa</h2>
+ <div class="steps" id="st"></div>
+ <div class="sl"><div>até<br>R$ 5 mil</div><div>R$ 5 mil a<br>R$ 7.350</div><div>até<br>R$ 20 mil</div><div>até<br>R$ 50 mil</div><div>até<br>R$ 150 mil</div><div>acima de<br>R$ 150 mil</div></div>
+ <div class="tag">Valores por mês. O projeto ainda não foi votado.</div></div>`});
+S.push({video:6, h:`<div class="page"><div class="pill red">O fim da trava</div>
+ <h2>Carga de até <span class="r">50,5%</span> no lucro real</h2>
+ <p style="font-size:34px">Hoje a lei impede que o imposto da empresa somado ao do sócio passe de <b>34%</b>. O projeto não repete essa trava.</p>
+ <div class="hb" style="margin-top:36px">
+  <div class="row"><div class="lab"><span>Hoje (com trava)</span><b style="color:#b9bdcc" id="c1">34%</b></div><div class="bar"><i id="d1" style="background:#b9bdcc"></i></div></div>
+  <div class="row"><div class="lab"><span>Com o projeto</span><b style="color:#e3141e" id="c2">50,5%</b></div><div class="bar"><i id="d2" style="background:#e3141e"></i></div></div>
+ </div></div>`});
+S.push({h:`<div class="page"><div class="pill">Na minha empresa</div>
+ <h2>Eu também <em>vou sentir</em></h2>
+ <p>Tenho uma empresa de <b>serviços</b>. Com a reforma tributária, o imposto aqui também deve subir <b class="g">pelo menos 5%</b> além do que já pagamos.</p>
+ <p>Mais imposto, mesma receita: <b>a margem encolhe</b>.</p>
+ <img src="img/logo-private-xp.png" style="width:560px; margin-top:60px; align-self:flex-start"></div>`});
+S.push({h:`<div class="page"><div class="pill">O que vai separar quem fica de pé</div>
+ <h2>Ter <em>caixa</em> vai ser essencial</h2>
+ <ul><li>Imposto maior e <b>margem menor</b></li>
+ <li>Crédito caro, com a Selic em <b>13,75%</b></li>
+ <li>Quem depende de empréstimo pra fechar o mês <b>fica vulnerável</b></li>
+ <li>Quem tem caixa <b>atravessa a crise e aproveita oportunidades</b></li></ul></div>`});
+S.push({h:`<div class="page"><div class="pill">E não basta ter caixa</div>
+ <h2>Tem que ser <em>caixa bem investido</em></h2>
+ <ul><li>Separe <b>caixa operacional</b>, <b>reserva</b> e <b>provisão de impostos</b></li>
+ <li>Reserva com <b>liquidez diária</b> e segurança</li>
+ <li>O que não vai usar no curto prazo, <b>investido com prazo e estratégia</b></li>
+ <li>Dinheiro parado na conta da empresa <b>perde pra inflação</b></li></ul></div>`});
+S.push({h:`<div class="bg"><img src="img/marcus.jpg" style="object-position:62% 20%; transform:scale(1.08); transform-origin:62% 25%"></div>
+ <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.1) 0%, rgba(7,13,36,.1) 32%, rgba(7,13,36,.9) 56%, rgba(7,13,36,.98) 100%)"></div>
+ <div class="page end"><h1 style="font-size:74px">É empresário e quer saber como <em>preparar o seu caixa</em> para isso?</h1>
+ <div class="btn">Acesse o link na BIO e me chame</div></div>`});
+const N=S.length;
+S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide'+(i%2===1?' light':''); if(x.video) s.dataset.video=x.video;
+  s.innerHTML=x.h+`<div class="count">${String(i+1).padStart(2,'0')}/${String(N).padStart(2,'0')}</div><div class="foot"><div class="who">Marcus Novais<span></span>Planejador Financeiro, CFP®</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
+  document.body.appendChild(s); });
+const ST=[[0,'Isento'],[10,'até 10%'],[10,'10%'],[15,'15%'],[20,'20%'],[25,'25%']];
+document.getElementById('st').innerHTML=ST.map((x,i)=>`<div class="s"><b style="color:${i>3?'#e3141e':'#e3b65a'}" class="sv">${x[1]}</b><i style="background:${i>3?'#e3141e':'#e3b65a'}" data-h="${Math.max(x[0],1)/25*340}"></i></div>`).join('');
+const clamp=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-clamp(x),3), seg=(t,a,b)=>ease((t-a)/(b-a));
+const br=(v,d)=>v.toFixed(d).replace('.',',');
+window.setT=function(t){
+  const k1=seg(t,.6,2.2), k2=seg(t,2.6,4.2);
+  document.getElementById('b1').style.width=100*k1+'%'; document.getElementById('a1').textContent='R$ '+Math.round(29*k1)+' bi';
+  document.getElementById('b2').style.width=(10.5/29*100)*k2+'%'; document.getElementById('a2').textContent='R$ '+br(10.5*k2,1)+' bi';
+  document.querySelectorAll('#st .s').forEach((s,i)=>{ const k=seg(t,.6+i*.7,1.3+i*.7); s.querySelector('i').style.height=(+s.querySelector('i').dataset.h)*k+'px'; s.querySelector('b').style.opacity=k; });
+  const m1=seg(t,.6,2.0), m2=seg(t,2.2,3.8);
+  document.getElementById('d1').style.width=(34/50.5*100)*m1+'%'; document.getElementById('c1').textContent=Math.round(34*m1)+'%';
+  document.getElementById('d2').style.width=100*m2+'%'; document.getElementById('c2').textContent=br(50.5*m2,1)+'%';
+};
+const all=[...document.querySelectorAll('.slide')];
+window.show=i=>{document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
+setT(99);
+</script>
+</body>
+</html>
