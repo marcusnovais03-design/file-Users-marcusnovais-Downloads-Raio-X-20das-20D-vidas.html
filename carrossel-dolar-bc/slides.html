@@ -42,12 +42,12 @@
 </head>
 <body>
 <script>
-const P=[["20/10", 5.014], ["21/10", 5.0277], ["22/10", 5.0383], ["23/10", 5.0377], ["26/10", 5.5007], ["27/10", 5.3346], ["28/10", 5.342], ["29/10", 5.3744], ["30/10", 5.4212], ["03/11", 5.4935], ["04/11", 5.4778], ["05/11", 5.4621], ["06/11", 5.5013], ["09/11", 5.5146], ["10/11", 5.584], ["11/11", 5.5606], ["12/11", 5.6143], ["13/11", 5.6518], ["16/11", 5.7324], ["17/11", 5.7851], ["18/11", 5.8102], ["19/11", 5.8889]];   // [[dd/mm, valor], ...]
+const P=[["20/10", 5.014], ["21/10", 5.0277], ["22/10", 5.0383], ["23/10", 5.0377], ["26/10", 5.5007], ["27/10", 5.3346], ["28/10", 5.342], ["29/10", 5.3744], ["30/10", 5.4212], ["03/11", 5.4935], ["04/11", 5.4778], ["05/11", 5.4621], ["06/11", 5.5013], ["09/11", 5.5146], ["10/11", 5.584], ["11/11", 5.5606], ["12/11", 5.6143], ["13/11", 5.6518], ["16/11", 5.7324], ["17/11", 5.7851], ["18/11", 5.8102], ["19/11", 5.94]];   // [[dd/mm, valor], ...]
 const S=[];
 // 1 capa
 S.push({h:`<div class="bg"><img src="img/marcus.jpg" style="object-position:50% 25%; filter:brightness(1.45) contrast(1.05)"></div>
  <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.25) 0%, rgba(7,13,36,.15) 30%, rgba(7,13,36,.92) 58%, rgba(7,13,36,.98) 100%)"></div>
- <div class="page end"><div class="pill red">Dólar a R$ 5,89</div>
+ <div class="page end"><div class="pill red">Dólar a R$ 5,94</div>
  <h1>O Banco Central gastou <em>US$ 1 bilhão</em> pra segurar o dólar.</h1>
  <p><b>E não conseguiu.</b> Entenda por quê 👉</p></div>`});
 // 2 o que aconteceu
@@ -60,7 +60,7 @@ S.push({h:`<div class="page"><div class="pill">O que aconteceu</div>
 S.push({video:8, h:`<div class="page" style="justify-content:flex-start; padding-top:150px"><div class="pill">Desde o segundo turno</div>
  <h2 style="font-size:60px">O dólar <em>disparou</em></h2>
  <svg class="ch" id="ch" viewBox="0 0 900 640"></svg>
- <div class="stats"><div><div class="k">23/10, antes do 2º turno</div><div class="v">R$ 5,04</div></div><div><div class="k">19/11, ontem</div><div class="v" style="color:#ff5a6a" id="vf">R$ 5,89</div></div></div></div>`});
+ <div class="stats"><div><div class="k">23/10, antes do 2º turno</div><div class="v">R$ 5,04</div></div><div><div class="k">19/11, ontem</div><div class="v" style="color:#ff5a6a" id="vf">R$ 5,94</div></div></div></div>`});
 // 4 tamanho do leilão
 S.push({video:6, h:`<div class="page"><div class="pill">Pra ter uma ideia</div>
  <h2>US$ 1 bilhão é só <em>0,27%</em> das reservas</h2>
@@ -103,7 +103,7 @@ S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide
   document.body.appendChild(s); });
 
 // gráfico do dólar
-const X0=120,X1=860,Y0=560,Y1=40,lo=4.9,hi=6.0, n=P.length, gx=i=>X0+(X1-X0)*i/(n-1), gy=v=>Y0-(Y0-Y1)*(v-lo)/(hi-lo);
+const X0=120,X1=860,Y0=560,Y1=40,lo=4.9,hi=6.15, n=P.length, gx=i=>X0+(X1-X0)*i/(n-1), gy=v=>Y0-(Y0-Y1)*(v-lo)/(hi-lo);
 const iEl=P.findIndex(p=>p[0]==='26/10');
 let g=''; [5.0,5.25,5.5,5.75,6.0].forEach(v=>g+=`<line x1="${X0}" x2="${X1}" y1="${gy(v)}" y2="${gy(v)}" stroke="rgba(255,255,255,.12)" stroke-width="2"/><text x="${X0-16}" y="${gy(v)+10}" text-anchor="end" font-family="Inter" font-size="27" fill="rgba(255,255,255,.6)">${v.toFixed(2).replace('.',',')}</text>`);
 [[0,'20/10'],[iEl,'26/10'],[P.findIndex(p=>p[0]==='09/11'),'09/11'],[n-1,'19/11']].forEach(([i,t])=>g+=`<text x="${gx(i)}" y="${Y0+46}" text-anchor="middle" font-family="Inter" font-size="27" fill="rgba(255,255,255,.6)">${t}</text>`);
