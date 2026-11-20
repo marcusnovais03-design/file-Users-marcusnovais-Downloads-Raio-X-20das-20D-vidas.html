@@ -1,17 +1,32 @@
 {
-  "titulo": ["Se você tem menos de", "R$ 100 MIL"],
-  "titulo_cores": [null, "#F5C400"],
+  "titulo": [
+    "Se você tem menos de",
+    "R$ 100 MIL"
+  ],
+  "titulo_cores": [
+    null,
+    "#F5C400"
+  ],
   "titulo_escala": 1.25,
   "titulo_pitch": 50,
   "titulo_y": 0.38,
   "caixas": [
-    ["Pare de procurar curso", "para aprender a investir"]
+    [
+      "Pare de procurar curso",
+      "para aprender a investir"
+    ]
   ],
   "caixa_escala": 1.6,
-  "caixas_y": 0.515,
-  "rodape": ["Leia a legenda 👇"],
+  "caixas_y": 0.53,
+  "rodape": [
+    "Leia a legenda 👇"
+  ],
   "rodape_destaque": true,
   "rodape_escala": 1.6,
-  "rodape_y": 0.64,
-  "rodape_em": 0.5
+  "rodape_y": 0.655,
+  "rodape_em": 0,
+  "titulo_escalas": [
+    1.0,
+    1.6
+  ]
 }

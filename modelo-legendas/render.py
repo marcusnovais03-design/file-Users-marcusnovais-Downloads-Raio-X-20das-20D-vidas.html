@@ -82,9 +82,17 @@ def main(spec_path, src, out):
     spec = json.load(open(spec_path, encoding="utf-8"))
     base = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ft = ImageFont.truetype(TITLE_FONT, round(f_title.size * spec.get("titulo_escala", 1.0)))
-    shadow_text(base, spec["titulo"], ft, spec.get("titulo_y", 0.18) * H,
-                spec.get("titulo_pitch", 35) * S, spec.get("titulo_destaque"),
-                spec.get("cor_destaque", "#F5C400"), spec.get("titulo_cores"))
+    if "titulo_escalas" in spec:  # tamanho diferente por linha do título
+        ty = spec.get("titulo_y", 0.18) * H
+        cores = spec.get("titulo_cores") or [None] * len(spec["titulo"])
+        for line, esc, cor in zip(spec["titulo"], spec["titulo_escalas"], cores):
+            fl = ImageFont.truetype(TITLE_FONT, round(ft.size * esc))
+            shadow_text(base, [line], fl, ty, 0, None, colors=[cor])
+            ty += fl.size * (1.35 if cor else 1.15)
+    else:
+        shadow_text(base, spec["titulo"], ft, spec.get("titulo_y", 0.18) * H,
+                    spec.get("titulo_pitch", 35) * S, spec.get("titulo_destaque"),
+                    spec.get("cor_destaque", "#F5C400"), spec.get("titulo_cores"))
 
     d = ImageDraw.Draw(base)
     k = spec.get("caixa_escala", 1.0)
