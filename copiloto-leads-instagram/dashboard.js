@@ -1,4 +1,4 @@
-const { DEFAULT_CONFIG, scoreLead } = window.LeadScoring;
+const { DEFAULT_CONFIG, scoreLead, formatPhone } = window.LeadScoring;
 
 const state = {
   leads: {},
@@ -47,7 +47,7 @@ function filtered() {
   return Object.values(state.leads).filter((l) => {
     const local = l.local || scoreLead(l, state.config);
     if (q) {
-      const hay = [l.username, l.fullName, l.bio, ...(l.comments || []).map((c) => c.text + " " + c.postAuthor)].join(" ").toLowerCase();
+      const hay = [l.username, l.fullName, l.bio, ...(l.emails || []), ...(l.phones || []), ...(l.comments || []).map((c) => c.text + " " + c.postAuthor)].join(" ").toLowerCase();
       if (!hay.includes(q)) return false;
     }
     if (seg && !(local.segmentos || []).includes(seg) && l.ai?.segmento !== seg) return false;
@@ -57,7 +57,8 @@ function filtered() {
     if (leadScore(l) < min) return false;
     const tipos = new Set((l.comments || []).map((c) => c.tipo));
     if (orig === "comentario" && !tipos.has("comentario")) return false;
-    if (orig === "curtida" && (tipos.has("comentario") || !tipos.has("curtida"))) return false;
+    if (orig === "curtida" && (tipos.has("comentario") || !(tipos.has("curtida") || tipos.has("repost")))) return false;
+    if (orig === "contato" && !((l.emails || []).length || (l.phones || []).length)) return false;
     return true;
   }).sort((a, b) => leadScore(b) - leadScore(a) || (b.updatedAt || "").localeCompare(a.updatedAt || ""));
 }
@@ -84,6 +85,12 @@ function lastComment(l) {
   return cs[cs.length - 1] || (l.comments || [])[l.comments.length - 1];
 }
 
+function contactHtml(l) {
+  const e = (l.emails || []).map((m) => `<a class="ct" href="mailto:${esc(m)}">✉ ${esc(m)}</a>`);
+  const p = (l.phones || []).map((d) => `<a class="ct" href="https://wa.me/${esc(d)}" target="_blank" rel="noopener">☎ ${esc(formatPhone(d))}</a>`);
+  return e.length || p.length ? `<div class="contacts">${[...e, ...p].join("")}</div>` : "";
+}
+
 function rowHtml(l) {
   const local = l.local || scoreLead(l, state.config);
   const sc = leadScore(l);
@@ -95,6 +102,7 @@ function rowHtml(l) {
   const interacao = c
     ? (c.tipo === "curtida"
         ? `<span class="tag">curtiu</span>`
+        : c.tipo === "repost" ? `<span class="tag">repostou</span>`
         : `<q>${esc(c.text.length > 220 ? c.text.slice(0, 220) + "…" : c.text)}</q>`)
     : "";
   return `
@@ -103,6 +111,7 @@ function rowHtml(l) {
     <td class="user">
       <b><a href="https://www.instagram.com/${esc(l.username)}/" target="_blank" rel="noopener">@${esc(l.username)}</a></b>
       ${l.fullName ? `<span class="name">${esc(l.fullName)}</span>` : ""}
+      ${contactHtml(l)}
       ${l.bio ? `<div class="bio">${esc(l.bio.slice(0, 120))}${l.bio.length > 120 ? "…" : ""}</div>` : ""}
     </td>
     <td class="comment">${interacao}
@@ -122,7 +131,7 @@ function rowHtml(l) {
 
 function detailHtml(l, local) {
   const ai = l.ai;
-  const hist = (l.comments || []).map((c) => `<li>${c.tipo === "curtida" ? "Curtiu" : `“${esc(c.text)}”`}
+  const hist = (l.comments || []).map((c) => `<li>${c.tipo === "curtida" ? "Curtiu" : c.tipo === "repost" ? "Repostou" : `“${esc(c.text)}”`}
       <span class="muted small">— <a href="${esc(c.postUrl)}" target="_blank" rel="noopener">post de @${esc(c.postAuthor || "?")}</a> · ${new Date(c.capturedAt).toLocaleDateString("pt-BR")}</span></li>`).join("");
   return `
   <tr class="detail" data-u="${esc(l.username)}"><td></td><td colspan="7">
@@ -148,6 +157,7 @@ function detailHtml(l, local) {
           <p class="kv"><b>Por quê:</b> ${esc(ai.justificativa)}</p>
           ${ai.cuidados ? `<p class="kv warn"><b>Atenção:</b> ${esc(ai.cuidados)}</p>` : ""}` : ""}
         <p class="kv"><b>Pontuação por palavras:</b> ${local.score} — ${esc((local.motivos || []).join("; ") || "sem sinais")}</p>
+        <p class="kv"><b>Contato público:</b> ${contactHtml(l) || '<span class="muted">nenhum encontrado — abra o perfil e use “Capturar / enriquecer perfil”</span>'}</p>
         ${l.followers ? `<p class="kv"><b>Seguidores:</b> ${esc(l.followers)} · <b>Posts:</b> ${esc(l.posts || "-")}</p>` : ""}
         ${l.externalLink ? `<p class="kv"><b>Link:</b> <a href="${esc(l.externalLink)}" target="_blank" rel="noopener">${esc(l.externalLink)}</a></p>` : ""}
         <h4>Histórico de interações</h4>
@@ -263,7 +273,7 @@ $("#bDelete").addEventListener("click", async () => {
 
 $("#bExport").addEventListener("click", () => {
   const list = state.selected.size ? [...state.selected].map((u) => state.leads[u]).filter(Boolean) : filtered();
-  const cols = ["username", "link", "nome", "bio", "seguidores", "score", "intencao_ia", "segmento", "produto_sugerido", "perfil_provavel", "justificativa", "ultimo_comentario", "post_origem", "status", "anotacoes", "mensagem_sugerida", "capturado_em"];
+  const cols = ["username", "link", "nome", "email", "telefone", "whatsapp", "bio", "seguidores", "score", "intencao_ia", "segmento", "produto_sugerido", "perfil_provavel", "justificativa", "ultimo_comentario", "post_origem", "status", "anotacoes", "mensagem_sugerida", "capturado_em"];
   const cell = (v) => {
     let s = String(v ?? "");
     if (/^[=+\-@]/.test(s)) s = "'" + s; // evita fórmula no Excel
@@ -273,9 +283,11 @@ $("#bExport").addEventListener("click", () => {
     const c = lastComment(l) || {};
     const local = l.local || scoreLead(l, state.config);
     return [
-      "@" + l.username, `https://www.instagram.com/${l.username}/`, l.fullName, l.bio, l.followers, leadScore(l),
+      "@" + l.username, `https://www.instagram.com/${l.username}/`, l.fullName,
+      (l.emails || []).join(", "), (l.phones || []).map(formatPhone).join(", "), (l.phones || []).map((d) => `https://wa.me/${d}`).join(" "),
+      l.bio, l.followers, leadScore(l),
       l.ai?.intencao, l.ai?.segmento || local.segmentoNome, l.ai?.produto_sugerido, l.ai?.perfil_provavel, l.ai?.justificativa,
-      c.tipo === "curtida" ? "(curtiu)" : c.text, c.postUrl, STATUS[l.status] || l.status, l.notes, l.ai?.mensagem, l.createdAt
+      c.tipo === "curtida" ? "(curtiu)" : c.tipo === "repost" ? "(repostou)" : c.text, c.postUrl, STATUS[l.status] || l.status, l.notes, l.ai?.mensagem, l.createdAt
     ].map(cell).join(";");
   });
   const csv = "﻿" + [cols.join(";"), ...lines].join("\r\n");

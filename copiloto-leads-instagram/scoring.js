@@ -126,8 +126,10 @@
     if (words.length >= 8) score += 5;
     if (hasComment && words.length === 0) { score -= 10; motivos.push("só emoji/marcação"); }
 
-    // Perfil enriquecido
+    // Perfil enriquecido / contato público
     if (lead.bio) score += 5;
+    if ((lead.emails || []).length || (lead.phones || []).length) { score += 10; motivos.push("tem contato público"); }
+    if ((lead.comments || []).some((c) => c.tipo === "repost")) { score += 10; motivos.push("repostou"); }
 
     // Spam
     if (SPAM_WORDS.some((w) => text.includes(norm(w)))) { score -= 30; motivos.push("possível spam"); }
@@ -142,5 +144,53 @@
     };
   }
 
-  global.LeadScoring = { DEFAULT_CONFIG, scoreLead, norm, hasWord };
+  // ---------- Contatos públicos (e-mail / telefone) ----------
+  function unwrapLink(href) {
+    try {
+      const u = new URL(href);
+      if (/(^|\.)l\.instagram\.com$/.test(u.hostname) && u.searchParams.get("u")) return decodeURIComponent(u.searchParams.get("u"));
+    } catch (e) { /* ignore */ }
+    return href;
+  }
+
+  function normPhone(raw) {
+    let d = String(raw).replace(/\D/g, "");
+    if (d.startsWith("0")) d = d.replace(/^0+/, "");
+    if (d.length === 10 || d.length === 11) d = "55" + d;
+    if (!/^55\d{10,11}$/.test(d) && !(d.length >= 11 && d.length <= 15 && !d.startsWith("55"))) return null;
+    if (/^55\d{10,11}$/.test(d)) {
+      const ddd = Number(d.slice(2, 4));
+      if (ddd < 11 || ddd > 99) return null;
+      const num = d.slice(4);
+      if (num.length === 9 && num[0] !== "9") return null;
+    }
+    return d;
+  }
+
+  function extractContacts(text, links) {
+    const emails = new Set();
+    const phones = new Set();
+    const all = [String(text || ""), ...(links || []).map(unwrapLink)].join(" \n ");
+
+    (all.match(/[A-Z0-9._%+-]+@[A-Z0-9-]+(\.[A-Z0-9-]+)*\.[A-Z]{2,}/gi) || []).forEach((e) => {
+      const em = e.toLowerCase().replace(/^mailto:/, "");
+      if (!/\.(png|jpe?g|gif|webp)$/.test(em)) emails.add(em);
+    });
+    // WhatsApp e tel: em links
+    const linkPhone = /(?:wa\.me\/|api\.whatsapp\.com\/send\/?\?phone=|whatsapp\.com\/send\?phone=|tel:)\+?(\d[\d\s-]{7,16})/gi;
+    let m;
+    while ((m = linkPhone.exec(all))) { const p = normPhone(m[1]); if (p) phones.add(p); }
+    // Telefones brasileiros escritos no texto
+    const txtPhone = /(?:\+?\s?55[\s.-]?)?\(?\b[1-9]\d\)?[\s.-]?9?\s?\d{4}[\s.-]?\d{4}\b/g;
+    (all.match(txtPhone) || []).forEach((raw) => { const p = normPhone(raw); if (p) phones.add(p); });
+
+    return { emails: [...emails], phones: [...phones] };
+  }
+
+  function formatPhone(d) {
+    const m = String(d).match(/^55(\d{2})(\d{4,5})(\d{4})$/);
+    return m ? `+55 (${m[1]}) ${m[2]}-${m[3]}` : "+" + d;
+  }
+
+  global.LeadScoring = { DEFAULT_CONFIG, scoreLead, norm, hasWord, extractContacts, formatPhone, unwrapLink };
 })(globalThis);

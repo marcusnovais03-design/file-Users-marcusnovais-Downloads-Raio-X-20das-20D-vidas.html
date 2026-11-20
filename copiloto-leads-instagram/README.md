@@ -18,15 +18,20 @@ Você navega no Instagram normalmente. O copiloto **só lê o que já está na s
 
 ## Uso diário
 
-1. Abra no Instagram um post com bastante comentário de um perfil ou tema do seu nicho.
-2. Clique em *ver mais comentários* algumas vezes, você mesmo.
-3. No quadro **Copiloto de Leads** (canto inferior direito), clique em:
-   - **Capturar comentários visíveis**: pega o @ e o texto de quem comentou. É o sinal mais forte.
-   - **Capturar curtidas (janela aberta)**: com a lista de curtidas aberta, pega os @. É um sinal fraco.
-   - **Capturar / enriquecer perfil**: na página de perfil de um lead, salva nome, bio, seguidores e link.
-4. No painel: filtre por score e segmento, selecione os leads e clique em **Qualificar com IA**.
-5. Abra **Detalhes**, ajuste a mensagem sugerida, copie e envie pelo direct. Depois atualize o status (Abordado → Respondeu → Reunião → Cliente).
-6. Use **Exportar CSV** para levar os leads para a planilha ou o CRM. O arquivo abre direto no Excel.
+1. Abra no Instagram um post ou reel do seu nicho e deixe os comentários abertos.
+2. No quadro **Copiloto de Leads** (canto inferior direito), use:
+   - **Ler TODOS os comentários**: rola só a lista de comentários do post, clica em "carregar mais" e "ver respostas" num ritmo humano (1 a 3 segundos por passo) e para sozinho no fim. O limite é de 6 minutos por post. O botão vira **Parar leitura**, e o que já foi lido é salvo.
+   - **Capturar só os visíveis**: pega apenas o que está na tela.
+   - **Ler curtidas / reposts (lista aberta)**: clique no número de curtidas ou de reposts do post para abrir a lista, depois neste botão. Ele rola a lista inteira.
+   - **Capturar / enriquecer perfil**: na página de perfil do lead, salva nome, bio, seguidores, link e **e-mail e telefone públicos**.
+3. No painel, filtre por score, segmento ou **"Com e-mail ou telefone"**. Selecione os leads e clique em **Qualificar com IA**.
+4. Abra **Detalhes**, ajuste a mensagem sugerida, copie e envie pelo direct, ou clique no telefone para abrir o WhatsApp. Depois atualize o status.
+5. Use **Exportar CSV** (inclui e-mail, telefone e link do WhatsApp) para levar os leads à planilha ou ao CRM.
+
+### Sobre compartilhamentos e contatos
+
+- **Compartilhamentos por direct não são públicos.** Nem o dono do post vê quem enviou. Os **reposts** aparecem quando o Instagram mostra a lista.
+- **E-mail e telefone** vêm do que a pessoa deixou público: o texto da bio, o link da bio (WhatsApp `wa.me`, `mailto:`) e números escritos nos comentários. O botão "Contato" das contas comerciais só aparece no app de celular, não no navegador.
 
 ## Segmentos pré-configurados
 
@@ -45,6 +50,7 @@ A mensagem é gerada com regras de compliance: sem promessa de rentabilidade, se
 
 - Todos os dados ficam **apenas no seu navegador** (`chrome.storage.local`). Não existe servidor.
 - Só o texto do lead vai para a API da Anthropic, e só quando você clica em qualificar.
+- E-mail e telefone são dados pessoais. Use-os só para o contato relacionado ao interesse que a pessoa demonstrou, e respeite quem pedir para não ser contatado.
 - A lista **Não contatar** exclui o lead e impede que ele seja capturado de novo.
 - Exclua periodicamente os leads descartados.
 

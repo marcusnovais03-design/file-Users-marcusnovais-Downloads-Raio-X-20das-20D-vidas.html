@@ -1,6 +1,6 @@
 importScripts("scoring.js");
 
-const { DEFAULT_CONFIG, scoreLead } = self.LeadScoring;
+const { DEFAULT_CONFIG, scoreLead, extractContacts, formatPhone } = self.LeadScoring;
 
 // ---------- Armazenamento (fica só no seu navegador) ----------
 async function getConfig() {
@@ -22,9 +22,16 @@ async function saveLeads(leads) {
 function newLead(username) {
   const now = new Date().toISOString();
   return {
-    username, fullName: "", bio: "", followers: null, following: null, posts: null, externalLink: "",
+    username, fullName: "", bio: "", emails: [], phones: [], followers: null, following: null, posts: null, externalLink: "",
     comments: [], status: "novo", notes: "", ai: null, createdAt: now, updatedAt: now
   };
+}
+
+function addContacts(lead, text, links) {
+  const c = extractContacts(text, links);
+  lead.emails = [...new Set([...(lead.emails || []), ...c.emails])];
+  lead.phones = [...new Set([...(lead.phones || []), ...c.phones])];
+  return c;
 }
 
 function rescore(lead, config) {
@@ -51,6 +58,7 @@ async function saveCaptures(post, items) {
     if (!dup) {
       lead.comments.push({ text: it.text || "", tipo: it.tipo, postUrl: post.url, postAuthor: post.author || "", capturedAt: now });
     }
+    if (it.text) addContacts(lead, it.text, []);
     lead.updatedAt = now;
     rescore(lead, config);
   }
@@ -68,11 +76,13 @@ async function saveProfile(p) {
   for (const k of ["fullName", "bio", "followers", "following", "posts", "externalLink"]) {
     if (p[k]) lead[k] = p[k];
   }
+  const c = addContacts(lead, [p.rawText, p.bio].join("\n"), p.links || []);
+  const contatos = [...c.emails, ...c.phones.map(formatPhone)].join(", ");
   lead.profileCapturedAt = new Date().toISOString();
   lead.updatedAt = lead.profileCapturedAt;
   rescore(lead, config);
   await saveLeads(leads);
-  return { ok: true, novo };
+  return { ok: true, novo, contatos };
 }
 
 // ---------- Qualificação com Claude ----------

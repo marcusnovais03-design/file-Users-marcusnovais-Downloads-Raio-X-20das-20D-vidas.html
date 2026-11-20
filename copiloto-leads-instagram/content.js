@@ -123,13 +123,141 @@
     return { post, items: [...results.values()] };
   }
 
+  // ---------- Leitura completa: rola SÓ a lista de comentários do post aberto ----------
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const humanDelay = () => sleep(1200 + Math.random() * 1600);
+  let reading = false;
+  let stopRequested = false;
+
+  function isScrollable(el) {
+    if (!el || el === document.body || el === document.documentElement) return false;
+    const st = getComputedStyle(el);
+    return /(auto|scroll)/.test(st.overflowY) && el.scrollHeight > el.clientHeight + 20;
+  }
+
+  function findCommentScroller() {
+    const root = activeRoot();
+    const post = currentPostInfo();
+    // Parte de um comentário (link de @ que não é do autor) e sobe até achar a área com rolagem
+    const starts = textLinks(root).filter((x) => x.u !== post.author).map((x) => x.a);
+    const counts = new Map();
+    for (const a of starts.slice(0, 15)) {
+      let el = a.parentElement;
+      while (el && el !== document.body) {
+        if (isScrollable(el)) { counts.set(el, (counts.get(el) || 0) + 1); break; }
+        el = el.parentElement;
+      }
+    }
+    let best = null, n = 0;
+    counts.forEach((c, el) => { if (c > n) { best = el; n = c; } });
+    return best;
+  }
+
+  const LOAD_MORE = /carregar mais coment|load more comments|ver mais coment|view more comments|ver todos os \d+ coment|view all \d+ comments/i;
+  const SHOW_REPLIES = /^(ver|view)\s+(todas as\s+|all\s+)?(\d+\s+)?(respostas?|repl(y|ies))/i;
+
+  function clickables(root) {
+    return [...root.querySelectorAll('button, [role="button"], svg[aria-label]')];
+  }
+
+  function clickLoadMore(root) {
+    for (const el of clickables(root)) {
+      const label = (el.getAttribute("aria-label") || "") + " " + (el.textContent || "");
+      if (LOAD_MORE.test(label)) {
+        const target = el.closest('button, [role="button"]') || el.parentElement || el;
+        target.click();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function clickShowReplies(root, max) {
+    let n = 0;
+    for (const el of clickables(root)) {
+      if (n >= max) break;
+      const t = (el.textContent || "").trim();
+      if (SHOW_REPLIES.test(t) && !el.dataset.copilotoClicked) {
+        el.dataset.copilotoClicked = "1";
+        el.click();
+        n++;
+      }
+    }
+    return n;
+  }
+
+  // mode: "comments" (comentários do post) ou "list" (janela de curtidas/reposts aberta)
+  async function readAll({ mode, replies }) {
+    const post = currentPostInfo();
+    const isList = mode === "list";
+    if (isList) {
+      const chk = captureLikes();
+      if (chk.erro) { say(chk.erro, "err"); return; }
+    } else if (!post.isPost) { say("Abra um post ou reel e deixe os comentários abertos.", "err"); return; }
+
+    const scroller = findCommentScroller();
+    const root = activeRoot();
+    const all = new Map();
+    const merge = () => {
+      const got = isList ? captureLikes().items : captureComments().items;
+      for (const it of got) {
+        const prev = all.get(it.username);
+        if (!prev) all.set(it.username, it);
+        else if (it.text && !prev.text.includes(it.text)) prev.text += " | " + it.text;
+      }
+    };
+    const nome = isList ? "perfis" : "comentários";
+
+    reading = true;
+    stopRequested = false;
+    setReadingUI(true, mode);
+    const started = Date.now();
+    const MAX_MS = 6 * 60 * 1000; // no máximo 6 minutos por post
+    let idle = 0;
+
+    try {
+      merge();
+      while (!stopRequested && idle < 4 && Date.now() - started < MAX_MS && all.size < 2000) {
+        const before = all.size;
+        const h0 = scroller ? scroller.scrollHeight : document.body.scrollHeight;
+
+        if (!isList) {
+          clickLoadMore(root);
+          if (replies) clickShowReplies(root, 3);
+        }
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+        else window.scrollBy(0, 600);
+
+        await humanDelay();
+        merge();
+
+        // Só conta como progresso se apareceu gente nova ou a lista cresceu
+        const h1 = scroller ? scroller.scrollHeight : document.body.scrollHeight;
+        idle = (all.size > before || h1 > h0) ? 0 : idle + 1;
+        say(`Lendo… ${all.size} ${nome} encontrados${stopRequested ? " (parando)" : ""}`);
+      }
+    } finally {
+      reading = false;
+      setReadingUI(false, mode);
+    }
+
+    const items = [...all.values()];
+    if (!items.length) { say(`Nenhum ${isList ? "perfil" : "comentário"} encontrado. Abra a ${isList ? "lista" : "área de comentários"} e tente de novo.`, "err"); return; }
+    const res = await send({ type: "saveCaptures", post, items });
+    const motivo = stopRequested ? "interrompido" : (Date.now() - started >= MAX_MS ? "limite de tempo" : "fim da lista");
+    if (res.ok) say(`✓ ${items.length} ${nome} lidos (${motivo}) · ${res.novos} novos · ${res.atualizados} atualizados`, "ok");
+    else say(res.error, "err");
+  }
+
   // ---------- Captura da lista de curtidas (janela "Curtidas" aberta por você) ----------
   function captureLikes() {
     const root = activeRoot();
     const post = currentPostInfo();
     if (root === document.querySelector("main") || root === document.body) {
-      return { post, items: [], erro: "Abra a janela de curtidas do post (clique em “curtidas”) antes de capturar." };
+      return { post, items: [], erro: "Abra a lista de curtidas ou reposts do post (clique no número de curtidas/reposts) antes de capturar." };
     }
+    const titulo = textPieces(root).slice(0, 6).join(" ").toLowerCase();
+    const tipo = /repost|republica|compartilh/.test(titulo) ? "repost" : "curtida";
     const items = new Map();
     for (const { a, u } of textLinks(root)) {
       if (items.has(u)) continue;
@@ -140,7 +268,7 @@
         block = block.parentElement;
       }
       const lines = cleanLines(block, u);
-      items.set(u, { username: u, fullName: lines[0] || "", text: "", tipo: "curtida" });
+      items.set(u, { username: u, fullName: lines[0] || "", text: "", tipo });
     }
     if (post.author) items.delete(post.author);
     return { post, items: [...items.values()] };
@@ -173,7 +301,9 @@
     if (nm && nm[2].toLowerCase() === u) fullName = nm[1];
 
     const bioLines = lines.filter((l) => !/(seguidores|followers|seguindo|following|publica|posts)/i.test(l) && l !== fullName);
-    const link = header ? [...header.querySelectorAll("a[href]")].map((a) => a.href).find((h) => !h.includes("instagram.com")) : null;
+    const unwrap = (h) => { try { const x = new URL(h); return /l\.instagram\.com$/.test(x.hostname) && x.searchParams.get("u") ? x.searchParams.get("u") : h; } catch (e) { return h; } };
+    const links = header ? [...header.querySelectorAll("a[href]")].map((a) => unwrap(a.href)).filter((h) => !/^https?:\/\/(www\.)?instagram\.com/.test(h)) : [];
+    const link = links.find((h) => /^https?:/.test(h)) || null;
 
     return {
       profile: {
@@ -181,7 +311,9 @@
         fullName: fullName || bioLines[0] || "",
         bio: bioLines.join(" · ").slice(0, 800),
         followers, following, posts,
-        externalLink: link || ""
+        externalLink: link || "",
+        links,
+        rawText: raw.slice(0, 3000)
       }
     };
   }
@@ -203,22 +335,28 @@
       button { all:unset; box-sizing:border-box; width:100%; text-align:center; padding:8px 10px; border-radius:8px; cursor:pointer;
                background:#1d2b3a; border:1px solid #2f4357; color:#e8eef5; font-weight:600; font-size:12.5px; }
       button:hover { background:#25384b; }
+      button:disabled { opacity:.45; cursor:not-allowed; }
       button.primary { background:#f5b301; border-color:#f5b301; color:#111; }
       button.primary:hover { background:#ffc21a; }
       .msg { font-size:12px; color:#a9bacb; min-height:16px; }
       .msg.ok { color:#7fe0a5; } .msg.err { color:#ff9b8f; }
       .hint { font-size:11px; color:#7f93a8; }
       .tog { font-size:16px; color:#a9bacb; }
+      .opt { display:flex; align-items:center; gap:6px; font-size:12px; color:#a9bacb; margin-top:-2px; cursor:pointer; }
+      .opt input { margin:0; accent-color:#f5b301; }
+      button.stop { background:#b42318; border-color:#b42318; color:#fff; }
     </style>
     <div class="box" id="box">
       <div class="head" id="head"><span><span class="dot"></span><b>Copiloto de Leads</b></span><span class="tog" id="tog">–</span></div>
       <div class="body">
-        <button class="primary" id="bComments">Capturar comentários visíveis</button>
-        <button id="bLikes">Capturar curtidas (janela aberta)</button>
+        <button class="primary" id="bAll">Ler TODOS os comentários</button>
+        <label class="opt"><input type="checkbox" id="optReplies" checked> incluir respostas</label>
+        <button id="bComments">Capturar só os visíveis</button>
+        <button id="bLikes">Ler curtidas / reposts (lista aberta)</button>
         <button id="bProfile">Capturar / enriquecer perfil</button>
         <button id="bPanel">Abrir painel de leads</button>
         <div class="msg" id="msg"></div>
-        <div class="hint">Role e abra “ver mais comentários” você mesmo; depois capture de novo. Duplicados são ignorados.</div>
+        <div class="hint">Abra o post com os comentários visíveis e clique em “Ler TODOS”. Ele rola só a lista de comentários, em ritmo humano, e para sozinho no fim. Duplicados são ignorados.</div>
       </div>
     </div>`;
   document.documentElement.appendChild(host);
@@ -252,6 +390,20 @@
     });
   }
 
+  function setReadingUI(on, mode) {
+    const id = mode === "list" ? "bLikes" : "bAll";
+    const b = $(id);
+    b.textContent = on ? "Parar leitura" : (mode === "list" ? "Ler curtidas / reposts (lista aberta)" : "Ler TODOS os comentários");
+    if (id === "bAll") b.classList.toggle("primary", !on);
+    b.classList.toggle("stop", on);
+    ["bAll", "bComments", "bLikes", "bProfile"].filter((x) => x !== id).forEach((x) => ($(x).disabled = on));
+  }
+
+  $("bAll").addEventListener("click", () => {
+    if (reading) { stopRequested = true; say("Parando… salvando o que já foi lido."); return; }
+    readAll({ mode: "comments", replies: $("optReplies").checked });
+  });
+
   $("bComments").addEventListener("click", async () => {
     const { post, items } = captureComments();
     if (!post.isPost) { say("Abra um post ou reel para capturar comentários.", "err"); return; }
@@ -261,20 +413,17 @@
     else say(res.error, "err");
   });
 
-  $("bLikes").addEventListener("click", async () => {
-    const { post, items, erro } = captureLikes();
-    if (erro) { say(erro, "err"); return; }
-    if (!items.length) { say("Nenhum perfil na janela. Role a lista e tente de novo.", "err"); return; }
-    const res = await send({ type: "saveCaptures", post, items });
-    if (res.ok) say(`${items.length} curtidas · ${res.novos} novos · ${res.atualizados} atualizados`, "ok");
-    else say(res.error, "err");
+  $("bLikes").addEventListener("click", () => {
+    if (reading) { stopRequested = true; say("Parando… salvando o que já foi lido."); return; }
+    readAll({ mode: "list" });
   });
 
   $("bProfile").addEventListener("click", async () => {
     const r = captureProfile();
     if (r.erro) { say(r.erro, "err"); return; }
     const res = await send({ type: "saveProfile", profile: r.profile });
-    if (res.ok) say(res.novo ? `@${r.profile.username} adicionado com dados do perfil.` : `@${r.profile.username} enriquecido.`, "ok");
+    const extra = res.contatos ? ` Contato: ${res.contatos}.` : " Nenhum e-mail/telefone público na bio.";
+    if (res.ok) say((res.novo ? `@${r.profile.username} adicionado.` : `@${r.profile.username} enriquecido.`) + extra, "ok");
     else say(res.error, "err");
   });
 
