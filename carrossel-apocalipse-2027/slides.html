@@ -98,7 +98,8 @@ S.push({video:6, h:`<div class="page"><div class="pill red">O fim da trava</div>
 S.push({h:`<div class="page"><div class="pill">Na minha empresa</div>
  <h2>Eu também <em>vou sentir</em></h2>
  <p>Tenho uma empresa de <b>serviços</b>. Com a reforma tributária, o imposto aqui também deve subir <b class="g">pelo menos 5%</b> além do que já pagamos.</p>
- <p>Mais imposto, mesma receita: <b>a margem encolhe</b>.</p></div>`});
+ <p>Mais imposto, mesma receita: <b>a margem encolhe</b>.</p>
+ <img src="img/logo-private-xp.png" style="width:560px; margin-top:60px; align-self:flex-start"></div>`});
 S.push({h:`<div class="page"><div class="pill">O que vai separar quem fica de pé</div>
  <h2>Ter <em>caixa</em> vai ser essencial</h2>
  <ul><li>Imposto maior e <b>margem menor</b></li>
@@ -117,7 +118,7 @@ S.push({h:`<div class="bg"><img src="img/marcus.jpg" style="object-position:62% 
  <div class="btn">Acesse o link na BIO e me chame</div></div>`});
 const N=S.length;
 S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide'+(i%2===1?' light':''); if(x.video) s.dataset.video=x.video;
-  s.innerHTML=x.h+`<div class="count">${String(i+1).padStart(2,'0')}/${String(N).padStart(2,'0')}</div><div class="foot"><div class="who">Marcus Novais<span></span>Finanças e Economia</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
+  s.innerHTML=x.h+`<div class="count">${String(i+1).padStart(2,'0')}/${String(N).padStart(2,'0')}</div><div class="foot"><div class="who">Marcus Novais<span></span>Planejador Financeiro, CFP®</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
   document.body.appendChild(s); });
 const ST=[[0,'Isento'],[10,'até 10%'],[10,'10%'],[15,'15%'],[20,'20%'],[25,'25%']];
 document.getElementById('st').innerHTML=ST.map((x,i)=>`<div class="s"><b style="color:${i>3?'#e3141e':'#e3b65a'}" class="sv">${x[1]}</b><i style="background:${i>3?'#e3141e':'#e3b65a'}" data-h="${Math.max(x[0],1)/25*340}"></i></div>`).join('');

@@ -7,3 +7,7 @@ Fotos para usar nos carrosséis, stories e Reels.
 **Foto principal (mais recente):** `01-braços-cruzados-fundo-cinza.jpg`. Usar como padrão nos próximos carrosséis.
 
 As demais fotos (02 a 13) são de trabalhos anteriores e podem ser usadas para variar.
+
+**Logo:** `logo-private-xp.png` (Private Investimentos | XP, fundo transparente).
+
+**Rodapé padrão:** Marcus Novais | Planejador Financeiro, CFP®
