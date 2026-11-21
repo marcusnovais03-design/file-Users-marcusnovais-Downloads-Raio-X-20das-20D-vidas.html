@@ -34,8 +34,9 @@
     root.querySelectorAll("a[href]").forEach((a) => {
       const u = usernameFromHref(a.getAttribute("href"));
       if (!u) return;
-      const t = (a.textContent || "").trim().toLowerCase().replace(/^@/, "");
-      if (t === u) out.push({ a, u });
+      const t = (a.textContent || "").replace(/\s+/g, " ").trim().toLowerCase().replace(/^@/, "");
+      // aceita "usuario" e também "usuario" + selo/texto oculto ("usuarioVerificado")
+      if (t === u || (t.startsWith(u) && t.length <= u.length + 20)) out.push({ a, u });
     });
     return out;
   }
@@ -57,10 +58,30 @@
     return { url, isPost, author };
   }
 
+  function isVisible(el) {
+    const r = el.getBoundingClientRect();
+    return r.width > 50 && r.height > 50;
+  }
+
+  // Escolhe onde estão os comentários: a janela (dialog) visível com mais @, senão a página.
   function activeRoot() {
-    const dialogs = [...document.querySelectorAll('div[role="dialog"]')].filter((d) => d.offsetParent !== null || d.getClientRects().length);
-    if (dialogs.length) return dialogs[dialogs.length - 1];
-    return document.querySelector("main") || document.body;
+    const dialogs = [...document.querySelectorAll('[role="dialog"]')].filter(isVisible);
+    let best = null, n = 0;
+    for (const d of dialogs) {
+      const c = textLinks(d).length;
+      if (c > n) { best = d; n = c; }
+    }
+    if (best && n >= 1) return best;
+    const main = document.querySelector("main");
+    if (main && textLinks(main).length) return main;
+    return document.body;
+  }
+
+  // Elemento "botão" pequeno (Responder, Curtir…) — e não um comentário inteiro clicável
+  function isSmallButton(el) {
+    if (!el) return false;
+    if (el.tagName === "BUTTON") return true;
+    return (el.textContent || "").trim().length <= 30;
   }
 
   // Lê cada nó de texto separadamente (não depende do layout/innerText),
@@ -71,7 +92,9 @@
     let n;
     while ((n = walker.nextNode())) {
       const p = n.parentElement;
-      if (!p || p.closest("button, time, script, style, svg, [role='button']")) continue;
+      if (!p || p.closest("button, time, script, style, svg")) continue;
+      const rb = p.closest("[role='button']");
+      if (rb && el.contains(rb) && rb !== el && isSmallButton(rb)) continue;
       const t = n.nodeValue.replace(/\s+/g, " ").trim();
       if (!t) continue;
       const a = p.closest("a[href]");
@@ -249,6 +272,30 @@
     else say(res.error, "err");
   }
 
+  // ---------- Diagnóstico (para ajustar quando o Instagram muda a página) ----------
+  function diagnose() {
+    const root = activeRoot();
+    const anchors = [...root.querySelectorAll("a[href]")].filter((a) => usernameFromHref(a.getAttribute("href")));
+    const reply = [...document.querySelectorAll("span, div, button")].find((e) => /^(responder|reply)$/i.test((e.textContent || "").trim()));
+    let sample = "";
+    if (reply) {
+      let el = reply;
+      for (let i = 0; i < 6 && el.parentElement; i++) el = el.parentElement;
+      sample = el.outerHTML.replace(/\s(class|style|srcset|src)="[^"]*"/g, "").slice(0, 2500);
+    }
+    return JSON.stringify({
+      versao: chrome.runtime.getManifest().version,
+      url: location.pathname,
+      dialogs: [...document.querySelectorAll('[role="dialog"]')].map((d) => { const r = d.getBoundingClientRect(); return `${Math.round(r.width)}x${Math.round(r.height)}:${textLinks(d).length}`; }),
+      raiz: root.tagName + (root.getAttribute("role") ? "[" + root.getAttribute("role") + "]" : ""),
+      linksDePerfil: anchors.length,
+      linksComTexto: textLinks(root).length,
+      exemplos: anchors.slice(0, 8).map((a) => `${a.getAttribute("href")} => "${(a.textContent || "").trim().slice(0, 40)}"`),
+      comentarios: captureComments().items.length,
+      trechoComentario: sample
+    }, null, 1);
+  }
+
   // ---------- Captura da lista de curtidas (janela "Curtidas" aberta por você) ----------
   function captureLikes() {
     const root = activeRoot();
@@ -356,6 +403,7 @@
         <button id="bProfile">Capturar / enriquecer perfil</button>
         <button id="bPanel">Abrir painel de leads</button>
         <div class="msg" id="msg"></div>
+        <button id="bDiag" style="display:none">Copiar diagnóstico</button>
         <div class="hint">Abra o post com os comentários visíveis e clique em “Ler TODOS”. Ele rola só a lista de comentários, em ritmo humano, e para sozinho no fim. Duplicados são ignorados.</div>
       </div>
     </div>`;
@@ -375,6 +423,7 @@
     const m = $("msg");
     m.textContent = text;
     m.className = "msg " + (kind || "");
+    $("bDiag").style.display = kind === "err" ? "" : "none";
   }
 
   function send(msg) {
@@ -425,6 +474,12 @@
     const extra = res.contatos ? ` Contato: ${res.contatos}.` : " Nenhum e-mail/telefone público na bio.";
     if (res.ok) say((res.novo ? `@${r.profile.username} adicionado.` : `@${r.profile.username} enriquecido.`) + extra, "ok");
     else say(res.error, "err");
+  });
+
+  $("bDiag").addEventListener("click", async () => {
+    const txt = diagnose();
+    try { await navigator.clipboard.writeText(txt); say("Diagnóstico copiado. Cole na conversa com o Claude.", "ok"); }
+    catch (e) { console.log(txt); say("Não consegui copiar; o diagnóstico está no console (F12).", "ok"); }
   });
 
   $("bPanel").addEventListener("click", () => send({ type: "openDashboard" }));
