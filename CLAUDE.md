@@ -20,3 +20,10 @@ Sem recomendação de ativo específico nem promessa de rentabilidade; números 
 ## Organização
 - Pautas automáticas (a cada 3h): `pautas/AAAA-MM-DD_HHh.md`.
 - Posts e carrosséis: `posts/<tema>/` com o `gerar.py` e as imagens/vídeos.
+
+## Entrega de posts (sempre)
+Toda vez que entregar um post, carrossel ou legenda, incluir também o **texto alternativo** (acessibilidade e SEO do Instagram):
+- **Capa:** 1 frase descritiva com as palavras-chave do tema (ex.: "Carrossel com gráfico do dólar subindo de R$ 5,04 para R$ 5,94...").
+- **Um texto curto por slide** (Slide 2, Slide 3, ...), descrevendo o conteúdo de cada imagem.
+- Lembrete: se a capa for vídeo e o Instagram não mostrar o campo, colocar o texto principal no slide 2.
+- A legenda deve vir com SEO (palavra-chave na 1ª linha, emojis, CTA de comentar/salvar/compartilhar, 8–10 hashtags e o aviso de conteúdo educativo).
