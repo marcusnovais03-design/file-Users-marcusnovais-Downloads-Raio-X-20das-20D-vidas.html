@@ -48,15 +48,30 @@ def chart_cover(path, p=1.0):
 
 
 def photo_slide(path):
-    img = photo_bg(HERE + "/fotos/marcus-cta.png", 620, 758)
-    d = ImageDraw.Draw(img)
-    y = kicker(d, "“Só os ricos vão sofrer”?", 92, 860, RED)
-    y = rich(d, "Calma. Vamos aos [g]fatos[/g].", 90, y, 900, TITLE(88), TITLE(88), 86, WHITE, GOLD_DARK, RED,
-             tracking=-3, upper=True)
-    sf = font("Inter-Light.otf", 42)
-    d.text((92, y + 26), "O dólar chega no seu prato", font=sf, fill=(225, 228, 238))
-    emoji(img, "👉", 92 + sf.getlength("O dólar chega no seu prato") + 14, y + 28, 46)
+    img = photo_light(HERE + "/fotos/marcus-estudio.png", 760, 1100, 135)
+    def txt(layer, d):
+        y = kicker(d, "“Só os ricos vão sofrer”?", 92, 900, RED)
+        y = rich(d, "Calma. Vamos aos [g]fatos[/g].", 90, y, 900, TITLE(88), TITLE(88), 86, WHITE, GOLD_DARK, RED,
+                 tracking=-3, upper=True)
+        sf = font("Inter-Medium.otf", 42)
+        d.text((92, y + 26), "O dólar chega no seu prato", font=sf, fill=WHITE)
+        emoji(layer, "👉", 92 + sf.getlength("O dólar chega no seu prato") + 14, y + 28, 46)
+    shadowed(img, txt)
     chrome(img, 2, T, True)
+    img.convert("RGB").save(path, quality=95)
+
+
+def cta_slide(path):
+    img = photo_light(HERE + "/fotos/marcus-estudio.png", 760, 1100, 135)
+    def txt(layer, d):
+        y = rich(d, "Quer proteger o seu patrimônio [g]contra o dólar[/g]?", 90, 880, 900, TITLE(80), TITLE(80), 78,
+                 WHITE, GOLD_DARK, RED, tracking=-3, upper=True)
+        bf = font("Inter-ExtraBold.otf", 34); button = "Acesse o link na BIO e me chame"
+        bw = bf.getlength(button) + 66
+        d.rounded_rectangle((90, y + 28, 90 + bw, y + 112), radius=18, fill=GOLD_DARK)
+        d.text((123, y + 49), button, font=bf, fill=(20, 22, 30))
+    shadowed(img, txt)
+    chrome(img, 7, T, True, swipe=False)
     img.convert("RGB").save(path, quality=95)
 
 
@@ -80,7 +95,7 @@ text_slide(OUT + "06.png", 6, T, "Na minha leitura",
            "Quem mais sofre não é quem [g]tem dólar[/g]",
            "É quem gasta quase toda a renda com **comida, transporte e dívida**.\n"
            "Quem tem patrimônio diversificado, [g]inclusive no exterior[/g], se protege.")
-cta(OUT + "07.png", 7, T, "Quer proteger o seu patrimônio [g]contra o dólar[/g]?")
+cta_slide(OUT + "07.png")
 
 # Versão animada do slide 1 (linha do dólar sendo desenhada), como os slides de dados do modelo
 with tempfile.TemporaryDirectory() as tmp:

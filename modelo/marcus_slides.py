@@ -239,3 +239,32 @@ def cta(path, n, total, title, button="Acesse o link na BIO e me chame", photo=N
     d.text((123, y + 49), button, font=bf, fill=(20, 22, 30))
     chrome(img, n, total, True, swipe=False)
     img.convert("RGB").save(path, quality=95)
+
+
+def photo_light(photo, fade_from=700, fade_to=1040, max_alpha=150):
+    """Foto com transparência mínima: a foto ocupa o slide e só a base escurece de leve."""
+    p = Image.open(photo).convert("RGB")
+    img = Image.new("RGB", (W, H))
+    img.paste(p, (0, 0))
+    ph = p.height
+    if ph < H:
+        ext = p.crop((0, ph - 40, W, ph)).resize((W, H - ph + 120)).filter(ImageFilter.GaussianBlur(28))
+        img.paste(ext, (0, ph - 120))
+        m = Image.linear_gradient("L").resize((W, 120))
+        img.paste(Image.composite(ext.crop((0, 0, W, 120)), p.crop((0, ph - 120, W, ph)), m), (0, ph - 120))
+    img = img.convert("RGBA")
+    ov = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ov)
+    for y in range(fade_from, H):
+        a = int(max_alpha * min(1, (y - fade_from) / (fade_to - fade_from)))
+        d.line([(0, y), (W, y)], fill=(8, 14, 38, a))
+    img.alpha_composite(ov)
+    return img
+
+
+def shadowed(img, draw_fn):
+    """Desenha texto numa camada e aplica sombra suave para legibilidade sobre a foto."""
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    draw_fn(layer, ImageDraw.Draw(layer))
+    sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    sh.putalpha(layer.split()[3].filter(ImageFilter.GaussianBlur(10)).point(lambda a: int(a * 0.85)))
+    img.alpha_composite(sh); img.alpha_composite(layer)
