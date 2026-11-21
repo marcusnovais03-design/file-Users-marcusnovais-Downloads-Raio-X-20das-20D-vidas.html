@@ -1,0 +1,13 @@
+{
+  "titulo": ["Pobre não come dólar...", "Será?"],
+  "titulo_cores": [null, "#F5C400"],
+  "titulo_escala": 1.25,
+  "titulo_escalas": [1.2, 1.6],
+  "titulo_y": 0.40,
+  "caixas": [],
+  "rodape": ["Leia a legenda 👇"],
+  "rodape_destaque": true,
+  "rodape_escala": 1.6,
+  "rodape_y": 0.578,
+  "rodape_em": 0
+}
