@@ -11,7 +11,7 @@ DATA = [5.0377, 5.5007, 5.3346, 5.3420, 5.3744, 5.4212, 5.4935, 5.4778, 5.4621, 
 
 
 def chart(img, d, y, p=1.0):
-    x0, x1, y0, y1 = 92, 930, y + 40, y + 430
+    x0, x1, y0, y1 = 92, 930, y + 90, y + 470
     lo, hi = 4.9, 6.05
     small = font("Inter-SemiBold.otf", 24)
     def py(v): return y1 - (v - lo) / (hi - lo) * (y1 - y0)
@@ -35,17 +35,33 @@ def chart(img, d, y, p=1.0):
     lab = "último fechamento"; d.text((x1 - small.getlength(lab), y1 + 16), lab, font=small, fill=(150, 156, 178))
 
 
-def chart_slide(path, p=1.0):
-    text_slide(path, 2, T, "O dólar desde o 2º turno",
-               "De R$ 5,04 para [r]R$ 5,94[/r]",
-               "Alta de **18% em menos de um mês**. E essa conta chega ao seu prato, ao seu tanque e à sua parcela.",
-               dark=True, extra=(lambda img, d, y: chart(img, d, y, p), 470))
+def chart_cover(path, p=1.0):
+    img = background(True); d = ImageDraw.Draw(img)
+    y = kicker(d, "Câmbio", 92, 150, RED)
+    y = rich(d, "“Pobre não come dólar”? [g]Come sim,[/g] todo dia.", 90, y, 920, TITLE(84), TITLE(84), 82,
+             WHITE, GOLD_DARK, RED, tracking=-3, upper=True)
+    y = rich(d, "Dólar desde o 2º turno: **+18% em menos de um mês**.", 90, y + 18, 900, BODY, BODY_B, 52,
+             BODY_DARK, GOLD_DARK, RED, bold_color=WHITE)
+    chart(img, d, y + 10, p)
+    chrome(img, 1, T, True)
+    img.convert("RGB").save(path, quality=95)
 
 
-cover(OUT + "01.png", 1, T, "Câmbio",
-      "“Pobre não come dólar”? [g]Come sim,[/g] todo dia.",
-      sub="Veja por quê")
-chart_slide(OUT + "02.png")
+def photo_slide(path):
+    img = photo_bg(HERE + "/fotos/marcus-cta.png", 620, 758)
+    d = ImageDraw.Draw(img)
+    y = kicker(d, "“Só os ricos vão sofrer”?", 92, 860, RED)
+    y = rich(d, "Calma. Vamos aos [g]fatos[/g].", 90, y, 900, TITLE(88), TITLE(88), 86, WHITE, GOLD_DARK, RED,
+             tracking=-3, upper=True)
+    sf = font("Inter-Light.otf", 42)
+    d.text((92, y + 26), "O dólar chega no seu prato", font=sf, fill=(225, 228, 238))
+    emoji(img, "👉", 92 + sf.getlength("O dólar chega no seu prato") + 14, y + 28, 46)
+    chrome(img, 2, T, True)
+    img.convert("RGB").save(path, quality=95)
+
+
+chart_cover(OUT + "01.png")
+photo_slide(OUT + "02.png")
 text_slide(OUT + "03.png", 3, T, "No café da manhã",
            "O pão tem [r]dólar[/r]",
            "O Brasil importa cerca de **metade do trigo** que consome, e o preço segue a cotação internacional.\n"
@@ -66,13 +82,13 @@ text_slide(OUT + "06.png", 6, T, "Na minha leitura",
            "Quem tem patrimônio diversificado, [g]inclusive no exterior[/g], se protege.")
 cta(OUT + "07.png", 7, T, "Quer proteger o seu patrimônio [g]contra o dólar[/g]?")
 
-# Versão animada do slide 2 (linha sendo desenhada), como os slides de dados do modelo
+# Versão animada do slide 1 (linha do dólar sendo desenhada), como os slides de dados do modelo
 with tempfile.TemporaryDirectory() as tmp:
     frames = 30 * 6
     for i in range(frames):
         p = min(1.0, i / (30 * 3.5))
         p = 1 - (1 - p) ** 3
-        chart_slide(f"{tmp}/f{i:04d}.png", p)
+        chart_cover(f"{tmp}/f{i:04d}.png", p)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-framerate", "30", "-i", f"{tmp}/f%04d.png",
-                    "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", OUT + "02.mp4"], check=True)
+                    "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", OUT + "01.mp4"], check=True)
 print("ok")

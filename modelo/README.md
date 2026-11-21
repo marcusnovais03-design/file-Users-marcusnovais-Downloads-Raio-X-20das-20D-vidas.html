@@ -25,3 +25,8 @@
 ## Como gerar
 `marcus_slides.py` tem as funções `cover`, `text_slide`, `bullets_slide` e `cta`. Exemplo de uso: `posts/dolar-carrossel/gerar.py`.
 No texto: `[g]dourado[/g]`, `[r]vermelho[/r]`, `**negrito**`.
+
+## Preferências do Marcus
+- **Foto:** quando usar a foto dele, mostrar **a foto inteira**, com **pouca transparência ou degradê**. O degradê só serve para o texto ficar legível embaixo.
+- **Gráficos animados:** quando a capa tiver dado (por exemplo, a cotação do dólar), a capa pode ser o gráfico animado com o título, em vez da foto. Nesse caso, a foto vai para o slide 2.
+- **Sem aviso nem fontes nos slides:** não colocar "conteúdo educativo" nem as fontes dentro dos slides. O aviso pode ficar na legenda.
