@@ -106,7 +106,7 @@ S.push({h:`<div class="bg">${PH('colchao','50% 50%','filter:brightness(.9)')}</d
  <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.2) 0%, rgba(7,13,36,.3) 30%, rgba(7,13,36,.92) 55%, rgba(7,13,36,.98) 100%)"></div>
  <div class="page end"><div class="bigq" style="color:#e3b65a">Só três colchões de ar.</div>
  <p style="font-size:34px; margin-top:22px">Naquela semana, um grande evento lotou os hotéis da cidade. Tinha gente sem lugar pra dormir.</p>
- <div class="quote">"E se a gente alugasse o chão da nossa sala?"</div><span class="cred" style="position:absolute;right:92px;top:60px;bottom:auto" data-c="colchao"></span></div>`});
+ <div class="quote">"E se a gente alugasse o chão da nossa sala?"</div><span class="cred" style="position:absolute;right:92px;top:100px;bottom:auto" data-c="colchao"></span></div>`});
 // 4 funcionou (claro)
 S.push({light:1, h:`<div class="page"><div class="pill">Funcionou</div>
  <h2>Três desconhecidos <em>pagaram</em> pra dormir no colchão</h2>
@@ -164,6 +164,7 @@ const N=S.length;
 S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide'+(x.light?' light':''); if(x.video) s.dataset.video=x.video;
   s.innerHTML=x.h+`<div class="count">${String(i+1).padStart(2,'0')}/${String(N).padStart(2,'0')}</div><div class="foot"><div class="who">Marcus Novais<span></span>Planejador Financeiro, CFP®</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
   document.body.appendChild(s); });
+window.CRED={sf:'Foto: David Ohmer / Wikimedia Commons, CC BY 2.0',colchao:'Foto: W.carter / Wikimedia Commons, CC BY-SA 4.0',lehman:'Foto: Robert Scoble / Wikimedia Commons, CC BY 2.0',cereal:'Foto: Wikimedia Commons, CC BY-SA 4.0',graham:'Foto: Kevin Hale / Wikimedia Commons, CC BY-SA 2.0'};
 document.querySelectorAll('.cred').forEach(c=>c.textContent=(window.CRED||{})[c.dataset.c]||'');
 const clamp=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-clamp(x),3), seg=(t,a,b)=>ease((t-a)/(b-a));
 const pop=(el,k,dy=30)=>{ el.style.opacity=clamp(k*1.3); el.style.transform=`translateY(${(1-k)*dy}px)`; };
