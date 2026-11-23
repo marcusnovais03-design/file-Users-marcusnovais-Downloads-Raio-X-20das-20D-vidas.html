@@ -3,15 +3,15 @@
   "titulo_cores": ["#D62828", "#D62828", "#D62828"],
   "titulo_escala": 1.3,
   "titulo_pitch": 52,
-  "titulo_y": 0.3,
+  "titulo_y": 0.08,
   "caixas": [
     ["Enquanto o CDI rendeu", "cerca de 1% no período"]
   ],
   "caixa_escala": 1.5,
-  "caixas_y": 0.505,
+  "caixas_y": 0.285,
   "rodape": ["Saiba o que fazer 👇"],
   "rodape_destaque": true,
   "rodape_escala": 1.6,
-  "rodape_y": 0.625,
+  "rodape_y": 0.405,
   "rodape_em": 0
 }
