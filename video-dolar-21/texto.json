@@ -1,0 +1,17 @@
+{
+  "titulo": ["Eu vendo o dólar", "subir 21% em um mês", "desde a eleição..."],
+  "titulo_cores": ["#D62828", "#D62828", "#D62828"],
+  "titulo_escala": 1.3,
+  "titulo_pitch": 52,
+  "titulo_y": 0.3,
+  "caixas": [
+    ["Enquanto o CDI rendeu", "cerca de 1% no período"]
+  ],
+  "caixa_escala": 1.5,
+  "caixas_y": 0.505,
+  "rodape": ["Saiba o que fazer 👇"],
+  "rodape_destaque": true,
+  "rodape_escala": 1.6,
+  "rodape_y": 0.625,
+  "rodape_em": 0
+}
