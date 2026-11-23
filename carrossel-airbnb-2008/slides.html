@@ -87,12 +87,15 @@
   .price { display:flex; align-items:center; gap:30px; margin:20px 0 10px; }
   .price .p { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:120px; letter-spacing:-.05em; line-height:1; }
   .price .arr { font-size:80px; font-weight:900; }
+  .pill.red, .light .pill.red { background:var(--red); color:#fff; padding:10px 22px 9px; border-radius:10px; text-shadow:none; line-height:1.3; }
+  .tl .ev .d.r span { display:inline-block; background:var(--red); color:#fff; font-size:32px; padding:6px 14px 5px; border-radius:8px; }
+  h1 .r, h2 .r { background:var(--red); color:#fff !important; padding:0 .14em; border-radius:10px; }
 </style>
 </head>
 <body>
 <script>
 const C={};   // créditos das fotos
-const HAS=new Set(['marcus','sf','gebbia','nathan','chesky']);
+const HAS=new Set(['marcus','sala','colchao','entrevista','gebbia','nathan','chesky']);
 const PH=(k,pos,extra)=>!HAS.has(k)?'':`<img src="img/${k}.jpg" style="object-position:${pos||'50% 50%'};${extra||''}">`;
 const S=[];
 // 1 capa (foto do Marcus)
@@ -103,16 +106,14 @@ S.push({h:`<div class="bg">${PH('marcus','62% 20%')}</div>
  <p style="font-size:36px">Hoje essa empresa vale bilhões. Você usa ou já ouviu falar dela. <b class="g">👉 Arrasta</b></p></div>`});
 // 2 SF (claro, foto em cartão)
 S.push({light:1, h:`<div class="page" style="justify-content:flex-start; padding-top:130px">
- <div class="card" style="height:470px">${PH('sf','50% 60%')}<span class="cred" data-c="sf"></span></div>
+ <div class="card" style="height:470px">${PH('sala','50% 50%')}</div>
  <div class="pill" style="margin-top:34px">São Francisco, 2007</div>
  <h2 style="font-size:60px">O aluguel subiu. <em>E eles não tinham como pagar.</em></h2>
  <p style="font-size:34px">Dois designers recém-formados dividem um apartamento. Precisam de dinheiro rápido. Mas o que eles tinham em casa?</p></div>`});
 // 3 colchão (foto cheia)
-S.push({h:`<div class="bg">${PH('colchao','50% 50%','filter:brightness(.9)')}</div>
- <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.2) 0%, rgba(7,13,36,.3) 30%, rgba(7,13,36,.92) 55%, rgba(7,13,36,.98) 100%)"></div>
- <div class="page end"><div class="bigq" style="color:#e3b65a">Só três colchões de ar.</div>
+S.push({h:`<div class="page end"><div class="card" style="height:360px; margin-bottom:30px; background:#fff">${PH('colchao','50% 55%')}</div><div class="bigq" style="color:#e3b65a">Só três colchões de ar.</div>
  <p style="font-size:34px; margin-top:22px">Naquela semana, um grande evento lotou os hotéis da cidade. Tinha gente sem lugar pra dormir.</p>
- <div class="quote">"E se a gente alugasse o chão da nossa sala?"</div><span class="cred" style="position:absolute;right:92px;top:100px;bottom:auto" data-c="colchao"></span></div>`});
+ <div class="quote">"E se a gente alugasse o chão da nossa sala?"</div></div>`});
 // 4 funcionou (claro)
 S.push({light:1, h:`<div class="page"><div class="pill">Funcionou</div>
  <h2>Três desconhecidos <em>pagaram</em> pra dormir no colchão</h2>
@@ -120,14 +121,14 @@ S.push({light:1, h:`<div class="page"><div class="pill">Funcionou</div>
  <div class="quote" style="font-style:normal; font-weight:700">Não estavam vendendo um colchão. Estavam vendendo <b class="g">uma solução pra quem não tinha onde ficar</b>.</div>
  <p style="font-size:34px; margin-top:26px">Chamaram um terceiro amigo, programador, e criaram um site.</p></div>`});
 // 5 2008 linha do tempo (vídeo, foto Lehman)
-S.push({video:7, h:`<div class="bg">${PH('lehman','50% 40%','filter:grayscale(1) brightness(.55)')}</div>
+S.push({h:`<div class="bg">${PH('lehman','50% 40%','filter:grayscale(1) brightness(.55)')}</div>
  <div class="shade" style="background:rgba(7,13,36,.72)"></div>
  <div class="page"><div class="pill red">2008</div>
  <div class="tl">
   <div class="ev" id="e0"><div class="d">Agosto</div><div class="t">O site vai ao ar.</div></div>
-  <div class="ev" id="e1"><div class="d r">Setembro</div><div class="t">O <b>Lehman Brothers quebra</b>. Começa a maior crise desde 1929.</div></div>
-  <div class="ev" id="e2"><div class="d r">Investidores</div><div class="t">Fecham a porta: <i>"Quem vai dormir na casa de um estranho?"</i></div></div>
-  <div class="ev" id="e3"><div class="d r">Caixa</div><div class="t">O dinheiro acaba. Os cartões de crédito estouram.</div></div>
+  <div class="ev" id="e1"><div class="d r"><span>Setembro</span></div><div class="t">O <b>Lehman Brothers quebra</b>. Começa a maior crise desde 1929.</div></div>
+  <div class="ev" id="e2"><div class="d r"><span>Investidores</span></div><div class="t">Fecham a porta: <i>"Quem vai dormir na casa de um estranho?"</i></div></div>
+  <div class="ev" id="e3"><div class="d r"><span>Caixa</span></div><div class="t">O dinheiro acaba. Os cartões de crédito estouram.</div></div>
  </div>
  <h2 id="fim" style="margin-top:20px">Era o <span class="r">fim</span>?</h2></div><span class="cred" style="position:absolute;right:92px;top:100px" data-c="lehman"></span>`});
 // 6 cereal (claro)
@@ -138,7 +139,7 @@ S.push({light:1, h:`<div class="page" style="justify-content:flex-start; padding
  <div class="price"><div class="p" style="color:#8a8fa3">US$ 4</div><div class="arr">→</div><div class="p" style="color:#a8761c">US$ 40</div></div>
  <p style="font-size:32px">Resultado: cerca de <b>US$ 30 mil</b>. <b class="g">A empresa sobreviveu.</b></p></div>`});
 // 7 Paul Graham (foto cheia)
-S.push({h:`<div class="bg">${PH('graham','40% 30%')}</div>
+S.push({h:`<div class="bg">${PH('entrevista','50% 40%')}</div>
  <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.2) 0%, rgba(7,13,36,.35) 28%, rgba(7,13,36,.93) 50%, rgba(7,13,36,.98) 100%)"></div>
  <div class="page end"><div class="pill">A entrevista que mudou tudo</div>
  <p style="font-size:32px">Com Paul Graham, da aceleradora Y Combinator. O pitch foi mal. Antes de ir embora, eles entregaram uma caixa de cereal.</p>
