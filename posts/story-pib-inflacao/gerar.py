@@ -15,13 +15,13 @@ img = p.crop((cx, cy, cx + SW, cy + SH)).convert("RGBA")
 veil = Image.new("RGBA", (SW, SH)); vd = ImageDraw.Draw(veil)
 for yy in range(SH):
         # rosto no alto quase sem véu; véu cresce atrás dos dados (camisa branca)
-    a_ = int(60 + 140 * min(1, max(0, (yy - 620) / 300)))
+    a_ = int(60 + 140 * min(1, max(0, (yy - 410) / 300)))
     vd.line([(0, yy), (SW, yy)], fill=(7, 13, 36, a_))
 img.alpha_composite(veil)
 d = ImageDraw.Draw(img)
 
 layer = Image.new("RGBA", (SW, SH), (0, 0, 0, 0)); t = ImageDraw.Draw(layer)
-y = kicker_pill(t, "Economia", 92, 850)
+y = kicker_pill(t, "Economia", 92, 640)
 y = rich(t, "Crescer pouco com [r]inflação alta[/r]", 90, y + 4, 900, TITLE(84), TITLE(84), 82,
          WHITE, GOLD_DARK, RED_DARK, tracking=-3, upper=True)
 
@@ -47,7 +47,6 @@ hint = font("Inter-ExtraBold.otf", 40); q = "Seu patrimônio acompanhou a infla�
 t.text((92, y + 34), q, font=hint, fill=WHITE)
 emoji(layer, "👇", 92 + hint.getlength(q) + 12, y + 36, 46)
 ff = font("Inter-Bold.otf", 28); nm = "Marcus Novais | Planejador Financeiro, CFP®"
-t.rounded_rectangle((76, 1676, 108 + ff.getlength(nm), 1730), radius=27, fill=(7, 13, 36, 200))
 t.text((92, 1688), nm, font=ff, fill=WHITE)
 print("texto termina em", y)
 sh = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
