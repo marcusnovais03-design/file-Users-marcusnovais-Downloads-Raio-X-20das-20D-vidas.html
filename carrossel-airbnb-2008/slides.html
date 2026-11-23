@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carrossel Airbnb 2008</title>
+<style>
+  :root { --ink:#070d24; --gold:#e3b65a; --red:#e3141e; --gray:#b9bdcc; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#888; font-family:"Inter",sans-serif; color:#fff; }
+  .slide { width:1080px; height:1350px; position:relative; overflow:hidden; margin:0 auto 40px; background:var(--ink);
+    background-image:linear-gradient(rgba(255,255,255,.04) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.04) 2px, transparent 2px); background-size:54px 54px; }
+  body.single .slide { display:none; margin:0; }
+  body.single .slide.on { display:block; }
+  .bg { position:absolute; inset:0; } .bg img { width:100%; height:100%; object-fit:cover; display:block; }
+  .shade { position:absolute; inset:0; }
+  .page { position:absolute; inset:0; padding:140px 90px 160px; display:flex; flex-direction:column; justify-content:center; z-index:3; }
+  .page.end { justify-content:flex-end; }
+  .count { position:absolute; top:60px; right:92px; font-weight:800; font-size:25px; letter-spacing:.09em; z-index:6; }
+  .foot { position:absolute; left:90px; right:92px; bottom:62px; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:25px; z-index:6; }
+  .foot .who span { display:inline-block; width:3px; height:26px; background:#fff; margin:0 9px -4px; }
+  .foot .go { display:flex; align-items:center; gap:16px; font-weight:800; font-size:27px; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:86px; line-height:1.02; letter-spacing:-.05em; word-spacing:.12em; margin-bottom:26px; }
+  h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:68px; line-height:1.04; letter-spacing:-.045em; word-spacing:.12em; margin-bottom:24px; }
+  h1 em, h2 em { font-style:normal; color:var(--gold); }
+  h1 .r, h2 .r { color:var(--red); }
+  p { font-size:40px; line-height:1.26; color:rgba(255,255,255,.88); }
+  p + p { margin-top:26px; }
+  b { font-weight:800; color:#fff; } b.g { color:var(--gold); }
+  .pill { align-self:flex-start; color:var(--gold); font-weight:800; font-size:32px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:20px; text-shadow:0 2px 12px rgba(0,0,0,.6); }
+  .pill.red { color:var(--red); }
+  ul { list-style:none; }
+  li { position:relative; padding:20px 0 20px 56px; font-size:36px; line-height:1.22; border-bottom:3px solid rgba(255,255,255,.14); color:rgba(255,255,255,.9); }
+  li::before { content:""; position:absolute; left:0; top:31px; width:26px; height:26px; border-radius:50%; background:var(--gold); }
+  .src { font-size:21px; line-height:1.3; color:rgba(255,255,255,.55); margin-top:22px; }
+  .stats { display:flex; gap:22px; margin-top:28px; }
+  .stats > div { flex:1; border:4px solid rgba(255,255,255,.75); border-radius:28px; padding:22px 26px; }
+  .stats .k { font-size:26px; font-weight:700; color:rgba(255,255,255,.75); }
+  .stats .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:64px; letter-spacing:-.04em; margin-top:4px; }
+  svg.ch { width:900px; height:640px; }
+  .btn { margin-top:30px; align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:900; font-size:36px; line-height:1.15; padding:22px 32px; border-radius:24px; }
+  .hb .row { margin-bottom:26px; }
+  .hb .lab { display:flex; justify-content:space-between; align-items:baseline; font-size:32px; font-weight:700; margin-bottom:10px; }
+  .hb .lab b { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:52px; }
+  .hb .bar { height:52px; border-radius:12px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .hb .bar i { display:block; height:100%; width:0; border-radius:12px; }
+  .steps { display:flex; align-items:flex-end; gap:14px; height:430px; border-bottom:4px solid rgba(255,255,255,.6); margin-top:10px; }
+  .steps .s { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; }
+  .steps .s b { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:44px; margin-bottom:8px; }
+  .steps .s i { width:100%; border-radius:12px 12px 0 0; height:0; }
+  .sl { display:flex; gap:14px; margin-top:12px; }
+  .sl div { flex:1; text-align:center; font-size:22px; font-weight:600; line-height:1.2; color:rgba(255,255,255,.75); }
+  .tag { margin-top:26px; font-size:30px; font-weight:800; color:var(--red); }
+  .slide.light { background-color:#f2efe8; color:#0e1f5b;
+    background-image:linear-gradient(rgba(14,31,91,.05) 2px, transparent 2px), linear-gradient(90deg, rgba(14,31,91,.05) 2px, transparent 2px); }
+  .light p, .light li { color:rgba(14,31,91,.85); }
+  .light b { color:#0e1f5b; } .light b.g, .light h1 em, .light h2 em { color:#a8761c; }
+  .light .pill { color:#a8761c; text-shadow:none; } .light .pill.red { color:var(--red); }
+  .light li { border-bottom-color:rgba(14,31,91,.15); } .light li::before { background:#a8761c; }
+  .light .hb .bar { background:rgba(14,31,91,.1); }
+  .light .steps { border-bottom-color:rgba(14,31,91,.5); } .light .sl div { color:rgba(14,31,91,.7); }
+  .light .foot, .light .count { color:#0e1f5b; } .light .foot .who span { background:#0e1f5b; }
+  .light .foot .go svg { stroke:#0e1f5b; }
+  .light .steps .s:nth-child(-n+4) b { color:#a8761c !important; } .light .steps .s:nth-child(-n+4) i { background:#c8932e !important; }
+  .pill.red { text-shadow:0 2px 14px rgba(0,0,0,.85); }
+  .card { border-radius:30px; overflow:hidden; box-shadow:0 24px 60px rgba(7,13,36,.35); flex:none; position:relative; }
+  .card img { width:100%; height:100%; object-fit:cover; display:block; }
+  .cred { position:absolute; right:14px; bottom:10px; font-size:15px; font-weight:600; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.9); }
+  .bigq { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:150px; line-height:.95; letter-spacing:-.06em; }
+  .quote { border-left:8px solid var(--gold); padding:6px 0 6px 30px; font-size:38px; line-height:1.3; font-style:italic; margin-top:26px; }
+  .light .quote { border-left-color:#a8761c; }
+  .tl { position:relative; margin-top:10px; }
+  .tl .ev { display:flex; gap:28px; align-items:flex-start; padding:16px 0; }
+  .tl .ev .d { flex:none; width:230px; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:40px; line-height:1.05; color:var(--gold); }
+  .tl .ev .d.r { color:var(--red); }
+  .tl .ev .t { font-size:33px; line-height:1.25; }
+  .faces { display:flex; gap:26px; margin:10px 0 30px; }
+  .faces .f { flex:1; text-align:center; }
+  .faces .f .ph { width:100%; aspect-ratio:1; border-radius:50%; overflow:hidden; border:6px solid var(--gold); background:#1b2a63; }
+  .faces .f img { width:100%; height:100%; object-fit:cover; }
+  .faces .f span { display:block; font-size:26px; font-weight:800; margin-top:12px; line-height:1.15; }
+  .logo-big { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:220px; letter-spacing:-.06em; color:#ff385c; line-height:.9; }
+  .price { display:flex; align-items:center; gap:30px; margin:20px 0 10px; }
+  .price .p { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:120px; letter-spacing:-.05em; line-height:1; }
+  .price .arr { font-size:80px; font-weight:900; }
+</style>
+</head>
+<body>
+<script>
+const C={};   // créditos das fotos
+const PH=(k,pos,extra)=>`<img src="img/${k}.jpg" style="object-position:${pos||'50% 50%'};${extra||''}">`;
+const S=[];
+// 1 capa (foto do Marcus)
+S.push({h:`<div class="bg">${PH('marcus','62% 20%')}</div>
+ <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.1) 0%, rgba(7,13,36,.1) 30%, rgba(7,13,36,.9) 54%, rgba(7,13,36,.98) 100%)"></div>
+ <div class="page end"><div class="pill red">2008. O mundo estava quebrando.</div>
+ <h1 style="font-size:72px">Dois jovens sem dinheiro nem pro aluguel tiveram uma ideia que <em>todo investidor chamou de loucura</em>.</h1>
+ <p style="font-size:36px">Hoje essa empresa vale bilhões. Você usa ou já ouviu falar dela. <b class="g">👉 Arrasta</b></p></div>`});
+// 2 SF (claro, foto em cartão)
+S.push({light:1, h:`<div class="page" style="justify-content:flex-start; padding-top:130px">
+ <div class="card" style="height:470px">${PH('sf','50% 60%')}<span class="cred" data-c="sf"></span></div>
+ <div class="pill" style="margin-top:34px">São Francisco, 2007</div>
+ <h2 style="font-size:60px">O aluguel subiu. <em>E eles não tinham como pagar.</em></h2>
+ <p style="font-size:34px">Dois designers recém-formados dividem um apartamento. Precisam de dinheiro rápido. Mas o que eles tinham em casa?</p></div>`});
+// 3 colchão (foto cheia)
+S.push({h:`<div class="bg">${PH('colchao','50% 50%','filter:brightness(.9)')}</div>
+ <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.2) 0%, rgba(7,13,36,.3) 30%, rgba(7,13,36,.92) 55%, rgba(7,13,36,.98) 100%)"></div>
+ <div class="page end"><div class="bigq" style="color:#e3b65a">Só três colchões de ar.</div>
+ <p style="font-size:34px; margin-top:22px">Naquela semana, um grande evento lotou os hotéis da cidade. Tinha gente sem lugar pra dormir.</p>
+ <div class="quote">"E se a gente alugasse o chão da nossa sala?"</div><span class="cred" style="position:absolute;right:92px;top:60px;bottom:auto" data-c="colchao"></span></div>`});
+// 4 funcionou (claro)
+S.push({light:1, h:`<div class="page"><div class="pill">Funcionou</div>
+ <h2>Três desconhecidos <em>pagaram</em> pra dormir no colchão</h2>
+ <p style="font-size:34px">Com café da manhã incluso. Ali eles perceberam:</p>
+ <div class="quote" style="font-style:normal; font-weight:700">Não estavam vendendo um colchão. Estavam vendendo <b class="g">uma solução pra quem não tinha onde ficar</b>.</div>
+ <p style="font-size:34px; margin-top:26px">Chamaram um terceiro amigo, programador, e criaram um site.</p></div>`});
+// 5 2008 linha do tempo (vídeo, foto Lehman)
+S.push({video:7, h:`<div class="bg">${PH('lehman','50% 40%','filter:grayscale(1) brightness(.55)')}</div>
+ <div class="shade" style="background:rgba(7,13,36,.72)"></div>
+ <div class="page"><div class="pill red">2008</div>
+ <div class="tl">
+  <div class="ev" id="e0"><div class="d">Agosto</div><div class="t">O site vai ao ar.</div></div>
+  <div class="ev" id="e1"><div class="d r">Setembro</div><div class="t">O <b>Lehman Brothers quebra</b>. Começa a maior crise desde 1929.</div></div>
+  <div class="ev" id="e2"><div class="d r">Investidores</div><div class="t">Fecham a porta: <i>"Quem vai dormir na casa de um estranho?"</i></div></div>
+  <div class="ev" id="e3"><div class="d r">Caixa</div><div class="t">O dinheiro acaba. Os cartões de crédito estouram.</div></div>
+ </div>
+ <h2 id="fim" style="margin-top:20px">Era o <span class="r">fim</span>?</h2></div><span class="cred" style="position:absolute;right:92px;top:100px" data-c="lehman"></span>`});
+// 6 cereal (claro)
+S.push({light:1, h:`<div class="page" style="justify-content:flex-start; padding-top:130px">
+ <div class="card" style="height:380px">${PH('cereal','50% 45%')}<span class="cred" data-c="cereal"></span></div>
+ <h2 style="margin-top:34px; font-size:58px">Eles começaram a <em>vender cereal</em></h2>
+ <p style="font-size:30px">Ano de eleição nos EUA: caixas temáticas "Obama O's" e "Cap'n McCain's".</p>
+ <div class="price"><div class="p" style="color:#8a8fa3">US$ 4</div><div class="arr">→</div><div class="p" style="color:#a8761c">US$ 40</div></div>
+ <p style="font-size:32px">Resultado: cerca de <b>US$ 30 mil</b>. <b class="g">A empresa sobreviveu.</b></p></div>`});
+// 7 Paul Graham (foto cheia)
+S.push({h:`<div class="bg">${PH('graham','40% 30%')}</div>
+ <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.2) 0%, rgba(7,13,36,.35) 28%, rgba(7,13,36,.93) 50%, rgba(7,13,36,.98) 100%)"></div>
+ <div class="page end"><div class="pill">A entrevista que mudou tudo</div>
+ <p style="font-size:32px">Com Paul Graham, da aceleradora Y Combinator. O pitch foi mal. Antes de ir embora, eles entregaram uma caixa de cereal.</p>
+ <div class="quote">"Se vocês convencem alguém a pagar US$ 40 numa caixa de US$ 4... talvez convençam estranhos a dividir a casa."</div>
+ <p style="font-size:32px; margin-top:22px">Entraram no programa. Meses depois: <b class="g">US$ 600 mil de investimento</b>.</p></div><span class="cred" style="position:absolute;right:92px;top:100px" data-c="graham"></span>`});
+// 8 revelação (vídeo)
+S.push({video:7, light:1, h:`<div class="page"><div class="pill">A revelação</div>
+ <div class="faces" id="faces">
+  <div class="f"><div class="ph">${PH('chesky','50% 25%')}</div><span>Brian<br>Chesky</span></div>
+  <div class="f"><div class="ph">${PH('gebbia','50% 30%')}</div><span>Joe<br>Gebbia</span></div>
+  <div class="f"><div class="ph">${PH('nathan','50% 30%')}</div><span>Nathan<br>Blecharczyk</span></div></div>
+ <p id="r1" style="font-size:36px">O site se chamava <b>"Air Bed &amp; Breakfast"</b>. Em 2009, o nome foi encurtado para...</p>
+ <div class="logo-big" id="r2">airbnb</div></div>`});
+// 9 lição (escuro)
+S.push({h:`<div class="page"><div class="pill">O que a crise ensinou</div>
+ <h2>A crise criou <em>o cliente</em> deles</h2>
+ <ul><li>Milhões de pessoas precisavam de <b>renda extra</b>.</li>
+ <li>Milhões de viajantes precisavam de <b>hospedagem mais barata</b>.</li></ul>
+ <p style="margin-top:30px">Eles não ignoraram o caos. <b class="g">Enxergaram a necessidade dentro dele.</b></p></div>`});
+// 10 CTA (foto do Marcus)
+S.push({h:`<div class="bg">${PH('marcus','62% 20%','transform:scale(1.08); transform-origin:62% 25%')}</div>
+ <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.1) 0%, rgba(7,13,36,.1) 26%, rgba(7,13,36,.92) 48%, rgba(7,13,36,.98) 100%)"></div>
+ <div class="page end"><div class="pill red">2027: juros altos, consumo fraco, crédito caro</div>
+ <h1 style="font-size:60px">Qual necessidade nova <em>o seu cliente</em> vai ter?</h1>
+ <p style="font-size:31px">Quem enxerga primeiro sai na frente. Mas só consegue agir quem tem <b>caixa e planejamento</b>.</p>
+ <div class="btn" style="font-size:31px">Quer organizar as finanças da sua empresa para atravessar 2027 bem posicionado? Acesse o link na BIO</div></div>`});
+
+const N=S.length;
+S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide'+(x.light?' light':''); if(x.video) s.dataset.video=x.video;
+  s.innerHTML=x.h+`<div class="count">${String(i+1).padStart(2,'0')}/${String(N).padStart(2,'0')}</div><div class="foot"><div class="who">Marcus Novais<span></span>Planejador Financeiro, CFP®</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
+  document.body.appendChild(s); });
+document.querySelectorAll('.cred').forEach(c=>c.textContent=(window.CRED||{})[c.dataset.c]||'');
+const clamp=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-clamp(x),3), seg=(t,a,b)=>ease((t-a)/(b-a));
+const pop=(el,k,dy=30)=>{ el.style.opacity=clamp(k*1.3); el.style.transform=`translateY(${(1-k)*dy}px)`; };
+window.setT=function(t){
+  [0,1,2,3].forEach(i=>pop(document.getElementById('e'+i),seg(t,.3+i*1.1,.9+i*1.1)));
+  const kf=seg(t,4.8,5.3), f=document.getElementById('fim'); f.style.opacity=kf; f.style.transform=`scale(${.8+.2*kf})`; f.style.transformOrigin='0 50%';
+  document.querySelectorAll('#faces .f').forEach((x,i)=>pop(x,seg(t,.3+i*.5,.9+i*.5)));
+  pop(document.getElementById('r1'),seg(t,2.0,2.6));
+  const k=seg(t,3.4,4.2), r2=document.getElementById('r2'); r2.style.opacity=k; r2.style.transform=`scale(${.6+.4*k})`; r2.style.transformOrigin='0 50%';
+};
+const all=[...document.querySelectorAll('.slide')];
+window.show=i=>{document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
+setT(99);
+</script>
+</body>
+</html>
