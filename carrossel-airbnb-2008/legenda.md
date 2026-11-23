@@ -2,7 +2,7 @@
 
 📉 Como o Airbnb nasceu na pior crise financeira desde 1929 | Lição de gestão financeira para empresários
 
-Em 2008, o mundo estava quebrando. 🏚️ Dois jovens sem dinheiro pro aluguel alugaram 3 colchões de ar na sala de casa. Todo investidor chamou de loucura.
+Em 2008, o mundo estava quebrando. 🏚️ Dois jovens sem dinheiro para o aluguel alugaram 3 colchões de ar na sala de casa. Todo investidor chamou de loucura.
 
 Veio a quebra do Lehman Brothers. Investidores fecharam a porta. O caixa acabou. 💳
 
