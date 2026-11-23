@@ -10,9 +10,9 @@ FOTO = HERE + "/fotos/marcus-camisa-branca.png"
 def capa(path):
     img = photo_light(FOTO, 680, 1020, 215)
     def txt(layer, d):
-        y = kicker(d, "Herança", 92, 790, RED)
+        y = kicker_pill(d, "Herança", 92, 780)
         y = rich(d, "O imóvel da família ainda está [g]no nome do avô[/g]?", 90, y, 920, TITLE(84), TITLE(84), 82,
-                 WHITE, GOLD_DARK, RED, tracking=-3, upper=True)
+                 WHITE, GOLD_DARK, RED_DARK, tracking=-3, upper=True)
         sf = font("Inter-Medium.otf", 42)
         d.text((92, y + 22), "Isso é uma bomba-relógio", font=sf, fill=WHITE)
         emoji(layer, "👉", 92 + sf.getlength("Isso é uma bomba-relógio") + 14, y + 24, 46)
@@ -25,7 +25,7 @@ def cta(path):
     img = photo_light(FOTO, 680, 1020, 215)
     def txt(layer, d):
         y = rich(d, "Quer organizar o patrimônio da sua família [g]antes que vire problema[/g]?", 90, 820, 920,
-                 TITLE(76), TITLE(76), 74, WHITE, GOLD_DARK, RED, tracking=-3, upper=True)
+                 TITLE(76), TITLE(76), 74, WHITE, GOLD_DARK, RED_DARK, tracking=-3, upper=True)
         bf = font("Inter-ExtraBold.otf", 34); b = "Acesse o link na BIO e me chame"
         bw = bf.getlength(b) + 66
         d.rounded_rectangle((90, y + 28, 90 + bw, y + 112), radius=18, fill=GOLD_DARK)
@@ -35,7 +35,7 @@ def cta(path):
     img.convert("RGB").save(path, quality=95)
 
 
-BARS = [("Até 60 dias", 0, (150, 156, 178)), ("Depois de 60 dias", 10, GOLD_DARK), ("Depois de 180 dias", 20, RED)]
+BARS = [("Até 60 dias", 0, (150, 156, 178)), ("Depois de 60 dias", 10, GOLD_DARK), ("Depois de 180 dias", 20, RED_DARK)]
 
 
 def barras(img, d, y, p=1.0):

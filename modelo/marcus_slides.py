@@ -23,7 +23,8 @@ NAVY_TXT = (19, 32, 92)
 BODY_LIGHT = (48, 58, 100)
 GOLD_DARK = (227, 182, 90)    # dourado em fundo escuro
 GOLD_LIGHT = (168, 116, 30)   # dourado em fundo claro
-RED = (227, 20, 30)
+RED = (227, 20, 30)          # vermelho em fundo claro
+RED_DARK = (255, 84, 84)     # vermelho mais vivo para fundo escuro/foto (melhor leitura)
 WHITE = (255, 255, 255)
 BODY_DARK = (220, 223, 232)
 DIVIDER_DARK = (42, 47, 66)
@@ -166,10 +167,10 @@ def cover(path, n, total, kick, title, sub=None, sub_emoji="👉", photo=None, t
     # layout bottom-up: measure title lines first
     tmp = Image.new("RGBA", (W, H)); td = ImageDraw.Draw(tmp)
     lh = int(title_size * 0.98)
-    th = rich(td, title, 90, 0, 900, TITLE(title_size), TITLE(title_size), lh, WHITE, GOLD_DARK, RED, tracking=-3, upper=True)
+    th = rich(td, title, 90, 0, 900, TITLE(title_size), TITLE(title_size), lh, WHITE, GOLD_DARK, RED_DARK, tracking=-3, upper=True)
     y0 = 1100 - th - (60 if sub else 0)
-    kicker(d, kick, 92, y0 - 62, RED)
-    y = rich(d, title, 90, y0, 900, TITLE(title_size), TITLE(title_size), lh, WHITE, GOLD_DARK, RED, tracking=-3, upper=True)
+    kicker_pill(d, kick, 92, y0 - 70)
+    y = rich(d, title, 90, y0, 900, TITLE(title_size), TITLE(title_size), lh, WHITE, GOLD_DARK, RED_DARK, tracking=-3, upper=True)
     if sub:
         sf = font("Inter-Light.otf", 42)
         d.text((92, y + 30), sub, font=sf, fill=(225, 228, 238))
@@ -188,10 +189,10 @@ def text_slide(path, n, total, kick, title, body, dark=False, title_size=74, ext
     tmp = ImageDraw.Draw(Image.new("RGBA", (W, H)))
     def draw(dd, y):
         y = kicker(dd, kick, 92, y, gold)
-        y = rich(dd, title, 90, y, 920, TITLE(title_size), TITLE(title_size), int(title_size * 0.98), base_t, gold, RED, tracking=-3, upper=True)
+        y = rich(dd, title, 90, y, 920, TITLE(title_size), TITLE(title_size), int(title_size * 0.98), base_t, gold, RED_DARK if dark else RED, tracking=-3, upper=True)
         y += 22
         for para in body.split("\n"):
-            y = rich(dd, para.strip(), 90, y, 900, BODY, BODY_B, 52, base_b, gold, RED, bold_color=bold_c)
+            y = rich(dd, para.strip(), 90, y, 900, BODY, BODY_B, 52, base_b, gold, RED_DARK if dark else RED, bold_color=bold_c)
             y += 26
         return y
     hgt = draw(tmp, 0) + (extra[1] if extra else 0)
@@ -211,11 +212,11 @@ def bullets_slide(path, n, total, kick, title, items, dark=True, title_size=74):
     BF, BFB = font("Inter-Regular.otf", 37), font("Inter-Bold.otf", 37)
     def draw(dd, y):
         y = kicker(dd, kick, 92, y, gold)
-        y = rich(dd, title, 90, y, 920, TITLE(title_size), TITLE(title_size), int(title_size * 0.98), base_t, gold, RED, tracking=-3, upper=True)
+        y = rich(dd, title, 90, y, 920, TITLE(title_size), TITLE(title_size), int(title_size * 0.98), base_t, gold, RED_DARK if dark else RED, tracking=-3, upper=True)
         y += 34
         for it in items:
             if dd is not tmp: dd.ellipse((90, y + 12, 116, y + 38), fill=gold)
-            y = rich(dd, it, 147, y, 845, BF, BFB, 46, base_b, gold, RED, bold_color=bold_c) + 18
+            y = rich(dd, it, 147, y, 845, BF, BFB, 46, base_b, gold, RED_DARK if dark else RED, bold_color=bold_c) + 18
             if dd is not tmp: dd.line([(90, y), (990, y)], fill=div, width=2)
             y += 26
         return y
@@ -231,8 +232,8 @@ def cta(path, n, total, title, button="Acesse o link na BIO e me chame", photo=N
     d = ImageDraw.Draw(img)
     tmp = ImageDraw.Draw(Image.new("RGBA", (W, H)))
     lh = int(title_size * 0.98)
-    th = rich(tmp, title, 90, 0, 900, TITLE(title_size), TITLE(title_size), lh, WHITE, GOLD_DARK, RED, tracking=-3, upper=True)
-    y = rich(d, title, 90, 1080 - th, 900, TITLE(title_size), TITLE(title_size), lh, WHITE, GOLD_DARK, RED, tracking=-3, upper=True)
+    th = rich(tmp, title, 90, 0, 900, TITLE(title_size), TITLE(title_size), lh, WHITE, GOLD_DARK, RED_DARK, tracking=-3, upper=True)
+    y = rich(d, title, 90, 1080 - th, 900, TITLE(title_size), TITLE(title_size), lh, WHITE, GOLD_DARK, RED_DARK, tracking=-3, upper=True)
     bf = font("Inter-ExtraBold.otf", 34)
     bw = bf.getlength(button) + 66
     d.rounded_rectangle((90, y + 28, 90 + bw, y + 112), radius=18, fill=GOLD_DARK)
@@ -268,3 +269,12 @@ def shadowed(img, draw_fn):
     sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     sh.putalpha(layer.split()[3].filter(ImageFilter.GaussianBlur(10)).point(lambda a: int(a * 0.85)))
     img.alpha_composite(sh); img.alpha_composite(layer)
+
+
+def kicker_pill(d, text, x, y, fill=RED, color=WHITE):
+    """Kicker em etiqueta vermelha sólida (texto branco): legível sobre foto e fundo escuro."""
+    t = text.upper(); f = font("Inter-ExtraBold.otf", 28); tr = 4
+    w = spaced_len(t, f, tr)
+    d.rounded_rectangle((x - 2, y - 8, x + w + 30, y + 44), radius=10, fill=fill)
+    spaced(d, (x + 14, y + 1), t, f, color, tr)
+    return y + 66

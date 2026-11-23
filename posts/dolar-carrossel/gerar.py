@@ -28,20 +28,20 @@ def chart(img, d, y, p=1.0):
     d.text((pts[0][0] + 26, pts[0][1] - 26), "R$ 5,04", font=big, fill=WHITE)
     if k == len(DATA):
         e = pts[-1]
-        d.ellipse((e[0] - 14, e[1] - 14, e[0] + 14, e[1] + 14), fill=RED)
+        d.ellipse((e[0] - 14, e[1] - 14, e[0] + 14, e[1] + 14), fill=RED_DARK)
         lab = "R$ 5,94"; tw = big.getlength(lab)
-        d.text((e[0] - tw + 6, e[1] - 70), lab, font=big, fill=RED)
+        d.text((e[0] - tw + 6, e[1] - 70), lab, font=big, fill=RED_DARK)
     d.text((x0, y1 + 16), "23/10 · antes do 2º turno", font=small, fill=(150, 156, 178))
     lab = "último fechamento"; d.text((x1 - small.getlength(lab), y1 + 16), lab, font=small, fill=(150, 156, 178))
 
 
 def chart_cover(path, p=1.0):
     img = background(True); d = ImageDraw.Draw(img)
-    y = kicker(d, "Câmbio", 92, 150, RED)
+    y = kicker_pill(d, "Câmbio", 92, 150)
     y = rich(d, "“Pobre não come dólar”? [g]Come sim,[/g] todo dia.", 90, y, 920, TITLE(84), TITLE(84), 82,
-             WHITE, GOLD_DARK, RED, tracking=-3, upper=True)
+             WHITE, GOLD_DARK, RED_DARK, tracking=-3, upper=True)
     y = rich(d, "Dólar desde o 2º turno: **+18% em menos de um mês**.", 90, y + 18, 900, BODY, BODY_B, 52,
-             BODY_DARK, GOLD_DARK, RED, bold_color=WHITE)
+             BODY_DARK, GOLD_DARK, RED_DARK, bold_color=WHITE)
     chart(img, d, y + 10, p)
     chrome(img, 1, T, True)
     img.convert("RGB").save(path, quality=95)
@@ -50,8 +50,8 @@ def chart_cover(path, p=1.0):
 def photo_slide(path):
     img = photo_light(HERE + "/fotos/marcus-estudio.png", 760, 1100, 135)
     def txt(layer, d):
-        y = kicker(d, "“Só os ricos vão sofrer”?", 92, 900, RED)
-        y = rich(d, "Calma. Vamos aos [g]fatos[/g].", 90, y, 900, TITLE(88), TITLE(88), 86, WHITE, GOLD_DARK, RED,
+        y = kicker_pill(d, "“Só os ricos vão sofrer”?", 92, 890)
+        y = rich(d, "Calma. Vamos aos [g]fatos[/g].", 90, y, 900, TITLE(88), TITLE(88), 86, WHITE, GOLD_DARK, RED_DARK,
                  tracking=-3, upper=True)
         sf = font("Inter-Medium.otf", 42)
         d.text((92, y + 26), "O dólar chega no seu prato", font=sf, fill=WHITE)
@@ -65,7 +65,7 @@ def cta_slide(path):
     img = photo_light(HERE + "/fotos/marcus-estudio.png", 760, 1100, 135)
     def txt(layer, d):
         y = rich(d, "Quer proteger o seu patrimônio [g]contra o dólar[/g]?", 90, 880, 900, TITLE(80), TITLE(80), 78,
-                 WHITE, GOLD_DARK, RED, tracking=-3, upper=True)
+                 WHITE, GOLD_DARK, RED_DARK, tracking=-3, upper=True)
         bf = font("Inter-ExtraBold.otf", 34); button = "Acesse o link na BIO e me chame"
         bw = bf.getlength(button) + 66
         d.rounded_rectangle((90, y + 28, 90 + bw, y + 112), radius=18, fill=GOLD_DARK)
