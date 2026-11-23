@@ -13,6 +13,11 @@ O que acontece quando o inventário fica para depois:
 
 Minha visão como planejador financeiro: imóvel irregular é patrimônio pela metade. Ele vale no papel, mas não vira dinheiro quando a família precisa.
 
+E o melhor momento para evitar esse problema é em vida:
+🛡️ Seguro de vida: a indenização vai direto aos beneficiários, sem esperar o inventário
+📈 Previdência privada (VGBL/PGBL): os beneficiários indicados recebem, em geral, sem inventário
+💰 Esse dinheiro dá liquidez para a família pagar o imposto e os custos sem vender o imóvel às pressas
+
 💬 Comenta HERANÇA que eu te mando o passo a passo para começar a regularizar.
 📲 Ou acesse o link na bio e fale comigo.
 🔁 Manda para aquele parente que sempre diz "um dia a gente resolve".
@@ -20,7 +25,7 @@ Minha visão como planejador financeiro: imóvel irregular é patrimônio pela m
 
 Conteúdo educativo, não constitui recomendação de investimento nem consultoria jurídica.
 
-#heranca #inventario #imoveis #planejamentosucessorio #sucessao #itcmd #planejamentofinanceiro #familia #direitoimobiliario #patrimonio
+#heranca #inventario #planejamentosucessorio #segurodevida #previdenciaprivada #sucessao #itcmd #planejamentofinanceiro #familia #patrimonio
 
 ## Texto alternativo
 - **Capa (01):** Marcus Novais, planejador financeiro, alerta que o imóvel da família ainda no nome do avô é uma bomba-relógio para os herdeiros.
@@ -30,4 +35,5 @@ Conteúdo educativo, não constitui recomendação de investimento nem consultor
 - **Slide 5:** Se um herdeiro também falece, abre-se um inventário dentro do outro, com mais custos e mais conflito.
 - **Slide 6:** Na leitura de Marcus Novais, imóvel irregular é patrimônio pela metade, porque não vira dinheiro quando a família precisa.
 - **Slide 7:** Passo a passo para regularizar: matrícula atualizada, consenso entre herdeiros, inventário em cartório e planejamento do ITCMD.
-- **Slide 8:** Marcus Novais convida a organizar o patrimônio da família: acesse o link na bio.
+- **Slide 8:** Planejamento em vida: seguro de vida e previdência privada (VGBL/PGBL) chegam aos beneficiários sem esperar o inventário e dão liquidez para pagar o ITCMD.
+- **Slide 9:** Marcus Novais convida a organizar o patrimônio da família: acesse o link na bio.

@@ -3,7 +3,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "../
 from marcus_slides import *
 
 OUT = os.path.dirname(os.path.abspath(__file__)) + "/"
-T = 8
+T = 9
 FOTO = HERE + "/fotos/marcus-camisa-branca.png"
 
 
@@ -88,7 +88,13 @@ bullets_slide(OUT + "07.png", 7, T, "O que eu faria",
                "Reunir os herdeiros e buscar **consenso**",
                "Avaliar o **inventário em cartório**, mais rápido quando há acordo",
                "Planejar o **ITCMD e os custos** antes de começar, com advogado"], dark=False)
-cta(OUT + "08.png")
+bullets_slide(OUT + "08.png", 8, T, "Planejamento em vida",
+              "O que a família recebe [g]sem esperar o inventário[/g]",
+              ["**Seguro de vida**: a indenização vai direto aos beneficiários e não entra no inventário",
+               "**Previdência privada (VGBL/PGBL)**: os beneficiários indicados recebem, em geral, sem inventário",
+               "**Liquidez na hora certa**: dinheiro para pagar o ITCMD e os custos sem vender imóvel às pressas",
+               "**Doações e holding**: avaliar em vida, com advogado e contador"], dark=True, title_size=70)
+cta(OUT + "09.png")
 
 with tempfile.TemporaryDirectory() as tmp:
     n = 30 * 6
