@@ -27,6 +27,6 @@
 No texto: `[g]dourado[/g]`, `[r]vermelho[/r]`, `**negrito**`.
 
 ## Preferências do Marcus
-- **Foto:** a foto ocupa o slide INTEIRO, com transparência mínima: só um degradê leve na base, e o texto ganha sombra para ficar legível. Use a função `photo_light()`. Fotos sem texto embutido ficam em `fotos/` (ex.: `marcus-estudio.png`).
+- **Foto:** a foto ocupa o slide INTEIRO, com transparência mínima: só um degradê leve na base, e o texto ganha sombra para ficar legível. Use a função `photo_light()`. Fotos sem texto embutido ficam em `fotos/` (`marcus-estudio.png`, `marcus-camisa-branca.png`). Com camisa clara, use degradê um pouco mais forte só na base (ex.: `photo_light(foto, 680, 1020, 215)`) para o texto ficar legível.
 - **Gráficos animados:** quando a capa tiver dado (por exemplo, a cotação do dólar), a capa pode ser o gráfico animado com o título, em vez da foto. Nesse caso, a foto vai para o slide 2.
 - **Sem aviso nem fontes nos slides:** não colocar "conteúdo educativo" nem as fontes dentro dos slides. O aviso pode ficar na legenda.

@@ -4,11 +4,11 @@ from marcus_slides import *
 
 OUT = os.path.dirname(os.path.abspath(__file__)) + "/"
 T = 8
-FOTO = HERE + "/fotos/marcus-estudio.png"
+FOTO = HERE + "/fotos/marcus-camisa-branca.png"
 
 
 def capa(path):
-    img = photo_light(FOTO, 760, 1100, 135)
+    img = photo_light(FOTO, 680, 1020, 215)
     def txt(layer, d):
         y = kicker(d, "Herança", 92, 790, RED)
         y = rich(d, "O imóvel da família ainda está [g]no nome do avô[/g]?", 90, y, 920, TITLE(84), TITLE(84), 82,
@@ -22,7 +22,7 @@ def capa(path):
 
 
 def cta(path):
-    img = photo_light(FOTO, 760, 1100, 135)
+    img = photo_light(FOTO, 680, 1020, 215)
     def txt(layer, d):
         y = rich(d, "Quer organizar o patrimônio da sua família [g]antes que vire problema[/g]?", 90, 820, 920,
                  TITLE(76), TITLE(76), 74, WHITE, GOLD_DARK, RED, tracking=-3, upper=True)
