@@ -59,7 +59,8 @@ def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400", 
         bg = colors[i] if colors else (hl_color if highlight == "all" or i == highlight else None)
         if bg:
             line, emo = split_emoji(line)
-            l, t, r, b = font.getbbox(line, anchor="lt")
+            l, _, r, _ = font.getbbox(line, anchor="lt")
+            _, t, _, b = font.getbbox("ÁÓÉgjpç", anchor="lt")  # altura igual em todas as linhas
             em = emoji_img(emo, (b - t) * 1.1) if emo else None
             gap = font.size * 0.25 if em else 0
             tw = r + (gap + em.width if em else 0)

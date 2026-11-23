@@ -2,8 +2,8 @@
   "titulo": ["Eu vendo o DÓLAR", "subir 21% em um mês", "desde a eleição..."],
   "titulo_cores": ["#D62828", "#D62828", "#D62828"],
   "titulo_escala": 1.3,
-  "titulo_pitch": 52,
-  "titulo_y": 0.268,
+  "titulo_pitch": 88,
+  "titulo_y": 0.175,
   "caixas": [
     ["Enquanto o CDI rendeu", "cerca de 1% no período"]
   ],
