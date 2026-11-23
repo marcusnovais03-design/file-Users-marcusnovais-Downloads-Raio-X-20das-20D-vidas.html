@@ -95,18 +95,18 @@
 <body>
 <script>
 const C={};   // créditos das fotos
-const HAS=new Set(['marcus','sala','colchao','entrevista','gebbia','nathan','chesky']);
+const HAS=new Set(['marcus','sf','sala','colchao','entrevista','gebbia','nathan','chesky']);
 const PH=(k,pos,extra)=>!HAS.has(k)?'':`<img src="img/${k}.jpg" style="object-position:${pos||'50% 50%'};${extra||''}">`;
 const S=[];
 // 1 capa (foto do Marcus)
-S.push({h:`<div class="bg">${PH('marcus','62% 20%')}</div>
+S.push({h:`<div class="bg">${PH('sala','58% 40%')}</div>
  <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.1) 0%, rgba(7,13,36,.1) 30%, rgba(7,13,36,.9) 54%, rgba(7,13,36,.98) 100%)"></div>
  <div class="page end"><div class="pill red">2008. O mundo estava quebrando.</div>
  <h1 style="font-size:72px">Dois jovens sem dinheiro nem pro aluguel tiveram uma ideia que <em>todo investidor chamou de loucura</em>.</h1>
  <p style="font-size:36px">Hoje essa empresa vale bilhões. Você usa ou já ouviu falar dela. <b class="g">👉 Arrasta</b></p></div>`});
 // 2 SF (claro, foto em cartão)
 S.push({light:1, h:`<div class="page" style="justify-content:flex-start; padding-top:130px">
- <div class="card" style="height:470px">${PH('sala','50% 50%')}</div>
+ <div class="card" style="height:470px">${PH('sf','50% 60%')}<span class="cred" data-c="sf"></span></div>
  <div class="pill" style="margin-top:34px">São Francisco, 2007</div>
  <h2 style="font-size:60px">O aluguel subiu. <em>E eles não tinham como pagar.</em></h2>
  <p style="font-size:34px">Dois designers recém-formados dividem um apartamento. Precisam de dinheiro rápido. Mas o que eles tinham em casa?</p></div>`});
