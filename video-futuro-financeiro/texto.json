@@ -20,7 +20,7 @@
   "rodape_destaque": true,
   "rodape_escala": 1.6,
   "rodape_y": 0.62,
-  "rodape_em": 0.45,
+  "rodape_em": 0,
   "caixa_gap": 40,
   "rodape_pitch": 1.32
 }
