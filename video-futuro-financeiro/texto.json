@@ -1,15 +1,26 @@
 {
   "titulo": [],
   "caixas": [
-    ["Pai e mãe não são colchão financeiro."],
-    ["Filho não é plano de previdência."],
-    ["Amigo não é linha de crédito."]
+    [
+      "1 - Pai e mãe não são colchão financeiro."
+    ],
+    [
+      "2 - Filho não é plano de previdência."
+    ],
+    [
+      "3 - Amigo não é linha de crédito."
+    ]
   ],
   "caixa_escala": 1.35,
-  "caixas_y": 0.37,
-  "rodape": ["Seu futuro financeiro", "é responsabilidade sua."],
+  "caixas_y": 0.35,
+  "rodape": [
+    "Seu futuro financeiro",
+    "é responsabilidade sua."
+  ],
   "rodape_destaque": true,
   "rodape_escala": 1.6,
-  "rodape_y": 0.605,
-  "rodape_em": 0.45
+  "rodape_y": 0.62,
+  "rodape_em": 0.45,
+  "caixa_gap": 40,
+  "rodape_pitch": 1.32
 }

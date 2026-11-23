@@ -97,7 +97,7 @@ def main(spec_path, src, out):
     d = ImageDraw.Draw(base)
     k = spec.get("caixa_escala", 1.0)
     f_box = ImageFont.truetype(BOX_FONT, round(globals()["f_box"].size * k))
-    pitch, pad_x, pad_y, gap = 26 * S * k, 12 * S, 11 * S, 25 * S
+    pitch, pad_x, pad_y, gap = 26 * S * k, 12 * S, 11 * S, spec.get("caixa_gap", 25) * S
     asc, desc = f_box.getmetrics()
     y = spec.get("caixas_y", 0.555) * H
     for lines in spec["caixas"]:
@@ -112,7 +112,7 @@ def main(spec_path, src, out):
     rod = spec.get("rodape", "Leia a legenda")
     rod = [rod] if isinstance(rod, str) else rod
     ff = ImageFont.truetype(TITLE_FONT, round(f_foot.size * spec.get("rodape_escala", 1.0)))
-    shadow_text(foot, rod, ff, spec.get("rodape_y", 0.852) * H, ff.size * 1.6,
+    shadow_text(foot, rod, ff, spec.get("rodape_y", 0.852) * H, ff.size * spec.get("rodape_pitch", 1.6),
                 "all" if spec.get("rodape_destaque") else None, spec.get("cor_destaque", "#F5C400"))
 
     tmp = os.path.splitext(out)[0]
