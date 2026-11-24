@@ -22,24 +22,27 @@
   .chart .hd { position:absolute; left:64px; top:52px; }
   .chart .tk { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:64px; letter-spacing:-.03em; line-height:1; }
   .chart .nm { font-size:26px; font-weight:600; color:rgba(255,255,255,.7); margin-top:6px; }
-  .chart .vals { position:absolute; left:50px; right:50px; top:180px; display:flex; gap:12px; }
+  .chart .vals { position:absolute; left:64px; right:64px; top:176px; display:flex; gap:18px; z-index:2; }
+  .chart .hd, .chart svg { z-index:2; }
+  .alvo { position:absolute; right:64px; top:118px; z-index:2; font-size:24px; font-weight:700; color:rgba(255,255,255,.8); }
+  .alvo b { color:#f3d46e; font-weight:900; font-size:30px; margin-left:6px; }
   .chart .vals > div { flex:1; border-radius:18px; padding:12px 14px; background:rgba(255,255,255,.06); border:3px solid rgba(255,255,255,.14); }
-  .chart .vals .k { font-size:18px; font-weight:700; color:rgba(255,255,255,.65); text-transform:uppercase; letter-spacing:.06em; }
-  .chart .vals .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:38px; letter-spacing:-.02em; margin-top:2px; font-variant-numeric:tabular-nums; }
+  .chart .vals .k { font-size:22px; font-weight:700; color:rgba(255,255,255,.65); text-transform:uppercase; letter-spacing:.06em; }
+  .chart .vals .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:56px; letter-spacing:-.02em; margin-top:2px; font-variant-numeric:tabular-nums; }
   .chart .vals .v small { display:block; font-size:22px; font-weight:800; margin-top:2px; letter-spacing:0; }
-  .chart svg { position:absolute; left:0; top:318px; width:1080px; height:360px; }
+  .chart svg { position:absolute; left:0; top:300px; width:1080px; height:360px; }
   /* painel da foto */
   .q { position:absolute; left:70px; right:70px; bottom:92px; text-align:center; z-index:3; }
   .q .lab { font-size:26px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.88); margin-bottom:18px; }
   .q .t { font-family:"EBG",serif; font-weight:500; font-size:60px; line-height:1.12; color:#f4ecd8; text-shadow:0 2px 18px rgba(0,0,0,.6); }
-  .q .t em { font-style:italic; color:var(--gold); }
+  .q .t em, .big .t em { font-style:normal; font-family:"Inter",sans-serif; font-weight:800; letter-spacing:-.01em; color:#f3d46e; text-shadow:0 2px 14px rgba(0,0,0,.55); font-size:.9em; }
   .foot { position:absolute; left:0; right:0; bottom:40px; text-align:center; font-size:22px; font-weight:700; color:rgba(255,255,255,.75); z-index:4; }
   .foot span { display:inline-block; width:2px; height:20px; background:rgba(255,255,255,.75); margin:0 9px -3px; }
   /* capa e final */
   .big { position:absolute; left:70px; right:70px; text-align:center; z-index:3; }
   .big .lab { font-size:28px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.9); margin-bottom:14px; }
   .big .t { font-family:"EBG",serif; font-weight:600; font-size:68px; line-height:1.08; color:#f4ecd8; text-shadow:0 2px 18px rgba(0,0,0,.6); }
-  .big .t em { font-style:italic; color:var(--gold); }
+  
   .grid8 { position:absolute; left:64px; right:64px; top:150px; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
   .grid8 > div { border-radius:18px; background:rgba(255,255,255,.06); border:3px solid rgba(255,255,255,.14); padding:16px 10px; text-align:center; }
   .grid8 .k { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:32px; }
@@ -74,7 +77,7 @@ const st=t=>{ const s=D[t], a=s[0][1], z=s[s.length-1][1], pre=s.filter(p=>p[0]<
 const foot=`<div class="foot">Marcus Novais<span></span>Planejador Financeiro, CFP®</div>`;
 function chart(t){
   const {s,a,z,pre}=st(t), n=s.length, vs=s.map(p=>p[1]);
-  const lo=Math.min(...vs)*.95, hi=Math.max(...vs)*1.04, X0=70, X1=1010, Y0=320, Y1=30;
+  const lo=Math.min(...vs)*.95, hi=Math.max(...vs)*1.04, X0=70, X1=1010, Y0=320, Y1=70;
   const gx=i=>X0+(X1-X0)*i/(n-1), gy=v=>Y0-(Y0-Y1)*(v-lo)/(hi-lo);
   const i2=s.findIndex(p=>p[0]>T2);
   const line=s.map((p,i)=>(i?'L':'M')+gx(i).toFixed(1)+' '+gy(p[1]).toFixed(1)).join('');
@@ -85,6 +88,8 @@ function chart(t){
   g+=`<text x="${gx(i2)-14}" y="${Y1+14}" text-anchor="end" font-family="Inter" font-weight="800" font-size="24" fill="rgba(255,255,255,.85)">2º turno</text>`;
   g+=`<path d="${line}" fill="none" stroke="${col}" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>`;
   g+=`<path d="${s.slice(i2-1).map((p,j)=>(j?'L':'M')+gx(i2-1+j).toFixed(1)+' '+gy(p[1]).toFixed(1)).join('')}" fill="none" stroke="#ff4d55" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>`;
+  const lab=(x,yv,v,anc,c)=>`<text x="${x}" y="${gy(yv)-34}" text-anchor="${anc}" font-family="Inter" font-weight="900" font-size="30" fill="${c}" stroke="#070d24" stroke-width="6" paint-order="stroke">${brl(v)}</text>`;
+  g+=lab(gx(0)-6,a,a,'start','#fff')+lab(gx(n-1)+8,z,z,'end','#fff');
   g+=`<circle cx="${gx(0)}" cy="${gy(a)}" r="11" fill="#fff"/><circle cx="${gx(n-1)}" cy="${gy(z)}" r="13" fill="#fff" stroke="#ff4d55" stroke-width="5"/>`;
   g+=`<line x1="${X0}" x2="${X1}" y1="${Y0}" y2="${Y0}" stroke="rgba(255,255,255,.35)" stroke-width="3"/>`;
   g+=`<text x="${X0}" y="${Y0+32}" font-family="Inter" font-weight="600" font-size="22" fill="rgba(255,255,255,.6)">nov/25</text><text x="${X1}" y="${Y0+32}" text-anchor="end" font-family="Inter" font-weight="600" font-size="22" fill="rgba(255,255,255,.6)">nov/26</text>`;
@@ -101,14 +106,14 @@ S.push(`<div class="half top"><img class="ph" src="img/marcus.jpg" style="object
   <div class="note" style="top:440px">Fechamento de 23/10/2026 x fechamento de ontem (23/11/2026). <b style="color:#fff">Arrasta 👉</b></div>${foot}</div>`);
 // 2-9 empresas
 E.forEach(([t,nm,img,prod,qq])=>{ const {a,z,pre,y,p2}=st(t);
-  S.push(`<div class="half top chart"><div class="hd"><div class="tk">${t}</div><div class="nm">${nm}</div></div>
-   <div class="vals"><div><div class="k">Há 12 meses</div><div class="v">${brl(a)}</div></div>
-    <div><div class="k">Ontem</div><div class="v">${brl(z)}<small style="color:${y>=0?'#2fc27a':'#ff4d55'}">${pct(y)} em 12m</small></div></div>
-    <div style="border-color:rgba(255,77,85,.6); background:rgba(227,20,30,.14)"><div class="k" style="color:#ff8a8f">Desde o 2º turno</div><div class="v" style="color:#ff4d55">${pct(p2)}</div></div>
-    <div style="border-color:var(--gold); background:rgba(227,182,90,.12)"><div class="k" style="color:var(--gold)">Preço-alvo XP</div><div class="v">${brl(ALVO[t][0])}<small style="color:var(--gold)">${pct(ALVO[t][0]/z-1)} potencial</small></div></div></div>
+  const ph=`<img class="ph" src="img/${img}.jpg" style="object-position:${img=='sbsp3'?'50% 10%':img=='bbdc4'?'30% 30%':'50% 50%'}">`;
+  S.push(`<div class="half top chart">${ph}<div class="sh" style="background:rgba(7,13,36,.86)"></div><div class="hd"><div class="tk">${t}</div><div class="nm">${nm}</div></div>
+   <div class="alvo">Preço-alvo XP <b>${brl(ALVO[t][0])}</b></div>
+   <div class="vals"><div style="border-color:${y>=0?'rgba(47,194,122,.6)':'rgba(255,77,85,.6)'}; background:${y>=0?'rgba(47,194,122,.12)':'rgba(227,20,30,.14)'}"><div class="k">Em 12 meses</div><div class="v" style="color:${y>=0?'#2fc27a':'#ff4d55'}">${pct(y)}</div></div>
+    <div style="border-color:rgba(255,77,85,.6); background:rgba(227,20,30,.14)"><div class="k">Desde o 2º turno</div><div class="v" style="color:#ff4d55">${pct(p2)}</div></div></div>
    <svg viewBox="0 0 1080 360">${chart(t)}</svg></div>
   <div class="sep"></div>
-  <div class="half bot"><img class="ph" src="img/${img}.jpg" style="object-position:${img=='sbsp3'?'50% 10%':img=='bbdc4'?'30% 30%':'50% 50%'}"><div class="sh" style="background:linear-gradient(180deg, rgba(5,9,26,.35) 0%, rgba(5,9,26,.55) 40%, rgba(5,9,26,.88) 100%)"></div>
+  <div class="half bot">${ph}<div class="sh" style="background:linear-gradient(180deg, rgba(5,9,26,.35) 0%, rgba(5,9,26,.55) 40%, rgba(5,9,26,.88) 100%)"></div>
    <div class="q"><div class="lab">${prod}</div><div class="t">${qq}</div></div>${foot}</div>`); });
 // 10 final
 S.push(`<div class="half top chart"><div class="big" style="top:120px"><div class="lab">O que separa o investidor do apostador</div></div>
