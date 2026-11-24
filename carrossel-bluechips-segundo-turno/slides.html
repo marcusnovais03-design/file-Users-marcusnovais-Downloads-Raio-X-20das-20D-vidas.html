@@ -54,6 +54,15 @@
   .cmp .k { font-size:24px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
   .cmp .v { font-size:30px; line-height:1.3; margin-top:10px; color:rgba(255,255,255,.9); }
   .btn { display:inline-block; margin-top:26px; background:var(--gold); color:var(--ink); font-weight:900; font-size:32px; padding:18px 30px; border-radius:20px; font-family:"Inter",sans-serif; text-shadow:none; }
+  .half img.ph.blur { filter:blur(7px) saturate(.75) brightness(.9); transform:scale(1.12); }
+  .vig { position:absolute; inset:0; background:radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(3,6,18,.65) 100%); }
+  .half.top.chart { background:#070d24; }
+  .gl { background:linear-gradient(160deg, rgba(255,255,255,.13), rgba(255,255,255,.04)) !important; border:1.5px solid rgba(255,255,255,.2) !important; backdrop-filter:blur(16px); box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.18); border-radius:22px !important; }
+  .gl .k { color:rgba(255,255,255,.72) !important; }
+  .gl .v { display:flex; align-items:center; gap:12px; }
+  .gl .v .ar { font-size:.5em; }
+  .v.up { color:#5fe0a0; text-shadow:0 0 22px rgba(95,224,160,.45); }
+  .v.dn { color:#ff7a7f; text-shadow:0 0 22px rgba(255,90,95,.45); }
 </style>
 </head>
 <body>
@@ -81,16 +90,16 @@ function chart(t){
   const gx=i=>X0+(X1-X0)*i/(n-1), gy=v=>Y0-(Y0-Y1)*(v-lo)/(hi-lo);
   const i2=s.findIndex(p=>p[0]>T2);
   const line=s.map((p,i)=>(i?'L':'M')+gx(i).toFixed(1)+' '+gy(p[1]).toFixed(1)).join('');
-  const up=z>=a, col=up?'#2fc27a':'#ff4d55';
-  let g=`<defs><linearGradient id="f${t}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".35"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>`;
+  const up=z>=a, col=up?'#5fe0a0':'#ff7a7f';
+  let g=`<defs><filter id="glow" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="f${t}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".35"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>`;
   g+=`<path d="${line}L${X1} ${Y0}L${X0} ${Y0}Z" fill="url(#f${t})"/>`;
   g+=`<line x1="${gx(i2)}" x2="${gx(i2)}" y1="${Y1-10}" y2="${Y0}" stroke="rgba(255,255,255,.7)" stroke-width="3" stroke-dasharray="8 8"/>`;
   g+=`<text x="${gx(i2)-14}" y="${Y1+14}" text-anchor="end" font-family="Inter" font-weight="800" font-size="24" fill="rgba(255,255,255,.85)">2º turno</text>`;
-  g+=`<path d="${line}" fill="none" stroke="${col}" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>`;
-  g+=`<path d="${s.slice(i2-1).map((p,j)=>(j?'L':'M')+gx(i2-1+j).toFixed(1)+' '+gy(p[1]).toFixed(1)).join('')}" fill="none" stroke="#ff4d55" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>`;
+  g+=`<path d="${line}" fill="none" stroke="${col}" stroke-width="7" filter="url(#glow)" stroke-linejoin="round" stroke-linecap="round"/>`;
+  g+=`<path d="${s.slice(i2-1).map((p,j)=>(j?'L':'M')+gx(i2-1+j).toFixed(1)+' '+gy(p[1]).toFixed(1)).join('')}" fill="none" stroke="#ff5a60" stroke-width="9" filter="url(#glow)" stroke-linejoin="round" stroke-linecap="round"/>`;
   const lab=(x,yv,v,anc,c)=>`<text x="${x}" y="${gy(yv)-34}" text-anchor="${anc}" font-family="Inter" font-weight="900" font-size="30" fill="${c}" stroke="#070d24" stroke-width="6" paint-order="stroke">${brl(v)}</text>`;
   g+=lab(gx(0)-6,a,a,'start','#fff')+lab(gx(n-1)+8,z,z,'end','#fff');
-  g+=`<circle cx="${gx(0)}" cy="${gy(a)}" r="11" fill="#fff"/><circle cx="${gx(n-1)}" cy="${gy(z)}" r="13" fill="#fff" stroke="#ff4d55" stroke-width="5"/>`;
+  g+=`<circle cx="${gx(0)}" cy="${gy(a)}" r="11" fill="#fff"/><circle cx="${gx(n-1)}" cy="${gy(z)}" r="13" fill="#fff" stroke="#ff5a60" stroke-width="5"/>`;
   g+=`<line x1="${X0}" x2="${X1}" y1="${Y0}" y2="${Y0}" stroke="rgba(255,255,255,.35)" stroke-width="3"/>`;
   g+=`<text x="${X0}" y="${Y0+32}" font-family="Inter" font-weight="600" font-size="22" fill="rgba(255,255,255,.6)">nov/25</text><text x="${X1}" y="${Y0+32}" text-anchor="end" font-family="Inter" font-weight="600" font-size="22" fill="rgba(255,255,255,.6)">nov/26</text>`;
   return g;
@@ -107,10 +116,10 @@ S.push(`<div class="half top"><img class="ph" src="img/marcus.jpg" style="object
 // 2-9 empresas
 E.forEach(([t,nm,img,prod,qq])=>{ const {a,z,pre,y,p2}=st(t);
   const ph=`<img class="ph" src="img/${img}.jpg" style="object-position:${img=='sbsp3'?'50% 10%':img=='bbdc4'?'30% 30%':'50% 50%'}">`;
-  S.push(`<div class="half top chart">${ph}<div class="sh" style="background:rgba(7,13,36,.86)"></div><div class="hd"><div class="tk">${t}</div><div class="nm">${nm}</div></div>
+  S.push(`<div class="half top chart">${ph.replace('class="ph"','class="ph blur"')}<div class="sh" style="background:linear-gradient(180deg, rgba(7,13,36,.72) 0%, rgba(7,13,36,.8) 45%, rgba(7,13,36,.93) 100%)"></div><div class="vig"></div><div class="hd"><div class="tk">${t}</div><div class="nm">${nm}</div></div>
    <div class="alvo">Preço-alvo XP <b>${brl(ALVO[t][0])}</b></div>
-   <div class="vals"><div style="border-color:${y>=0?'rgba(47,194,122,.6)':'rgba(255,77,85,.6)'}; background:${y>=0?'rgba(47,194,122,.12)':'rgba(227,20,30,.14)'}"><div class="k">Em 12 meses</div><div class="v" style="color:${y>=0?'#2fc27a':'#ff4d55'}">${pct(y)}</div></div>
-    <div style="border-color:rgba(255,77,85,.6); background:rgba(227,20,30,.14)"><div class="k">Desde o 2º turno</div><div class="v" style="color:#ff4d55">${pct(p2)}</div></div></div>
+   <div class="vals"><div class="gl"><div class="k">Em 12 meses</div><div class="v ${y>=0?'up':'dn'}"><span class="ar">${y>=0?'▲':'▼'}</span>${pct(y).replace('−','').replace('+','')}</div></div>
+    <div class="gl"><div class="k">Desde o 2º turno</div><div class="v ${p2>=0?'up':'dn'}"><span class="ar">${p2>=0?'▲':'▼'}</span>${pct(p2).replace('−','').replace('+','')}</div></div></div>
    <svg viewBox="0 0 1080 360">${chart(t)}</svg></div>
   <div class="sep"></div>
   <div class="half bot">${ph}<div class="sh" style="background:linear-gradient(180deg, rgba(5,9,26,.35) 0%, rgba(5,9,26,.55) 40%, rgba(5,9,26,.88) 100%)"></div>
