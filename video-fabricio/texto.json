@@ -1,0 +1,17 @@
+{
+  "titulo": ["Fabrício tentou durante 5 anos", "multiplicar seus R$ 500 mil...", "e acabou PERDENDO R$ 100 mil"],
+  "titulo_cores": [null, null, "#D62828"],
+  "titulo_escala": 1.25,
+  "titulo_escalas": [0.9, 0.9, 0.92],
+  "titulo_y": 0.2,
+  "caixas": [
+    ["Eu contei para ele que ganharia", "R$ 400 mil fazendo o básico"]
+  ],
+  "caixa_escala": 1.4,
+  "caixas_y": 0.62,
+  "rodape": ["Saiba como 👇"],
+  "rodape_destaque": true,
+  "rodape_escala": 1.6,
+  "rodape_y": 0.745,
+  "rodape_em": 0
+}
