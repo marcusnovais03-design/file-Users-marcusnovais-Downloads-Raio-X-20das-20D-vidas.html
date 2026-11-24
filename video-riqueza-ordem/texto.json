@@ -2,9 +2,9 @@
   "titulo": ["A riqueza está na ordem.", "NÃO INVERTA."],
   "titulo_cores": ["#FFFFFF", "#D62828"],
   "titulo_escala": 1.25,
-  "titulo_escalas": [1.0, 1.15],
+  "titulo_escalas": [0.85, 0.95],
   "titulo_pad": 0.45,
-  "titulo_y": 0.07,
+  "titulo_y": 0.135,
   "caixas": [
     ["1º patrimônio, depois aparência.",
      "1º investir, depois consumir.",
