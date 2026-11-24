@@ -23,12 +23,12 @@
     ]
   ],
   "caixa_escala": 1.4,
-  "caixas_y": 0.6,
+  "caixas_y": 0.7,
   "rodape": [
     "Saiba como 👇"
   ],
   "rodape_destaque": true,
   "rodape_escala": 1.6,
-  "rodape_y": 0.725,
+  "rodape_y": 0.825,
   "rodape_em": 0
 }
