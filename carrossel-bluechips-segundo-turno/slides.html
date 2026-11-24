@@ -115,12 +115,11 @@ function chart(t){
 }
 const S=[];
 // 1 capa
-const ord=E.map(e=>[e[0],st(e[0]).p2]).sort((x,y)=>x[1]-y[1]);
+const ord=E.map(e=>[e[0],INI[e[0]]?st(e[0]).y:st(e[0]).p2]).sort((x,y)=>x[1]-y[1]);
 S.push(`<div class="capa"><img class="ph" src="img/marcus-capa.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 30%">
  <div class="sh" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(5,9,26,.05) 0%, rgba(5,9,26,.08) 35%, rgba(5,9,26,.7) 58%, rgba(5,9,26,.9) 100%)"></div>
  <div class="big" style="top:640px"><div class="lab">Blue chips depois do 2º turno</div><div class="t">As ações caíram até <em>${pct(ord[0][1]).replace('−','')}</em>.<br>As empresas pararam?</div></div>
- <div class="grid8" style="top:885px">${ord.map(([t,v])=>`<div><div class="k">${t}</div><div class="v">${pct(v)}</div>${INI[t]?`<div class="pk">${pct(st(t).y)} desde o pico</div>`:''}</div>`).join('')}</div>
- <div class="note" style="top:1222px; color:rgba(255,255,255,.75)">Fechamento de 23/10 (antes do 2º turno) x ontem (23/11). <b style="color:#fff">Arrasta 👉</b></div>${foot}</div>`);
+ <div class="grid8" style="top:885px">${ord.map(([t,v])=>`<div><div class="k">${t}</div><div class="v">${pct(v)}</div>${INI[t]?`<div class="pk">desde o pico</div>`:''}</div>`).join('')}</div>${foot}</div>`);
 // 2-9 empresas
 E.forEach(([t,nm,img,prod,qq])=>{ const {a,z,pre,y,p2}=st(t);
   const ph=img=='bpac11'?`<div class="ph btg"><span>BTG Pactual</span></div>`:`<img class="ph" src="img/${img}.jpg" style="object-position:${img=='sbsp3'?'50% 10%':img=='bbdc4'?'30% 30%':'50% 50%'}">`;
