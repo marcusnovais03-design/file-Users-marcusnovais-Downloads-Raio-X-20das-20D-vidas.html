@@ -68,6 +68,7 @@
   .half.top .ph.btg { filter:blur(5px); }
   .capa .grid8 > div { background:linear-gradient(160deg, rgba(255,255,255,.16), rgba(255,255,255,.05)); border:1.5px solid rgba(255,255,255,.22); backdrop-filter:blur(14px); box-shadow:0 10px 30px rgba(0,0,0,.35); }
   .capa .grid8 .v { color:#ff7a7f; text-shadow:0 0 20px rgba(255,90,95,.45); }
+  .capa .grid8 .pk { font-size:19px; font-weight:800; color:#ffb0b3; margin-top:2px; }
 </style>
 </head>
 <body>
@@ -118,8 +119,8 @@ const ord=E.map(e=>[e[0],st(e[0]).p2]).sort((x,y)=>x[1]-y[1]);
 S.push(`<div class="capa"><img class="ph" src="img/marcus-capa.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 30%">
  <div class="sh" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(5,9,26,.05) 0%, rgba(5,9,26,.08) 35%, rgba(5,9,26,.7) 58%, rgba(5,9,26,.9) 100%)"></div>
  <div class="big" style="top:640px"><div class="lab">Blue chips depois do 2º turno</div><div class="t">As ações caíram até <em>${pct(ord[0][1]).replace('−','')}</em>.<br>As empresas pararam?</div></div>
- <div class="grid8" style="top:905px">${ord.map(([t,v])=>`<div><div class="k">${t}</div><div class="v">${pct(v)}</div></div>`).join('')}</div>
- <div class="note" style="top:1195px; color:rgba(255,255,255,.75)">Fechamento de 23/10 (antes do 2º turno) x ontem (23/11). <b style="color:#fff">Arrasta 👉</b></div>${foot}</div>`);
+ <div class="grid8" style="top:885px">${ord.map(([t,v])=>`<div><div class="k">${t}</div><div class="v">${pct(v)}</div>${INI[t]?`<div class="pk">${pct(st(t).y)} desde o pico</div>`:''}</div>`).join('')}</div>
+ <div class="note" style="top:1222px; color:rgba(255,255,255,.75)">Fechamento de 23/10 (antes do 2º turno) x ontem (23/11). <b style="color:#fff">Arrasta 👉</b></div>${foot}</div>`);
 // 2-9 empresas
 E.forEach(([t,nm,img,prod,qq])=>{ const {a,z,pre,y,p2}=st(t);
   const ph=img=='bpac11'?`<div class="ph btg"><span>BTG Pactual</span></div>`:`<img class="ph" src="img/${img}.jpg" style="object-position:${img=='sbsp3'?'50% 10%':img=='bbdc4'?'30% 30%':'50% 50%'}">`;
