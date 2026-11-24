@@ -105,8 +105,12 @@ def main(spec_path, src, out):
         tw = max(f_box.getlength(l) for l in lines)
         bh = pad_y * 2 + pitch * (len(lines) - 1) + asc + desc * 0.4
         d.rectangle([W / 2 - tw / 2 - pad_x, y, W / 2 + tw / 2 + pad_x, y + bh], fill="white")
+        left = spec.get("caixa_alinhar") == "esquerda"
         for i, l in enumerate(lines):
-            d.text((W / 2, y + pad_y + i * pitch), l, font=f_box, fill=(20, 20, 20), anchor="mt")
+            if left:
+                d.text((W / 2 - tw / 2, y + pad_y + i * pitch), l, font=f_box, fill=(20, 20, 20), anchor="lt")
+            else:
+                d.text((W / 2, y + pad_y + i * pitch), l, font=f_box, fill=(20, 20, 20), anchor="mt")
         y += bh + gap
 
     foot = Image.new("RGBA", (W, H), (0, 0, 0, 0))
