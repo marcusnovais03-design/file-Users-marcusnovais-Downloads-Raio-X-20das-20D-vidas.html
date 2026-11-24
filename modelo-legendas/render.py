@@ -48,7 +48,7 @@ def emoji_img(ch, height):
     return im.resize((round(im.width * height / im.height), round(height)), Image.LANCZOS)
 
 
-def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400", colors=None):
+def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400", colors=None, pad=1.0):
     """highlight: índice da linha que vai dentro de uma caixa colorida (texto preto).
     colors: lista por linha com a cor do fundo (None = texto branco sem fundo)."""
     sh = Image.new("RGBA", img.size, (0, 0, 0, 0))
@@ -65,7 +65,7 @@ def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400", 
             gap = font.size * 0.25 if em else 0
             tw = r + (gap + em.width if em else 0)
             x0 = W / 2 - tw / 2
-            px, py = 12 * S, 6 * S
+            px, py = 12 * S * pad, 6 * S * pad
             dt.rectangle([x0 - px, cy + t - py, x0 + tw + px, cy + b + py], fill=bg)
             r_, g_, b_ = ImageColor.getrgb(bg)[:3]
             dark = 0.299 * r_ + 0.587 * g_ + 0.114 * b_ < 150
@@ -88,7 +88,7 @@ def main(spec_path, src, out):
         cores = spec.get("titulo_cores") or [None] * len(spec["titulo"])
         for line, esc, cor in zip(spec["titulo"], spec["titulo_escalas"], cores):
             fl = ImageFont.truetype(TITLE_FONT, round(ft.size * esc))
-            shadow_text(base, [line], fl, ty, 0, None, colors=[cor])
+            shadow_text(base, [line], fl, ty, 0, None, colors=[cor], pad=spec.get("titulo_pad", 1.0))
             ty += fl.size * (1.62 if cor else 1.2)
     else:
         shadow_text(base, spec["titulo"], ft, spec.get("titulo_y", 0.18) * H,

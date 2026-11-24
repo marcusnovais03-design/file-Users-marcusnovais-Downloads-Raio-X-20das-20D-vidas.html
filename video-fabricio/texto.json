@@ -30,5 +30,6 @@
   "rodape_destaque": true,
   "rodape_escala": 1.6,
   "rodape_y": 0.825,
-  "rodape_em": 0
+  "rodape_em": 0,
+  "titulo_pad": 0.45
 }
