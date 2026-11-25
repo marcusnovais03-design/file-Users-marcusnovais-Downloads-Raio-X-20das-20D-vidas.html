@@ -13,7 +13,7 @@
     0.95
   ],
   "titulo_pad": 0.45,
-  "titulo_y": 0.4,
+  "titulo_y": 0.43,
   "caixas": [
     [
       "TÍTULO DE CAPITALIZAÇÃO"
@@ -28,9 +28,15 @@
     "Leia a legenda 👇"
   ],
   "rodape_destaque": true,
-  "rodape_escala": 1.5,
-  "rodape_y": 0.7,
+  "rodape_escala": 1.85,
+  "rodape_y": 0.66,
   "rodape_em": 0,
   "titulo_espaco": 1.4,
-  "caixa_gap": 18
+  "caixa_gap": 10,
+  "fonte_titulo": "fonts/Montserrat-SemiBold.ttf",
+  "fonte_caixa": "fonts/Montserrat-Medium.ttf",
+  "fonte_negrito": "fonts/Montserrat-ExtraBold.ttf",
+  "caixas_negrito": [
+    0
+  ]
 }

@@ -81,6 +81,15 @@ def shadow_text(img, lines, font, y, pitch, highlight=None, hl_color="#F5C400", 
 
 def main(spec_path, src, out):
     spec = json.load(open(spec_path, encoding="utf-8"))
+    global TITLE_FONT, BOX_FONT, f_title, f_box, f_foot
+    if spec.get("fonte_titulo"):  # troca de fonte: recalcula tamanhos pela mesma largura do modelo
+        TITLE_FONT = os.path.join(HERE, spec["fonte_titulo"])
+        f_title = fit(TITLE_FONT, "Como chegar em 1 MILHÃO", 357 * S)
+        f_foot = fit(TITLE_FONT, "Leia a legenda", 125 * S)
+    if spec.get("fonte_caixa"):
+        BOX_FONT = os.path.join(HERE, spec["fonte_caixa"])
+        f_box = fit(BOX_FONT, "Dos 40 aos 45 invista R$ 1.000 por mês,", 354 * S)
+    bold_font = os.path.join(HERE, spec.get("fonte_negrito", "fonts/Montserrat-ExtraBold.ttf"))
     base = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ft = ImageFont.truetype(TITLE_FONT, round(f_title.size * spec.get("titulo_escala", 1.0)))
     if "titulo_escalas" in spec:  # tamanho diferente por linha do título
@@ -101,7 +110,10 @@ def main(spec_path, src, out):
     pitch, pad_x, pad_y, gap = 26 * S * k, 12 * S, 11 * S, spec.get("caixa_gap", 25) * S
     asc, desc = f_box.getmetrics()
     y = spec.get("caixas_y", 0.555) * H
-    for lines in spec["caixas"]:
+    f_box_normal = f_box
+    for bi, lines in enumerate(spec["caixas"]):
+        f_box = (ImageFont.truetype(bold_font, f_box_normal.size)
+                 if bi in spec.get("caixas_negrito", []) else f_box_normal)
         tw = max(f_box.getlength(l) for l in lines)
         bh = pad_y * 2 + pitch * (len(lines) - 1) + asc + desc * 0.4
         d.rectangle([W / 2 - tw / 2 - pad_x, y, W / 2 + tw / 2 + pad_x, y + bh], fill="white")
