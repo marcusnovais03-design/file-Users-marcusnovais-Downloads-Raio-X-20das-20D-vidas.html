@@ -9,8 +9,8 @@
   ],
   "titulo_escala": 1.25,
   "titulo_escalas": [
-    0.95,
-    0.95
+    0.847,
+    0.847
   ],
   "titulo_pad": 0.45,
   "titulo_y": 0.43,
@@ -28,10 +28,10 @@
     "Leia a legenda 👇"
   ],
   "rodape_destaque": true,
-  "rodape_escala": 1.85,
-  "rodape_y": 0.66,
+  "rodape_escala": 1.613,
+  "rodape_y": 0.668,
   "rodape_em": 0,
-  "titulo_espaco": 1.4,
+  "titulo_espaco": 1.62,
   "caixa_gap": 10,
   "fonte_titulo": "fonts/Montserrat-SemiBold.ttf",
   "fonte_caixa": "fonts/Montserrat-Medium.ttf",
