@@ -1,35 +1,36 @@
 {
   "titulo": [
     "Eu vendo você RIFAR",
-    "SEU DINHEIRO",
-    "TÍTULO DE CAPITALIZAÇÃO"
+    "SEU DINHEIRO"
   ],
   "titulo_cores": [
     "#FFFFFF",
-    "#FFFFFF",
-    "#D62828"
+    "#FFFFFF"
   ],
   "titulo_escala": 1.25,
   "titulo_escalas": [
     0.95,
-    0.95,
-    0.9
+    0.95
   ],
   "titulo_pad": 0.45,
   "titulo_y": 0.4,
   "caixas": [
     [
+      "TÍTULO DE CAPITALIZAÇÃO"
+    ],
+    [
       "com o carimbo do banco"
     ]
   ],
   "caixa_escala": 1.5,
-  "caixas_y": 0.755,
+  "caixas_y": 0.535,
   "rodape": [
     "Leia a legenda 👇"
   ],
   "rodape_destaque": true,
   "rodape_escala": 1.5,
-  "rodape_y": 0.848,
+  "rodape_y": 0.7,
   "rodape_em": 0,
-  "titulo_espaco": 1.4
+  "titulo_espaco": 1.4,
+  "caixa_gap": 18
 }
