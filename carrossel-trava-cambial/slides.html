@@ -158,7 +158,7 @@ S.push({h:`<div class="bg"><img src="img/marcus-b3.jpg" style="object-position:5
  <p style="font-size:34px">Eu faço a simulação com os números do seu negócio.</p>
  <div class="btn">Acesse o link na BIO e fale comigo</div></div>`});
 const N=S.length;
-const AVISO='História e valores ilustrativos (dólar de referência R$ 5,82, CDI de 13,15% ao ano, IR de 34%). Cotações reais mudam a cada dia.';
+const AVISO='Simulação com dólar de referência de R$ 5,82, CDI de 13,15% ao ano e IR de 34%. Cotações e taxas mudam a cada dia.';
 S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide'+(x.light?' light':''); if(x.video) s.dataset.video=x.video;
   s.innerHTML=x.h+(x.disc?`<div class="aviso">${AVISO}</div>`:'')+`<div class="count">${String(i+1).padStart(2,'0')}/${String(N).padStart(2,'0')}</div><div class="foot"><div class="who">Marcus Novais<span></span>Planejador Financeiro, CFP®</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
   document.body.appendChild(s); });
