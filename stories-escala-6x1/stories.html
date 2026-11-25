@@ -2,64 +2,69 @@
 <html lang="pt-BR"><head><meta charset="utf-8"><title>Stories Allos 6x1</title>
 <style>
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:"Inter",sans-serif; color:#fff; background:#070d24; }
+  body { font-family:"Inter",sans-serif; color:#fff; background:#000; }
   .st { width:1080px; height:1920px; position:relative; overflow:hidden; }
   body.single .st { display:none; } body.single .st.on { display:block; }
   .bg { position:absolute; inset:0; } .bg img { width:100%; height:100%; object-fit:cover; }
-  .sh { position:absolute; inset:0; background:linear-gradient(180deg, rgba(7,13,36,.45) 0%, rgba(7,13,36,.18) 26%, rgba(7,13,36,0) 40%, rgba(7,13,36,0) 52%, rgba(7,13,36,.3) 70%, rgba(7,13,36,.5) 100%); }
-  .who { position:absolute; left:64px; top:240px; font-size:24px; font-weight:700; text-shadow:0 2px 10px rgba(0,0,0,.6); }
-  .who span { display:inline-block; width:2px; height:22px; background:#fff; margin:0 9px -3px; }
+  .sh { position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,.25) 24%, rgba(0,0,0,0) 38%, rgba(0,0,0,0) 48%, rgba(0,0,0,.4) 60%, rgba(0,0,0,.6) 100%); }
   .num { position:absolute; right:64px; top:236px; font-size:26px; font-weight:800; text-shadow:0 2px 6px rgba(0,0,0,.85); }
-  .head { position:absolute; left:50px; right:50px; top:290px; padding:30px 34px; border-radius:28px; background:rgba(7,13,36,.62); backdrop-filter:blur(16px); border:1.5px solid rgba(255,255,255,.16); box-shadow:0 14px 40px rgba(0,0,0,.3); }
-  .pill { display:inline-block; background:#e3141e; color:#fff; font-weight:800; font-size:26px; letter-spacing:.12em; text-transform:uppercase; padding:9px 18px 8px; border-radius:10px; }
-  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:62px; line-height:1.03; letter-spacing:-.045em; word-spacing:.1em; margin-top:18px; }
+  .head { position:absolute; left:64px; right:64px; top:290px; }
+  .pill { display:inline-block; background:#e3141e; color:#fff; font-weight:800; font-size:28px; letter-spacing:.12em; text-transform:uppercase; padding:10px 20px 9px; border-radius:10px; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:72px; line-height:1.02; letter-spacing:-.045em; word-spacing:.1em; margin-top:20px; }
   h1 em { font-style:normal; color:#e3b65a; }
-  .list { position:absolute; left:50px; right:50px; bottom:250px; display:flex; flex-direction:column; gap:14px; }
-  .it { display:flex; gap:20px; align-items:center; padding:16px 24px; border-radius:22px; background:rgba(7,13,36,.62); border:1.5px solid rgba(255,255,255,.16); backdrop-filter:blur(16px); box-shadow:0 10px 30px rgba(0,0,0,.25); }
-  .it .ic { flex:none; font-size:42px; width:56px; text-align:center; }
-  .it .tx { font-size:31px; line-height:1.25; color:rgba(255,255,255,.9); }
-  .it .tx b { color:#fff; font-weight:800; } .it .tx b.g { color:#e3b65a; }
-  .src { font-size:21px; color:rgba(255,255,255,.75); margin-top:2px; text-align:right; text-shadow:0 1px 6px rgba(0,0,0,.7); }
-  .next { align-self:flex-end; font-weight:900; font-size:30px; color:#070d24; background:#e3b65a; padding:14px 24px; border-radius:16px; }
-  .btn { background:#e3b65a; color:#070d24; font-weight:900; font-size:36px; padding:22px 30px; border-radius:20px; text-align:center; }
-  .head, .it { background:none !important; border:0 !important; backdrop-filter:none !important; box-shadow:none !important; }
-  .head { padding:0 14px; }
-  .it { padding:6px 14px; }
-  h1, .it .tx, .src { text-shadow:0 2px 6px rgba(0,0,0,.85), 0 0 26px rgba(0,0,0,.65); }
-  .it .tx { color:#fff; font-weight:600; font-size:33px; }
-  .it .ic { filter:drop-shadow(0 2px 6px rgba(0,0,0,.6)); }
-  .sh { background:linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,.25) 24%, rgba(0,0,0,0) 38%, rgba(0,0,0,0) 50%, rgba(0,0,0,.35) 64%, rgba(0,0,0,.55) 100%) !important; }
-  .cta2 { font-size:34px; line-height:1.3; font-weight:600; text-shadow:0 2px 6px rgba(0,0,0,.85), 0 0 26px rgba(0,0,0,.65); padding:0 14px; }
+  .sub { font-size:38px; line-height:1.28; font-weight:600; margin-top:20px; }
+  .sub b { color:#e3b65a; font-weight:900; }
+  h1, .sub, .tx, .big, .cta2, .src { text-shadow:0 2px 6px rgba(0,0,0,.85), 0 0 26px rgba(0,0,0,.65); }
+  .list { position:absolute; left:64px; right:64px; bottom:250px; display:flex; flex-direction:column; gap:26px; }
+  .row { display:flex; gap:26px; align-items:center; }
+  .big { flex:none; width:230px; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:76px; line-height:.95; letter-spacing:-.04em; color:#e3b65a; text-align:right; }
+  .big.r { color:#ff6b70; }
+  .big small { display:block; font-size:30px; letter-spacing:0; margin-top:4px; }
+  .bar { flex:none; width:6px; align-self:stretch; border-radius:3px; background:#e3b65a; }
+  .bar.r { background:#ff6b70; }
+  .tx { font-size:40px; line-height:1.2; font-weight:600; }
+  .tx b { font-weight:900; }
+  .src { font-size:22px; color:rgba(255,255,255,.8); text-align:right; }
+  .cta2 { font-size:40px; line-height:1.3; font-weight:600; }
   .cta2 b { color:#e3b65a; font-weight:900; }
+  .btn { align-self:flex-start; background:#e3b65a; color:#070d24; font-weight:900; font-size:40px; padding:22px 34px; border-radius:20px; }
 </style></head>
 <body>
 <script>
 const W=`<div class="bg"><img src="marcus.jpg"></div><div class="sh"></div>`;
-const it=(i,t)=>`<div class="it"><div class="ic">${i}</div><div class="tx">${t}</div></div>`;
+const row=(b,t,r)=>`<div class="row a"><div class="big ${r?'r':''}">${b}</div><div class="bar ${r?'r':''}"></div><div class="tx">${t}</div></div>`;
 const S=[
-`<div class="head"><div class="pill">Você conhece?</div><h1>Quem é a Allos, <em>a gigante dos shoppings</em></h1></div>
- <div class="list">${it('🏬','A <b>maior empresa de shoppings do Brasil</b>, com cerca de <b class="g">49 shoppings</b> pelo país')}
- ${it('🤝','Nasceu da união de <b>Aliansce Sonae e brMalls</b>')}
- ${it('📈','Tem ações na bolsa: <b>ALOS3</b>')}
- ${it('👔','O CEO, <b>Rafael Sales</b>, acabou de fazer um alerta')}
- <div class="next">Veja o alerta 👉</div></div>`,
-`<div class="head"><div class="pill">🚨 O alerta</div><h1>O fim da escala 6x1, segundo o CEO da Allos</h1></div>
- <div class="list">${it('👥','Lojistas poderão <b>demitir 20%</b> dos funcionários')}
- ${it('📈','<b>Mais inflação</b>, mais informalidade e <b>empregos piores</b>')}
- ${it('🛍️','Mais <b>lojas vazias</b> nos shoppings em 2027')}
- <div class="src">Fonte: NeoFeed</div></div>`,
-`<div class="head"><div class="pill">🚨 E tem mais</div><h1>Quem paga a conta <em>e o freio nos investimentos</em></h1></div>
- <div class="list">${it('💰','O <b>consumidor</b> vai pagar parte dos custos extras')}
- ${it('🏗️','Dos 20 projetos de expansão da Allos, <b class="g">só 3 devem sair do papel</b>')}
- ${it('🏦','O principal motivo: <b>juros altos</b>')}
- <div class="src">Fonte: NeoFeed</div></div>`,
-`<div class="head"><div class="pill">E a sua empresa?</div><h1>Como está o caixa <em>da sua empresa?</em></h1></div>
- <div class="list">${it('📊','Revise <b>custos e margens</b> antes que eles apertem')}
- ${it('💵','Tenha um <b>caixa bem investido</b> para atravessar o período')}
- ${it('🧭','Decida com <b>números</b>, não com sustos')}
- <div class="cta2">Se você quer saber <b>como investir melhor o caixa</b>, acesse o link na BIO e me chame!</div><div class="btn">👉 Link na BIO</div></div>`];
-S.forEach((h,i)=>{ const s=document.createElement('section'); s.className='st'; s.innerHTML=W+`<div class="num">${i+1}/${S.length}</div>`+h; document.body.appendChild(s); });
+// 1 gancho
+{h:`<div class="head a"><div class="pill">🚨 Alerta</div><h1>O fim da escala 6x1 <em>vai custar caro</em></h1>
+ <div class="sub">Quem diz é o CEO da <b>maior empresa de shoppings do Brasil</b>. Veja o que ele prevê 👉</div></div>`},
+// 2 quem é a Allos
+{v:7, h:`<div class="head a"><div class="pill">Quem é a Allos?</div><h1>A gigante <em>dos shoppings</em></h1></div>
+ <div class="list">${row('1ª','maior empresa de <b>shoppings do Brasil</b>')}
+ ${row('49','shoppings <b>pelo país</b>')}
+ ${row('2023','nasceu da união de <b>Aliansce Sonae e brMalls</b>')}
+ ${row('ALOS3','é o código das ações <b>na bolsa</b>')}</div>`},
+// 3 impactos 1
+{v:7, h:`<div class="head a"><div class="pill">🚨 O alerta do CEO</div><h1>Com o fim <em>da escala 6x1</em></h1></div>
+ <div class="list">${row('20%','dos funcionários dos lojistas <b>podem ser demitidos</b>',1)}
+ ${row('📈','<b>mais inflação</b>, mais informalidade e <b>empregos piores</b>',1)}
+ ${row('2027','mais <b>lojas vazias</b> nos shoppings',1)}
+ <div class="src a">Fonte: NeoFeed</div></div>`},
+// 4 impactos 2
+{v:7, h:`<div class="head a"><div class="pill">🚨 E tem mais</div><h1>Quem paga <em>a conta?</em></h1></div>
+ <div class="list">${row('💰','o <b>consumidor</b> vai pagar parte dos custos extras',1)}
+ ${row('3<small>de 20</small>','projetos de expansão da Allos <b>devem sair do papel</b>',1)}
+ ${row('🏦','o principal motivo: <b>juros altos</b>',1)}
+ <div class="src a">Fonte: NeoFeed</div></div>`},
+// 5 CTA
+{h:`<div class="head a"><div class="pill">E a sua empresa?</div><h1>Como está o caixa <em>da sua empresa?</em></h1></div>
+ <div class="list"><div class="cta2 a">Se você quer saber <b>como investir melhor o caixa</b>, acesse o link na BIO e me chame!</div><div class="btn a">👉 Link na BIO</div></div>`}];
+S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='st'; if(x.v) s.dataset.video=x.v; s.innerHTML=W+`<div class="num">${i+1}/${S.length}</div>`+x.h; document.body.appendChild(s); });
 const all=[...document.querySelectorAll('.st')];
-window.show=i=>{document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
+let cur=0;
+window.show=i=>{cur=i;document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
+const clamp=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-clamp(x),3);
+window.setT=t=>{ all[cur].querySelectorAll('.a').forEach((e,k)=>{ const p=ease((t-.2-k*.9)/.6);
+  e.style.opacity=p; e.style.transform=`translateX(${(1-p)*-60}px)`;
+  const b=e.querySelector('.big'); if(b){ const q=ease((t-.5-k*.9)/.5); b.style.transform=`scale(${.6+.4*q})`; b.style.transformOrigin='100% 50%'; } }); };
 </script>
 </body></html>
