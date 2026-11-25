@@ -89,7 +89,7 @@ def main(spec_path, src, out):
         for line, esc, cor in zip(spec["titulo"], spec["titulo_escalas"], cores):
             fl = ImageFont.truetype(TITLE_FONT, round(ft.size * esc))
             shadow_text(base, [line], fl, ty, 0, None, colors=[cor], pad=spec.get("titulo_pad", 1.0))
-            ty += fl.size * (1.62 if cor else 1.2)
+            ty += fl.size * (spec.get("titulo_espaco", 1.62) if cor else 1.2)
     else:
         shadow_text(base, spec["titulo"], ft, spec.get("titulo_y", 0.18) * H,
                     spec.get("titulo_pitch", 35) * S, spec.get("titulo_destaque"),
