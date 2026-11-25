@@ -114,7 +114,12 @@ def main(spec_path, src, out):
     for bi, lines in enumerate(spec["caixas"]):
         f_box = (ImageFont.truetype(bold_font, f_box_normal.size)
                  if bi in spec.get("caixas_negrito", []) else f_box_normal)
-        tw = max(f_box.getlength(l) for l in lines)
+        parts = [split_emoji(l) for l in lines]
+        eh = f_box.size * 1.0
+        ems = [emoji_img(e, eh) if e else None for _, e in parts]
+        lines = [t for t, _ in parts]
+        widths = [f_box.getlength(t) + (f_box.size * 0.3 + em.width if em else 0) for t, em in zip(lines, ems)]
+        tw = max(widths)
         bh = pad_y * 2 + pitch * (len(lines) - 1) + asc + desc * 0.4
         d.rectangle([W / 2 - tw / 2 - pad_x, y, W / 2 + tw / 2 + pad_x, y + bh], fill="white")
         left = spec.get("caixa_alinhar") == "esquerda"
@@ -122,7 +127,11 @@ def main(spec_path, src, out):
             if left:
                 d.text((W / 2 - tw / 2, y + pad_y + i * pitch), l, font=f_box, fill=(20, 20, 20), anchor="lt")
             else:
-                d.text((W / 2, y + pad_y + i * pitch), l, font=f_box, fill=(20, 20, 20), anchor="mt")
+                x0 = W / 2 - widths[i] / 2
+                d.text((x0, y + pad_y + i * pitch), l, font=f_box, fill=(20, 20, 20), anchor="lt")
+            if ems[i]:
+                ex = (W / 2 - tw / 2 if left else W / 2 - widths[i] / 2) + f_box.getlength(l) + f_box.size * 0.3
+                base.alpha_composite(ems[i], (round(ex), round(y + pad_y + i * pitch + asc * 0.55 - ems[i].height / 2)))
         y += bh + gap
 
     foot = Image.new("RGBA", (W, H), (0, 0, 0, 0))

@@ -1,0 +1,24 @@
+{
+  "fonte_titulo": "fonts/Montserrat-SemiBold.ttf",
+  "fonte_caixa": "fonts/Montserrat-Medium.ttf",
+  "fonte_negrito": "fonts/Montserrat-ExtraBold.ttf",
+  "titulo": ["Eu olhando para você", "que já GASTOU o 13º e o bônus"],
+  "titulo_cores": ["#FFFFFF", "#D62828"],
+  "titulo_escala": 1.25,
+  "titulo_escalas": [0.8, 0.8],
+  "titulo_pad": 1.0,
+  "titulo_espaco": 1.62,
+  "titulo_y": 0.07,
+  "caixas": [
+    ["e o dinheiro nem caiu na conta 😳"],
+    ["E você não investiu nada..."]
+  ],
+  "caixa_escala": 1.35,
+  "caixa_gap": 10,
+  "caixas_y": 0.745,
+  "rodape": ["Leia a legenda 👇"],
+  "rodape_destaque": true,
+  "rodape_escala": 1.45,
+  "rodape_y": 0.875,
+  "rodape_em": 0
+}
