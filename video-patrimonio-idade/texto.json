@@ -18,10 +18,10 @@
   ],
   "caixa_escala": 1.2,
   "caixa_alinhar": "esquerda",
-  "caixas_y": 0.6,
+  "caixas_y": 0.625,
   "rodape": ["Você está atrasado? 👇"],
   "rodape_destaque": true,
   "rodape_escala": 1.45,
-  "rodape_y": 0.84,
+  "rodape_y": 0.82,
   "rodape_em": 0
 }
