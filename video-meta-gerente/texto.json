@@ -8,17 +8,17 @@
   "titulo_escalas": [0.8, 0.8],
   "titulo_pad": 1.0,
   "titulo_espaco": 1.62,
-  "titulo_y": 0.2,
+  "titulo_y": 0.19,
   "caixas": [
     ["com título de capitalização,", "seguro, consórcio..."],
     ["e esquece de ajudar VOCÊ MESMO"]
   ],
   "caixa_escala": 1.35,
   "caixa_gap": 40,
-  "caixas_y": 0.6,
+  "caixas_y": 0.625,
   "rodape": ["Leia a legenda 👇"],
   "rodape_destaque": true,
   "rodape_escala": 1.45,
-  "rodape_y": 0.8,
+  "rodape_y": 0.84,
   "rodape_em": 0
 }
