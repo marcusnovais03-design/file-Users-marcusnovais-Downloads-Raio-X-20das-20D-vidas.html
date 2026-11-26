@@ -7,22 +7,22 @@
   .p.st { height:1920px; }
   body.single .p { display:none; } body.single .p.on { display:block; }
   .bg { position:absolute; inset:0; } .bg img { width:100%; height:100%; object-fit:cover; object-position:50% 22%; }
-  .sh { position:absolute; inset:0; background:linear-gradient(180deg, rgba(7,13,36,.75) 0%, rgba(7,13,36,.35) 18%, rgba(7,13,36,0) 30%, rgba(7,13,36,0) 42%, rgba(7,13,36,.7) 55%, rgba(7,13,36,.93) 68%, rgba(7,13,36,.97) 100%); }
+  .sh { position:absolute; inset:0; background:linear-gradient(180deg, rgba(7,13,36,.55) 0%, rgba(7,13,36,.6) 12%, rgba(7,13,36,.15) 28%, rgba(7,13,36,0) 36%, rgba(7,13,36,.55) 50%, rgba(7,13,36,.9) 64%, rgba(7,13,36,.96) 100%); }
   .top { position:absolute; left:70px; right:70px; }
-  .hook { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:46px; line-height:1.1; letter-spacing:-.02em; text-shadow:0 2px 14px rgba(0,0,0,.6); }
+  .hook { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:66px; line-height:1.02; letter-spacing:-.02em; text-shadow:0 2px 14px rgba(0,0,0,.6); }
   .hook em { font-style:normal; color:#e3b65a; }
   .bot { position:absolute; left:70px; right:70px; }
   .pill { display:inline-block; background:#e3141e; color:#fff; font-weight:800; font-size:26px; letter-spacing:.12em; text-transform:uppercase; padding:9px 18px 8px; border-radius:10px; }
   h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:74px; line-height:1; letter-spacing:-.045em; margin-top:16px; white-space:nowrap; }
   h1 em { font-style:normal; color:#e3b65a; }
-  .eq { display:flex; align-items:center; gap:22px; margin-top:18px; }
+  .eq { display:flex; align-items:baseline; gap:18px; margin-top:34px; }
   .eq .v { white-space:nowrap; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:60px; color:#e3b65a; letter-spacing:-.03em; line-height:1; }
-  .eq .t { font-size:28px; line-height:1.25; color:rgba(255,255,255,.88); }
-  .chips { display:flex; gap:10px; margin-top:22px; flex-wrap:nowrap; }
+  .eq .t { font-size:34px; font-weight:700; line-height:1.25; color:rgba(255,255,255,.88); }
+  .chips { display:flex; gap:10px; margin-top:38px; flex-wrap:nowrap; }
   .chips span { white-space:nowrap; border:2px solid rgba(255,255,255,.55); border-radius:40px; padding:9px 14px; font-size:22px; font-weight:700; }
   .chips span.r { border-color:#ff6b70; color:#ff8a8f; }
-  .btn { display:inline-block; margin-top:26px; background:#e3b65a; color:#070d24; font-weight:900; font-size:34px; padding:20px 30px; border-radius:20px; }
-  .fine { font-size:18px; line-height:1.3; color:rgba(255,255,255,.55); margin-top:18px; }
+  .btn { display:inline-block; margin-top:42px; background:#e3b65a; color:#070d24; font-weight:900; font-size:34px; padding:20px 30px; border-radius:20px; }
+  .fine { font-size:18px; line-height:1.3; color:rgba(255,255,255,.55); margin-top:22px; }
   .foot { position:absolute; left:70px; right:70px; display:flex; justify-content:space-between; align-items:center; font-size:23px; font-weight:700; color:rgba(255,255,255,.85); }
   .foot span { display:inline-block; width:2px; height:20px; background:rgba(255,255,255,.85); margin:0 9px -3px; }
   .foot img { height:34px; opacity:.6; filter:brightness(0) invert(1); }
@@ -33,12 +33,12 @@ const body=(top,bot,foot)=>`<div class="bg"><img src="marcus.jpg"></div><div cla
  <div class="top" style="top:${top}px"><div class="hook">Seu fundo DI ou de renda fixa está <em>rendendo abaixo do CDI</em>?</div></div>
  <div class="bot" style="bottom:${bot}px"><div class="pill">Oportunidade em renda fixa</div>
   <h1>95% do CDI <em>isento de IR</em></h1>
-  <div class="eq"><div class="v">≈ 118,8%</div><div class="t">do CDI é o que um título <b>com IR</b> precisaria pagar para empatar*</div></div>
+  <div class="eq"><div class="t">Equivalente a um CDB de</div><div class="v">118,8% do CDI</div></div>
   <div class="chips"><span>💰 Aplicação mínima de R$ 1 mil</span><span>⚡ Liquidez diária</span><span class="r">⏳ Lastro limitado</span></div>
-  <div class="btn">👉 Clique no link e saiba qual é este título</div>
-  <div class="fine">*Taxa equivalente para resgate em set/2027 (IR de 20% na renda fixa tributada). Sujeito à disponibilidade. Rentabilidade passada não garante rentabilidade futura.</div></div>
+  <div class="btn">👉 Clique no link para saber mais</div>
+  <div class="fine">Sujeito à disponibilidade. Rentabilidade passada não garante rentabilidade futura.</div></div>
  <div class="foot" style="bottom:${foot}px"><div>Marcus Novais<span></span>Planejador Financeiro, CFP®</div><img src="logo-private-xp.png"></div>`;
-for (const [cls,top,bot,foot] of [['p',70,120,50],['p st',260,330,250]]) { const s=document.createElement('section'); s.className=cls; s.innerHTML=body(top,bot,foot); document.body.appendChild(s); }
+for (const [cls,top,bot,foot] of [['p',110,115,50],['p st',300,330,250]]) { const s=document.createElement('section'); s.className=cls; s.innerHTML=body(top,bot,foot); document.body.appendChild(s); }
 const all=[...document.querySelectorAll('.p')];
 window.show=i=>{document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
 </script>
