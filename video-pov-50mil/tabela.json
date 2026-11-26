@@ -1,6 +1,5 @@
 {
   "titulo": [
-    "POV:",
     "VOCÊ INVESTIU R$ 50 MIL EM 2016"
   ],
   "linhas": [
@@ -68,5 +67,6 @@
       "total": "+199%"
     }
   ],
-  "escurecer": 0.3
+  "escurecer": 0.3,
+  "titulo_y": 250
 }
