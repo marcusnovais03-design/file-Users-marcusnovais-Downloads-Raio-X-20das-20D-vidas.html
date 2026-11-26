@@ -1,0 +1,27 @@
+{
+  "fonte_titulo": "fonts/Montserrat-SemiBold.ttf",
+  "fonte_caixa": "fonts/Montserrat-Medium.ttf",
+  "fonte_negrito": "fonts/Montserrat-ExtraBold.ttf",
+  "titulo": ["Se você ganha R$ 10 mil por mês", "deveria ter investido:"],
+  "titulo_cores": ["#D62828", "#FFFFFF"],
+  "titulo_escala": 1.25,
+  "titulo_escalas": [0.8, 0.8],
+  "titulo_pad": 1.0,
+  "titulo_espaco": 1.62,
+  "titulo_y": 0.2,
+  "caixas": [
+    ["25 anos → começar a investir 15% da renda",
+     "35 anos → R$ 240 mil",
+     "45 anos → R$ 540 mil",
+     "55 anos → R$ 840 mil",
+     "65 anos → R$ 1,2 milhão"]
+  ],
+  "caixa_escala": 1.2,
+  "caixa_alinhar": "esquerda",
+  "caixas_y": 0.6,
+  "rodape": ["Você está atrasado? 👇"],
+  "rodape_destaque": true,
+  "rodape_escala": 1.45,
+  "rodape_y": 0.84,
+  "rodape_em": 0
+}
