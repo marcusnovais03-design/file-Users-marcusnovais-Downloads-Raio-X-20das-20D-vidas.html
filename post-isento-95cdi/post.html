@@ -7,13 +7,13 @@
   .p.st { height:1920px; }
   body.single .p { display:none; } body.single .p.on { display:block; }
   .bg { position:absolute; inset:0; } .bg img { width:100%; height:100%; object-fit:cover; object-position:50% 22%; }
-  .sh { position:absolute; inset:0; background:linear-gradient(180deg, rgba(7,13,36,.15) 0%, rgba(7,13,36,.2) 14%, rgba(7,13,36,.5) 22%, rgba(7,13,36,.65) 40%, rgba(7,13,36,.8) 52%, rgba(7,13,36,.9) 64%, rgba(7,13,36,.96) 100%); }
+  .sh { position:absolute; inset:0; background:linear-gradient(180deg, rgba(7,13,36,.05) 0%, rgba(7,13,36,.1) 12%, rgba(7,13,36,.25) 22%, rgba(7,13,36,.4) 40%, rgba(7,13,36,.7) 52%, rgba(7,13,36,.85) 64%, rgba(7,13,36,.9) 100%); }
   .top { position:absolute; left:70px; right:70px; }
-  .hook { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:86px; line-height:1; letter-spacing:-.02em; text-shadow:0 2px 14px rgba(0,0,0,.6); }
+  .hook { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:86px; line-height:1; letter-spacing:-.02em; text-shadow:0 2px 8px rgba(0,0,0,.8), 0 0 30px rgba(0,0,0,.6); }
   .hook em { font-style:normal; color:#e3b65a; }
   .bot { position:absolute; left:70px; right:70px; }
   .pill { display:inline-block; background:#e3141e; color:#fff; font-weight:800; font-size:26px; letter-spacing:.12em; text-transform:uppercase; padding:9px 18px 8px; border-radius:10px; }
-  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:74px; line-height:1; letter-spacing:-.045em; margin-top:16px; white-space:nowrap; }
+  h1 { text-shadow:0 2px 8px rgba(0,0,0,.7); font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:74px; line-height:1; letter-spacing:-.045em; margin-top:16px; white-space:nowrap; }
   h1 em { font-style:normal; color:#e3b65a; }
   .eq { display:flex; align-items:baseline; gap:18px; margin-top:34px; }
   .eq .v { white-space:nowrap; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:60px; color:#e3b65a; letter-spacing:-.03em; line-height:1; }
@@ -27,7 +27,7 @@
   .foot span { display:inline-block; width:2px; height:20px; background:rgba(255,255,255,.85); margin:0 9px -3px; }
   .foot img { height:34px; opacity:.6; filter:brightness(0) invert(1); }
   .p:not(.st) .hook { font-size:84px; }
-  .p:not(.st) .sh { background:linear-gradient(180deg, rgba(7,13,36,.1) 0%, rgba(7,13,36,.2) 18%, rgba(7,13,36,.5) 28%, rgba(7,13,36,.7) 45%, rgba(7,13,36,.88) 56%, rgba(7,13,36,.95) 100%); }
+  .p:not(.st) .sh { background:linear-gradient(180deg, rgba(7,13,36,.05) 0%, rgba(7,13,36,.1) 15%, rgba(7,13,36,.25) 28%, rgba(7,13,36,.45) 45%, rgba(7,13,36,.75) 58%, rgba(7,13,36,.9) 100%); }
 </style></head>
 <body>
 <script>
@@ -40,7 +40,7 @@ const body=(top,bot,foot)=>`<div class="bg"><img src="marcus.jpg"></div><div cla
   <div class="btn">👉 Clique no link para saber mais</div>
   <div class="fine">Sujeito à disponibilidade. Rentabilidade passada não garante rentabilidade futura.</div></div>
  <div class="foot" style="bottom:${foot}px"><div>Marcus Novais<span></span>Planejador Financeiro, CFP®</div><img src="logo-private-xp.png"></div>`;
-for (const [cls,top,bot,foot] of [['p',300,115,50],['p st',430,330,250]]) { const s=document.createElement('section'); s.className=cls; s.innerHTML=body(top,bot,foot); document.body.appendChild(s); }
+for (const [cls,top,bot,foot] of [['p',230,115,50],['p st',340,330,250]]) { const s=document.createElement('section'); s.className=cls; s.innerHTML=body(top,bot,foot); document.body.appendChild(s); }
 const all=[...document.querySelectorAll('.p')];
 window.show=i=>{document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
 </script>
