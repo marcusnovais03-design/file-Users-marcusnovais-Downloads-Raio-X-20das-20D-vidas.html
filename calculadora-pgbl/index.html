@@ -483,7 +483,14 @@ function resultado() {
 
   $("waBtn").href = CONFIG.whatsappLink;
   $("copyBtn").addEventListener("click", copiar);
-  $("refazer").addEventListener("click", () => { out.hidden = true; $("form").hidden = false; step = 1; show(); $("form").scrollIntoView({ behavior: "smooth" }); });
+  $("refazer").addEventListener("click", () => {
+    const f = $("form"); f.reset();
+    f.querySelectorAll(".err").forEach((e) => e.textContent = "");
+    f.querySelectorAll("[aria-invalid]").forEach((e) => e.removeAttribute("aria-invalid"));
+    out.hidden = true; out.innerHTML = ""; ultimo = null;
+    $("hero").hidden = false; f.hidden = false; step = 1; show();
+    window.scrollTo({ top: 0, behavior: "smooth" }); $("salario").focus({ preventScroll: true });
+  });
   if (c.economia > 0) desenharGrafico(cn.linhas, [cn.equilibrio, 10]);
 
   $("form").hidden = true; $("hero").hidden = true;
