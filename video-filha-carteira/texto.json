@@ -1,0 +1,27 @@
+{
+  "fonte_titulo": "fonts/Montserrat-SemiBold.ttf",
+  "fonte_caixa": "fonts/Montserrat-Medium.ttf",
+  "titulo": [],
+  "caixas": [
+    ["Atendi um casal que, quando a filha",
+     "conseguiu o primeiro emprego aos 18,",
+     "passou a cobrar R$ 350 por mês",
+     "\"para ajudar nas contas da casa\"."],
+    ["Agora, aos 32, ela vai se casar.",
+     "E os pais vão entregar a ela uma",
+     "carteira de investimentos de",
+     "R$ 245.574,91, que já rende cerca",
+     "de R$ 1.950 por mês."],
+    ["O segredo: todo mês, os pais",
+     "colocavam o mesmo valor junto",
+     "e investiam tudo."]
+  ],
+  "caixa_escala": 1.15,
+  "caixa_gap": 14,
+  "caixas_y": 0.445,
+  "rodape": ["Você teria essa disciplina pela sua filha? 👇"],
+  "rodape_destaque": true,
+  "rodape_escala": 1.25,
+  "rodape_y": 0.88,
+  "rodape_em": 0
+}
