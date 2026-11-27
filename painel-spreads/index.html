@@ -226,7 +226,7 @@ DASA - CDI; 1,95"></textarea>
             <span class="fileinfo" id="fileinfo"></span>
           </label>
           <input type="file" id="arquivo" accept=".csv,.txt,.xlsx,.xls" hidden>
-          <label class="small" for="texto">Taxas coladas (opcional, ex.: NTN-B intradia)</label>
+          <label class="small" for="texto">Ou cole aqui: tabela de NTN-B do site da ANBIMA, ou taxas avulsas</label>
           <textarea id="texto" spellcheck="false" placeholder="Cole aqui, um por linha:
 NTN-B 2030  7,42
 NTN-B 2035  7,52
@@ -309,8 +309,10 @@ VALE38  IPCA+ 6,45%"></textarea>
   const NUM = /(?<![A-Za-z0-9])\d+(?:[.,]\d+)?/g;
   const clean = (s) => s.replace(/[\s:\-–|;=]+$/g, "").replace(/^[\s\-–•*]+/g, "").trim();
   function parseTexto(txt) {
-    const out = new Map(); const ruins = [];
+    const out = new Map(); const ruins = []; const temAnb = /760199/.test(txt);
     txt.split(/\r?\n/).map((l) => l.replace(/\u00a0/g, " ").trim()).filter(Boolean).forEach((line) => {
+      if (temAnb && !/\d[.,]\d/.test(line)) return;
+      if (/(^|\s)760199(\s|$)/.test(line) || /^(t[ií]tulos p[uú]blicos|papel ipca|c[oó]digo|selic|data base|quando uma taxa)/i.test(line)) return;
       const cells = line.split(/\t|;|\|/).map((s) => s.trim()).filter(Boolean);
       let nome = null, rest = line;
       if (cells.length > 1) { nome = cells[0]; rest = cells.slice(1).join(" "); }
@@ -348,6 +350,8 @@ VALE38  IPCA+ 6,45%"></textarea>
   }
   function parseTabela(rows) {
     if (!rows.length) return { itens: [], ruins: [] };
+    const scan = anbimaScan(rows);
+    if (scan) return { anbima: scan, itens: [], ruins: [] };
     const hi = Math.max(0, rows.slice(0, 15).findIndex((r) => r.some((x) => /ticker|indicativa|bid mercado|offer mercado|^taxa|^ativo$|^papel$/.test(norm(x)))));
     rows = rows.slice(hi);
     const h = rows[0].map(norm);
@@ -387,6 +391,32 @@ VALE38  IPCA+ 6,45%"></textarea>
     m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
     if (m) { let y = +m[3]; if (y < 100) y += 2000; return y + "-" + pad(+m[2]) + "-" + pad(+m[1]); }
     return null;
+  }
+  const MESES = { jan: 1, fev: 2, feb: 2, mar: 3, abr: 4, apr: 4, mai: 5, may: 5, jun: 6, jul: 7, ago: 8, aug: 8, set: 9, sep: 9, out: 10, oct: 10, nov: 11, dez: 12, dec: 12 };
+  const isDate = (c) => /^\d{2}\/\d{2}\/\d{4}$/.test(c) || /^(19|20)\d{6}$/.test(c);
+  function anbimaScan(rows) {
+    let ref = null; const out = new Map();
+    rows.forEach((r) => {
+      const cells = r.map((c) => String(c ?? "").trim()).filter(Boolean);
+      if (!ref) for (const c of cells) {
+        const m = c.match(/(\d{1,2})\/([A-Za-zç]{3})[a-z]*\/(\d{4})/);
+        if (m && MESES[norm(m[2]).slice(0, 3)]) { ref = m[3] + "-" + pad(MESES[norm(m[2]).slice(0, 3)]) + "-" + pad(+m[1]); break; }
+      }
+      const ci = cells.indexOf("760199");
+      if (ci < 0) return;
+      const before = cells.slice(0, ci).filter(isDate);
+      if (!ref && before.length) ref = dataBR(before[before.length - 1]);
+      const after = cells.slice(ci + 1);
+      const dates = after.map((c, j) => [c, j]).filter(([c]) => isDate(c));
+      if (dates.length < 2) return;
+      const venc = dataBR(dates[1][0]);
+      const nums = after.slice(dates[1][1] + 1).map(numBR);
+      const tx = nums[2];
+      if (!venc || tx === null || tx === undefined) return;
+      out.set(venc, { k: "NTN-B " + venc.slice(0, 4), venc, tx });
+    });
+    if (!out.size) return null;
+    return { ref, ntnb: [...out.values()].sort((a, b) => a.venc.localeCompare(b.venc)) };
   }
   function parseAnbima(rows, h) {
     const ti = h.findIndex((x) => /^titulo/.test(x)), ix = h.findIndex((x) => /indicativa/.test(x)), vc = h.findIndex((x) => /vencimento/.test(x));
@@ -834,6 +864,12 @@ VALE38  IPCA+ 6,45%"></textarea>
 
   /* ---------- Entrada ---------- */
   let arq = null; // {nome, itens, ruins, quando}
+  function anbTexto() {
+    const t = $("texto").value; if (!/760199/.test(t)) return null;
+    const a = anbimaScan(t.split(/\r?\n/).map((l) => l.replace(/\u00a0/g, " ").split(/[\t@;]|\s+/)));
+    if (a && !a.ref) a.ref = dia;
+    return a;
+  }
   function juntar() {
     const m = new Map();
     if (arq) arq.itens.forEach((it) => m.set(it.k, it));
@@ -845,6 +881,9 @@ VALE38  IPCA+ 6,45%"></textarea>
     $("basenote").hidden = envios.length > 0;
     const p = $("preview"); p.replaceChildren();
     const { itens, ruins } = juntar();
+    const an = anbTexto();
+    $("registrar").textContent = an && !itens.length ? "Salvar NTN-Bs ANBIMA" : "Registrar envio";
+    if (an && !itens.length) { p.textContent = "Tabela ANBIMA reconhecida: " + an.ntnb.length + " NTN-Bs de " + fmtDia(an.ref) + "."; $("registrar").disabled = !canWrite; return; }
     if (!itens.length && !ruins.length) { p.textContent = "Nada carregado ainda."; $("registrar").disabled = true; return; }
     const ntn = itens.filter((i) => ntnbYear(i.k)).length;
     const comLado = itens.filter((i) => valor(i) !== null).length;
@@ -882,7 +921,14 @@ VALE38  IPCA+ 6,45%"></textarea>
 
   $("form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const { itens } = juntar(); if (!itens.length) return;
+    const an = anbTexto();
+    if (an) {
+      try { await salvarAnbima(an.ref, an.ntnb); toast("Taxas indicativas ANBIMA de " + fmtDia(an.ref) + " salvas: " + an.ntnb.length + " NTN-Bs."); }
+      catch (err) { toast("Não foi possível salvar a ANBIMA (" + ((err && err.code) || "erro") + ")."); return; }
+    }
+    const { itens } = juntar();
+    if (!itens.length) { if (an) { $("texto").value = ""; renderPreview(); } return; }
+    if (an) $("texto").value = $("texto").value.split(/\r?\n/).filter((l) => !/760199/.test(l)).join("\n");
     const btn = $("registrar"); btn.disabled = true; btn.textContent = "Registrando…";
     const quando = arq && arq.quando ? arq.quando : new Date();
     const alvo = keyOf(quando);
