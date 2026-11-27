@@ -282,7 +282,7 @@ details ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.88rem;colo
 const CONFIG = {
   assessor: "Marcus Novais",
   titulo: "Assessor de Investimentos · CFP® · CGA",
-  whatsapp: "5511958000772",
+  whatsappLink: "https://wa.me/message/DEX7P2Z5SBZYP1",
   taxaAnual: 0.10,                    // remuneração considerada nos cenários (PGBL e investimento comum)         // só números, com 55 + DDD
   leadWebhook: ""                     // opcional: URL (Google Apps Script, Make, Zapier) que recebe o lead em JSON via POST
 };
@@ -543,13 +543,12 @@ function resultado() {
     <h3>Quer fazer esse aporte do jeito certo?</h3>
     <p class="muted">Escolher o fundo, a tabela de tributação e o momento do aporte faz diferença no resultado. Fale comigo e eu reviso seu planejamento completo, incluindo sucessão e proteção.</p>
     <a class="btn btn-primary" id="waBtn" target="_blank" rel="noopener">Falar com ${esc(CONFIG.assessor.split(" ")[0])} no WhatsApp</a>
-    <div class="copyline">Ou copie o resumo da simulação: <button type="button" class="linkbtn" id="copyBtn">copiar resumo</button> <span id="copyMsg"></span></div>
-    <div class="copyline">WhatsApp: <code>${formatPhone(CONFIG.whatsapp)}</code></div>
+    <div class="copyline">Copie o resumo da sua simulação e cole na conversa: <button type="button" class="linkbtn" id="copyBtn">copiar resumo</button> <span id="copyMsg"></span></div>
   </div>
   <div style="display:flex;justify-content:center"><button type="button" class="btn btn-ghost" id="refazer">Refazer simulação</button></div>
   `;
 
-  $("waBtn").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(resumo());
+  $("waBtn").href = CONFIG.whatsappLink;
   $("copyBtn").addEventListener("click", copiar);
   $("refazer").addEventListener("click", () => { out.hidden = true; $("form").hidden = false; step = 1; show(); $("form").scrollIntoView({ behavior: "smooth" }); });
   if (c.economia > 0) desenharGrafico(cn.linhas, [cn.equilibrio, 10]);
@@ -559,7 +558,6 @@ function resultado() {
   enviarLead();
 }
 
-function formatPhone(n) { const d = n.replace(/^55/, ""); return `(${d.slice(0, 2)}) ${d.slice(2, 3)} ${d.slice(3, 7)}-${d.slice(7)}`; }
 function resumo() {
   const { d, c, cn } = ultimo;
   return [`Olá, ${CONFIG.assessor.split(" ")[0]}! Fiz a simulação de PGBL:`,
