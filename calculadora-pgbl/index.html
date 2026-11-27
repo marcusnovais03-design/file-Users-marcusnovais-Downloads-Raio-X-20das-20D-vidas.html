@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculadora PGBL 12%</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Descubra quanto você deixa de pagar de Imposto de Renda aportando até 12% da renda bruta em PGBL, e quanto esse imposto adiado pode render até a aposentadoria.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: coluna única de formulário em etapas; resultado em painéis empilhados (resumo → comparativo → projeção → contato). */
+:root{
+  --bg:#F3F6F5; --surface:#FFFFFF; --surface-2:#E8EFED; --line:#CBD8D4;
+  --fg:#10211E; --muted:#526662; --accent:#00876F; --accent-ink:#FFFFFF; --accent-soft:#DDF0EB;
+  --gold:#B7791F; --good:#0F7A4A; --warn:#9A5B00;
+  --s-pgbl:#00876F; --s-alt:#B7791F;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Figtree", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r:14px; color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0B1416; --surface:#0F1A1C; --surface-2:#162427; --line:#2A3B3E;
+  --fg:#E6EFED; --muted:#9AB0AC; --accent:#1FAE94; --accent-ink:#06120F; --accent-soft:#12312C;
+  --gold:#D9A447; --good:#4CC38A; --warn:#E3A33B;
+  --s-pgbl:#1FAE94; --s-alt:#C98F30; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0B1416; --surface:#0F1A1C; --surface-2:#162427; --line:#2A3B3E;
+  --fg:#E6EFED; --muted:#9AB0AC; --accent:#1FAE94; --accent-ink:#06120F; --accent-soft:#12312C;
+  --gold:#D9A447; --good:#4CC38A; --warn:#E3A33B;
+  --s-pgbl:#1FAE94; --s-alt:#C98F30; color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:grid;gap:24px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(1.9rem,4.6vw,2.8rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.35rem,3vw,1.7rem);font-weight:700}
+h3{font-size:1.08rem;font-weight:700}
+p{margin:0}
+.muted{color:var(--muted)}
+.eyebrow{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--f-mono)}
+
+/* Cabeçalho */
+.brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between}
+.brand .who{display:flex;align-items:center;gap:10px}
+.mark{width:38px;height:38px;border-radius:10px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:700 1rem var(--f-display)}
+.brand small{display:block;color:var(--muted);font-size:.8rem}
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:center}
+.hero > *{min-width:0}
+.hero p.lead{font-size:1.08rem;color:var(--muted);margin-top:12px;max-width:52ch}
+.sample{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:10px}
+.sample .tag{justify-self:start;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;background:var(--surface-2);color:var(--muted);padding:3px 8px;border-radius:999px}
+.sample .big{font:700 2.1rem/1 var(--f-display);color:var(--good)}
+.sample dl{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin:4px 0 0;font-size:.92rem}
+.sample dt{color:var(--muted)} .sample dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:720px){.hero{grid-template-columns:1fr}}
+
+/* Formulário em etapas */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,32px)}
+.steps{display:flex;gap:6px;margin-bottom:22px}
+.steps span{flex:1;height:4px;border-radius:4px;background:var(--surface-2)}
+.steps span.on{background:var(--accent)}
+.step-head{display:grid;gap:6px;margin-bottom:20px}
+.step-head .count{font:500 .8rem var(--f-mono);color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+.grid > *{min-width:0}
+.full{grid-column:1/-1}
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+.field{display:grid;gap:6px}
+.field label{font-weight:600;font-size:.98rem}
+.field .hint{font-size:.82rem;color:var(--muted)}
+input[type=text],input[type=email],input[type=tel],select{
+  width:100%;font:inherit;font-size:1.02rem;color:var(--fg);background:var(--surface);
+  border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;min-height:50px}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px;border-color:var(--accent)}
+input[aria-invalid=true]{border-color:#C0392B}
+.err{color:#C0392B;font-size:.84rem;min-height:1em}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.95rem}
+.check input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent);flex:none}
+.range-row{display:flex;gap:12px;align-items:center}
+.range-row input[type=range]{flex:1;accent-color:var(--accent);min-width:0}
+.range-row output{font:500 1rem var(--f-mono);min-width:5.5ch;text-align:right}
+.actions{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-top:26px;flex-wrap:wrap}
+.btn{font:700 1rem var(--f-body);border-radius:999px;padding:14px 28px;border:1.5px solid transparent;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-ghost{background:transparent;color:var(--fg);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--fg)}
+.note{font-size:.84rem;color:var(--muted)}
+
+/* Resultado */
+.result{display:grid;gap:20px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kpis > *{min-width:0}
+@media (max-width:720px){.kpis{grid-template-columns:1fr}}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:6px;align-content:start}
+.kpi .v{font:700 clamp(1.6rem,4vw,2rem)/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.kpi .l{font-size:.88rem;color:var(--muted)}
+.kpi.hl{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
+.kpi.hl .v{color:var(--good)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--surface-2);color:var(--fg);justify-self:start}
+.pill.good{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.pill.warn{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+
+.meter{display:grid;gap:8px}
+.meter .bar{height:14px;border-radius:7px;background:var(--surface-2);overflow:hidden;display:flex;gap:2px}
+.meter .bar i{display:block;height:100%}
+.meter .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.86rem;color:var(--muted)}
+.sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:baseline}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.93rem;min-width:520px}
+th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+tr.total td{font-weight:700;border-bottom:none}
+td.best{color:var(--good);font-weight:700}
+.badge-best{font-size:.68rem;font-weight:700;letter-spacing:.04em;background:var(--accent);color:var(--accent-ink);padding:2px 6px;border-radius:6px;margin-left:6px;vertical-align:middle}
+
+.chart-box{position:relative}
+.chart-box svg{width:100%;height:auto;display:block}
+.chart-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.88rem;margin-bottom:8px}
+.tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font-size:.82rem;padding:8px 10px;border-radius:8px;white-space:nowrap;transform:translate(-50%,-110%);box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.tip b{font-family:var(--f-mono);font-weight:500}
+.split{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.split > *{min-width:0}
+@media (max-width:720px){.split{grid-template-columns:1fr}}
+.mini{border-top:3px solid var(--line);padding-top:10px;display:grid;gap:2px}
+.mini .v{font:700 1.3rem var(--f-display);font-variant-numeric:tabular-nums}
+.mini .l{font-size:.84rem;color:var(--muted)}
+.callout{border-left:4px solid var(--gold);background:var(--surface-2);padding:14px 16px;border-radius:0 10px 10px 0;font-size:.95rem}
+.cta{display:grid;gap:14px;background:var(--fg);color:var(--bg);border-radius:var(--r);padding:clamp(20px,4vw,32px)}
+.cta .muted{color:color-mix(in srgb,var(--bg) 70%,transparent)}
+.cta .btn-primary{justify-self:start}
+.copyline{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+.copyline code{font-family:var(--f-mono);background:color-mix(in srgb,var(--bg) 14%,transparent);padding:4px 8px;border-radius:6px;user-select:all}
+.linkbtn{background:none;border:none;color:inherit;text-decoration:underline;font:inherit;cursor:pointer;padding:0}
+.disclaimer{font-size:.78rem;color:var(--muted);line-height:1.5}
+details summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:10px}
+details ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.88rem;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){ .fade{animation:fade .35s ease both} @keyframes fade{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brand">
+    <div class="who">
+      <div class="mark" aria-hidden="true">MN</div>
+      <div><strong id="advName">Marcus Novais</strong><small id="advTitle">Assessor de Investimentos · CFP® · CGA</small></div>
+    </div>
+    <span class="pill">Parâmetros IR 2026 · declaração 2027</span>
+  </header>
+
+  <section class="hero" id="hero">
+    <div>
+      <p class="eyebrow">Calculadora PGBL · benefício fiscal de 12%</p>
+      <h1>Quanto do seu Imposto de Renda pode voltar para o seu patrimônio?</h1>
+      <p class="lead">Quem declara no modelo completo pode deduzir até 12% da renda bruta tributável aportando em PGBL. Em 2 minutos você vê quanto falta aportar, quanto deixa de pagar de IR este ano e quanto esse imposto adiado pode render até a aposentadoria.</p>
+    </div>
+    <aside class="sample" aria-label="Exemplo de resultado">
+      <span class="tag">Exemplo</span>
+      <p class="muted" style="font-size:.9rem">Salário de R$ 15.000, 2 dependentes, plano de saúde de R$ 2.000/mês</p>
+      <div class="big num" id="sampleBig">—</div>
+      <p class="muted" style="font-size:.88rem">a menos de IR por ano usando o limite do PGBL</p>
+      <dl>
+        <dt>Aporte para o limite</dt><dd id="sampleLim">—</dd>
+        <dt>Em 20 anos, a mais no patrimônio</dt><dd id="sampleProj">—</dd>
+      </dl>
+    </aside>
+  </section>
+
+  <!-- FORMULÁRIO -->
+  <form class="card" id="form" novalidate>
+    <div class="steps" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+    <!-- Etapa 1 -->
+    <fieldset data-step="1" style="border:0;padding:0;margin:0">
+      <div class="step-head"><span class="count">Etapa 1 de 4</span><h2>Sua renda</h2></div>
+      <div class="grid">
+        <div class="field full">
+          <label for="salario">Qual seu salário bruto mensal?</label>
+          <input type="text" id="salario" inputmode="numeric" data-money placeholder="R$ 0,00" autocomplete="off">
+          <span class="err" id="err-salario"></span>
+        </div>
+        <div class="field">
+          <label for="outras">Outras rendas tributáveis por mês</label>
+          <input type="text" id="outras" inputmode="numeric" data-money placeholder="R$ 0,00" autocomplete="off">
+          <span class="hint">Opcional. Aluguéis, pró-labore, autônomo.</span>
+        </div>
+        <div class="field">
+          <label for="pgblAno">Quanto já aplicou em PGBL este ano?</label>
+          <input type="text" id="pgblAno" inputmode="numeric" data-money placeholder="R$ 0,00" autocomplete="off">
+          <span class="hint">Inclui aportes feitos pela empresa em seu nome.</span>
+        </div>
+        <label class="check full"><input type="checkbox" id="ferias" checked> Recebo 1/3 de férias (trabalhador CLT)</label>
+        <label class="check full"><input type="checkbox" id="contribui" checked> Contribuo para o INSS ou regime próprio de previdência</label>
+      </div>
+    </fieldset>
+
+    <!-- Etapa 2 -->
+    <fieldset data-step="2" hidden style="border:0;padding:0;margin:0">
+      <div class="step-head"><span class="count">Etapa 2 de 4</span><h2>Deduções que você já tem</h2>
+        <p class="muted">Opcional, mas deixa a comparação entre os modelos simplificado e completo bem mais precisa.</p></div>
+      <div class="grid">
+        <div class="field">
+          <label for="saude">Gasto mensal com saúde (você e dependentes)</label>
+          <input type="text" id="saude" inputmode="numeric" data-money placeholder="R$ 0,00" autocomplete="off">
+          <span class="hint">Plano, consultas, exames. Sem limite de dedução.</span>
+        </div>
+        <div class="field">
+          <label for="eduPropria">Gasto mensal com sua educação</label>
+          <input type="text" id="eduPropria" inputmode="numeric" data-money placeholder="R$ 0,00" autocomplete="off">
+          <span class="hint">Graduação ou pós. Limite de R$ 3.561,50 por ano.</span>
+        </div>
+        <div class="field">
+          <label for="deps">Quantos dependentes você possui?</label>
+          <select id="deps"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+        </div>
+        <div class="field">
+          <label for="eduDeps">Gasto mensal com educação dos dependentes</label>
+          <input type="text" id="eduDeps" inputmode="numeric" data-money placeholder="R$ 0,00" autocomplete="off">
+          <span class="hint">Escola e faculdade, somando todos.</span>
+        </div>
+        <div class="field full">
+          <label for="pensao">Pensão alimentícia judicial paga por mês</label>
+          <input type="text" id="pensao" inputmode="numeric" data-money placeholder="R$ 0,00" autocomplete="off">
+          <span class="hint">Opcional.</span>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Etapa 3 -->
+    <fieldset data-step="3" hidden style="border:0;padding:0;margin:0">
+      <div class="step-head"><span class="count">Etapa 3 de 4</span><h2>Seu horizonte de longo prazo</h2>
+        <p class="muted">Usamos isso para projetar o valor de adiar o imposto: o IR que você deixa de pagar hoje continua rendendo, e só uma parte dele volta para a Receita no resgate.</p></div>
+      <div class="grid">
+        <div class="field full">
+          <label for="anos">Por quantos anos pretende manter esses aportes?</label>
+          <div class="range-row"><input type="range" id="anos" min="3" max="35" step="1" value="20"><output id="anosOut" for="anos">20 anos</output></div>
+        </div>
+        <div class="field">
+          <label for="taxa">Rentabilidade bruta esperada ao ano</label>
+          <div class="range-row"><input type="range" id="taxa" min="6" max="15" step="0.5" value="10"><output id="taxaOut" for="taxa">10,0%</output></div>
+          <span class="hint">Mesma taxa para o PGBL e para o investimento comum.</span>
+        </div>
+        <div class="field">
+          <label for="adm">Taxa de administração do PGBL</label>
+          <div class="range-row"><input type="range" id="adm" min="0" max="2" step="0.1" value="0.5"><output id="admOut" for="adm">0,5%</output></div>
+          <span class="hint">Descontada só do PGBL, para a comparação ser justa.</span>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Etapa 4 -->
+    <fieldset data-step="4" hidden style="border:0;padding:0;margin:0">
+      <div class="step-head"><span class="count">Etapa 4 de 4</span><h2>Para onde enviamos seu resultado?</h2>
+        <p class="muted">Seu resultado aparece logo em seguida. Com seu contato, preparo uma análise completa do seu planejamento.</p></div>
+      <div class="grid">
+        <div class="field full">
+          <label for="nome">Nome e sobrenome</label>
+          <input type="text" id="nome" autocomplete="name">
+          <span class="err" id="err-nome"></span>
+        </div>
+        <div class="field">
+          <label for="whats">WhatsApp com DDD</label>
+          <input type="tel" id="whats" inputmode="tel" placeholder="(11) 9 0000-0000" autocomplete="tel">
+          <span class="err" id="err-whats"></span>
+        </div>
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" autocomplete="email" placeholder="voce@email.com">
+          <span class="err" id="err-email"></span>
+        </div>
+        <label class="check full"><input type="checkbox" id="lgpd"> Autorizo o uso dos meus dados para receber este resultado e o contato do assessor, conforme a LGPD.</label>
+        <span class="err full" id="err-lgpd"></span>
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button type="button" class="btn btn-ghost" id="back" hidden>Voltar</button>
+      <span></span>
+      <button type="submit" class="btn btn-primary" id="next">Continuar</button>
+    </div>
+  </form>
+
+  <!-- RESULTADO -->
+  <section class="result" id="result" hidden aria-live="polite"></section>
+
+  <p class="disclaimer">Simulação educativa com as regras do IRPF vigentes para o ano-calendário 2026 (Lei 15.270/2025, tabela INSS 2026, desconto simplificado limitado a R$ 16.754,34). Valores estimados, que podem não refletir sua situação fiscal real. O benefício do PGBL exige declaração no modelo completo e contribuição ao INSS ou regime próprio. No resgate ou recebimento de renda, o PGBL é tributado sobre o valor total. Não constitui recomendação de investimento nem consultoria tributária. Rentabilidade passada ou projetada não é garantia de rentabilidade futura.</p>
+</div>
+
+<script>
+/* ===================== CONFIGURAÇÃO DO ASSESSOR ===================== */
+const CONFIG = {
+  assessor: "Marcus Novais",
+  titulo: "Assessor de Investimentos · CFP® · CGA",
+  whatsapp: "5511958000772",         // só números, com 55 + DDD
+  leadWebhook: ""                     // opcional: URL (Google Apps Script, Make, Zapier) que recebe o lead em JSON via POST
+};
+
+/* ===================== PARÂMETROS FISCAIS 2026 ===================== */
+const P = {
+  anual: [ // [limite superior, alíquota, parcela a deduzir]
+    [29145.60, 0, 0], [33919.80, .075, 2185.92], [45012.60, .15, 4729.91],
+    [55976.16, .225, 8105.85], [Infinity, .275, 10904.66]],
+  mensal: [
+    [2428.80, 0, 0], [2826.65, .075, 182.16], [3751.05, .15, 394.16],
+    [4664.68, .225, 675.49], [Infinity, .275, 908.73]],
+  inss: [[1621.00, .075], [2902.84, .09], [4354.27, .12], [8475.55, .14]],
+  simplificadoTeto: 16754.34, simplificadoMensal: 607.20,
+  depAnual: 2275.08, depMensal: 189.59, eduLimite: 3561.50,
+  // Redução Lei 15.270/2025
+  redAnual: { isentoAte: 60000, faixaAte: 88200, a: 8429.73, b: 0.095575 },
+  redMensal: { isentoAte: 5000, faixaAte: 7350, a: 978.62, b: 0.133145 },
+  regressiva: [[2, .35], [4, .30], [6, .25], [8, .20], [10, .15], [Infinity, .10]]
+};
+
+/* ===================== MOTOR DE CÁLCULO ===================== */
+const tabela = (base, t) => { if (base <= 0) return 0; for (const [lim, a, d] of t) if (base <= lim) return Math.max(0, base * a - d); return 0; };
+const inssMensal = (s) => { let c = 0, ant = 0; for (const [lim, a] of P.inss) { if (s <= ant) break; c += (Math.min(s, lim) - ant) * a; ant = lim; } return c; };
+const reducao = (imposto, renda, r) => {
+  if (renda <= r.isentoAte) return imposto;
+  if (renda <= r.faixaAte) return Math.min(imposto, Math.max(0, r.a - r.b * renda));
+  return 0;
+};
+const impostoAnual = (base, rendaTrib) => { const i = tabela(base, P.anual); return Math.max(0, i - reducao(i, rendaTrib, P.redAnual)); };
+const impostoMensal = (base, rendaMes) => { const i = tabela(base, P.mensal); return Math.max(0, i - reducao(i, rendaMes, P.redMensal)); };
+
+function calcular(d) {
+  const terco = d.ferias ? d.salario / 3 : 0;
+  const rendaTrib = d.salario * 12 + terco + d.outras * 12;
+  const limite = d.contribui ? rendaTrib * 0.12 : 0;
+  const jaAplicado = Math.min(d.pgblAno, limite);
+  const falta = Math.max(0, limite - d.pgblAno);
+
+  // INSS (salário mensal x12; mês de férias com 1/3, respeitando o teto)
+  const inssSal = d.salario > 0 ? inssMensal(d.salario) : 0;
+  const inssFerias = d.ferias ? inssMensal(d.salario + terco) - inssSal : 0;
+  const inssAnual = inssSal * 12 + inssFerias;
+
+  // IR retido na fonte estimado (12 meses, um deles com 1/3 de férias) + carnê-leão das outras rendas
+  let retido = 0;
+  for (let m = 0; m < 12; m++) {
+    const bruto = d.salario + d.outras + (m === 0 ? terco : 0);
+    const inss = inssSal + (m === 0 ? inssFerias : 0);
+    const ded = Math.max(inss + d.deps * P.depMensal + d.pensao, P.simplificadoMensal);
+    retido += impostoMensal(bruto - ded, bruto);
+  }
+
+  const dedSemPgbl = inssAnual + d.deps * P.depAnual + d.saude * 12
+    + Math.min(d.eduPropria * 12, P.eduLimite)
+    + Math.min(d.eduDeps * 12, P.eduLimite * d.deps) + d.pensao * 12;
+
+  const simpl = { desconto: Math.min(rendaTrib * .2, P.simplificadoTeto) };
+  simpl.base = rendaTrib - simpl.desconto; simpl.ir = impostoAnual(simpl.base, rendaTrib);
+
+  const compAtual = { ded: dedSemPgbl + jaAplicado };
+  compAtual.base = Math.max(0, rendaTrib - compAtual.ded); compAtual.ir = impostoAnual(compAtual.base, rendaTrib);
+
+  const compMax = { ded: dedSemPgbl + limite };
+  compMax.base = Math.max(0, rendaTrib - compMax.ded); compMax.ir = impostoAnual(compMax.base, rendaTrib);
+
+  const melhorAtual = Math.min(simpl.ir, compAtual.ir);
+  const modeloAtual = simpl.ir <= compAtual.ir ? "simplificado" : "completo";
+  const economia = Math.max(0, melhorAtual - Math.min(compMax.ir, melhorAtual));
+  const retorno = falta > 0 ? economia / falta : 0;
+
+  return { rendaTrib, terco, limite, jaAplicado, falta, inssAnual, retido, dedSemPgbl,
+    simpl, compAtual, compMax, melhorAtual, modeloAtual, economia, retorno,
+    restAtual: retido - melhorAtual, restMax: retido - Math.min(compMax.ir, melhorAtual) };
+}
+
+/* Projeção: mesmo desembolso anual (aporte = falta para o limite) nos dois cenários.
+   Cenário A: investimento comum, IR de 15% sobre o ganho no resgate (tabela de renda fixa por prazo).
+   Cenário B: PGBL (tabela regressiva por aporte) + IR economizado reinvestido no investimento comum um ano depois. */
+function projetar(aporte, economia, anos, taxa, adm) {
+  const r = taxa, rp = (1 + taxa) * (1 - adm) - 1;
+  const aliqRF = (h) => h >= 2 ? .15 : h >= 1 ? .175 : .225;
+  const aliqReg = (h) => { for (const [lim, a] of P.regressiva) if (h <= lim) return a; return .10; };
+  const serie = [];
+  let irResgPGBL = 0, irResgAlt = 0, irResgEco = 0;
+  for (let t = 0; t <= anos; t++) {
+    let A = 0, B = 0, irA = 0, irB = 0, irE = 0, brutoP = 0;
+    for (let k = 0; k < t; k++) {
+      const h = t - k;
+      const vA = aporte * Math.pow(1 + r, h); const tA = (vA - aporte) * aliqRF(h); A += vA - tA; irA += tA;
+      const vP = aporte * Math.pow(1 + rp, h); const tP = vP * aliqReg(h); B += vP - tP; irB += tP; brutoP += vP;
+      const he = t - (k + 1);
+      if (he >= 0) { const vE = economia * Math.pow(1 + r, he); const tE = he > 0 ? (vE - economia) * aliqRF(he) : 0; B += vE - tE; irE += tE; }
+    }
+    serie.push({ t, A, B });
+    if (t === anos) { irResgAlt = irA; irResgPGBL = irB; irResgEco = irE; }
+  }
+  const fim = serie[serie.length - 1];
+  return { serie, A: fim.A, B: fim.B, ganho: fim.B - fim.A, irResgAlt, irResgPGBL, irResgEco,
+    totalEconomizado: economia * anos, totalAportado: aporte * anos };
+}
+
+/* ===================== FORMATAÇÃO ===================== */
+const brl = (v) => (v < 0 ? "-" : "") + "R$ " + Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const brl0 = (v) => (v < 0 ? "-" : "") + "R$ " + Math.round(Math.abs(v)).toLocaleString("pt-BR");
+const compact = (v) => v >= 1e6 ? "R$ " + (v / 1e6).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + " mi" : v >= 1e3 ? "R$ " + Math.round(v / 1e3).toLocaleString("pt-BR") + " mil" : brl0(v);
+const pct = (v, d = 1) => (v * 100).toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d }) + "%";
+const $ = (id) => document.getElementById(id);
+const money = (id) => { const raw = ($(id).value || "").replace(/\D/g, ""); return raw ? parseInt(raw, 10) / 100 : 0; };
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+document.querySelectorAll("[data-money]").forEach((el) => {
+  el.addEventListener("input", () => {
+    const raw = el.value.replace(/\D/g, "").replace(/^0+/, "").slice(0, 12);
+    el.value = raw ? brl(parseInt(raw, 10) / 100) : "";
+  });
+});
+$("whats").addEventListener("input", (e) => {
+  const d = e.target.value.replace(/\D/g, "").slice(0, 11);
+  let o = d;
+  if (d.length > 2) o = `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length > 3) o = `(${d.slice(0, 2)}) ${d.slice(2, 3)} ${d.slice(3)}`;
+  if (d.length > 7) o = `(${d.slice(0, 2)}) ${d.slice(2, 3)} ${d.slice(3, 7)}-${d.slice(7)}`;
+  e.target.value = o;
+});
+const bindRange = (id, fmt) => { const el = $(id), out = $(id + "Out"); const f = () => out.textContent = fmt(+el.value); el.addEventListener("input", f); f(); };
+bindRange("anos", (v) => v + " anos");
+bindRange("taxa", (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1 }) + "%");
+bindRange("adm", (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1 }) + "%");
+$("advName").textContent = CONFIG.assessor; $("advTitle").textContent = CONFIG.titulo;
+
+/* ===================== EXEMPLO DO TOPO ===================== */
+(() => {
+  const ex = calcular({ salario: 15000, outras: 0, pgblAno: 0, ferias: true, contribui: true, saude: 2000, eduPropria: 0, deps: 2, eduDeps: 0, pensao: 0 });
+  const pj = projetar(ex.falta, ex.economia, 20, .10, .005);
+  $("sampleBig").textContent = brl0(ex.economia);
+  $("sampleLim").textContent = brl0(ex.falta) + "/ano";
+  $("sampleProj").textContent = "+" + compact(pj.ganho);
+})();
+
+/* ===================== FLUXO DO FORMULÁRIO ===================== */
+let step = 1; const TOTAL = 4;
+const show = () => {
+  document.querySelectorAll("fieldset[data-step]").forEach((f) => f.hidden = +f.dataset.step !== step);
+  document.querySelectorAll(".steps span").forEach((s, i) => s.classList.toggle("on", i < step));
+  $("back").hidden = step === 1;
+  $("next").textContent = step === TOTAL ? "Ver meu resultado" : "Continuar";
+};
+const setErr = (id, msg) => { $("err-" + id).textContent = msg; const el = $(id); if (el) el.setAttribute("aria-invalid", msg ? "true" : "false"); return !msg; };
+function validar() {
+  if (step === 1) return setErr("salario", money("salario") + money("outras") > 0 ? "" : "Informe seu salário bruto mensal.");
+  if (step === 4) {
+    let ok = setErr("nome", $("nome").value.trim().split(/\s+/).length >= 2 ? "" : "Informe nome e sobrenome.");
+    ok = setErr("whats", $("whats").value.replace(/\D/g, "").length >= 10 ? "" : "Informe um WhatsApp com DDD.") && ok;
+    const em = $("email").value.trim();
+    ok = setErr("email", !em || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em) ? "" : "Confira o e-mail.") && ok;
+    $("err-lgpd").textContent = $("lgpd").checked ? "" : "Marque a autorização para continuar.";
+    return ok && $("lgpd").checked;
+  }
+  return true;
+}
+$("back").addEventListener("click", () => { step = Math.max(1, step - 1); show(); });
+$("form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (!validar()) return;
+  if (step < TOTAL) { step++; show(); $("form").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+  resultado();
+});
+show();
+
+/* ===================== RESULTADO ===================== */
+let ultimo = null;
+function lerDados() {
+  return {
+    salario: money("salario"), outras: money("outras"), pgblAno: money("pgblAno"),
+    ferias: $("ferias").checked, contribui: $("contribui").checked,
+    saude: money("saude"), eduPropria: money("eduPropria"), deps: +$("deps").value,
+    eduDeps: money("eduDeps"), pensao: money("pensao"),
+    anos: +$("anos").value, taxa: +$("taxa").value / 100, adm: +$("adm").value / 100,
+    nome: $("nome").value.trim(), whats: $("whats").value, email: $("email").value.trim()
+  };
+}
+
+function resultado() {
+  const d = lerDados(); const c = calcular(d);
+  const pj = projetar(c.falta, c.economia, d.anos, d.taxa, d.adm);
+  ultimo = { d, c, pj };
+  const primeiro = esc(d.nome.split(/\s+/)[0] || "");
+  const out = $("result");
+
+  let status;
+  if (!d.contribui) status = `<span class="pill warn">Atenção</span><p>Sem contribuição ao INSS ou regime próprio, a lei não permite deduzir o PGBL. Nesse caso o VGBL costuma ser o produto mais adequado.</p>`;
+  else if (c.falta <= 0) status = `<span class="pill good">Limite atingido</span><p>Você já aportou os 12% deste ano. Aportes acima do limite não geram dedução; para o excedente, o VGBL tende a ser mais eficiente.</p>`;
+  else if (c.economia < 1) status = `<span class="pill warn">PGBL não traz ganho hoje</span><p>Com essa renda e essas deduções, o modelo simplificado continua melhor ou o imposto já é zero. O VGBL costuma fazer mais sentido.</p>`;
+  else status = `<span class="pill good">Benefício disponível</span><p>Para cada R$ 100 aportados até o limite, cerca de <strong>${brl(100 * c.retorno)}</strong> deixam de ir para o IR este ano.</p>`;
+
+  const pctFeito = c.limite > 0 ? c.jaAplicado / c.limite : 0;
+  const maxR = Math.max(c.simpl.ir, c.compAtual.ir, c.compMax.ir, 1);
+  const melhorSem = c.modeloAtual;
+
+  out.innerHTML = `
+  <div class="card fade" style="display:grid;gap:18px">
+    <p class="eyebrow">Seu resultado</p>
+    <h2>${primeiro ? primeiro + ", " : ""}veja quanto o PGBL pode reduzir seu IR</h2>
+    <p class="muted">Renda tributável anual de <strong class="num">${brl(c.rendaTrib)}</strong>${c.terco ? " (inclui 1/3 de férias)" : ""}. O 13º salário tem tributação exclusiva e fica fora da base de 12%.</p>
+    <div class="kpis">
+      <div class="kpi"><span class="l">Limite anual de 12%</span><span class="v">${brl0(c.limite)}</span><span class="l">já aportado ${brl0(c.jaAplicado)}</span></div>
+      <div class="kpi"><span class="l">Quanto falta aportar</span><span class="v">${brl0(c.falta)}</span><span class="l">≈ ${brl0(c.falta / 12)} por mês, ou de uma vez até 31/12</span></div>
+      <div class="kpi hl"><span class="l">IR a menos por ano</span><span class="v">${c.economia > 0 ? "+" : ""}${brl0(c.economia)}</span><span class="l">${c.falta > 0 ? "equivale a " + pct(c.retorno) + " do valor aportado" : "—"}</span></div>
+    </div>
+    <div style="display:grid;gap:8px">${status}</div>
+    <div class="meter" aria-label="Uso do limite de 12%">
+      <div class="bar"><i style="width:${(pctFeito * 100).toFixed(1)}%;background:var(--s-pgbl)"></i><i style="width:${((1 - pctFeito) * 100).toFixed(1)}%;background:var(--s-alt);opacity:.35"></i></div>
+      <div class="legend"><span><i class="sw" style="background:var(--s-pgbl)"></i>Aportado ${pct(pctFeito, 0)}</span><span><i class="sw" style="background:var(--s-alt);opacity:.5"></i>Disponível ${pct(1 - pctFeito, 0)}</span></div>
+    </div>
+  </div>
+
+  <div class="card fade" style="display:grid;gap:16px">
+    <h3>Comparativo da declaração</h3>
+    <p class="muted" style="font-size:.92rem">IR retido na fonte estimado em <strong class="num">${brl(c.retido)}</strong> (salário${d.outras ? " + carnê-leão das outras rendas" : ""}). Valores positivos são restituição; negativos, imposto a pagar.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th></th><th>Simplificado</th><th>Completo hoje</th><th>Completo + PGBL 12%</th></tr></thead>
+      <tbody>
+        <tr><td>Deduções / desconto</td><td>${brl(c.simpl.desconto)}</td><td>${brl(c.compAtual.ded)}</td><td>${brl(c.compMax.ded)}</td></tr>
+        <tr><td>Base de cálculo</td><td>${brl(c.simpl.base)}</td><td>${brl(c.compAtual.base)}</td><td>${brl(c.compMax.base)}</td></tr>
+        <tr><td>IR devido no ano</td><td>${brl(c.simpl.ir)}</td><td>${brl(c.compAtual.ir)}</td><td class="best">${brl(c.compMax.ir)}</td></tr>
+        <tr class="total"><td>Restituição estimada</td>
+          <td>${brl(c.retido - c.simpl.ir)}${melhorSem === "simplificado" ? '<span class="badge-best">hoje</span>' : ""}</td>
+          <td>${brl(c.retido - c.compAtual.ir)}${melhorSem === "completo" ? '<span class="badge-best">hoje</span>' : ""}</td>
+          <td class="best">${brl(c.retido - c.compMax.ir)}</td></tr>
+      </tbody></table></div>
+    <div class="meter">
+      ${[["Simplificado", c.simpl.ir], ["Completo hoje", c.compAtual.ir], ["Completo + PGBL 12%", c.compMax.ir]].map(([n, v], i) => `
+        <div style="display:grid;grid-template-columns:minmax(0,170px) 1fr auto;gap:10px;align-items:center;font-size:.88rem">
+          <span class="muted">IR · ${n}</span>
+          <div class="bar" style="height:10px"><i style="width:${(v / maxR * 100).toFixed(1)}%;background:${i === 2 ? "var(--s-pgbl)" : "var(--muted)"};border-radius:0 5px 5px 0;opacity:${i === 2 ? 1 : .55}"></i></div>
+          <span class="num">${brl0(v)}</span></div>`).join("")}
+    </div>
+  </div>
+
+  ${c.economia > 0 ? `
+  <div class="card fade" style="display:grid;gap:16px">
+    <p class="eyebrow">Custo de oportunidade</p>
+    <h3>O que vale adiar o imposto por ${d.anos} anos</h3>
+    <p class="muted" style="font-size:.95rem">Os dois cenários usam o mesmo dinheiro: ${brl0(c.falta)} por ano. No PGBL, o IR que você economiza volta na restituição e é reinvestido. No resgate, o PGBL paga IR sobre o total pela tabela regressiva (10% para aportes com mais de 10 anos). No investimento comum, paga 15% só sobre o ganho, mas sem a economia de ${pct(c.retorno, 1)} na entrada.</p>
+    <div class="chart-legend">
+      <span><i class="sw" style="background:var(--s-pgbl)"></i>PGBL + IR economizado reinvestido</span>
+      <span><i class="sw" style="background:var(--s-alt)"></i>Investimento comum (CDB, Tesouro, fundos)</span>
+    </div>
+    <div class="chart-box" id="chart"></div>
+    <p class="note" style="text-align:center;margin-top:-8px">Anos de aportes · passe o dedo ou o mouse no gráfico</p>
+    <div class="split">
+      <div class="mini" style="border-top-color:var(--s-pgbl)"><span class="l">Patrimônio líquido com PGBL</span><span class="v">${brl0(pj.B)}</span></div>
+      <div class="mini" style="border-top-color:var(--s-alt)"><span class="l">Patrimônio líquido sem PGBL</span><span class="v">${brl0(pj.A)}</span></div>
+      <div class="mini" style="border-top-color:var(--good)"><span class="l">Diferença a favor do ${pj.ganho >= 0 ? "PGBL" : "investimento comum"}</span><span class="v" style="color:${pj.ganho >= 0 ? "var(--good)" : "var(--warn)"}">${pj.ganho >= 0 ? "+" : ""}${brl0(pj.ganho)}</span></div>
+    </div>
+    <div class="callout">Em ${d.anos} anos você deixa de antecipar <strong class="num">${brl0(pj.totalEconomizado)}</strong> de IR. Esse dinheiro fica trabalhando a seu favor e, no resgate, o PGBL paga <strong class="num">${brl0(pj.irResgPGBL)}</strong> de imposto sobre um patrimônio bruto maior. Adiar o imposto equivale a um empréstimo sem juros da Receita Federal.</div>
+    <details><summary>Premissas da projeção</summary><ul>
+      <li>Aporte anual igual ao valor que falta para o limite de 12% (${brl0(c.falta)}), sem reajuste.</li>
+      <li>Rentabilidade bruta de ${pct(d.taxa)} a.a. nos dois cenários; o PGBL desconta ${pct(d.adm)} a.a. de taxa de administração.</li>
+      <li>Restituição recebida um ano após cada aporte e reinvestida no investimento comum.</li>
+      <li>Resgate total ao fim do prazo. PGBL na tabela regressiva por aporte (35% até 2 anos, caindo até 10% acima de 10 anos). Investimento comum com IR de 15% sobre o ganho acima de 2 anos.</li>
+      <li>Parâmetros de IR mantidos constantes. Recebimento em renda mensal pode reduzir ainda mais o imposto efetivo.</li>
+    </ul></details>
+    <div class="table-wrap"><details><summary>Ver tabela ano a ano</summary>
+      <table><thead><tr><th>Ano</th><th>Com PGBL</th><th>Sem PGBL</th><th>Diferença</th></tr></thead><tbody>
+      ${pj.serie.filter((s) => s.t > 0 && (s.t % (d.anos > 15 ? 5 : 1) === 0 || s.t === d.anos)).map((s) => `<tr><td>${s.t}</td><td>${brl0(s.B)}</td><td>${brl0(s.A)}</td><td>${brl0(s.B - s.A)}</td></tr>`).join("")}
+      </tbody></table></details></div>
+  </div>` : ""}
+
+  <div class="cta fade">
+    <h3>Quer fazer esse aporte do jeito certo?</h3>
+    <p class="muted">Escolher o fundo, a tabela de tributação e o momento do aporte faz diferença no resultado. Fale comigo e eu reviso seu planejamento completo, incluindo sucessão e proteção.</p>
+    <a class="btn btn-primary" id="waBtn" target="_blank" rel="noopener">Falar com ${esc(CONFIG.assessor.split(" ")[0])} no WhatsApp</a>
+    <div class="copyline">Ou copie o resumo da simulação: <button type="button" class="linkbtn" id="copyBtn">copiar resumo</button> <span id="copyMsg"></span></div>
+    <div class="copyline">WhatsApp: <code>${formatPhone(CONFIG.whatsapp)}</code></div>
+  </div>
+  <div style="display:flex;justify-content:center"><button type="button" class="btn btn-ghost" id="refazer">Refazer simulação</button></div>
+  `;
+
+  $("waBtn").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(resumo());
+  $("copyBtn").addEventListener("click", copiar);
+  $("refazer").addEventListener("click", () => { out.hidden = true; $("form").hidden = false; step = 1; show(); $("form").scrollIntoView({ behavior: "smooth" }); });
+  if (c.economia > 0) desenharGrafico(pj.serie);
+
+  $("form").hidden = true; $("hero").hidden = true;
+  out.hidden = false; out.scrollIntoView({ behavior: "smooth", block: "start" });
+  enviarLead();
+}
+
+function formatPhone(n) { const d = n.replace(/^55/, ""); return `(${d.slice(0, 2)}) ${d.slice(2, 3)} ${d.slice(3, 7)}-${d.slice(7)}`; }
+function resumo() {
+  const { d, c, pj } = ultimo;
+  return [`Olá, ${CONFIG.assessor.split(" ")[0]}! Fiz a simulação de PGBL:`,
+    `• Renda tributável anual: ${brl0(c.rendaTrib)}`,
+    `• Limite de 12%: ${brl0(c.limite)} (falta aportar ${brl0(c.falta)})`,
+    `• IR a menos por ano: ${brl0(c.economia)}`,
+    c.economia > 0 ? `• Em ${d.anos} anos: +${brl0(pj.ganho)} de patrimônio vs. investimento comum` : null,
+    `Gostaria de conversar sobre o aporte. — ${d.nome}`].filter(Boolean).join("\n");
+}
+function copiar() {
+  const txt = resumo(), msg = $("copyMsg");
+  const ok = () => msg.textContent = "Copiado.";
+  try {
+    navigator.clipboard.writeText(txt).then(ok).catch(fallback);
+  } catch (e) { fallback(); }
+  function fallback() {
+    const ta = document.createElement("textarea"); ta.value = txt; ta.style.cssText = "width:100%;min-height:140px;margin-top:8px;font:inherit;color:inherit;background:transparent";
+    msg.textContent = "Selecione e copie:"; msg.after(ta); ta.select();
+  }
+}
+function enviarLead() {
+  if (!CONFIG.leadWebhook || !ultimo) return;
+  const { d, c } = ultimo;
+  try {
+    fetch(CONFIG.leadWebhook, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({ data: new Date().toISOString(), nome: d.nome, whatsapp: d.whats, email: d.email,
+        salario: d.salario, rendaAnual: Math.round(c.rendaTrib), limite12: Math.round(c.limite), faltaAportar: Math.round(c.falta), economiaIR: Math.round(c.economia) }) }).catch(() => {});
+  } catch (e) {}
+}
+
+/* ===================== GRÁFICO (SVG) ===================== */
+function desenharGrafico(serie) {
+  const box = $("chart"); const W = 760, H = 300, m = { l: 80, r: 16, t: 14, b: 34 };
+  const maxV = Math.max(...serie.map((s) => Math.max(s.A, s.B)));
+  const step = niceStep(maxV / 4); const top = Math.ceil(maxV / step) * step;
+  const n = serie.length - 1;
+  const x = (t) => m.l + (W - m.l - m.r) * t / n; const y = (v) => H - m.b - (H - m.t - m.b) * v / top;
+  const path = (k) => serie.map((s, i) => (i ? "L" : "M") + x(s.t).toFixed(1) + " " + y(s[k]).toFixed(1)).join(" ");
+  const area = (k) => path(k) + ` L${x(n)} ${y(0)} L${x(0)} ${y(0)} Z`;
+  let grid = "";
+  for (let v = 0; v <= top + 1; v += step) grid += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end" font-size="12" fill="var(--muted)">${compact(v)}</text>`;
+  const every = n > 20 ? 5 : n > 10 ? 2 : 1;
+  let xt = ""; for (let t = 0; t <= n; t += every) xt += `<text x="${x(t)}" y="${H - 10}" text-anchor="middle" font-size="12" fill="var(--muted)">${t}</text>`;
+  const last = serie[n];
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Patrimônio líquido projetado com e sem PGBL ao longo de ${n} anos">
+    ${grid}${xt}
+    <path d="${area("B")}" fill="var(--s-pgbl)" opacity=".10"/>
+    <path d="${path("A")}" fill="none" stroke="var(--s-alt)" stroke-width="2" stroke-linejoin="round"/>
+    <path d="${path("B")}" fill="none" stroke="var(--s-pgbl)" stroke-width="2.5" stroke-linejoin="round"/>
+    <circle cx="${x(n)}" cy="${y(last.B)}" r="5" fill="var(--s-pgbl)" stroke="var(--surface)" stroke-width="2"/>
+    <circle cx="${x(n)}" cy="${y(last.A)}" r="5" fill="var(--s-alt)" stroke="var(--surface)" stroke-width="2"/>
+    <line id="cross" x1="0" x2="0" y1="${m.t}" y2="${H - m.b}" stroke="var(--muted)" stroke-dasharray="3 3" opacity="0"/>
+    <circle id="dotB" r="4.5" fill="var(--s-pgbl)" stroke="var(--surface)" stroke-width="2" opacity="0"/>
+    <circle id="dotA" r="4.5" fill="var(--s-alt)" stroke="var(--surface)" stroke-width="2" opacity="0"/>
+    <rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}" fill="transparent" id="hit"/>
+  </svg><div class="tip" id="tip" hidden></div>`;
+  const svg = box.querySelector("svg"), tip = $("tip");
+  const move = (ev) => {
+    const r = svg.getBoundingClientRect(); const px = (ev.clientX - r.left) * W / r.width;
+    const t = Math.max(0, Math.min(n, Math.round((px - m.l) / (W - m.l - m.r) * n))); const s = serie[t];
+    const cx = x(t);
+    svg.querySelector("#cross").setAttribute("x1", cx); svg.querySelector("#cross").setAttribute("x2", cx); svg.querySelector("#cross").setAttribute("opacity", ".7");
+    const dB = svg.querySelector("#dotB"), dA = svg.querySelector("#dotA");
+    dB.setAttribute("cx", cx); dB.setAttribute("cy", y(s.B)); dB.setAttribute("opacity", 1);
+    dA.setAttribute("cx", cx); dA.setAttribute("cy", y(s.A)); dA.setAttribute("opacity", 1);
+    tip.hidden = false; tip.style.left = (cx / W * r.width) + "px"; tip.style.top = (y(Math.max(s.A, s.B)) / H * r.height) + "px";
+    tip.innerHTML = `Ano ${t}<br><i class="sw" style="background:var(--s-pgbl)"></i>Com PGBL <b>${brl0(s.B)}</b><br><i class="sw" style="background:var(--s-alt)"></i>Sem PGBL <b>${brl0(s.A)}</b>`;
+  };
+  const hide = () => { tip.hidden = true; ["#cross", "#dotA", "#dotB"].forEach((q) => svg.querySelector(q).setAttribute("opacity", 0)); };
+  svg.addEventListener("pointermove", move); svg.addEventListener("pointerleave", hide);
+}
+function niceStep(raw) { const p = Math.pow(10, Math.floor(Math.log10(raw || 1))); const f = raw / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p; }
+</script>
+</body>
+</html>
