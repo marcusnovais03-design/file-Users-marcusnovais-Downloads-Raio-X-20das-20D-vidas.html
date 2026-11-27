@@ -71,6 +71,10 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;text-align:right;padding:8px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--panel);position:sticky;top:0;z-index:1}
 th:first-child,td:first-child{text-align:left}
+th[data-sort]{cursor:pointer;user-select:none}
+th[data-sort]:hover{color:var(--ink)}
+th[data-sort] .arr{display:inline-block;width:1em;text-align:center;color:var(--accent)}
+th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--ink)}
 td{padding:7px 12px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;vertical-align:middle}
 tr:last-child td{border-bottom:0}
 tbody tr:hover td{background:var(--soft)}
@@ -147,15 +151,7 @@ details.bulkwrap summary{cursor:pointer;padding:10px 14px;border-top:1px solid v
             <option value="b">BID mercado</option>
             <option value="c">Taxa cliente (máx.)</option>
           </select>
-          <select id="ordem" aria-label="Ordenar">
-            <option value="ordem">Ordem do arquivo</option>
-            <option value="abriu">Mais abriram no dia</option>
-            <option value="fechou">Mais fecharam no dia</option>
-            <option value="emis">Maior Δ vs emissão</option>
-            <option value="spread">Maior spread s/ NTN-B</option>
-            <option value="dur">Duration</option>
-            <option value="nome">Ticker A–Z</option>
-          </select>
+          <button class="btn" id="ordemReset" type="button" hidden>Ordem do arquivo</button>
           <button class="btn" id="copiar" type="button">Copiar resumo</button>
         </div>
       </div>
@@ -170,7 +166,7 @@ details.bulkwrap summary{cursor:pointer;padding:10px 14px;border-top:1px solid v
       <div class="tablewrap tall">
         <table>
           <thead><tr>
-            <th>Papel</th><th>Duration</th><th>Emissão</th><th>Abertura</th><th>Atual</th><th>Δ vs abertura</th><th>Δ vs emissão</th><th>Spread s/ NTN-B</th><th>Intradia</th><th>Status</th>
+            <th data-sort="k">Papel</th><th data-sort="d">Duration</th><th data-sort="emis">Emissão</th><th data-sort="base">Abertura</th><th data-sort="atual">Atual</th><th data-sort="delta">Δ vs abertura</th><th data-sort="dEmis">Δ vs emissão</th><th data-sort="spAtual">Spread s/ NTN-B</th><th>Intradia</th><th data-sort="delta">Status</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
@@ -203,9 +199,11 @@ details.bulkwrap summary{cursor:pointer;padding:10px 14px;border-top:1px solid v
       </div>
       <datalist id="ntnbs"></datalist>
       <details class="bulkwrap">
-        <summary>Cadastrar vários de uma vez</summary>
+        <summary>Cadastrar vários de uma vez (planilha ou colar)</summary>
         <form class="bulk" id="bulkform">
           <label class="small" for="bulk">Um papel por linha: ticker; taxa de emissão; NTN-B de referência (opcional). Sem NTN-B, o painel usa a de vencimento mais próximo.</label>
+          <label class="drop" for="cadfile"><strong>Subir planilha de emissões</strong><span class="small">CSV ou Excel com uma coluna de ticker/código e uma de taxa de emissão (ou remuneração, ex.: “IPCA + 6,10%”).</span><span class="fileinfo" id="cadinfo"></span></label>
+          <input type="file" id="cadfile" accept=".csv,.txt,.xlsx,.xls" hidden>
           <textarea id="bulk" spellcheck="false" placeholder="VLIM28; 6,90
 CHSF13; 6,50; NTN-B 2030
 DASA - CDI; 1,95"></textarea>
@@ -547,7 +545,7 @@ VALE38  IPCA+ 6,45%"></textarea>
 
   /* ---------- Estado e cálculo ---------- */
   let dia = hojeKey(), envios = [], dias = [], cad = {}, anbAll = {}, anbDia = null;
-  let lado = "o", fIdx = "Todos", limite = 150;
+  let lado = "o", fIdx = "Todos", limite = 150, sortKey = null, sortDir = "desc";
   try { lado = localStorage.getItem("spreads.lado") || "o"; } catch {}
   $("lado").value = lado; $("dia").value = dia;
 
@@ -694,14 +692,15 @@ VALE38  IPCA+ 6,45%"></textarea>
       && (!q || norm(r.k).includes(q) || norm(r.e).includes(q))
       && (!soMov || r.st === "up" || r.st === "down")
       && (!soEmis || r.emis !== null));
-    const o = $("ordem").value;
-    const nz = (v, d) => (v === null || v === undefined ? d : v);
-    if (o === "abriu") list.sort((a, b) => b.delta - a.delta);
-    else if (o === "fechou") list.sort((a, b) => a.delta - b.delta);
-    else if (o === "emis") list.sort((a, b) => nz(b.dEmis, -1e9) - nz(a.dEmis, -1e9));
-    else if (o === "spread") list.sort((a, b) => nz(b.spAtual, -1e9) - nz(a.spAtual, -1e9));
-    else if (o === "dur") list.sort((a, b) => nz(a.d, 1e9) - nz(b.d, 1e9));
-    else if (o === "nome") list.sort((a, b) => a.k.localeCompare(b.k));
+    if (sortKey) {
+      const dir = sortDir === "asc" ? 1 : -1;
+      list.sort((a, b) => {
+        const x = a[sortKey], y = b[sortKey];
+        const xn = x === null || x === undefined, yn = y === null || y === undefined;
+        if (xn || yn) return xn && yn ? 0 : xn ? 1 : -1;
+        return (typeof x === "string" ? x.localeCompare(y) : x - y) * dir;
+      });
+    }
     return list;
   }
 
@@ -960,6 +959,46 @@ VALE38  IPCA+ 6,45%"></textarea>
     $("bulkprev").textContent = ok.length + " para salvar" + (bad.length ? " · " + bad.length + " ignoradas" : "");
     $("bulkbtn").disabled = !ok.length || !canWrite;
   });
+  async function lerLinhas(file) {
+    const buf = await file.arrayBuffer();
+    if (/\.xlsx?$/i.test(file.name)) {
+      await carregarXLSX(); const wb = XLSX.read(new Uint8Array(buf), { type: "array" });
+      return XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: false, defval: "" });
+    }
+    let txt = new TextDecoder("utf-8").decode(buf); if (txt.includes("\uFFFD")) txt = new TextDecoder("windows-1252").decode(buf);
+    return splitCSV(txt.replace(/^\uFEFF/, ""));
+  }
+  $("cadfile").addEventListener("change", async (e) => {
+    const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+    const info = $("cadinfo"); info.textContent = "Lendo " + f.name + "…";
+    try {
+      const rows = await lerLinhas(f);
+      const hi = rows.slice(0, 15).findIndex((r) => r.some((x) => /ticker|codigo|ativo/.test(norm(x))) && r.some((x) => /emiss|remunera|taxa/.test(norm(x))));
+      if (hi < 0) { info.textContent = "Não achei as colunas de ticker e taxa de emissão. Use cabeçalhos como “Ticker” e “Taxa de emissão”."; return; }
+      const h = rows[hi].map(norm);
+      const ck = h.findIndex((x) => /^ticker|^codigo|^cod\.|codigo do ativo|^ativo/.test(x));
+      let ce = h.findIndex((x) => /taxa.*emiss|emiss.*taxa|spread.*emiss/.test(x));
+      if (ce < 0) ce = h.findIndex((x) => /remunera/.test(x));
+      if (ce < 0) ce = h.findIndex((x) => /^taxa/.test(x));
+      if (ck < 0 || ce < 0) { info.textContent = "Não achei as colunas de ticker e taxa de emissão."; return; }
+      const itens = [];
+      rows.slice(hi + 1).forEach((r) => { const k = keyNorm(r[ck] || ""); const v = cliMax(r[ce]); if (k && v !== null) itens.push({ k, v }); });
+      if (!itens.length) { info.textContent = "Nenhuma taxa encontrada no arquivo."; return; }
+      info.textContent = "Salvando " + itens.length + " emissões…";
+      let n = 0;
+      for (let i = 0; i < itens.length; i += 8) {
+        await Promise.all(itens.slice(i, i + 8).map(async ({ k, v }) => {
+          const prev = { ...(cad[k] || {}) }; delete prev.k;
+          if (prev.emissao === v) return;
+          try { await salvarCad(k, { ...prev, emissao: v }); n++; } catch {}
+        }));
+        info.textContent = "Salvando… " + Math.min(i + 8, itens.length) + "/" + itens.length;
+      }
+      const naTela = itens.filter((x) => rowsCache.some((r) => r.k === x.k)).length;
+      info.textContent = f.name + " · " + n + " emissões salvas · " + naTela + " batem com papéis do dia";
+      toast(n + " taxas de emissão cadastradas.");
+    } catch (err) { info.textContent = "Não consegui ler " + f.name + "."; }
+  });
   $("bulkform").addEventListener("submit", async (e) => {
     e.preventDefault(); const { ok } = parseBulk(); if (!ok.length) return;
     $("bulkbtn").disabled = true; let n = 0;
@@ -973,7 +1012,31 @@ VALE38  IPCA+ 6,45%"></textarea>
 
   /* ---------- Filtros ---------- */
   $("busca").addEventListener("input", () => { limite = 150; renderTabela(rowsCache); });
-  $("ordem").addEventListener("change", () => renderTabela(rowsCache));
+  function renderSortHeads() {
+    document.querySelectorAll("th[data-sort]").forEach((th) => {
+      if (!th.dataset.label) th.dataset.label = th.textContent;
+      const on = th === lastTh && !!sortKey;
+      th.textContent = th.dataset.label;
+      const arr = el("span", "arr", on ? (sortDir === "asc" ? "▲" : "▼") : "");
+      th.append(arr);
+      th.setAttribute("aria-sort", on ? (sortDir === "asc" ? "ascending" : "descending") : "none");
+      th.tabIndex = 0; th.title = "Ordenar: clique para decrescente/crescente";
+    });
+    $("ordemReset").hidden = !sortKey;
+  }
+  let lastTh = null;
+  document.querySelectorAll("th[data-sort]").forEach((th) => {
+    const go = () => {
+      const k = th.dataset.sort;
+      if (lastTh === th) sortDir = sortDir === "desc" ? "asc" : "desc";
+      else { sortDir = k === "k" ? "asc" : "desc"; }
+      sortKey = k; lastTh = th; limite = 150; renderSortHeads(); renderTabela(rowsCache);
+    };
+    th.addEventListener("click", go);
+    th.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  });
+  $("ordemReset").onclick = () => { sortKey = null; lastTh = null; renderSortHeads(); renderTabela(rowsCache); };
+  renderSortHeads();
   $("soMov").addEventListener("change", () => { limite = 150; renderTabela(rowsCache); });
   $("soEmis").addEventListener("change", () => { limite = 150; renderTabela(rowsCache); });
   $("lado").addEventListener("change", (e) => { lado = e.target.value; try { localStorage.setItem("spreads.lado", lado); } catch {} renderAll(); });
