@@ -118,9 +118,9 @@ input[aria-invalid=true]{border-color:#C0392B}
 
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.93rem;min-width:520px}
-th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+th,td{white-space:nowrap;padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
 th:first-child,td:first-child{text-align:left}
-thead th{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+thead th{white-space:normal;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
 tr.total td{font-weight:700;border-bottom:none}
 td.best{color:var(--good);font-weight:700}
 .badge-best{font-size:.68rem;font-weight:700;letter-spacing:.04em;background:var(--accent);color:var(--accent-ink);padding:2px 6px;border-radius:6px;margin-left:6px;vertical-align:middle}
@@ -174,18 +174,18 @@ details ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.88rem;colo
       <p class="muted" style="font-size:.88rem">a menos de IR por ano usando o limite do PGBL</p>
       <dl>
         <dt>Aporte para o limite</dt><dd id="sampleLim">—</dd>
-        <dt>Em 20 anos, a mais no patrimônio</dt><dd id="sampleProj">—</dd>
+        <dt>Resgatando após 10 anos, a mais vs. investimento comum</dt><dd id="sampleProj">—</dd>
       </dl>
     </aside>
   </section>
 
   <!-- FORMULÁRIO -->
   <form class="card" id="form" novalidate>
-    <div class="steps" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="steps" aria-hidden="true"><span></span><span></span><span></span></div>
 
     <!-- Etapa 1 -->
     <fieldset data-step="1" style="border:0;padding:0;margin:0">
-      <div class="step-head"><span class="count">Etapa 1 de 4</span><h2>Sua renda</h2></div>
+      <div class="step-head"><span class="count">Etapa 1 de 3</span><h2>Sua renda</h2></div>
       <div class="grid">
         <div class="field full">
           <label for="salario">Qual seu salário bruto mensal?</label>
@@ -209,7 +209,7 @@ details ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.88rem;colo
 
     <!-- Etapa 2 -->
     <fieldset data-step="2" hidden style="border:0;padding:0;margin:0">
-      <div class="step-head"><span class="count">Etapa 2 de 4</span><h2>Deduções que você já tem</h2>
+      <div class="step-head"><span class="count">Etapa 2 de 3</span><h2>Deduções que você já tem</h2>
         <p class="muted">Opcional, mas deixa a comparação entre os modelos simplificado e completo bem mais precisa.</p></div>
       <div class="grid">
         <div class="field">
@@ -241,29 +241,7 @@ details ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.88rem;colo
 
     <!-- Etapa 3 -->
     <fieldset data-step="3" hidden style="border:0;padding:0;margin:0">
-      <div class="step-head"><span class="count">Etapa 3 de 4</span><h2>Seu horizonte de longo prazo</h2>
-        <p class="muted">Usamos isso para projetar o valor de adiar o imposto: o IR que você deixa de pagar hoje continua rendendo, e só uma parte dele volta para a Receita no resgate.</p></div>
-      <div class="grid">
-        <div class="field full">
-          <label for="anos">Por quantos anos pretende manter esses aportes?</label>
-          <div class="range-row"><input type="range" id="anos" min="3" max="35" step="1" value="20"><output id="anosOut" for="anos">20 anos</output></div>
-        </div>
-        <div class="field">
-          <label for="taxa">Rentabilidade bruta esperada ao ano</label>
-          <div class="range-row"><input type="range" id="taxa" min="6" max="15" step="0.5" value="10"><output id="taxaOut" for="taxa">10,0%</output></div>
-          <span class="hint">Mesma taxa para o PGBL e para o investimento comum.</span>
-        </div>
-        <div class="field">
-          <label for="adm">Taxa de administração do PGBL</label>
-          <div class="range-row"><input type="range" id="adm" min="0" max="2" step="0.1" value="0.5"><output id="admOut" for="adm">0,5%</output></div>
-          <span class="hint">Descontada só do PGBL, para a comparação ser justa.</span>
-        </div>
-      </div>
-    </fieldset>
-
-    <!-- Etapa 4 -->
-    <fieldset data-step="4" hidden style="border:0;padding:0;margin:0">
-      <div class="step-head"><span class="count">Etapa 4 de 4</span><h2>Para onde enviamos seu resultado?</h2>
+      <div class="step-head"><span class="count">Etapa 3 de 3</span><h2>Para onde enviamos seu resultado?</h2>
         <p class="muted">Seu resultado aparece logo em seguida. Com seu contato, preparo uma análise completa do seu planejamento.</p></div>
       <div class="grid">
         <div class="field full">
@@ -304,7 +282,8 @@ details ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.88rem;colo
 const CONFIG = {
   assessor: "Marcus Novais",
   titulo: "Assessor de Investimentos · CFP® · CGA",
-  whatsapp: "5511958000772",         // só números, com 55 + DDD
+  whatsapp: "5511958000772",
+  taxaAnual: 0.10,                    // remuneração considerada nos cenários (PGBL e investimento comum)         // só números, com 55 + DDD
   leadWebhook: ""                     // opcional: URL (Google Apps Script, Make, Zapier) que recebe o lead em JSON via POST
 };
 
@@ -380,30 +359,21 @@ function calcular(d) {
     restAtual: retido - melhorAtual, restMax: retido - Math.min(compMax.ir, melhorAtual) };
 }
 
-/* Projeção: mesmo desembolso anual (aporte = falta para o limite) nos dois cenários.
-   Cenário A: investimento comum, IR de 15% sobre o ganho no resgate (tabela de renda fixa por prazo).
-   Cenário B: PGBL (tabela regressiva por aporte) + IR economizado reinvestido no investimento comum um ano depois. */
-function projetar(aporte, economia, anos, taxa, adm) {
-  const r = taxa, rp = (1 + taxa) * (1 - adm) - 1;
-  const aliqRF = (h) => h >= 2 ? .15 : h >= 1 ? .175 : .225;
-  const aliqReg = (h) => { for (const [lim, a] of P.regressiva) if (h <= lim) return a; return .10; };
-  const serie = [];
-  let irResgPGBL = 0, irResgAlt = 0, irResgEco = 0;
-  for (let t = 0; t <= anos; t++) {
-    let A = 0, B = 0, irA = 0, irB = 0, irE = 0, brutoP = 0;
-    for (let k = 0; k < t; k++) {
-      const h = t - k;
-      const vA = aporte * Math.pow(1 + r, h); const tA = (vA - aporte) * aliqRF(h); A += vA - tA; irA += tA;
-      const vP = aporte * Math.pow(1 + rp, h); const tP = vP * aliqReg(h); B += vP - tP; irB += tP; brutoP += vP;
-      const he = t - (k + 1);
-      if (he >= 0) { const vE = economia * Math.pow(1 + r, he); const tE = he > 0 ? (vE - economia) * aliqRF(he) : 0; B += vE - tE; irE += tE; }
-    }
-    serie.push({ t, A, B });
-    if (t === anos) { irResgAlt = irA; irResgPGBL = irB; irResgEco = irE; }
+/* Cenários de resgate de UM aporte (o que falta para o limite deste ano), mesmo desembolso nos dois lados.
+   Comum: IR sobre o ganho (17,5% no 1º ano, 15% depois). PGBL: IR sobre o total pela tabela regressiva,
+   mais o IR economizado, recebido na restituição um ano depois e reinvestido. Resgate logo após completar h anos. */
+const aliqReg = (h) => h < 2 ? .35 : h < 4 ? .30 : h < 6 ? .25 : h < 8 ? .20 : h < 10 ? .15 : .10;
+const aliqRF = (h) => h >= 2 ? .15 : h >= 1 ? .175 : .225;
+function cenarios(aporte, economia, taxa, maxAnos = 30) {
+  const linhas = [];
+  for (let h = 1; h <= maxAnos; h++) {
+    const brutoP = aporte * Math.pow(1 + taxa, h), aliq = aliqReg(h), liqP = brutoP * (1 - aliq);
+    const he = h - 1, vE = economia * Math.pow(1 + taxa, he), liqE = vE - (he > 0 ? (vE - economia) * aliqRF(he) : 0);
+    const vA = aporte * Math.pow(1 + taxa, h), alt = vA - (vA - aporte) * aliqRF(h);
+    linhas.push({ t: h, brutoP, aliq, liqP, liqE, liqTotal: liqP + liqE, alt, diff: liqP + liqE - alt, A: alt, B: liqP + liqE });
   }
-  const fim = serie[serie.length - 1];
-  return { serie, A: fim.A, B: fim.B, ganho: fim.B - fim.A, irResgAlt, irResgPGBL, irResgEco,
-    totalEconomizado: economia * anos, totalAportado: aporte * anos };
+  const eq = linhas.find((l, i) => l.diff >= 0 && linhas.slice(i).every((x) => x.diff >= 0));
+  return { linhas, equilibrio: eq ? eq.t : null, ideal: linhas[9] };
 }
 
 /* ===================== FORMATAÇÃO ===================== */
@@ -429,23 +399,19 @@ $("whats").addEventListener("input", (e) => {
   if (d.length > 7) o = `(${d.slice(0, 2)}) ${d.slice(2, 3)} ${d.slice(3, 7)}-${d.slice(7)}`;
   e.target.value = o;
 });
-const bindRange = (id, fmt) => { const el = $(id), out = $(id + "Out"); const f = () => out.textContent = fmt(+el.value); el.addEventListener("input", f); f(); };
-bindRange("anos", (v) => v + " anos");
-bindRange("taxa", (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1 }) + "%");
-bindRange("adm", (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1 }) + "%");
 $("advName").textContent = CONFIG.assessor; $("advTitle").textContent = CONFIG.titulo;
 
 /* ===================== EXEMPLO DO TOPO ===================== */
 (() => {
   const ex = calcular({ salario: 15000, outras: 0, pgblAno: 0, ferias: true, contribui: true, saude: 2000, eduPropria: 0, deps: 2, eduDeps: 0, pensao: 0 });
-  const pj = projetar(ex.falta, ex.economia, 20, .10, .005);
+  const cx = cenarios(ex.falta, ex.economia, CONFIG.taxaAnual);
   $("sampleBig").textContent = brl0(ex.economia);
-  $("sampleLim").textContent = brl0(ex.falta) + "/ano";
-  $("sampleProj").textContent = "+" + compact(pj.ganho);
+  $("sampleLim").textContent = brl0(ex.falta);
+  $("sampleProj").textContent = "+" + brl0(cx.ideal.diff);
 })();
 
 /* ===================== FLUXO DO FORMULÁRIO ===================== */
-let step = 1; const TOTAL = 4;
+let step = 1; const TOTAL = 3;
 const show = () => {
   document.querySelectorAll("fieldset[data-step]").forEach((f) => f.hidden = +f.dataset.step !== step);
   document.querySelectorAll(".steps span").forEach((s, i) => s.classList.toggle("on", i < step));
@@ -455,7 +421,7 @@ const show = () => {
 const setErr = (id, msg) => { $("err-" + id).textContent = msg; const el = $(id); if (el) el.setAttribute("aria-invalid", msg ? "true" : "false"); return !msg; };
 function validar() {
   if (step === 1) return setErr("salario", money("salario") + money("outras") > 0 ? "" : "Informe seu salário bruto mensal.");
-  if (step === 4) {
+  if (step === TOTAL) {
     let ok = setErr("nome", $("nome").value.trim().split(/\s+/).length >= 2 ? "" : "Informe nome e sobrenome.");
     ok = setErr("whats", $("whats").value.replace(/\D/g, "").length >= 10 ? "" : "Informe um WhatsApp com DDD.") && ok;
     const em = $("email").value.trim();
@@ -482,15 +448,14 @@ function lerDados() {
     ferias: $("ferias").checked, contribui: $("contribui").checked,
     saude: money("saude"), eduPropria: money("eduPropria"), deps: +$("deps").value,
     eduDeps: money("eduDeps"), pensao: money("pensao"),
-    anos: +$("anos").value, taxa: +$("taxa").value / 100, adm: +$("adm").value / 100,
     nome: $("nome").value.trim(), whats: $("whats").value, email: $("email").value.trim()
   };
 }
 
 function resultado() {
   const d = lerDados(); const c = calcular(d);
-  const pj = projetar(c.falta, c.economia, d.anos, d.taxa, d.adm);
-  ultimo = { d, c, pj };
+  const cn = cenarios(c.falta, c.economia, CONFIG.taxaAnual);
+  ultimo = { d, c, cn };
   const primeiro = esc(d.nome.split(/\s+/)[0] || "");
   const out = $("result");
 
@@ -546,32 +511,32 @@ function resultado() {
 
   ${c.economia > 0 ? `
   <div class="card fade" style="display:grid;gap:16px">
-    <p class="eyebrow">Custo de oportunidade</p>
-    <h3>O que vale adiar o imposto por ${d.anos} anos</h3>
-    <p class="muted" style="font-size:.95rem">Os dois cenários usam o mesmo dinheiro: ${brl0(c.falta)} por ano. No PGBL, o IR que você economiza volta na restituição e é reinvestido. No resgate, o PGBL paga IR sobre o total pela tabela regressiva (10% para aportes com mais de 10 anos). No investimento comum, paga 15% só sobre o ganho, mas sem a economia de ${pct(c.retorno, 1)} na entrada.</p>
+    <p class="eyebrow">Custo de oportunidade · quando resgatar</p>
+    <h3>Quanto vale deixar investido, e qual o melhor momento de resgatar</h3>
+    <p class="muted" style="font-size:.95rem">Considerando o aporte deste ano (${brl0(c.falta)}) rendendo ${pct(CONFIG.taxaAnual, 0)} ao ano. No PGBL, o IR economizado (${brl0(c.economia)}) volta na restituição e também é investido. No resgate, o PGBL paga IR sobre o valor total pela tabela regressiva, que cai com o tempo. No investimento comum, o mesmo dinheiro paga 15% só sobre o ganho, mas sem a economia na entrada.</p>
+    <div class="split">
+      <div class="mini" style="border-top-color:var(--warn)"><span class="l">Ponto de equilíbrio</span><span class="v">${cn.equilibrio ? "a partir de " + cn.equilibrio + " anos" : "—"}</span><span class="l">antes disso, o IR alto do resgate antecipado anula o benefício</span></div>
+      <div class="mini" style="border-top-color:var(--good)"><span class="l">Ponto ideal de resgate</span><span class="v">após 10 anos</span><span class="l">alíquota mínima de 10%, ${brl0(cn.ideal.liqTotal)} líquidos (${cn.ideal.diff >= 0 ? "+" : ""}${brl0(cn.ideal.diff)} vs. comum)</span></div>
+      <div class="mini" style="border-top-color:var(--s-pgbl)"><span class="l">Deixando 20 anos</span><span class="v">${brl0(cn.linhas[19].liqTotal)}</span><span class="l">${cn.linhas[19].diff >= 0 ? "+" : ""}${brl0(cn.linhas[19].diff)} a mais que o investimento comum</span></div>
+    </div>
     <div class="chart-legend">
-      <span><i class="sw" style="background:var(--s-pgbl)"></i>PGBL + IR economizado reinvestido</span>
-      <span><i class="sw" style="background:var(--s-alt)"></i>Investimento comum (CDB, Tesouro, fundos)</span>
+      <span><i class="sw" style="background:var(--s-pgbl)"></i>PGBL + IR economizado reinvestido (líquido)</span>
+      <span><i class="sw" style="background:var(--s-alt)"></i>Investimento comum (líquido)</span>
     </div>
     <div class="chart-box" id="chart"></div>
-    <p class="note" style="text-align:center;margin-top:-8px">Anos de aportes · passe o dedo ou o mouse no gráfico</p>
-    <div class="split">
-      <div class="mini" style="border-top-color:var(--s-pgbl)"><span class="l">Patrimônio líquido com PGBL</span><span class="v">${brl0(pj.B)}</span></div>
-      <div class="mini" style="border-top-color:var(--s-alt)"><span class="l">Patrimônio líquido sem PGBL</span><span class="v">${brl0(pj.A)}</span></div>
-      <div class="mini" style="border-top-color:var(--good)"><span class="l">Diferença a favor do ${pj.ganho >= 0 ? "PGBL" : "investimento comum"}</span><span class="v" style="color:${pj.ganho >= 0 ? "var(--good)" : "var(--warn)"}">${pj.ganho >= 0 ? "+" : ""}${brl0(pj.ganho)}</span></div>
-    </div>
-    <div class="callout">Em ${d.anos} anos você deixa de antecipar <strong class="num">${brl0(pj.totalEconomizado)}</strong> de IR. Esse dinheiro fica trabalhando a seu favor e, no resgate, o PGBL paga <strong class="num">${brl0(pj.irResgPGBL)}</strong> de imposto sobre um patrimônio bruto maior. Adiar o imposto equivale a um empréstimo sem juros da Receita Federal.</div>
-    <details><summary>Premissas da projeção</summary><ul>
-      <li>Aporte anual igual ao valor que falta para o limite de 12% (${brl0(c.falta)}), sem reajuste.</li>
-      <li>Rentabilidade bruta de ${pct(d.taxa)} a.a. nos dois cenários; o PGBL desconta ${pct(d.adm)} a.a. de taxa de administração.</li>
-      <li>Restituição recebida um ano após cada aporte e reinvestida no investimento comum.</li>
-      <li>Resgate total ao fim do prazo. PGBL na tabela regressiva por aporte (35% até 2 anos, caindo até 10% acima de 10 anos). Investimento comum com IR de 15% sobre o ganho acima de 2 anos.</li>
-      <li>Parâmetros de IR mantidos constantes. Recebimento em renda mensal pode reduzir ainda mais o imposto efetivo.</li>
+    <p class="note" style="text-align:center;margin-top:-8px">Anos investido até o resgate · passe o dedo ou o mouse no gráfico</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Deixando investido</th><th>Saldo bruto PGBL</th><th>IR no resgate</th><th>Líquido PGBL + IR reinvestido</th><th>Investimento comum</th><th>Diferença</th></tr></thead>
+      <tbody>${[1, 2, 3, 4, 5, 6, 8, 10, 15, 20, 25, 30].map((h) => { const l = cn.linhas[h - 1]; const tag = h === 10 ? '<span class="badge-best">ideal</span>' : h === cn.equilibrio ? '<span class="badge-best" style="background:var(--warn)">equilíbrio</span>' : "";
+        return `<tr><td>${h} ${h === 1 ? "ano" : "anos"}${tag}</td><td>${brl0(l.brutoP)}</td><td>${pct(l.aliq, 0)}</td><td${h >= 10 ? ' class="best"' : ""}>${brl0(l.liqTotal)}</td><td>${brl0(l.alt)}</td><td style="color:${l.diff >= 0 ? "var(--good)" : "var(--warn)"}">${l.diff >= 0 ? "+" : ""}${brl0(l.diff)}</td></tr>`; }).join("")}
+      </tbody></table></div>
+    <div class="callout"><strong>Por que 10 anos?</strong> A tabela regressiva começa em 35% e cai 5 pontos a cada 2 anos até chegar a 10%, o menor IR possível em previdência. Depois disso o imposto não cai mais, e cada ano a mais só soma rendimento. ${cn.equilibrio ? `Resgatar antes de ${cn.equilibrio} anos faz o PGBL perder para o investimento comum.` : ""} Cada aporte tem o seu próprio prazo, contado a partir da data em que foi feito.</div>
+    <details><summary>Premissas dos cenários</summary><ul>
+      <li>Aporte único de ${brl0(c.falta)} feito este ano, rendendo ${pct(CONFIG.taxaAnual, 0)} a.a. nos dois cenários, já líquido de taxas.</li>
+      <li>Restituição recebida um ano após o aporte e reinvestida com IR de 15% sobre o ganho.</li>
+      <li>PGBL na tabela regressiva: 35% até 2 anos, 30% até 4, 25% até 6, 20% até 8, 15% até 10 e 10% após 10 anos. Investimento comum com IR de 17,5% no 1º ano e 15% a partir do 2º.</li>
+      <li>Parâmetros de IR mantidos constantes. Receber em renda mensal em vez de resgate total mantém o dinheiro rendendo por mais tempo.</li>
     </ul></details>
-    <div class="table-wrap"><details><summary>Ver tabela ano a ano</summary>
-      <table><thead><tr><th>Ano</th><th>Com PGBL</th><th>Sem PGBL</th><th>Diferença</th></tr></thead><tbody>
-      ${pj.serie.filter((s) => s.t > 0 && (s.t % (d.anos > 15 ? 5 : 1) === 0 || s.t === d.anos)).map((s) => `<tr><td>${s.t}</td><td>${brl0(s.B)}</td><td>${brl0(s.A)}</td><td>${brl0(s.B - s.A)}</td></tr>`).join("")}
-      </tbody></table></details></div>
   </div>` : ""}
 
   <div class="cta fade">
@@ -587,7 +552,7 @@ function resultado() {
   $("waBtn").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(resumo());
   $("copyBtn").addEventListener("click", copiar);
   $("refazer").addEventListener("click", () => { out.hidden = true; $("form").hidden = false; step = 1; show(); $("form").scrollIntoView({ behavior: "smooth" }); });
-  if (c.economia > 0) desenharGrafico(pj.serie);
+  if (c.economia > 0) desenharGrafico(cn.linhas, [cn.equilibrio, 10]);
 
   $("form").hidden = true; $("hero").hidden = true;
   out.hidden = false; out.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -596,12 +561,12 @@ function resultado() {
 
 function formatPhone(n) { const d = n.replace(/^55/, ""); return `(${d.slice(0, 2)}) ${d.slice(2, 3)} ${d.slice(3, 7)}-${d.slice(7)}`; }
 function resumo() {
-  const { d, c, pj } = ultimo;
+  const { d, c, cn } = ultimo;
   return [`Olá, ${CONFIG.assessor.split(" ")[0]}! Fiz a simulação de PGBL:`,
     `• Renda tributável anual: ${brl0(c.rendaTrib)}`,
     `• Limite de 12%: ${brl0(c.limite)} (falta aportar ${brl0(c.falta)})`,
     `• IR a menos por ano: ${brl0(c.economia)}`,
-    c.economia > 0 ? `• Em ${d.anos} anos: +${brl0(pj.ganho)} de patrimônio vs. investimento comum` : null,
+    c.economia > 0 ? `• Resgatando após 10 anos: ${brl0(cn.ideal.liqTotal)} líquidos (+${brl0(cn.ideal.diff)} vs. investimento comum)` : null,
     `Gostaria de conversar sobre o aporte. — ${d.nome}`].filter(Boolean).join("\n");
 }
 function copiar() {
@@ -626,26 +591,27 @@ function enviarLead() {
 }
 
 /* ===================== GRÁFICO (SVG) ===================== */
-function desenharGrafico(serie) {
+function desenharGrafico(serie, marcas = []) {
   const box = $("chart"); const W = 760, H = 300, m = { l: 80, r: 16, t: 14, b: 34 };
   const maxV = Math.max(...serie.map((s) => Math.max(s.A, s.B)));
   const step = niceStep(maxV / 4); const top = Math.ceil(maxV / step) * step;
-  const n = serie.length - 1;
-  const x = (t) => m.l + (W - m.l - m.r) * t / n; const y = (v) => H - m.b - (H - m.t - m.b) * v / top;
+  const n = serie.length - 1, t0 = serie[0].t, t1 = serie[n].t;
+  const x = (t) => m.l + (W - m.l - m.r) * (t - t0) / (t1 - t0); const y = (v) => H - m.b - (H - m.t - m.b) * v / top;
   const path = (k) => serie.map((s, i) => (i ? "L" : "M") + x(s.t).toFixed(1) + " " + y(s[k]).toFixed(1)).join(" ");
-  const area = (k) => path(k) + ` L${x(n)} ${y(0)} L${x(0)} ${y(0)} Z`;
+  const area = (k) => path(k) + ` L${x(t1)} ${y(0)} L${x(t0)} ${y(0)} Z`;
   let grid = "";
   for (let v = 0; v <= top + 1; v += step) grid += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end" font-size="12" fill="var(--muted)">${compact(v)}</text>`;
   const every = n > 20 ? 5 : n > 10 ? 2 : 1;
-  let xt = ""; for (let t = 0; t <= n; t += every) xt += `<text x="${x(t)}" y="${H - 10}" text-anchor="middle" font-size="12" fill="var(--muted)">${t}</text>`;
+  let xt = ""; for (let t = t0; t <= t1; t += (t === t0 && every > 1 ? every - 1 : every)) xt += `<text x="${x(t)}" y="${H - 10}" text-anchor="middle" font-size="12" fill="var(--muted)">${t}</text>`;
   const last = serie[n];
-  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Patrimônio líquido projetado com e sem PGBL ao longo de ${n} anos">
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Valor líquido no resgate com e sem PGBL conforme o prazo investido">
     ${grid}${xt}
     <path d="${area("B")}" fill="var(--s-pgbl)" opacity=".10"/>
     <path d="${path("A")}" fill="none" stroke="var(--s-alt)" stroke-width="2" stroke-linejoin="round"/>
     <path d="${path("B")}" fill="none" stroke="var(--s-pgbl)" stroke-width="2.5" stroke-linejoin="round"/>
-    <circle cx="${x(n)}" cy="${y(last.B)}" r="5" fill="var(--s-pgbl)" stroke="var(--surface)" stroke-width="2"/>
-    <circle cx="${x(n)}" cy="${y(last.A)}" r="5" fill="var(--s-alt)" stroke="var(--surface)" stroke-width="2"/>
+    ${marcas.filter(Boolean).map((t, i) => `<line x1="${x(t)}" x2="${x(t)}" y1="${m.t}" y2="${H - m.b}" stroke="${i ? "var(--good)" : "var(--warn)"}" stroke-width="1.5" stroke-dasharray="4 4"/><text x="${x(t) + 6}" y="${m.t + 14 + i * 16}" font-size="12" font-weight="700" fill="var(--fg)">${i ? "Ideal: 10 anos (IR 10%)" : "Equilíbrio: " + t + " anos"}</text>`).join("")}
+    <circle cx="${x(t1)}" cy="${y(last.B)}" r="5" fill="var(--s-pgbl)" stroke="var(--surface)" stroke-width="2"/>
+    <circle cx="${x(t1)}" cy="${y(last.A)}" r="5" fill="var(--s-alt)" stroke="var(--surface)" stroke-width="2"/>
     <line id="cross" x1="0" x2="0" y1="${m.t}" y2="${H - m.b}" stroke="var(--muted)" stroke-dasharray="3 3" opacity="0"/>
     <circle id="dotB" r="4.5" fill="var(--s-pgbl)" stroke="var(--surface)" stroke-width="2" opacity="0"/>
     <circle id="dotA" r="4.5" fill="var(--s-alt)" stroke="var(--surface)" stroke-width="2" opacity="0"/>
@@ -654,14 +620,14 @@ function desenharGrafico(serie) {
   const svg = box.querySelector("svg"), tip = $("tip");
   const move = (ev) => {
     const r = svg.getBoundingClientRect(); const px = (ev.clientX - r.left) * W / r.width;
-    const t = Math.max(0, Math.min(n, Math.round((px - m.l) / (W - m.l - m.r) * n))); const s = serie[t];
+    const i = Math.max(0, Math.min(n, Math.round((px - m.l) / (W - m.l - m.r) * n))); const s = serie[i], t = s.t;
     const cx = x(t);
     svg.querySelector("#cross").setAttribute("x1", cx); svg.querySelector("#cross").setAttribute("x2", cx); svg.querySelector("#cross").setAttribute("opacity", ".7");
     const dB = svg.querySelector("#dotB"), dA = svg.querySelector("#dotA");
     dB.setAttribute("cx", cx); dB.setAttribute("cy", y(s.B)); dB.setAttribute("opacity", 1);
     dA.setAttribute("cx", cx); dA.setAttribute("cy", y(s.A)); dA.setAttribute("opacity", 1);
     tip.hidden = false; tip.style.left = (cx / W * r.width) + "px"; tip.style.top = (y(Math.max(s.A, s.B)) / H * r.height) + "px";
-    tip.innerHTML = `Ano ${t}<br><i class="sw" style="background:var(--s-pgbl)"></i>Com PGBL <b>${brl0(s.B)}</b><br><i class="sw" style="background:var(--s-alt)"></i>Sem PGBL <b>${brl0(s.A)}</b>`;
+    tip.innerHTML = `${t} ${t === 1 ? "ano" : "anos"} · IR PGBL ${pct(s.aliq, 0)}<br><i class="sw" style="background:var(--s-pgbl)"></i>Com PGBL <b>${brl0(s.B)}</b><br><i class="sw" style="background:var(--s-alt)"></i>Sem PGBL <b>${brl0(s.A)}</b>`;
   };
   const hide = () => { tip.hidden = true; ["#cross", "#dotA", "#dotB"].forEach((q) => svg.querySelector(q).setAttribute("opacity", 0)); };
   svg.addEventListener("pointermove", move); svg.addEventListener("pointerleave", hide);
