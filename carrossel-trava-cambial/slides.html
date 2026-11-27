@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Trava cambial com caixa</title>
+<style>
+  :root { --ink:#070d24; --gold:#e3b65a; --red:#e3141e; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#888; font-family:"Inter",sans-serif; color:#fff; }
+  .slide { width:1080px; height:1350px; position:relative; overflow:hidden; margin:0 auto 40px; background:var(--ink);
+    background-image:linear-gradient(rgba(255,255,255,.04) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.04) 2px, transparent 2px); background-size:54px 54px; }
+  body.single .slide { display:none; margin:0; }
+  body.single .slide.on { display:block; }
+  .bg { position:absolute; inset:0; } .bg img { width:100%; height:100%; object-fit:cover; display:block; }
+  .shade { position:absolute; inset:0; }
+  .page { position:absolute; inset:0; padding:140px 90px 160px; display:flex; flex-direction:column; justify-content:center; z-index:3; }
+  .page.end { justify-content:flex-end; }
+  .page.disc { padding-bottom:225px; }
+  .count { position:absolute; top:60px; right:92px; font-weight:800; font-size:25px; letter-spacing:.09em; z-index:6; }
+  .foot { position:absolute; left:90px; right:92px; bottom:62px; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:25px; z-index:6; }
+  .foot .who span { display:inline-block; width:3px; height:26px; background:#fff; margin:0 9px -4px; }
+  .foot .go { display:flex; align-items:center; gap:16px; font-weight:800; font-size:27px; }
+  .aviso { position:absolute; left:90px; right:92px; bottom:118px; font-size:21px; line-height:1.3; color:rgba(255,255,255,.6); z-index:6; border-top:2px solid rgba(255,255,255,.18); padding-top:12px; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:84px; line-height:1.02; letter-spacing:-.05em; word-spacing:.12em; margin-bottom:26px; }
+  h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:64px; line-height:1.04; letter-spacing:-.045em; word-spacing:.12em; margin-bottom:24px; }
+  h1 em, h2 em { font-style:normal; color:var(--gold); }
+  h1 .r, h2 .r { background:var(--red); color:#fff !important; padding:0 .14em; border-radius:10px; }
+  p { font-size:36px; line-height:1.28; color:rgba(255,255,255,.88); }
+  p + p { margin-top:20px; }
+  b { font-weight:800; color:#fff; } b.g { color:var(--gold); }
+  .pill { align-self:flex-start; color:var(--gold); font-weight:800; font-size:30px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:20px; }
+  .pill.red { background:var(--red); color:#fff !important; padding:10px 22px 9px; border-radius:10px; line-height:1.3; }
+  ul { list-style:none; }
+  li { position:relative; padding:18px 0 18px 56px; font-size:34px; line-height:1.24; border-bottom:3px solid rgba(255,255,255,.14); color:rgba(255,255,255,.9); }
+  li::before { content:""; position:absolute; left:0; top:29px; width:26px; height:26px; border-radius:50%; background:var(--gold); }
+  .btn { margin-top:30px; align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:900; font-size:36px; line-height:1.15; padding:22px 32px; border-radius:24px; }
+  .card { border-radius:30px; overflow:hidden; box-shadow:0 24px 60px rgba(7,13,36,.35); flex:none; position:relative; margin-bottom:34px; }
+  .card img { width:100%; height:100%; object-fit:cover; display:block; }
+  .cred { position:absolute; right:14px; bottom:10px; font-size:15px; font-weight:600; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.9); }
+  /* claro */
+  .slide.light { background-color:#f2efe8; color:#0e1f5b;
+    background-image:linear-gradient(rgba(14,31,91,.05) 2px, transparent 2px), linear-gradient(90deg, rgba(14,31,91,.05) 2px, transparent 2px); }
+  .light p, .light li { color:rgba(14,31,91,.85); }
+  .light b { color:#0e1f5b; } .light b.g, .light h1 em, .light h2 em { color:#a8761c; }
+  .light .pill { color:#a8761c; }
+  .light li { border-bottom-color:rgba(14,31,91,.15); } .light li::before { background:#a8761c; }
+  .light .foot, .light .count { color:#0e1f5b; } .light .foot .who span { background:#0e1f5b; }
+  .light .foot .go svg { stroke:#0e1f5b; }
+  .light .aviso { color:rgba(14,31,91,.6); border-top-color:rgba(14,31,91,.18); }
+  /* barras do custo */
+  .bars { margin:20px 0 10px; }
+  .bars .row { margin-bottom:22px; }
+  .bars .lab { display:flex; justify-content:space-between; align-items:baseline; font-size:30px; font-weight:700; margin-bottom:10px; }
+  .bars .lab b { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:50px; letter-spacing:-.03em; }
+  .bars .bar { height:64px; border-radius:14px; background:rgba(14,31,91,.08); display:flex; overflow:hidden; }
+  .bars .bar i { display:flex; align-items:center; justify-content:center; height:100%; font-style:normal; font-weight:800; font-size:24px; color:#fff; }
+  .note { font-size:22px; line-height:1.3; color:rgba(14,31,91,.6); margin-top:4px; }
+  /* troca de dívida */
+  .swap { display:flex; align-items:center; gap:24px; margin-top:28px; }
+  .swap > div { flex:1; border-radius:24px; padding:22px 24px; }
+  .swap .k { font-size:24px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+  .swap .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:44px; line-height:1.05; margin-top:8px; letter-spacing:-.03em; }
+  .swap .arr { flex:none; font-size:60px; font-weight:900; color:var(--gold); }
+  /* duas parcelas */
+  .parc { display:flex; gap:22px; align-items:flex-end; height:330px; margin:16px 0 30px; }
+  .parc .col { flex:1; display:flex; flex-direction:column; justify-content:flex-end; height:100%; }
+  .parc .t { font-size:26px; font-weight:800; text-align:center; margin-bottom:12px; line-height:1.15; }
+  .parc .blk { border-radius:16px; display:flex; align-items:center; justify-content:center; text-align:center; font-weight:800; font-size:26px; color:#fff; line-height:1.15; padding:0 10px; }
+  .parc .blk + .blk { margin-top:8px; }
+  /* concorrentes */
+  .dots { display:flex; gap:30px; margin:14px 0 30px; }
+  .dots > div { flex:1; border-radius:24px; padding:22px 24px; border:4px solid rgba(255,255,255,.25); }
+  .dots .k { font-size:26px; font-weight:800; margin-bottom:14px; }
+  .dots .g { display:grid; grid-template-columns:repeat(8, 1fr); gap:8px; }
+  .dots .g i { aspect-ratio:1; border-radius:50%; background:rgba(255,255,255,.28); }
+  .dots .g i.y { background:var(--gold); }
+  .dots .s { font-size:24px; margin-top:14px; color:rgba(255,255,255,.75); line-height:1.25; }
+  .vs { display:flex; gap:22px; margin-top:26px; }
+  .vs > div { flex:1; border-radius:24px; padding:22px 26px; }
+  .vs .k { font-size:24px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+  .vs .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:40px; line-height:1.1; margin-top:8px; letter-spacing:-.02em; }
+  .steps3 { margin-top:26px; }
+  .steps3 .st { display:flex; gap:26px; align-items:flex-start; padding:20px 0; border-bottom:3px solid rgba(14,31,91,.14); }
+  .steps3 .n { flex:none; width:70px; height:70px; font-size:36px; border-radius:50%; background:#0e1f5b; color:#fff; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:38px; display:flex; align-items:center; justify-content:center; }
+  .steps3 .tx { font-size:34px; line-height:1.25; color:rgba(14,31,91,.88); }
+  .steps3 .tx b { display:block; font-size:38px; color:#0e1f5b; margin-bottom:4px; }
+  .duo { display:flex; gap:22px; margin-top:26px; }
+  .duo > div { flex:1; border-radius:26px; padding:26px 26px 24px; border:3px solid rgba(255,255,255,.25); }
+  .duo .k { font-size:24px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .duo .d { font-size:25px; line-height:1.3; color:rgba(255,255,255,.75); margin-top:6px; min-height:98px; }
+  .duo .ln { display:flex; justify-content:space-between; font-size:26px; padding:8px 0; border-bottom:2px solid rgba(255,255,255,.12); color:rgba(255,255,255,.85); }
+  .duo .ln b { font-variant-numeric:tabular-nums; }
+  .duo .tot { margin-top:14px; font-size:22px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.7); }
+  .duo .tv { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:52px; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
+  .ex2 { display:flex; gap:22px; margin-top:30px; }
+  .ex2 > div { flex:1; border-radius:26px; padding:26px; }
+  .ex2 .k { font-size:24px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .ex2 .v { font-size:30px; line-height:1.3; margin-top:10px; color:rgba(255,255,255,.9); }
+  .bignum { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:150px; line-height:1; letter-spacing:-.05em; color:#a8761c; margin:10px 0 16px; }
+  .quote { border-left:8px solid #a8761c; padding:8px 0 8px 30px; font-size:40px; line-height:1.3; margin-top:30px; color:#0e1f5b; font-weight:600; }
+  .logo { height:70px; margin-bottom:30px; align-self:flex-start; filter:brightness(0) invert(1); }
+</style>
+</head>
+<body>
+<script>
+const PH=(k,pos,extra)=>`<img src="img/${k}.jpg" style="object-position:${pos||'50% 50%'};${extra||''}">`;
+const S=[];
+const SH='<div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,0) 0%, rgba(7,13,36,0) 42%, rgba(7,13,36,.75) 62%, rgba(7,13,36,.93) 100%)"></div>';
+// 1 capa
+S.push({h:`<div class="bg"><img src="img/marcus-b3.jpg" style="object-position:50% 20%"></div>${SH}
+ <div class="page end"><div class="pill red">Importa ou exporta? Leia isso</div>
+ <h1 style="font-size:74px">Ela viu o dólar a R$&nbsp;5,82 e me perguntou se dava para travar. <em>Economizou R$&nbsp;39&nbsp;mil.</em></h1>
+ <p>Vou te contar como foi. <b class="g">👉 Arrasta</b></p></div>`});
+// 2 a situação
+S.push({light:1, h:`<div class="page"><div class="pill">A situação</div>
+ <h2>Uma cliente, dona de uma <em>importadora</em></h2>
+ <p>Ela precisava pagar <b>US$ 1 milhão</b> a um fornecedor lá fora <b>daqui a 3 meses</b>.</p>
+ <p>O dinheiro já estava no caixa da empresa. E o dólar estava em <b>R$ 5,82</b>, um patamar que ela achava bom.</p>
+ <div class="quote" style="font-style:italic">"Marcus, e se o dólar subir até lá? Tem como garantir esse preço agora?"</div></div>`});
+// 3 a resposta
+S.push({h:`<div class="page"><div class="pill">A resposta</div>
+ <h2>Tem. Chama <em>trava cambial</em></h2>
+ <p>É combinar <b>hoje</b> o preço do dólar para uma <b>data futura</b>. Aconteça o que acontecer com o câmbio, o valor já está fechado.</p>
+ <div class="ex2"><div style="border:3px solid var(--gold); background:rgba(227,182,90,.08)"><div class="k" style="color:var(--gold)">Quem importa</div><div class="v">Sabe hoje quanto vai <b>pagar</b> em reais.</div></div>
+  <div style="border:3px solid rgba(255,255,255,.4)"><div class="k">Quem exporta</div><div class="v">Sabe hoje quanto vai <b>receber</b> em reais.</div></div></div>
+ <p style="margin-top:30px">Mas ela ainda tinha uma dúvida: <b class="g">pagar agora ou deixar o dinheiro rendendo?</b></p></div>`});
+// 4 as duas opções
+S.push({light:1, h:`<div class="page"><div class="pill">As duas opções</div>
+ <h2>Mostrei os dois caminhos <em>lado a lado</em></h2>
+ <div class="steps3">
+  <div class="st"><div class="n">A</div><div class="tx"><b>Trava com caixa</b>Fecha o dólar hoje, paga os reais em até 5 dias úteis e recebe os dólares em 3 meses.</div></div>
+  <div class="st" style="border:0"><div class="n">B</div><div class="tx"><b>Trava sem caixa</b>Fecha o dólar hoje, deixa o dinheiro num CDB rendendo 100% do CDI e só paga no fim.</div></div>
+ </div>
+ <p style="margin-top:14px; font-size:32px">A opção B parece melhor, porque o dinheiro rende. <b class="g">Mas faltava fazer a conta.</b></p></div>`});
+// 5 a conta
+S.push({disc:1, h:`<div class="page disc"><div class="pill">A conta</div>
+ <h2 style="font-size:56px">US$ 1 milhão, <em>pago em 3 meses</em></h2>
+ <div class="duo">
+  <div style="border-color:var(--gold); background:rgba(227,182,90,.08)"><div class="k" style="color:var(--gold)">A: com caixa</div><div class="d">Paga os reais agora, recebe os dólares em 3 meses.</div>
+   <div class="ln"><span>Cotação</span><b>R$ 5,8322</b></div>
+   <div class="tot">Custo total</div><div class="tv" style="color:var(--gold)">R$ 5,83 mi</div></div>
+  <div><div class="k">B: sem caixa</div><div class="d">Dinheiro no CDB (100% do CDI), paga só no fim.</div>
+   <div class="ln"><span>Cotação</span><b>R$ 5,9913</b></div>
+   <div class="ln"><span>Rendimento</span><b>+ R$ 181,9 mil</b></div>
+   <div class="ln"><span>Imposto (34%)</span><b>− R$ 61,8 mil</b></div>
+   <div class="tot">Custo total</div><div class="tv">R$ 5,87 mi</div></div>
+ </div></div>`});
+// 6 a decisão
+S.push({light:1, disc:1, h:`<div class="page disc"><div class="pill">A decisão</div>
+ <h2>Ela travou com caixa e <em>pagou menos</em></h2>
+ <div class="bignum">R$ 39 mil</div>
+ <p style="margin-top:0">de economia, <b>mesmo comparando com o dinheiro rendendo no CDI.</b></p>
+ <p>E ganhou o que mais queria: <b class="g">saber exatamente quanto ia pagar</b>, sem susto com o dólar.</p></div>`});
+// 7 CTA
+S.push({h:`<div class="bg"><img src="img/marcus-b3.jpg" style="object-position:50% 20%"></div>${SH}
+ <div class="page end"><div class="pill red">Sua empresa importa ou exporta?</div>
+ <h1 style="font-size:68px">Quer saber quanto <em>você economizaria?</em></h1>
+ <p style="font-size:34px">Eu faço a simulação com os números do seu negócio.</p>
+ <div class="btn">Acesse o link na BIO e fale comigo</div></div>`});
+const N=S.length;
+const AVISO='Simulação com dólar de referência de R$ 5,82, CDI de 13,15% ao ano e IR de 34%. Cotações e taxas mudam a cada dia.';
+S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide'+(x.light?' light':''); if(x.video) s.dataset.video=x.video;
+  s.innerHTML=x.h+(x.disc?`<div class="aviso">${AVISO}</div>`:'')+`<div class="count">${String(i+1).padStart(2,'0')}/${String(N).padStart(2,'0')}</div><div class="foot"><div class="who">Marcus Novais<span></span>Planejador Financeiro, CFP®</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
+  document.body.appendChild(s); });
+const all=[...document.querySelectorAll('.slide')];
+window.setT=()=>{};
+window.show=i=>{document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
+</script>
+</body>
+</html>

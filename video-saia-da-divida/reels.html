@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Reels Saia da Dívida</title>
+<style>
+  :root { --ink:#070d24; --navy:#0e1f5b; --gold:#e3b65a; --red:#ff5a6a; --soft:rgba(255,255,255,.88); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:1080px; height:1920px; overflow:hidden; background:var(--ink); }
+  body { font-family:"Inter",sans-serif; color:#fff; }
+  #stage { position:relative; width:1080px; height:1920px; overflow:hidden; background:var(--ink); }
+  .grid { position:absolute; inset:0; z-index:5; pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.045) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.045) 2px, transparent 2px);
+    background-size:54px 54px; background-position:-1px -1px; }
+  .brand { position:absolute; left:90px; right:90px; top:250px; z-index:20; display:flex; justify-content:space-between; font-weight:700; font-size:28px; }
+  .brand span i { display:inline-block; width:3px; height:28px; background:#fff; margin:0 10px -5px; }
+  .brand b { color:var(--gold); font-weight:800; letter-spacing:.08em; }
+  .prog { position:absolute; left:90px; right:90px; top:310px; height:6px; border-radius:3px; background:rgba(255,255,255,.18); z-index:20; }
+  .prog div { height:100%; border-radius:3px; background:var(--gold); width:0; }
+
+  .sc { position:absolute; inset:0; opacity:0; display:flex; flex-direction:column; padding:400px 90px 0; }
+  .sc > * { position:relative; z-index:6; }
+  .bg { position:absolute !important; inset:0; z-index:0 !important; overflow:hidden; }
+  .bg img { width:100%; height:100%; object-fit:cover; display:block; }
+  .shade { position:absolute !important; inset:0; z-index:1 !important; }
+
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:118px; line-height:.92; letter-spacing:-.055em; word-spacing:.12em; }
+  h1 em, .gold { font-style:normal; color:var(--gold); }
+  .lead { font-size:54px; line-height:1.18; color:var(--soft); margin-top:28px; }
+  .lead b { color:#fff; }
+  .pill { align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:800; font-size:32px; letter-spacing:.12em; text-transform:uppercase; padding:14px 32px 13px; border-radius:40px; margin-bottom:36px; }
+  .src { font-size:26px; color:rgba(255,255,255,.6); line-height:1.3; }
+
+  /* S1 casas */
+  .houses { display:grid; grid-template-columns:repeat(5,1fr); gap:30px 22px; margin:60px 0 44px; }
+  .houses svg { width:160px; height:160px; }
+  /* S2 donut */
+  .donut { position:relative; width:640px; height:640px; margin:40px auto 30px; }
+  .donut .c { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .donut .n { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:150px; letter-spacing:-.06em; font-variant-numeric:tabular-nums; }
+  .donut .t { font-size:34px; color:var(--soft); margin-top:-6px; }
+  .stamp { position:absolute; right:-40px; top:10px; border:8px solid var(--red); color:var(--red); font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:66px; letter-spacing:.02em; padding:8px 26px; border-radius:18px; transform:rotate(12deg); background:rgba(7,13,36,.6); }
+  .news { background:#fff; color:var(--ink); border-radius:28px; padding:28px 34px; box-shadow:0 18px 50px rgba(0,0,0,.45); }
+  .news .k { font-size:24px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#b3263a; margin-bottom:8px; }
+  .news .h { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:48px; line-height:1.03; letter-spacing:-.035em; }
+  /* S5 ciclo */
+  .cyc { width:780px; height:780px; margin:10px auto 0; }
+  .hope { display:flex; align-items:center; gap:24px; font-weight:800; font-size:34px; letter-spacing:.06em; text-transform:uppercase; margin-top:10px; }
+  .track { flex:1; height:44px; border:5px solid rgba(255,255,255,.85); border-radius:24px; overflow:hidden; }
+  .track div { height:100%; background:var(--gold); }
+  /* S6 juros */
+  .hb .lab { display:flex; justify-content:space-between; align-items:baseline; font-size:40px; color:var(--soft); margin:0 0 14px; }
+  .hb .lab b { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:92px; letter-spacing:-.05em; color:#fff; font-variant-numeric:tabular-nums; }
+  .hb .bar { height:76px; border-radius:18px; background:var(--gold); width:0; margin-bottom:40px; }
+  .hb .bar.r { background:var(--red); }
+  .hb .row { opacity:0; }
+  /* S7 bola de neve */
+  .chart { width:900px; height:760px; margin-top:20px; }
+  /* S8 checks */
+  .checks { margin-top:50px; }
+  .checks div { display:flex; align-items:center; gap:30px; font-size:50px; font-weight:700; padding:22px 0; border-bottom:3px solid rgba(255,255,255,.2); opacity:0; }
+  .checks i { flex:none; width:70px; height:70px; border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; }
+  /* S9 CTA */
+  .card { border-radius:40px; overflow:hidden; border:6px solid var(--gold); box-shadow:0 30px 70px rgba(0,0,0,.55); }
+  .card img { width:100%; display:block; }
+  .btn { margin-top:44px; background:var(--gold); color:var(--ink); font-weight:900; font-size:50px; line-height:1.1; padding:30px 40px; border-radius:30px; text-align:center; }
+  .btn small { display:block; font-size:36px; font-weight:700; margin-top:10px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="grid"></div>
+  <div class="brand"><span>Marcus Novais<i></i>Planejador Financeiro CFP®</span><b>SAIA DA DÍVIDA</b></div>
+  <div class="prog"><div id="prog"></div></div>
+
+  <!-- S1 -->
+  <section class="sc" id="s1">
+    <div class="pill">Brasil · 2026</div>
+    <h1 id="s1h">8 em cada <em>10</em></h1>
+    <div class="lead">famílias brasileiras <b>têm dívidas</b>.</div>
+    <div class="houses" id="houses"></div>
+    <div class="src">CNC/Peic, outubro de 2026: 81,6% das famílias endividadas.</div>
+  </section>
+
+  <!-- S2 -->
+  <section class="sc" id="s2">
+    <div class="news" id="s2n"><div class="k">Banco Central</div><div class="h">Dívidas comprometem recorde de 28,9% da renda das famílias</div></div>
+    <div class="donut">
+      <svg viewBox="0 0 640 640" width="640" height="640">
+        <circle cx="320" cy="320" r="260" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="70"/>
+        <circle id="arc2" cx="320" cy="320" r="260" fill="none" stroke="#e3b65a" stroke-width="70" stroke-linecap="butt" transform="rotate(-90 320 320)"/>
+      </svg>
+      <div class="c"><div class="n" id="s2v">28,9%</div><div class="t">da renda vai para dívidas</div></div>
+      <div class="stamp" id="stamp">RECORDE</div>
+    </div>
+    <div class="lead" style="text-align:center">Maior nível da série, iniciada em <b>2011</b>.</div>
+  </section>
+
+  <!-- S3 -->
+  <section class="sc" id="s3" style="justify-content:flex-end; padding-bottom:520px">
+    <div class="bg"><img id="s3i" src="../carrossel-saia-da-divida/img/mesa.jpg" style="object-position:50% 20%; filter:grayscale(.9) contrast(1.08) brightness(.85)"></div>
+    <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.2) 0%, rgba(7,13,36,.3) 40%, rgba(7,13,36,.93) 62%, rgba(7,13,36,.97) 100%)"></div>
+    <h1 id="s3a">Quando a dívida aperta,</h1>
+    <h1 id="s3b" style="margin-top:14px"><em>a cabeça trava.</em></h1>
+  </section>
+
+  <!-- S4 -->
+  <section class="sc" id="s4" style="justify-content:flex-end; padding-bottom:520px">
+    <div class="bg"><img id="s4i" src="../carrossel-saia-da-divida/img/mesa.jpg" style="object-position:50% 30%; transform-origin:52% 30%; filter:grayscale(1) contrast(1.15) brightness(.8)"></div>
+    <div class="shade" id="tunnel"></div>
+    <div class="pill">Isso tem nome</div>
+    <h1>Modo <em>sobrevivência</em></h1>
+    <div class="lead" id="s4l">O cérebro só enxerga <b>o problema de hoje</b>. O amanhã some.</div>
+  </section>
+
+  <!-- S5 -->
+  <section class="sc" id="s5">
+    <div class="bg"><img src="../carrossel-saia-da-divida/img/poltrona.jpg" style="filter:grayscale(1) blur(6px) brightness(.6)"></div>
+    <div class="shade" style="background:rgba(7,13,36,.82)"></div>
+    <h1>O ciclo da <em>dívida</em></h1>
+    <svg class="cyc" viewBox="0 0 900 900" id="cyc"></svg>
+    <div class="hope"><span>Esperança</span><div class="track"><div id="hope"></div></div></div>
+  </section>
+
+  <!-- S6 -->
+  <section class="sc" id="s6">
+    <div class="bg"><img src="../carrossel-saia-da-divida/img/escritorio.jpg" style="filter:grayscale(1) blur(6px) brightness(.6)"></div>
+    <div class="shade" style="background:rgba(7,13,36,.84)"></div>
+    <div class="pill">Juros ao ano</div>
+    <h1 style="margin-bottom:46px">Os juros que <em>você paga</em></h1>
+    <div class="hb">
+      <div class="row" id="r1"><div class="lab"><span>Selic</span><b id="j1">13,75%</b></div><div class="bar" id="j1b"></div></div>
+      <div class="row" id="r2"><div class="lab"><span>Crédito para famílias</span><b id="j2">64%</b></div><div class="bar" id="j2b"></div></div>
+      <div class="row" id="r3"><div class="lab"><span>Rotativo do cartão</span><b id="j3" style="color:var(--red)">435,9%</b></div><div class="bar r" id="j3b"></div></div>
+    </div>
+    <div class="src">Copom (nov/2026) e Banco Central (jul/2026; rotativo, fev/2026).</div>
+  </section>
+
+  <!-- S7 -->
+  <section class="sc" id="s7">
+    <div class="pill">Rotativo do cartão</div>
+    <h1>R$ 1.000 <em>esquecidos</em></h1>
+    <svg class="chart" viewBox="0 0 900 820" id="chart"></svg>
+    <div class="src">Simulação com juros de 435,9% ao ano (Banco Central, fev/2026), sem pagamentos.</div>
+  </section>
+
+  <!-- S8 -->
+  <section class="sc" id="s8" style="justify-content:flex-end; padding-bottom:480px">
+    <div class="bg"><img id="s8i" src="../carrossel-saia-da-divida/img/poltrona.jpg" style="object-position:50% 20%; transform-origin:50% 22%; filter:brightness(1.35) contrast(1.05) saturate(1.1)"></div>
+    <div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,.1) 0%, rgba(7,13,36,.25) 30%, rgba(7,13,36,.92) 52%, rgba(7,13,36,.97) 100%)"></div>
+    <h1>Dívida <em>tem saída.</em></h1>
+    <div class="checks" id="checks">
+      <div><i><svg width="40" height="40" viewBox="0 0 40 40"><path d="M8 21l8 8 16-17" fill="none" stroke="#070d24" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Tudo numa folha só</div>
+      <div><i><svg width="40" height="40" viewBox="0 0 40 40"><path d="M8 21l8 8 16-17" fill="none" stroke="#070d24" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Prioridade certa</div>
+      <div><i><svg width="40" height="40" viewBox="0 0 40 40"><path d="M8 21l8 8 16-17" fill="none" stroke="#070d24" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Renegociação com estratégia</div>
+    </div>
+  </section>
+
+  <!-- S9 -->
+  <section class="sc" id="s9" style="padding-top:390px">
+    <div class="bg"><img src="../carrossel-saia-da-divida/img/saia-da-divida.jpg" style="transform:scale(1.2); filter:blur(18px) brightness(.5)"></div>
+    <div class="shade" style="background:rgba(7,13,36,.55)"></div>
+    <div class="card" id="s9c"><img src="../carrossel-saia-da-divida/img/saia-da-divida.jpg"></div>
+    <div class="lead" style="margin-top:44px">Sou <b>Marcus Novais</b>, planejador financeiro CFP®. <span class="gold"><b style="color:var(--gold)">Te ajudo a sair do endividamento.</b></span></div>
+    <div class="btn" id="btn">Acesse o link na BIO<small>e clique em "Saia das Dívidas"</small></div>
+  </section>
+</div>
+
+<script>
+// Linha do tempo (segundos). Ajustar aqui quando a voz chegar.
+// Tempos casados com a gravação do Marcus (voz deslocada 1,1 s para trás).
+const SC=[['s1',0,3.1],['s2',3.1,7.76],['s3',7.76,10.51],['s4',10.51,17.26],['s5',17.26,23.91],['s6',23.91,36.25],['s7',36.25,41.21],['s8',41.21,47.77],['s9',47.77,57.7]];
+window.TOTAL=57.7;
+const $=id=>document.getElementById(id);
+const clamp=x=>Math.max(0,Math.min(1,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const back=x=>{x=clamp(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2);};
+const seg=(t,a,b)=>ease((t-a)/(b-a));
+const br=(v,d=1)=>v.toFixed(d).replace('.',',');
+const pop=(el,k,dy=40)=>{el.style.opacity=clamp(k*1.4); el.style.transform=`translateY(${(1-ease(k))*dy}px) scale(${.92+.08*back(k)})`;};
+
+// S1 casas
+const H='<svg viewBox="0 0 100 100"><path d="M8 48 L50 12 L92 48 V92 H8 Z" fill="FILL" stroke="STROKE" stroke-width="6" stroke-linejoin="round"/><rect x="40" y="60" width="20" height="32" rx="3" fill="DOOR"/></svg>';
+const houses=$('houses'); for(let i=0;i<10;i++){const d=document.createElement('div'); houses.appendChild(d);}
+const setHouse=(d,on,k)=>{d.innerHTML=H.replace('FILL',on?'#e3b65a':'none').replace('STROKE',on?'#e3b65a':'rgba(255,255,255,.55)').replace('DOOR',on?'#070d24':'none'); d.style.transform=`scale(${on?(.85+.15*back(k)):1})`;};
+
+// S5 ciclo
+const C={x:450,y:430,r:300};
+const NODES=[['Falta','dinheiro'],['Você pega um','empréstimo'],['A parcela','aperta o mês']];
+const ang=i=>-Math.PI/2+i*2*Math.PI/3, pos=i=>[C.x+C.r*Math.cos(ang(i)), C.y+C.r*Math.sin(ang(i))];
+$('cyc').innerHTML=`<circle cx="${C.x}" cy="${C.y}" r="${C.r}" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="8"/>
+<circle id="arc5" cx="${C.x}" cy="${C.y}" r="${C.r}" fill="none" stroke="#e3b65a" stroke-width="14" stroke-linecap="round" transform="rotate(-90 ${C.x} ${C.y})"/>
+<circle id="dot5" r="22" fill="#fff"/>
+<text id="lap" x="${C.x}" y="${C.y+24}" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="80" fill="#fff">VOLTA 1</text>
+${NODES.map((t,i)=>{const [x,y]=pos(i);return `<g><rect id="n${i}" x="${x-190}" y="${y-74}" width="380" height="148" rx="34" fill="#070d24" stroke="#fff" stroke-width="6"/>
+<text x="${x}" y="${y-10}" text-anchor="middle" font-family="Inter" font-size="36" fill="rgba(255,255,255,.85)">${t[0]}</text>
+<text x="${x}" y="${y+40}" text-anchor="middle" font-family="Inter" font-weight="800" font-size="44" fill="#fff">${t[1]}</text></g>`}).join('')}`;
+const CIRC=2*Math.PI*C.r;
+
+// S7 gráfico
+const G={x0:120,x1:800,y0:660,y1:90,max:6000};
+const val=m=>1000*Math.pow(5.359,m/12);
+const gx=m=>G.x0+(G.x1-G.x0)*m/12, gy=v=>G.y0-(G.y0-G.y1)*v/G.max;
+let ticks=''; for(let v=0;v<=6000;v+=2000) ticks+=`<line x1="${G.x0}" x2="${G.x1}" y1="${gy(v)}" y2="${gy(v)}" stroke="rgba(255,255,255,${v?0.12:0.6})" stroke-width="${v?2:4}"/><text x="${G.x0-18}" y="${gy(v)+12}" text-anchor="end" font-family="Inter" font-size="30" fill="rgba(255,255,255,.6)">${v?v/1000+' mil':'0'}</text>`;
+for(let m=0;m<=12;m+=3) ticks+=`<text x="${gx(m)}" y="${G.y0+50}" text-anchor="middle" font-family="Inter" font-size="30" fill="rgba(255,255,255,.6)">${m===0?'hoje':m+' meses'}</text>`;
+$('chart').innerHTML=ticks+`<path id="area7" fill="rgba(255,90,106,.18)"/><path id="line7" fill="none" stroke="#ff5a6a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle id="dot7" r="18" fill="#fff"/>
+<g id="tag7"><rect id="tagr" rx="20" height="92" fill="#e3b65a"/><text id="tagt" font-family="Inter Display,Inter" font-weight="900" font-size="62" fill="#070d24" letter-spacing="-2"></text></g>
+<text id="x5" x="${G.x1}" y="${gy(1000)-26}" text-anchor="end" font-family="Inter Display,Inter" font-weight="900" font-size="58" fill="#ff5a6a" opacity="0">5,4x</text>`;
+
+window.setT=function(t){
+  $('prog').style.width=clamp(t/TOTAL)*100+'%';
+  SC.forEach(([id,s,e],i)=>{
+    const last=i===SC.length-1;
+    const o=clamp((t-s)/.35)*(last?1:clamp((e+.35-t)/.35));
+    const el=$(id); el.style.opacity=o; el.style.visibility=o>0?'visible':'hidden';
+  });
+  const L=id=>{const r=SC.find(x=>x[0]===id); return t-r[1];};
+  // S1
+  let l=L('s1');
+  pop($('s1h'),seg(l,.1,.7));
+  [...houses.children].forEach((d,i)=>{const k=clamp((l-.6-i*.2)/.3); setHouse(d,i<8&&k>0,k);});
+  // S2
+  l=L('s2');
+  pop($('s2n'),seg(l,.1,.6));
+  const k2=seg(l,.6,3.0); $('s2v').textContent=br(28.9*k2)+'%';
+  const C2=2*Math.PI*260; $('arc2').setAttribute('stroke-dasharray',`${C2*.289*k2} ${C2}`);
+  const ks=clamp((l-3.5)/.35); $('stamp').style.opacity=ks; $('stamp').style.transform=`rotate(12deg) scale(${2.2-1.2*ease(ks)})`;
+  // S3
+  l=L('s3');
+  $('s3i').style.transform=`scale(${1.05+.012*l})`;
+  pop($('s3a'),seg(l,.1,.6)); pop($('s3b'),seg(l,1.4,1.9));
+  // S4 túnel
+  l=L('s4');
+  $('s4i').style.transform=`scaleX(-1) scale(${1.6+.04*l})`;
+  const r=78-38*seg(l,.3,4.5);
+  $('tunnel').style.background=`radial-gradient(ellipse at 50% 32%, rgba(7,13,36,0) ${r*.55}%, rgba(7,13,36,.96) ${r}%), linear-gradient(180deg, rgba(7,13,36,0) 45%, rgba(7,13,36,.95) 62%)`;
+  pop($('s4l'),seg(l,4.25,4.8));
+  // S5 ciclo: 2 voltas
+  l=L('s5');
+  const T0=.4, laps=[3.2,2.8]; let tt=Math.max(0,l-T0), lap=0, f=0;
+  while(lap<laps.length && tt>laps[lap]){tt-=laps[lap]; lap++;}
+  if(lap>=laps.length){lap=laps.length-1; f=1;} else f=tt/laps[lap];
+  if(l<T0) f=0;
+  const pa=ang(0)+f*2*Math.PI;
+  $('dot5').setAttribute('cx',C.x+C.r*Math.cos(pa)); $('dot5').setAttribute('cy',C.y+C.r*Math.sin(pa));
+  $('arc5').setAttribute('stroke-dasharray',`${CIRC*f} ${CIRC}`);
+  $('lap').textContent='VOLTA '+(lap+1);
+  NODES.forEach((_,i)=>{const on=l>=T0&&f>=i/3-.001; $('n'+i).setAttribute('stroke',on?'#e3b65a':'#fff'); $('n'+i).setAttribute('fill',on?'#1b2a63':'#070d24');});
+  const done=lap+f; $('hope').style.width=(100-done*42)+'%'; $('hope').style.background=done>1.3?'#ff5a6a':'#e3b65a';
+  // S6 juros
+  l=L('s6');
+  const W=900, MAX=435.9, a1=seg(l,2.0,2.9), a2=seg(l,4.8,5.8), a3=seg(l,8.6,10.8);
+  $('r1').style.opacity=seg(l,1.8,2.1); $('r2').style.opacity=seg(l,4.6,4.9); $('r3').style.opacity=seg(l,8.4,8.7);
+  $('j1').textContent=br(13.75*a1,2)+'%'; $('j1b').style.width=Math.max(14,W*13.75/MAX)*a1+'px';
+  $('j2').textContent=Math.round(64*a2)+'%'; $('j2b').style.width=W*64/MAX*a2+'px';
+  $('j3').textContent=br(435.9*a3)+'%'; $('j3b').style.width=W*a3+'px';
+  // S7 curva
+  l=L('s7');
+  const mm=12*seg(l,.3,3.4); let d='';
+  for(let m=0;m<=mm+1e-6;m+=.1) d+=(d?'L':'M')+gx(Math.min(m,mm)).toFixed(1)+' '+gy(val(Math.min(m,mm))).toFixed(1);
+  d+='L'+gx(mm).toFixed(1)+' '+gy(val(mm)).toFixed(1);
+  $('line7').setAttribute('d',d); $('area7').setAttribute('d',d+`L${gx(mm)} ${G.y0} L${G.x0} ${G.y0} Z`);
+  const vx=gx(mm), vy=gy(val(mm)); $('dot7').setAttribute('cx',vx); $('dot7').setAttribute('cy',vy);
+  const txt='R$ '+Math.round(val(mm)).toLocaleString('pt-BR'); $('tagt').textContent=txt;
+  const tw=txt.length*36+40, tx=Math.min(Math.max(vx-tw/2,G.x0), G.x1-tw), ty=vy-130;
+  $('tagr').setAttribute('x',tx); $('tagr').setAttribute('y',ty); $('tagr').setAttribute('width',tw);
+  $('tagt').setAttribute('x',tx+20); $('tagt').setAttribute('y',ty+68);
+  $('x5').setAttribute('opacity',seg(l,3.5,4.0));
+  // S8
+  l=L('s8');
+  $('s8i').style.transform=`scale(${1.22+.01*l})`;
+  [1.9,3.25,4.2].forEach((a,i)=>pop($('checks').children[i],seg(l,a,a+.5),30));
+  // S9
+  l=L('s9');
+  pop($('s9c'),seg(l,.1,.8),60);
+  const kb=seg(l,3.7,4.3); $('btn').style.opacity=kb; $('btn').style.transform=`scale(${(.9+.1*back(kb))*(1+.025*Math.sin(Math.max(0,l-4.3)*5))})`;
+};
+setT(new URLSearchParams(location.search).has('t')?+new URLSearchParams(location.search).get('t'):0);
+</script>
+</body>
+</html>

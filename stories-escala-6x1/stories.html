@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Stories Allos 6x1</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Inter",sans-serif; color:#fff; background:#000; }
+  .st { width:1080px; height:1920px; position:relative; overflow:hidden; }
+  body.single .st { display:none; } body.single .st.on { display:block; }
+  .bg { position:absolute; inset:0; } .bg img { width:100%; height:100%; object-fit:cover; }
+  .sh { position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,.25) 24%, rgba(0,0,0,0) 38%, rgba(0,0,0,0) 48%, rgba(0,0,0,.4) 60%, rgba(0,0,0,.6) 100%); }
+  .num { position:absolute; right:64px; top:236px; font-size:26px; font-weight:800; text-shadow:0 2px 6px rgba(0,0,0,.85); }
+  .head { position:absolute; left:64px; right:64px; top:290px; }
+  .pill { display:inline-block; background:#e3141e; color:#fff; font-weight:800; font-size:28px; letter-spacing:.12em; text-transform:uppercase; padding:10px 20px 9px; border-radius:10px; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:84px; line-height:1.02; letter-spacing:-.045em; word-spacing:.1em; margin-top:20px; }
+  h1 em { font-style:normal; color:#e3b65a; }
+  .sub { font-size:54px; line-height:1.22; font-weight:700; margin-top:26px; }
+  .sub b { color:#e3b65a; font-weight:900; }
+  h1, .sub, .tx, .big, .cta2, .src { text-shadow:0 2px 6px rgba(0,0,0,.85), 0 0 26px rgba(0,0,0,.65); }
+  .list { position:absolute; left:56px; right:56px; bottom:250px; display:flex; flex-direction:column; gap:34px; }
+  .row { display:flex; gap:26px; align-items:center; }
+  .big { flex:none; width:270px; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:96px; line-height:.95; letter-spacing:-.04em; color:#e3b65a; text-align:right; }
+  .big.r { color:#ff6b70; }
+  .big small { display:block; font-size:36px; letter-spacing:0; margin-top:4px; }
+  .bar { flex:none; width:6px; align-self:stretch; border-radius:3px; background:#e3b65a; }
+  .bar.r { background:#ff6b70; }
+  .tx { font-size:50px; line-height:1.15; font-weight:700; }
+  .tx b { font-weight:900; }
+  .src { font-size:26px; color:rgba(255,255,255,.8); text-align:right; }
+  .cta2 { font-size:54px; line-height:1.22; font-weight:700; }
+  .cta2 b { color:#e3b65a; font-weight:900; }
+  .btn { align-self:flex-start; background:#e3b65a; color:#070d24; font-weight:900; font-size:50px; padding:26px 40px; border-radius:22px; }
+</style></head>
+<body>
+<script>
+const W=`<div class="bg"><img src="marcus.jpg"></div><div class="sh"></div>`;
+const row=(b,t,r)=>`<div class="row a"><div class="big ${r?'r':''}">${b}</div><div class="bar ${r?'r':''}"></div><div class="tx">${t}</div></div>`;
+const S=[
+// 1 gancho
+{h:`<div class="head a"><div class="pill">🚨 Alerta</div><h1>O fim da escala 6x1 <em>vai custar caro</em></h1>
+ <div class="sub">Quem diz é o CEO da <b>maior empresa de shoppings do Brasil</b>. Veja o que ele prevê 👉</div></div>`},
+// 2 quem é a Allos
+{v:7, h:`<div class="head a"><div class="pill">Quem é a Allos?</div><h1>A gigante <em>dos shoppings</em></h1></div>
+ <div class="list">${row('1ª','maior empresa de <b>shoppings do Brasil</b>')}
+ ${row('49','shoppings <b>pelo país</b>')}
+ ${row('2023','nasceu da união de <b>Aliansce Sonae e brMalls</b>')}
+ ${row('ALOS3','é o código das ações <b>na bolsa</b>')}</div>`},
+// 3 impactos 1
+{v:7, h:`<div class="head a"><div class="pill">🚨 O alerta do CEO</div><h1>Com o fim <em>da escala 6x1</em></h1></div>
+ <div class="list">${row('20%','dos funcionários dos lojistas <b>podem ser demitidos</b>',1)}
+ ${row('📈','<b>mais inflação</b>, mais informalidade e <b>empregos piores</b>',1)}
+ ${row('2027','mais <b>lojas vazias</b> nos shoppings',1)}
+ <div class="src a">Fonte: NeoFeed</div></div>`},
+// 4 impactos 2
+{v:7, h:`<div class="head a"><div class="pill">🚨 E tem mais</div><h1>Quem paga <em>a conta?</em></h1></div>
+ <div class="list">${row('💰','o <b>consumidor</b> vai pagar parte dos custos extras',1)}
+ ${row('3<small>de 20</small>','projetos de expansão da Allos <b>devem sair do papel</b>',1)}
+ ${row('🏦','o principal motivo: <b>juros altos</b>',1)}
+ <div class="src a">Fonte: NeoFeed</div></div>`},
+// 5 CTA
+{h:`<div class="head a"><div class="pill">E a sua empresa?</div><h1>Como está o caixa <em>da sua empresa?</em></h1></div>
+ <div class="list"><div class="cta2 a">Se você quer saber <b>como investir melhor o caixa</b>, acesse o link na BIO e me chame!</div><div class="btn a">👉 Link na BIO</div></div>`}];
+S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='st'; if(x.v) s.dataset.video=x.v; s.innerHTML=W+`<div class="num">${i+1}/${S.length}</div>`+x.h; document.body.appendChild(s); });
+const all=[...document.querySelectorAll('.st')];
+let cur=0;
+window.show=i=>{cur=i;document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
+const clamp=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-clamp(x),3);
+window.setT=t=>{ all[cur].querySelectorAll('.a').forEach((e,k)=>{ const p=ease((t-.2-k*.9)/.6);
+  e.style.opacity=p; e.style.transform=`translateX(${(1-p)*-60}px)`;
+  const b=e.querySelector('.big'); if(b){ const q=ease((t-.5-k*.9)/.5); b.style.transform=`scale(${.6+.4*q})`; b.style.transformOrigin='100% 50%'; } }); };
+</script>
+</body></html>

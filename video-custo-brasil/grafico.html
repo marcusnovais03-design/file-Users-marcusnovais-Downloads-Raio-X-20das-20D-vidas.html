@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Custo Brasil gráfico</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:1080px; height:1920px; overflow:hidden; background:#070d24; font-family:"Inter",sans-serif; color:#fff; }
+  #st { position:relative; width:1080px; height:1920px; overflow:hidden;
+    background-color:#070d24; background-image:linear-gradient(rgba(255,255,255,.045) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.045) 2px, transparent 2px); background-size:54px 54px; }
+  .tag { position:absolute; left:90px; top:250px; font-weight:800; font-size:28px; letter-spacing:.12em; color:#e3b65a; }
+  h1 { position:absolute; left:90px; right:90px; top:310px; font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:84px; line-height:1.04; letter-spacing:-.05em; }
+  h1 em { font-style:normal; color:#e3b65a; }
+  .sub { position:absolute; left:90px; top:500px; font-size:36px; color:rgba(255,255,255,.8); }
+  svg { position:absolute; left:0; top:560px; width:1080px; height:640px; }
+  .list { position:absolute; left:90px; right:90px; top:1215px; }
+  .it { display:flex; align-items:center; gap:18px; font-size:30px; font-weight:600; padding:6px 0; border-bottom:2px solid rgba(255,255,255,.12); }
+  .it i { width:24px; height:24px; border-radius:6px; flex:none; }
+  .it span { flex:1; }
+  .it b { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:36px; color:#e3b65a; font-variant-numeric:tabular-nums; }
+  .src { position:absolute; left:90px; top:1660px; font-size:22px; color:rgba(255,255,255,.55); }
+  .handle { position:absolute; right:90px; top:1655px; font-size:26px; font-weight:700; color:rgba(255,255,255,.7); }
+</style>
+</head>
+<body>
+<div id="st">
+  <div class="tag">POR QUE TUDO É MAIS CARO AQUI</div>
+  <h1>Custo Brasil: <em>R$ 3,5 tri</em> por ano</h1>
+  <div class="sub">Quanto cada problema pesa, em reais por ano</div>
+  <svg viewBox="0 0 1080 640" id="pie"></svg>
+  <div class="list" id="list"></div>
+  <div class="src">Fonte: MBC (Movimento Brasil Competitivo), via CNN Brasil.</div>
+  <div class="handle">@mnovais</div>
+</div>
+<script>
+const D=[['Infraestrutura',805,'#e3b65a'],['Mão de obra (capital humano)',681,'#f0cf86'],['Financiar um negócio (juros)',648,'#5aa8ff'],
+         ['Impostos (honrar tributos)',457,'#8cc4ff'],['Ambiente jurídico e regulatório',451,'#3b6fd8'],['Integrar cadeias globais',227,'#2fc2b0'],['Segurança',192,'#ff6b7a']];
+const T=D.reduce((a,b)=>a+b[1],0), cx=540, cy=320, R=290, r=160;
+const pie=document.getElementById('pie'), list=document.getElementById('list');
+let a0=-Math.PI/2; const arcs=D.map(d=>{ const a1=a0+2*Math.PI*d[1]/T; const o={a0,a1,d}; a0=a1; return o; });
+const arcPath=(s,e)=>{ const L=e-s>Math.PI?1:0, p=(rr,a)=>[cx+rr*Math.cos(a),cy+rr*Math.sin(a)];
+  const [x0,y0]=p(R,s),[x1,y1]=p(R,e),[x2,y2]=p(r,e),[x3,y3]=p(r,s);
+  return `M${x0} ${y0} A${R} ${R} 0 ${L} 1 ${x1} ${y1} L${x2} ${y2} A${r} ${r} 0 ${L} 0 ${x3} ${y3} Z`; };
+pie.innerHTML=arcs.map((o,i)=>`<path id="p${i}" fill="${o.d[2]}" stroke="#070d24" stroke-width="6"/>`).join('')+
+  `<text id="ct" x="${cx}" y="${cy+8}" text-anchor="middle" font-family="Inter Display,Inter" font-weight="900" font-size="78" fill="#fff" letter-spacing="-3">R$ 3,5 tri</text>
+   <text x="${cx}" y="${cy+58}" text-anchor="middle" font-family="Inter" font-weight="700" font-size="30" fill="rgba(255,255,255,.75)">por ano</text>`;
+list.innerHTML=D.map((d,i)=>`<div class="it" id="l${i}"><i style="background:${d[2]}"></i><span>${d[0]}</span><b>R$ ${d[1]} bi</b></div>`).join('');
+const clamp=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-clamp(x),3), seg=(t,a,b)=>ease((t-a)/(b-a));
+window.setT=function(t,dur){ dur=dur||10;
+  const sp=Math.min(1,(dur-1)/9);   // comprime a animação se o trecho for curto
+  ['h1','.sub','.tag'].forEach((q,i)=>{ const e=document.querySelector(q); const k=seg(t,.1+i*.1,.6+i*.1); e.style.opacity=k; e.style.transform=`translateY(${(1-k)*30}px)`; });
+  arcs.forEach((o,i)=>{ const k=seg(t,(0.8+i*0.9)*sp,(1.6+i*0.9)*sp); const p=document.getElementById('p'+i);
+    if(k<=0){ p.setAttribute('d',''); } else p.setAttribute('d',arcPath(o.a0,o.a0+(o.a1-o.a0)*k));
+    const l=document.getElementById('l'+i); l.style.opacity=seg(t,(0.9+i*0.9)*sp,(1.3+i*0.9)*sp); });
+  document.getElementById('ct').setAttribute('opacity',seg(t,.3,.9));
+};
+setT(new URLSearchParams(location.search).has('t')?+new URLSearchParams(location.search).get('t'):99);
+</script>
+</body>
+</html>

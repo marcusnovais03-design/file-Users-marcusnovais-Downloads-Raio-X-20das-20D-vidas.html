@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Título de capitalização</title>
+<style>
+  :root { --ink:#070d24; --gold:#e3b65a; --red:#e3141e; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#888; font-family:"Inter",sans-serif; color:#fff; }
+  .slide { width:1080px; height:1350px; position:relative; overflow:hidden; margin:0 auto 40px; background:var(--ink);
+    background-image:linear-gradient(rgba(255,255,255,.04) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.04) 2px, transparent 2px); background-size:54px 54px; }
+  body.single .slide { display:none; margin:0; }
+  body.single .slide.on { display:block; }
+  .bg { position:absolute; inset:0; } .bg img { width:100%; height:100%; object-fit:cover; display:block; }
+  .shade { position:absolute; inset:0; }
+  .page { position:absolute; inset:0; padding:140px 90px 160px; display:flex; flex-direction:column; justify-content:center; z-index:3; }
+  .page.end { justify-content:flex-end; }
+  .page.disc { padding-bottom:225px; }
+  .count { position:absolute; top:60px; right:92px; font-weight:800; font-size:25px; letter-spacing:.09em; z-index:6; }
+  .foot { position:absolute; left:90px; right:92px; bottom:62px; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:25px; z-index:6; }
+  .foot .who span { display:inline-block; width:3px; height:26px; background:#fff; margin:0 9px -4px; }
+  .foot .go { display:flex; align-items:center; gap:16px; font-weight:800; font-size:27px; }
+  .aviso { position:absolute; left:90px; right:92px; bottom:118px; font-size:21px; line-height:1.3; color:rgba(255,255,255,.6); z-index:6; border-top:2px solid rgba(255,255,255,.18); padding-top:12px; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:84px; line-height:1.02; letter-spacing:-.05em; word-spacing:.12em; margin-bottom:26px; }
+  h2 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:64px; line-height:1.04; letter-spacing:-.045em; word-spacing:.12em; margin-bottom:24px; }
+  h1 em, h2 em { font-style:normal; color:var(--gold); }
+  h1 .r, h2 .r { background:var(--red); color:#fff !important; padding:0 .14em; border-radius:10px; }
+  p { font-size:36px; line-height:1.28; color:rgba(255,255,255,.88); }
+  p + p { margin-top:20px; }
+  b { font-weight:800; color:#fff; } b.g { color:var(--gold); }
+  .pill { align-self:flex-start; color:var(--gold); font-weight:800; font-size:30px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:20px; }
+  .pill.red { background:var(--red); color:#fff !important; padding:10px 22px 9px; border-radius:10px; line-height:1.3; }
+  ul { list-style:none; }
+  li { position:relative; padding:18px 0 18px 56px; font-size:34px; line-height:1.24; border-bottom:3px solid rgba(255,255,255,.14); color:rgba(255,255,255,.9); }
+  li::before { content:""; position:absolute; left:0; top:29px; width:26px; height:26px; border-radius:50%; background:var(--gold); }
+  .btn { margin-top:30px; align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:900; font-size:36px; line-height:1.15; padding:22px 32px; border-radius:24px; }
+  .card { border-radius:30px; overflow:hidden; box-shadow:0 24px 60px rgba(7,13,36,.35); flex:none; position:relative; margin-bottom:34px; }
+  .card img { width:100%; height:100%; object-fit:cover; display:block; }
+  .cred { position:absolute; right:14px; bottom:10px; font-size:15px; font-weight:600; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.9); }
+  /* claro */
+  .slide.light { background-color:#f2efe8; color:#0e1f5b;
+    background-image:linear-gradient(rgba(14,31,91,.05) 2px, transparent 2px), linear-gradient(90deg, rgba(14,31,91,.05) 2px, transparent 2px); }
+  .light p, .light li { color:rgba(14,31,91,.85); }
+  .light b { color:#0e1f5b; } .light b.g, .light h1 em, .light h2 em { color:#a8761c; }
+  .light .pill { color:#a8761c; }
+  .light li { border-bottom-color:rgba(14,31,91,.15); } .light li::before { background:#a8761c; }
+  .light .foot, .light .count { color:#0e1f5b; } .light .foot .who span { background:#0e1f5b; }
+  .light .foot .go svg { stroke:#0e1f5b; }
+  .light .aviso { color:rgba(14,31,91,.6); border-top-color:rgba(14,31,91,.18); }
+  /* barras do custo */
+  .bars { margin:20px 0 10px; }
+  .bars .row { margin-bottom:22px; }
+  .bars .lab { display:flex; justify-content:space-between; align-items:baseline; font-size:30px; font-weight:700; margin-bottom:10px; }
+  .bars .lab b { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:50px; letter-spacing:-.03em; }
+  .bars .bar { height:64px; border-radius:14px; background:rgba(14,31,91,.08); display:flex; overflow:hidden; }
+  .bars .bar i { display:flex; align-items:center; justify-content:center; height:100%; font-style:normal; font-weight:800; font-size:24px; color:#fff; }
+  .note { font-size:22px; line-height:1.3; color:rgba(14,31,91,.6); margin-top:4px; }
+  /* troca de dívida */
+  .swap { display:flex; align-items:center; gap:24px; margin-top:28px; }
+  .swap > div { flex:1; border-radius:24px; padding:22px 24px; }
+  .swap .k { font-size:24px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+  .swap .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:44px; line-height:1.05; margin-top:8px; letter-spacing:-.03em; }
+  .swap .arr { flex:none; font-size:60px; font-weight:900; color:var(--gold); }
+  /* duas parcelas */
+  .parc { display:flex; gap:22px; align-items:flex-end; height:330px; margin:16px 0 30px; }
+  .parc .col { flex:1; display:flex; flex-direction:column; justify-content:flex-end; height:100%; }
+  .parc .t { font-size:26px; font-weight:800; text-align:center; margin-bottom:12px; line-height:1.15; }
+  .parc .blk { border-radius:16px; display:flex; align-items:center; justify-content:center; text-align:center; font-weight:800; font-size:26px; color:#fff; line-height:1.15; padding:0 10px; }
+  .parc .blk + .blk { margin-top:8px; }
+  /* concorrentes */
+  .dots { display:flex; gap:30px; margin:14px 0 30px; }
+  .dots > div { flex:1; border-radius:24px; padding:22px 24px; border:4px solid rgba(255,255,255,.25); }
+  .dots .k { font-size:26px; font-weight:800; margin-bottom:14px; }
+  .dots .g { display:grid; grid-template-columns:repeat(8, 1fr); gap:8px; }
+  .dots .g i { aspect-ratio:1; border-radius:50%; background:rgba(255,255,255,.28); }
+  .dots .g i.y { background:var(--gold); }
+  .dots .s { font-size:24px; margin-top:14px; color:rgba(255,255,255,.75); line-height:1.25; }
+  .vs { display:flex; gap:22px; margin-top:26px; }
+  .vs > div { flex:1; border-radius:24px; padding:22px 26px; }
+  .vs .k { font-size:24px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+  .vs .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:40px; line-height:1.1; margin-top:8px; letter-spacing:-.02em; }
+  .steps3 { margin-top:26px; }
+  .steps3 .st { display:flex; gap:26px; align-items:flex-start; padding:20px 0; border-bottom:3px solid rgba(14,31,91,.14); }
+  .steps3 .n { flex:none; width:70px; height:70px; font-size:36px; border-radius:50%; background:#0e1f5b; color:#fff; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:38px; display:flex; align-items:center; justify-content:center; }
+  .steps3 .tx { font-size:34px; line-height:1.25; color:rgba(14,31,91,.88); }
+  .steps3 .tx b { display:block; font-size:38px; color:#0e1f5b; margin-bottom:4px; }
+  .duo { display:flex; gap:22px; margin-top:26px; }
+  .duo > div { flex:1; border-radius:26px; padding:26px 26px 24px; border:3px solid rgba(255,255,255,.25); }
+  .duo .k { font-size:24px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .duo .d { font-size:25px; line-height:1.3; color:rgba(255,255,255,.75); margin-top:6px; min-height:98px; }
+  .duo .ln { display:flex; justify-content:space-between; font-size:26px; padding:8px 0; border-bottom:2px solid rgba(255,255,255,.12); color:rgba(255,255,255,.85); }
+  .duo .ln b { font-variant-numeric:tabular-nums; }
+  .duo .tot { margin-top:14px; font-size:22px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.7); }
+  .duo .tv { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:52px; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
+  .ex2 { display:flex; gap:22px; margin-top:30px; }
+  .ex2 > div { flex:1; border-radius:26px; padding:26px; }
+  .ex2 .k { font-size:24px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .ex2 .v { font-size:30px; line-height:1.3; margin-top:10px; color:rgba(255,255,255,.9); }
+  .bignum { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:150px; line-height:1; letter-spacing:-.05em; color:#a8761c; margin:10px 0 16px; }
+  .quote { border-left:8px solid #a8761c; padding:8px 0 8px 30px; font-size:40px; line-height:1.3; margin-top:30px; color:#0e1f5b; font-weight:600; }
+  .logo { height:70px; margin-bottom:30px; align-self:flex-start; filter:brightness(0) invert(1); }
+  .vbars { display:flex; gap:60px; align-items:flex-end; height:420px; margin:30px 0 10px; padding:0 40px; border-bottom:4px solid rgba(14,31,91,.4); }
+  .vbars .c { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; }
+  .vbars .v { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:64px; letter-spacing:-.03em; margin-bottom:10px; }
+  .vbars i { width:100%; border-radius:16px 16px 0 0; }
+  .vlab { display:flex; gap:60px; padding:0 40px; margin-top:12px; }
+  .vlab div { flex:1; text-align:center; font-size:26px; font-weight:700; color:rgba(14,31,91,.75); line-height:1.2; }
+  .qbox { margin-top:30px; border-radius:26px; padding:30px 34px; border:3px solid var(--gold); background:rgba(227,182,90,.08); }
+  .qbox .q { font-family:"Inter",sans-serif; font-style:italic; font-size:38px; line-height:1.3; font-weight:600; }
+  .qbox .s { font-size:24px; color:rgba(255,255,255,.65); margin-top:14px; }
+  .coins { display:flex; gap:50px; align-items:flex-end; justify-content:center; height:470px; margin-top:16px; }
+  .coins .col { display:flex; flex-direction:column; align-items:center; }
+  .coins .val { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:56px; letter-spacing:-.03em; margin-bottom:12px; }
+  .coins .stk { display:flex; flex-direction:column-reverse; align-items:center; }
+  .coins .stk i { width:170px; height:26px; border-radius:50%; margin-top:-12px; background:linear-gradient(180deg,#f3d07a,#c8932e 60%,#9a6d1c); border:2px solid #8a5f14; box-shadow:0 2px 0 #7a5410; }
+  .coins .stk.g i { background:linear-gradient(180deg,#d9dbe3,#a9adbb 60%,#7d8194); border-color:#6c7083; box-shadow:0 2px 0 #5c6072; }
+  .coins .nm { font-size:28px; font-weight:800; margin-top:16px; text-align:center; line-height:1.2; color:#0e1f5b; }
+  .mount { position:relative; height:430px; margin-top:20px; }
+  .mount .pile { position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:760px; height:330px; background:radial-gradient(ellipse at 50% 100%, #c8932e 0%, #a8761c 45%, #6e4d12 75%, transparent 76%); clip-path:polygon(0 100%, 50% 0, 100% 100%); filter:drop-shadow(0 10px 20px rgba(0,0,0,.4)); }
+  .mount .pile::after { content:""; position:absolute; inset:0; background-image:radial-gradient(circle at 20% 30%, rgba(255,235,170,.55) 0 7px, transparent 8px), radial-gradient(circle at 60% 50%, rgba(255,235,170,.5) 0 7px, transparent 8px), radial-gradient(circle at 40% 75%, rgba(255,235,170,.45) 0 7px, transparent 8px), radial-gradient(circle at 75% 80%, rgba(255,235,170,.45) 0 7px, transparent 8px), radial-gradient(circle at 30% 90%, rgba(255,235,170,.4) 0 7px, transparent 8px); background-size:120px 90px; }
+  .mount .tro { position:absolute; left:50%; bottom:316px; transform:translateX(-50%); font-size:70px; }
+  .mount .l1 { position:absolute; left:50%; transform:translateX(-50%); bottom:400px; font-size:26px; font-weight:800; color:var(--gold); white-space:nowrap; }
+  .mount .l2 { position:absolute; left:50%; transform:translateX(-50%); bottom:110px; font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:56px; color:#fff; text-shadow:0 3px 14px rgba(0,0,0,.6); white-space:nowrap; text-align:center; line-height:1; }
+  .mount .l2 small { display:block; font-family:"Inter",sans-serif; font-size:22px; font-weight:700; margin-top:8px; }
+  .light ul li { font-size:34px; }
+</style>
+</head>
+<body>
+<script>
+const PH=(k,pos,extra)=>`<img src="img/${k}.jpg" style="object-position:${pos||'50% 50%'};${extra||''}">`;
+const SH='<div class="shade" style="background:linear-gradient(180deg, rgba(7,13,36,0) 0%, rgba(7,13,36,0) 40%, rgba(7,13,36,.55) 54%, rgba(7,13,36,.85) 70%, rgba(7,13,36,.92) 100%)"></div>';
+const S=[];
+// 1 capa
+S.push({h:`<div class="bg">${PH('marcus','50% 12%')}</div>${SH}
+ <div class="page end"><div class="pill red">Cuidado com o gerente</div>
+ <h1 style="font-size:78px">O sorteio mais caro do Brasil <em>não é a Mega-Sena.</em></h1>
+ <p style="font-size:42px">É o <b>título de capitalização</b> que o gerente te ofereceu. <b class="g">👉 Arrasta</b></p></div>`});
+// 2 tamanho do problema
+S.push({light:1, h:`<div class="page"><div class="pill">O tamanho do problema</div>
+ <h2 style="font-size:58px">R$ 44 bilhões rendendo <span class="r">2%</span> num país que paga <em>14%</em></h2>
+ <p style="font-size:32px">É o valor que os brasileiros têm parado em títulos de capitalização. Esse dinheiro é corrigido pela <b>TR</b>, que rendeu cerca de 2% nos últimos 12 meses. No mesmo período, o <b>CDI pagou mais de 14%</b>.</p>
+ <div class="vbars"><div class="c"><div class="v" style="color:var(--red)">2,0%</div><i style="height:${2.0/14.2*330}px; background:var(--red)"></i></div>
+  <div class="c"><div class="v" style="color:#a8761c">14,2%</div><i style="height:330px; background:#c8932e"></i></div></div>
+ <div class="vlab"><div>TR<br>título de capitalização</div><div>CDI<br>renda fixa</div></div></div>`});
+// 3 opinião firme
+S.push({h:`<div class="page"><div class="pill">Sem rodeio</div>
+ <h2>Título de capitalização <span class="r">não é investimento</span></h2>
+ <div class="qbox"><div class="q">"Os títulos de capitalização não são investimento e nem devem ser confundidos com uma caderneta de poupança."</div><div class="s">Idec, Instituto de Defesa de Consumidores</div></div>
+ <p style="margin-top:30px; font-size:34px">Parte do que você paga vai para <b>despesas administrativas</b> e para <b>custear os sorteios</b>. Ou seja: <b class="g">você paga para concorrer.</b></p></div>`});
+// 4 exemplo concreto
+S.push({light:1, h:`<div class="page"><div class="pill">Na ponta do lápis</div>
+ <h2>R$ 10 mil guardados <em>por 1 ano</em></h2>
+ <div class="coins"><div class="col"><div class="val" style="color:#a8761c">+ R$ 1.170</div><div class="stk "><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="nm">CDB 100%<br>do CDI</div></div>
+  <div class="col"><div class="val" style="color:var(--red)">+ R$ 160</div><div class="stk g"><i></i><i></i></div><div class="nm">Título de<br>capitalização</div></div></div>
+ <p style="margin-top:26px; font-size:32px"><b>R$ 1.000 a menos no seu bolso.</b> E isso no melhor cenário: 100% do valor pago vai para a sua reserva e você não resgata antes do prazo.</p></div>`});
+// 5 e os prêmios?
+S.push({h:`<div class="page"><div class="pill">Mas e os prêmios?</div>
+ <h2>"Mas tem os sorteios…" <em>Funciona como uma pirâmide</em></h2>
+ <p style="font-size:32px">Somando todos os prêmios pagos no ano (<b>cerca de R$ 2 bi</b>), os titulares ainda perdem algo como <b class="g">R$ 3,5 bilhões por ano</b> em rendimento.</p>
+ <div class="mount"><div class="l1">Topo: poucos premiados, ~R$ 2 bi</div><div class="tro">🏆</div><div class="pile"></div><div class="l2">R$ 3,5 bi<small>Base: milhões de titulares perdendo rendimento</small></div></div>
+ <p style="font-size:30px; margin-top:16px">Quem está na base banca o prêmio de quem está no topo: <b>o prêmio de poucos é pago pelo rendimento que todos deixam de receber.</b></p></div>`});
+// 6 por que vende
+S.push({light:1, h:`<div class="page"><div class="pill">O mecanismo</div>
+ <h2>Por que <em>todo mundo</em> tem um?</h2>
+ <ul><li>É oferecido <b>no balcão</b>, na hora em que você abre a conta ou pede crédito</li>
+  <li>"Guardar e ainda concorrer" agrada <b>quem tem dificuldade de poupar</b></li>
+  <li><b>Ninguém mostra a comparação com o CDI</b> na hora da venda</li></ul>
+ <p style="margin-top:30px; font-size:34px">O problema está menos no produto e mais em <b class="g">quem compra sem ver a conta.</b></p></div>`});
+// 7 CTA
+S.push({h:`<div class="bg">${PH('marcus','50% 12%','transform:scale(1.06); transform-origin:60% 20%')}</div>${SH}
+ <div class="page end"><div class="pill red">Antes de cancelar</div>
+ <h1 style="font-size:70px">Você tem um <em>título de capitalização?</em></h1>
+ <p style="font-size:32px">Veja a <b>carência</b>, as <b>regras de resgate antecipado</b> e <b>quanto você realmente recebe de volta</b>.</p>
+ <div class="btn">Comenta "TÍTULO" que eu te mostro como fazer essa conta</div></div>`});
+
+const N=S.length;
+S.forEach((x,i)=>{ const s=document.createElement('section'); s.className='slide'+(x.light?' light':'');
+  s.innerHTML=x.h+`<div class="count">${String(i+1).padStart(2,'0')}/${String(N).padStart(2,'0')}</div><div class="foot"><div class="who">Marcus Novais<span></span>Planejador Financeiro, CFP®</div>${i<N-1?'<div class="go">deslize <svg width="38" height="28" viewBox="0 0 38 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h33M23 3l12 11-12 11"/></svg></div>':''}</div>`;
+  document.body.appendChild(s); });
+const all=[...document.querySelectorAll('.slide')];
+window.setT=()=>{};
+window.show=i=>{document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
+</script>
+</body>
+</html>

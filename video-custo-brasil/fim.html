@@ -1,0 +1,15 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Fim</title><style>
+*{margin:0;padding:0;box-sizing:border-box} html,body{width:1080px;height:1920px;overflow:hidden;font-family:"Inter",sans-serif;color:#fff;
+background-color:#070d24;background-image:linear-gradient(rgba(255,255,255,.045) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.045) 2px,transparent 2px);background-size:54px 54px}
+.w{position:absolute;left:90px;right:90px;top:560px;display:flex;flex-direction:column;align-items:center;text-align:center}
+svg{width:260px;height:240px;margin-bottom:40px}
+h1{font-family:"Inter Display","Inter",sans-serif;font-weight:900;text-transform:uppercase;font-size:120px;line-height:1.02;letter-spacing:-.05em}
+h1 em{font-style:normal;color:#e3b65a}
+p{font-size:44px;line-height:1.25;color:rgba(255,255,255,.88);margin-top:30px}
+.h{margin-top:60px;font-weight:800;font-size:46px;color:#e3b65a;border:4px solid #e3b65a;border-radius:24px;padding:16px 34px}
+</style></head><body><div class="w">
+<svg viewBox="0 0 100 92" id="hz"><path d="M50 88 C 20 66 4 50 4 30 C 4 14 16 4 29 4 C 39 4 46 10 50 17 C 54 10 61 4 71 4 C 84 4 96 14 96 30 C 96 50 80 66 50 88 Z" fill="#ff5a6a"/></svg>
+<h1 id="a">Curta <em>e compartilhe</em></h1><p id="b">com quem precisa entender por que tudo é mais caro no Brasil.</p><div class="h" id="c">@mnovais</div></div>
+<script>const cl=x=>Math.max(0,Math.min(1,x)),e=x=>1-Math.pow(1-cl(x),3);
+window.setT=t=>{const s=1+.12*Math.sin(Math.max(0,t-.6)*6)*Math.exp(-Math.max(0,t-.6)*.6);const kh=e(t/.5);const h=document.getElementById('hz');h.style.transform=`scale(${(.4+.6*kh)*s})`;h.style.opacity=kh;
+[['a',.3],['b',.7],['c',1.1]].forEach(([id,a])=>{const k=e((t-a)/.5),el=document.getElementById(id);el.style.opacity=k;el.style.transform=`translateY(${(1-k)*30}px)`;});};setT(9)</script></body></html>

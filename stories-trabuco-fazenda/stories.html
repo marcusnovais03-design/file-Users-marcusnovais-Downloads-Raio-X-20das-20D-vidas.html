@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Stories Trabuco Fazenda</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Inter",sans-serif; color:#fff; background:#070d24; }
+  .st { width:1080px; height:1920px; position:relative; overflow:hidden; background:#070d24;
+    background-image:linear-gradient(rgba(255,255,255,.04) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.04) 2px, transparent 2px); background-size:54px 54px; }
+  body.single .st { display:none; } body.single .st.on { display:block; }
+  .blur { position:absolute; inset:0; } .blur img { width:100%; height:100%; object-fit:cover; filter:blur(28px) brightness(.35) saturate(.8); transform:scale(1.2); }
+  .num { position:absolute; right:64px; top:236px; font-size:26px; font-weight:800; color:rgba(255,255,255,.8); }
+  .box { position:absolute; left:64px; right:64px; }
+  .pill { display:inline-block; background:#e3141e; color:#fff; font-weight:800; font-size:28px; letter-spacing:.12em; text-transform:uppercase; padding:10px 20px 9px; border-radius:10px; }
+  h1 { font-family:"Inter Display","Inter",sans-serif; font-weight:900; text-transform:uppercase; font-size:78px; line-height:1.02; letter-spacing:-.045em; word-spacing:.1em; margin-top:22px; }
+  h1 em { font-style:normal; color:#e3b65a; }
+  .ph { width:100%; border-radius:28px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.5); border:3px solid rgba(255,255,255,.15); }
+  .ph img { width:100%; display:block; }
+  p { font-size:42px; line-height:1.25; font-weight:600; color:rgba(255,255,255,.92); }
+  p + p { margin-top:22px; }
+  b { font-weight:900; color:#fff; } b.g { color:#e3b65a; }
+  .item { display:flex; gap:24px; align-items:flex-start; margin-top:30px; }
+  .item .ic { font-size:52px; flex:none; width:70px; text-align:center; }
+  .item .tx { font-size:42px; line-height:1.22; font-weight:600; }
+  .q { font-family:"Inter Display","Inter",sans-serif; font-weight:900; font-size:72px; line-height:1.05; color:#e3b65a; letter-spacing:-.03em; }
+  .btn { display:inline-block; border:3px solid #e3b65a; color:#e3b65a; font-weight:900; font-size:38px; padding:20px 30px; border-radius:20px; margin-top:30px; }
+  .src { font-size:22px; color:rgba(255,255,255,.5); margin-top:14px; }
+</style></head>
+<body>
+<section class="st">
+ <div class="num">1/2</div>
+ <div class="box" style="top:290px"><div class="pill">🚨 Urgente · Governo Lula IV</div>
+  <h1>Luiz Carlos Trabuco aceitou: será o <em>novo Ministro da Fazenda</em></h1></div>
+ <div class="box" style="top:690px"><div class="ph"><img src="trabuco-lula.jpg"></div></div>
+ <div class="box" style="top:1300px"><p>Quase <b class="g">60 anos de carreira no Bradesco</b> e um dos banqueiros mais respeitados do país.</p>
+  <p>Posse prevista para <b>janeiro de 2027</b>. 👉</p></div>
+</section>
+<section class="st">
+ <div class="blur"><img src="trabuco-lula.jpg"></div>
+ <div class="num">2/2</div>
+ <div class="box" style="top:290px"><div class="pill">O que muda?</div>
+  <h1>Um banqueiro <em>no comando da economia</em></h1></div>
+ <div class="box" style="top:700px">
+  <div class="item"><div class="ic">🎯</div><div class="tx">Um nome <b>técnico</b> e <b>inesperado</b></div></div>
+  <div class="item"><div class="ic">🏦</div><div class="tx">Com <b>forte relação com o mercado financeiro</b></div></div>
+  <div class="item"><div class="ic">📊</div><div class="tx">Juros, dólar e contas públicas: <b class="g">o mercado vai acompanhar cada passo</b></div></div>
+ </div>
+ <div class="box" style="top:1250px"><div class="q">Qual é a sua opinião? 👇</div>
+  <div class="btn">Me chama no direct</div></div>
+</section>
+<script>
+const all=[...document.querySelectorAll('.st')];
+window.show=i=>{document.body.classList.add('single');all.forEach((s,j)=>s.classList.toggle('on',j===i));};
+</script>
+</body></html>
