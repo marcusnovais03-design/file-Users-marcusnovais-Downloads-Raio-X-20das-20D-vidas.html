@@ -166,11 +166,11 @@ details ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.88rem;colo
 
   <!-- FORMULÁRIO -->
   <form class="card" id="form" novalidate>
-    <div class="steps" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="steps" aria-hidden="true"><span></span><span></span></div>
 
     <!-- Etapa 1 -->
     <fieldset data-step="1" style="border:0;padding:0;margin:0">
-      <div class="step-head"><span class="count">Etapa 1 de 3</span><h2>Sua renda</h2></div>
+      <div class="step-head"><span class="count">Etapa 1 de 2</span><h2>Sua renda</h2></div>
       <div class="grid">
         <div class="field full">
           <label for="salario">Qual seu salário bruto mensal?</label>
@@ -194,7 +194,7 @@ details ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.88rem;colo
 
     <!-- Etapa 2 -->
     <fieldset data-step="2" hidden style="border:0;padding:0;margin:0">
-      <div class="step-head"><span class="count">Etapa 2 de 3</span><h2>Deduções que você já tem</h2>
+      <div class="step-head"><span class="count">Etapa 2 de 2</span><h2>Deduções que você já tem</h2>
         <p class="muted">Opcional, mas deixa a comparação entre os modelos simplificado e completo bem mais precisa.</p></div>
       <div class="grid">
         <div class="field">
@@ -224,31 +224,6 @@ details ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.88rem;colo
       </div>
     </fieldset>
 
-    <!-- Etapa 3 -->
-    <fieldset data-step="3" hidden style="border:0;padding:0;margin:0">
-      <div class="step-head"><span class="count">Etapa 3 de 3</span><h2>Para onde enviamos seu resultado?</h2>
-        <p class="muted">Seu resultado aparece logo em seguida. Com seu contato, preparo uma análise completa do seu planejamento.</p></div>
-      <div class="grid">
-        <div class="field full">
-          <label for="nome">Nome e sobrenome</label>
-          <input type="text" id="nome" autocomplete="name">
-          <span class="err" id="err-nome"></span>
-        </div>
-        <div class="field">
-          <label for="whats">WhatsApp com DDD</label>
-          <input type="tel" id="whats" inputmode="tel" placeholder="(11) 9 0000-0000" autocomplete="tel">
-          <span class="err" id="err-whats"></span>
-        </div>
-        <div class="field">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" autocomplete="email" placeholder="voce@email.com">
-          <span class="err" id="err-email"></span>
-        </div>
-        <label class="check full"><input type="checkbox" id="lgpd"> Autorizo o uso dos meus dados para receber este resultado e o contato do assessor, conforme a LGPD.</label>
-        <span class="err full" id="err-lgpd"></span>
-      </div>
-    </fieldset>
-
     <div class="actions">
       <button type="button" class="btn btn-ghost" id="back" hidden>Voltar</button>
       <span></span>
@@ -269,7 +244,6 @@ const CONFIG = {
   titulo: "Planejador Financeiro CFP®, CGA e Assessor de Investimentos",
   whatsappLink: "https://wa.me/message/DEX7P2Z5SBZYP1",
   taxaAnual: 0.10,                    // remuneração considerada nos cenários (PGBL e investimento comum)         // só números, com 55 + DDD
-  leadWebhook: ""                     // opcional: URL (Google Apps Script, Make, Zapier) que recebe o lead em JSON via POST
 };
 
 /* ===================== PARÂMETROS FISCAIS 2026 ===================== */
@@ -376,19 +350,11 @@ document.querySelectorAll("[data-money]").forEach((el) => {
     el.value = raw ? brl(parseInt(raw, 10) / 100) : "";
   });
 });
-$("whats").addEventListener("input", (e) => {
-  const d = e.target.value.replace(/\D/g, "").slice(0, 11);
-  let o = d;
-  if (d.length > 2) o = `(${d.slice(0, 2)}) ${d.slice(2)}`;
-  if (d.length > 3) o = `(${d.slice(0, 2)}) ${d.slice(2, 3)} ${d.slice(3)}`;
-  if (d.length > 7) o = `(${d.slice(0, 2)}) ${d.slice(2, 3)} ${d.slice(3, 7)}-${d.slice(7)}`;
-  e.target.value = o;
-});
 $("advName").textContent = CONFIG.assessor; $("advTitle").textContent = CONFIG.titulo;
 
 
 /* ===================== FLUXO DO FORMULÁRIO ===================== */
-let step = 1; const TOTAL = 3;
+let step = 1; const TOTAL = 2;
 const show = () => {
   document.querySelectorAll("fieldset[data-step]").forEach((f) => f.hidden = +f.dataset.step !== step);
   document.querySelectorAll(".steps span").forEach((s, i) => s.classList.toggle("on", i < step));
@@ -398,14 +364,6 @@ const show = () => {
 const setErr = (id, msg) => { $("err-" + id).textContent = msg; const el = $(id); if (el) el.setAttribute("aria-invalid", msg ? "true" : "false"); return !msg; };
 function validar() {
   if (step === 1) return setErr("salario", money("salario") + money("outras") > 0 ? "" : "Informe seu salário bruto mensal.");
-  if (step === TOTAL) {
-    let ok = setErr("nome", $("nome").value.trim().split(/\s+/).length >= 2 ? "" : "Informe nome e sobrenome.");
-    ok = setErr("whats", $("whats").value.replace(/\D/g, "").length >= 10 ? "" : "Informe um WhatsApp com DDD.") && ok;
-    const em = $("email").value.trim();
-    ok = setErr("email", !em || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em) ? "" : "Confira o e-mail.") && ok;
-    $("err-lgpd").textContent = $("lgpd").checked ? "" : "Marque a autorização para continuar.";
-    return ok && $("lgpd").checked;
-  }
   return true;
 }
 $("back").addEventListener("click", () => { step = Math.max(1, step - 1); show(); });
@@ -424,8 +382,7 @@ function lerDados() {
     salario: money("salario"), outras: money("outras"), pgblAno: money("pgblAno"),
     ferias: $("ferias").checked, contribui: $("contribui").checked,
     saude: money("saude"), eduPropria: money("eduPropria"), deps: +$("deps").value,
-    eduDeps: money("eduDeps"), pensao: money("pensao"),
-    nome: $("nome").value.trim(), whats: $("whats").value, email: $("email").value.trim()
+    eduDeps: money("eduDeps"), pensao: money("pensao")
   };
 }
 
@@ -433,7 +390,6 @@ function resultado() {
   const d = lerDados(); const c = calcular(d);
   const cn = cenarios(c.falta, c.economia, CONFIG.taxaAnual);
   ultimo = { d, c, cn };
-  const primeiro = esc(d.nome.split(/\s+/)[0] || "");
   const out = $("result");
 
   let status;
@@ -449,7 +405,7 @@ function resultado() {
   out.innerHTML = `
   <div class="card fade" style="display:grid;gap:18px">
     <p class="eyebrow">Seu resultado</p>
-    <h2>${primeiro ? primeiro + ", " : ""}veja quanto o PGBL pode reduzir seu IR</h2>
+    <h2>Veja quanto o PGBL pode reduzir seu IR</h2>
     <p class="muted">Renda tributável anual de <strong class="num">${brl(c.rendaTrib)}</strong>${c.terco ? " (inclui 1/3 de férias)" : ""}. O 13º salário tem tributação exclusiva e fica fora da base de 12%.</p>
     <div class="kpis">
       <div class="kpi"><span class="l">Limite anual de 12%</span><span class="v">${brl0(c.limite)}</span><span class="l">já aportado ${brl0(c.jaAplicado)}</span></div>
@@ -532,7 +488,6 @@ function resultado() {
 
   $("form").hidden = true; $("hero").hidden = true;
   out.hidden = false; out.scrollIntoView({ behavior: "smooth", block: "start" });
-  enviarLead();
 }
 
 function resumo() {
@@ -542,7 +497,7 @@ function resumo() {
     `• Limite de 12%: ${brl0(c.limite)} (falta aportar ${brl0(c.falta)})`,
     `• IR a menos por ano: ${brl0(c.economia)}`,
     c.economia > 0 ? `• Resgatando após 10 anos: ${brl0(cn.ideal.liqTotal)} líquidos (+${brl0(cn.ideal.diff)} vs. investimento comum)` : null,
-    `Gostaria de conversar sobre o aporte. — ${d.nome}`].filter(Boolean).join("\n");
+    "Gostaria de conversar sobre o aporte."].filter(Boolean).join("\n");
 }
 function copiar() {
   const txt = resumo(), msg = $("copyMsg");
@@ -554,15 +509,6 @@ function copiar() {
     const ta = document.createElement("textarea"); ta.value = txt; ta.style.cssText = "width:100%;min-height:140px;margin-top:8px;font:inherit;color:inherit;background:transparent";
     msg.textContent = "Selecione e copie:"; msg.after(ta); ta.select();
   }
-}
-function enviarLead() {
-  if (!CONFIG.leadWebhook || !ultimo) return;
-  const { d, c } = ultimo;
-  try {
-    fetch(CONFIG.leadWebhook, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify({ data: new Date().toISOString(), nome: d.nome, whatsapp: d.whats, email: d.email,
-        salario: d.salario, rendaAnual: Math.round(c.rendaTrib), limite12: Math.round(c.limite), faltaAportar: Math.round(c.falta), economiaIR: Math.round(c.economia) }) }).catch(() => {});
-  } catch (e) {}
 }
 
 /* ===================== GRÁFICO (SVG) ===================== */
