@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: mesa de operação — faixa de resumo no topo, tabela de papéis à esquerda, caixa de envio + histórico à direita */
+/* Layout: mesa de operação — faixa de resumo no topo, tabela de papéis à esquerda, envio + histórico à direita */
 :root{
   --bg:#f3f5f7; --panel:#ffffff; --ink:#14202b; --muted:#5d6b78; --line:#dde3e9; --soft:#eef2f5;
   --accent:#0d6e8a; --accent-ink:#ffffff;
@@ -26,7 +26,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
-.wrap{max-width:1280px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
+.wrap{max-width:1440px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
 button,input,textarea,select{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -49,29 +49,37 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .kpi .sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kpi .val.up{color:var(--abriu)} .kpi .val.down{color:var(--fechou)}
 
-.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
-@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}.side{order:-1}}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+@media (max-width:980px){.grid{grid-template-columns:minmax(0,1fr)}.side{order:-1}}
+.main{display:flex;flex-direction:column;gap:16px;min-width:0}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;min-width:0}
 .panel h2{margin:0;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .phead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}
 .tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.tools select,.tools input{background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font-size:13px}
+.tools select,.tools input[type=search]{background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font-size:13px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line)}
+.toggle{display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--muted)}
 .btn{border:1px solid var(--line);background:var(--soft);border-radius:6px;padding:6px 10px;font-size:13px}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn.danger{color:var(--abriu)}
+.linkbtn{border:0;background:none;padding:0;color:var(--accent);font:inherit;font-size:12px}
+.linkbtn.val{color:var(--ink);font-family:var(--mono);font-size:13px;border-bottom:1px dashed var(--line)}
 
 .tablewrap{overflow-x:auto}
+.tablewrap.tall{max-height:72vh;overflow:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;text-align:right;padding:8px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--panel)}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;text-align:right;padding:8px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--panel);position:sticky;top:0;z-index:1}
 th:first-child,td:first-child{text-align:left}
-td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;vertical-align:middle}
+td{padding:7px 12px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;vertical-align:middle}
 tr:last-child td{border-bottom:0}
 tbody tr:hover td{background:var(--soft)}
 .papel{font-weight:600}
 .idx{font-size:11px;color:var(--muted);font-family:var(--mono);margin-left:6px}
+.emissor{display:block;font-size:11.5px;color:var(--muted);max-width:260px;overflow:hidden;text-overflow:ellipsis}
 .delta{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:600}
-.delta.up{color:var(--abriu)} .delta.down{color:var(--fechou)} .delta.flat{color:var(--flat)}
+.up{color:var(--abriu)} .down{color:var(--fechou)} .flat{color:var(--flat)}
+td .sub2{display:block;font-size:11.5px;color:var(--muted);font-family:var(--mono);font-weight:400;margin-top:1px}
 .small{font-size:12px;color:var(--muted)}
 .pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;letter-spacing:.02em}
 .pill.up{background:var(--abriu-bg);color:var(--abriu)}
@@ -79,13 +87,19 @@ tbody tr:hover td{background:var(--soft)}
 .pill.flat{background:var(--flat-bg);color:var(--flat)}
 .pill.base{background:var(--base-bg);color:var(--base)}
 svg.spark{display:block;margin-left:auto}
+.cellinput{width:84px;text-align:right;background:var(--soft);border:1px solid var(--accent);border-radius:5px;padding:3px 6px;font-family:var(--mono);font-size:12.5px}
+.more{padding:10px 14px;border-top:1px solid var(--line);display:flex;justify-content:center}
 
 .empty{padding:28px 18px;text-align:center;color:var(--muted);display:flex;flex-direction:column;gap:8px;align-items:center}
 .empty strong{color:var(--ink);font-size:15px}
 
 .side{display:flex;flex-direction:column;gap:16px}
 .entry{padding:14px;display:flex;flex-direction:column;gap:10px}
-.entry textarea{width:100%;min-height:170px;resize:vertical;background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:10px;font-family:var(--mono);font-size:12.5px;line-height:1.5}
+.drop{border:1.5px dashed var(--line);border-radius:8px;padding:14px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center;background:var(--soft)}
+.drop.over{border-color:var(--accent)}
+.drop strong{font-size:13.5px}
+.fileinfo{font-size:12px;color:var(--ink);font-family:var(--mono);word-break:break-all}
+.entry textarea{width:100%;min-height:110px;resize:vertical;background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:10px;font-family:var(--mono);font-size:12.5px;line-height:1.5}
 .basenote{font-size:12px;padding:8px 10px;border-radius:6px;background:var(--base-bg);color:var(--base)}
 .preview{font-size:12px;color:var(--muted)}
 .preview .bad{color:var(--abriu)}
@@ -94,9 +108,15 @@ svg.spark{display:block;margin-left:auto}
 .hist li{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--line)}
 .hist li:last-child{border-bottom:0}
 .hist .h{font-family:var(--mono);font-weight:600}
-.hist .meta{flex:1;min-width:0;font-size:12px;color:var(--muted)}
-.legend{font-size:12px;color:var(--muted);padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:14px;flex-wrap:wrap}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:13px;z-index:20}
+.hist .meta{flex:1;min-width:0;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legend{font-size:12px;color:var(--muted);padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:8px 14px;flex-wrap:wrap}
+.cad td{padding:6px 12px}
+.cad input{width:100%;min-width:90px;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font-size:13px}
+.cad input.n{text-align:right;max-width:110px;font-family:var(--mono)}
+.bulk{padding:12px 14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.bulk textarea{width:100%;min-height:80px;background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-family:var(--mono);font-size:12.5px}
+details.bulkwrap summary{cursor:pointer;padding:10px 14px;border-top:1px solid var(--line);font-size:13px;color:var(--accent);font-weight:500}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:13px;z-index:20;max-width:calc(100% - 32px)}
 @media (prefers-reduced-motion:no-preference){tbody tr{transition:background .15s}}
 </style>
 
@@ -104,7 +124,7 @@ svg.spark{display:block;margin-left:auto}
   <header class="top">
     <div>
       <h1>Painel de Spreads</h1>
-      <p>O primeiro envio do dia vira a base fixa. Cada novo envio é comparado com ela.</p>
+      <p>O primeiro envio do dia vira a base fixa. Cada novo envio é comparado com ela, com a taxa de emissão e com a NTN-B de referência.</p>
     </div>
     <div class="daybar">
       <label for="dia" class="small">Dia</label>
@@ -116,57 +136,118 @@ svg.spark{display:block;margin-left:auto}
   <section class="kpis" id="kpis" aria-label="Resumo do dia"></section>
 
   <div class="grid">
+   <div class="main">
     <section class="panel" aria-label="Papéis">
       <div class="phead">
         <h2>Papéis · abertura x atual</h2>
         <div class="tools">
-          <input type="search" id="busca" placeholder="Filtrar papel" aria-label="Filtrar papel">
+          <label class="small" for="lado">Taxa</label>
+          <select id="lado">
+            <option value="o">OFFER mercado</option>
+            <option value="b">BID mercado</option>
+            <option value="c">Taxa cliente (máx.)</option>
+          </select>
           <select id="ordem" aria-label="Ordenar">
-            <option value="ordem">Ordem do envio</option>
-            <option value="abriu">Mais abriram</option>
-            <option value="fechou">Mais fecharam</option>
-            <option value="nome">Papel A–Z</option>
+            <option value="ordem">Ordem do arquivo</option>
+            <option value="abriu">Mais abriram no dia</option>
+            <option value="fechou">Mais fecharam no dia</option>
+            <option value="emis">Maior Δ vs emissão</option>
+            <option value="spread">Maior spread s/ NTN-B</option>
+            <option value="dur">Duration</option>
+            <option value="nome">Ticker A–Z</option>
           </select>
           <button class="btn" id="copiar" type="button">Copiar resumo</button>
         </div>
       </div>
-      <div class="tablewrap">
+      <div class="filters">
+        <div class="chips" id="fidx"></div>
+        <div class="tools">
+          <label class="toggle"><input type="checkbox" id="soMov"> só com movimento</label>
+          <label class="toggle"><input type="checkbox" id="soEmis"> só com emissão</label>
+          <input type="search" id="busca" placeholder="Ticker ou emissor" aria-label="Filtrar">
+        </div>
+      </div>
+      <div class="tablewrap tall">
         <table>
           <thead><tr>
-            <th>Papel</th><th>Abertura</th><th>Atual</th><th>Δ vs abertura</th><th>Δ último envio</th><th>Intradia</th><th>Status</th>
+            <th>Papel</th><th>Duration</th><th>Emissão</th><th>Abertura</th><th>Atual</th><th>Δ vs abertura</th><th>Δ vs emissão</th><th>Spread s/ NTN-B</th><th>Intradia</th><th>Status</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
+      <div class="more" id="more" hidden><button class="btn" type="button" id="moreBtn"></button></div>
       <div id="vazio" class="empty" hidden>
         <strong>Nenhum envio neste dia</strong>
-        <span>Cole as taxas na caixa “Novo envio”. O primeiro envio fica gravado como abertura.</span>
+        <span>Suba o export de mercado RF ou cole as taxas em “Novo envio”. O primeiro envio fica gravado como abertura.</span>
       </div>
       <div class="legend">
-        <span><span class="pill up">abriu</span> taxa subiu desde a abertura</span>
+        <span><span class="pill up">abriu</span> taxa subiu</span>
         <span><span class="pill down">fechou</span> taxa caiu (papel valorizou)</span>
-        <span><span class="pill base">novo</span> entrou depois; base é a 1ª vez que apareceu</span>
-        <span>Δ em bps (1 bp = 0,01 p.p.). Em % do CDI, Δ em p.p.</span>
+        <span><span class="pill base">novo</span> entrou depois da abertura</span>
+        <span>Δ em bps (1 bp = 0,01 p.p.); em % do CDI, em p.p.</span>
+        <span>Spread s/ NTN-B (spread over): taxa IPCA+ do papel − taxa indicativa ANBIMA da NTN-B de vencimento mais próximo (ou a fixada no cadastro). NTN-B colada no envio tem prioridade.</span>
+        <span>Clique em “+ emissão” para cadastrar a taxa de emissão de um papel.</span>
       </div>
     </section>
+
+    <section class="panel" aria-label="Emissão e NTN-B de referência">
+      <div class="phead">
+        <h2>Cadastro: emissão e NTN-B</h2>
+        <span class="status" id="cadcount">Fixo por papel · vale para todos os dias</span>
+      </div>
+      <div class="tablewrap">
+        <table class="cad">
+          <thead><tr><th>Papel</th><th>Taxa de emissão (%)</th><th style="text-align:left">NTN-B de referência</th><th></th></tr></thead>
+          <tbody id="cadbody"></tbody>
+        </table>
+      </div>
+      <datalist id="ntnbs"></datalist>
+      <details class="bulkwrap">
+        <summary>Cadastrar vários de uma vez</summary>
+        <form class="bulk" id="bulkform">
+          <label class="small" for="bulk">Um papel por linha: ticker; taxa de emissão; NTN-B de referência (opcional). Sem NTN-B, o painel usa a de vencimento mais próximo.</label>
+          <textarea id="bulk" spellcheck="false" placeholder="VLIM28; 6,90
+CHSF13; 6,50; NTN-B 2030
+DASA - CDI; 1,95"></textarea>
+          <div class="row"><span class="preview" id="bulkprev"></span><button class="btn primary" type="submit" id="bulkbtn" disabled>Salvar cadastro</button></div>
+        </form>
+      </details>
+    </section>
+   </div>
 
     <aside class="side">
       <section class="panel">
         <div class="phead"><h2>Novo envio</h2><span class="status" id="hora"></span></div>
         <form class="entry" id="form">
           <div class="basenote" id="basenote" hidden>Este será o envio de abertura do dia e ficará fixo como base.</div>
-          <textarea id="texto" spellcheck="false" placeholder="Cole aqui, um papel por linha. Ex.:
-VALE38  IPCA+ 6,45%
-NTN-B 2035  IPCA+ 7,52%
-RAIZ23  CDI+ 1,15%
-LCA XYZ  98% CDI
-Também aceita colar direto do Excel."></textarea>
-          <div class="preview" id="preview">Nada colado ainda.</div>
+          <label class="drop" id="drop" for="arquivo">
+            <strong>Subir export de mercado RF ou ANBIMA</strong>
+            <span class="small">CSV, TXT ou Excel. O arquivo de taxas indicativas da ANBIMA vira a referência de NTN-B do dia.</span>
+            <span class="fileinfo" id="fileinfo"></span>
+          </label>
+          <input type="file" id="arquivo" accept=".csv,.txt,.xlsx,.xls" hidden>
+          <label class="small" for="texto">Taxas coladas (opcional, ex.: NTN-B intradia)</label>
+          <textarea id="texto" spellcheck="false" placeholder="Cole aqui, um por linha:
+NTN-B 2030  7,42
+NTN-B 2035  7,52
+NTN-B 2040  7,38
+VALE38  IPCA+ 6,45%"></textarea>
+          <div class="preview" id="preview">Nada carregado ainda.</div>
           <div class="row">
-            <button class="btn" type="button" id="exemplo">Colar exemplo</button>
+            <button class="btn" type="button" id="limpar">Limpar</button>
             <button class="btn primary" type="submit" id="registrar" disabled>Registrar envio</button>
           </div>
         </form>
+      </section>
+
+      <section class="panel">
+        <div class="phead"><h2>De-para NTN-B</h2><span class="status" id="anbinfo"></span></div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>NTN-B</th><th>Vencimento</th><th>Taxa</th><th>Papéis</th></tr></thead>
+            <tbody id="refbody"></tbody>
+          </table>
+        </div>
       </section>
 
       <section class="panel">
@@ -183,95 +264,205 @@ Também aceita colar direto do Excel."></textarea>
   "use strict";
   const $ = (id) => document.getElementById(id);
   const pad = (n) => String(n).padStart(2, "0");
-  const hojeKey = () => { const d = new Date(); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); };
-  const fmtDia = (k) => { const [y, m, d] = k.split("-"); return d + "/" + m; };
+  const keyOf = (d) => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  const hojeKey = () => keyOf(new Date());
+  const fmtDia = (k) => { const [, m, d] = k.split("-"); return d + "/" + m; };
   const fmtHora = (iso) => { const d = new Date(iso); return pad(d.getHours()) + ":" + pad(d.getMinutes()); };
   const br = (n, dec = 2) => n.toLocaleString("pt-BR", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  const norm = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  const keyNorm = (s) => String(s).toUpperCase().replace(/\s+/g, " ").trim();
+  const docId = (k) => k.replace(/[^A-Za-z0-9_\-.~:@+]/g, "_").slice(0, 180) || "x";
+  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
 
-  /* ---------- Parser ---------- */
+  /* ---------- Números ---------- */
+  function numBR(s) {
+    s = String(s ?? "").replace(/[%\s]/g, "");
+    if (!s || s === "-") return null;
+    if (s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+    const n = parseFloat(s); return isFinite(n) ? n : null;
+  }
+  const rate = (s) => { const n = numBR(s); return n === null || n === 0 ? null : n; };
+  function cliMax(s) {
+    const ms = [...String(s || "").matchAll(/\d+(?:[.,]\d+)?/g)].map((m) => numBR(m[0])).filter((n) => n !== null);
+    const v = ms.length ? ms[ms.length - 1] : null; return v ? v : null;
+  }
+  function idxMap(s) {
+    const t = norm(s).replace(/\s/g, "");
+    if (t.includes("%cdi") || t === "di%") return "%CDI";
+    if (t.startsWith("ipc") ) return "IPCA+";
+    if (t.startsWith("cdi") || t.startsWith("di")) return "CDI+";
+    if (t.startsWith("pre")) return "PRÉ";
+    if (t.startsWith("igp")) return "IGP-M+";
+    return s ? String(s).toUpperCase() : "";
+  }
+  function vencISO(s) { const d = dataBR(s); return d; }
+  function vencYear(s) {
+    const m = String(s || "").match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+    if (!m) return null; let y = +m[3]; if (y < 100) y += 2000; return y;
+  }
+
+  /* ---------- Parser de texto colado ---------- */
   const IDX = [
-    { re: /%\s*(do\s+)?CDI/i, k: "%CDI" },
-    { re: /IPCA\s*\+/i, k: "IPCA+" },
-    { re: /CDI\s*\+/i, k: "CDI+" },
-    { re: /IGP-?M\s*\+/i, k: "IGP-M+" },
-    { re: /\bpr[ée](fixad[oa])?\b/i, k: "PRÉ" },
+    { re: /%\s*(do\s+)?CDI/i, k: "%CDI" }, { re: /IPC-?A\s*\+/i, k: "IPCA+" }, { re: /CDI\s*\+/i, k: "CDI+" },
+    { re: /IGP-?M\s*\+/i, k: "IGP-M+" }, { re: /\bpr[ée](fixad[oa])?\b/i, k: "PRÉ" },
   ];
   const NUM = /(?<![A-Za-z0-9])\d+(?:[.,]\d+)?/g;
-  const toNum = (s) => parseFloat(s.replace(",", "."));
   const clean = (s) => s.replace(/[\s:\-–|;=]+$/g, "").replace(/^[\s\-–•*]+/g, "").trim();
-
   function parseTexto(txt) {
-    const lines = txt.split(/\r?\n/).map((l) => l.replace(/\u00a0/g, " ").trim()).filter(Boolean);
     const out = new Map(); const ruins = [];
-    let colNome = -1, colTaxa = -1;
-    lines.forEach((line, i) => {
-      const cells = line.split(/\t|;|\|/).map((s) => s.trim());
-      if (i === 0 && cells.length > 1 && !line.match(NUM)) {
-        cells.forEach((c, j) => {
-          if (colTaxa < 0 && /taxa|spread|yield|rentab/i.test(c)) colTaxa = j;
-          if (colNome < 0 && /ativo|papel|c[óo]digo|ticker|emiss|nome/i.test(c)) colNome = j;
-        });
-        return;
-      }
-      const r = parseLinha(line, cells, colNome, colTaxa);
-      if (r) out.set(r.k, r); else ruins.push(line);
+    txt.split(/\r?\n/).map((l) => l.replace(/\u00a0/g, " ").trim()).filter(Boolean).forEach((line) => {
+      const cells = line.split(/\t|;|\|/).map((s) => s.trim()).filter(Boolean);
+      let nome = null, rest = line;
+      if (cells.length > 1) { nome = cells[0]; rest = cells.slice(1).join(" "); }
+      let idx = "", idxPos = -1;
+      for (const d of IDX) { const m = rest.match(d.re); if (m) { idx = d.k; idxPos = m.index; break; } }
+      const nums = [...rest.matchAll(NUM)];
+      let pick = idx === "%CDI" ? nums.filter((m) => m.index < idxPos).pop() : idx ? nums.find((m) => m.index > idxPos) : nums[nums.length - 1];
+      if (!pick) { ruins.push(line); return; }
+      if (nome === null) nome = clean(rest.slice(0, Math.min(...[idxPos, pick.index].filter((v) => v >= 0))));
+      nome = clean(nome || "");
+      const t = numBR(pick[0]);
+      if (!nome || t === null) { ruins.push(line); return; }
+      const k = keyNorm(nome);
+      if (!idx && /^NTN-?B/i.test(k)) idx = "IPCA+";
+      out.set(k, { k, t, i: idx });
     });
     return { itens: [...out.values()], ruins };
   }
 
-  function parseLinha(line, cells, colNome, colTaxa) {
-    let nome = null, rest = line;
-    const nonEmpty = cells.filter(Boolean);
-    if (cells.length > 1 && nonEmpty.length > 1) {
-      nome = cells[colNome >= 0 ? colNome : 0] || nonEmpty[0];
-      rest = colTaxa >= 0 && cells[colTaxa] ? cells[colTaxa] + " " + cells.filter((_, j) => j !== colTaxa && j !== (colNome >= 0 ? colNome : 0)).join(" ")
-                                            : cells.filter((c) => c !== nome).join(" ");
+  /* ---------- Parser de planilha (export de mercado RF) ---------- */
+  function splitCSV(text) {
+    const head = text.split(/\r?\n/, 15);
+    const delim = ["@", ";", "\t", ","].find((d) => head.some((l) => l.split(d).length >= 4)) || ";";
+    const rows = []; let row = [], cur = "", q = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (q) { if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; }
+      else if (c === '"') q = true;
+      else if (c === delim) { row.push(cur); cur = ""; }
+      else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(cur); rows.push(row); row = []; cur = ""; }
+      else cur += c;
     }
-    let idx = null, idxPos = -1;
-    for (const d of IDX) { const m = rest.match(d.re); if (m) { idx = d.k; idxPos = m.index; break; } }
-    const nums = [...rest.matchAll(NUM)];
-    let pick = null;
-    if (colTaxa >= 0 && nome !== null) pick = nums[0] || null;
-    else if (idx === "%CDI") pick = nums.filter((m) => m.index < idxPos).pop() || null;
-    else if (idx) pick = nums.find((m) => m.index > idxPos) || null;
-    else pick = nums[nums.length - 1] || null;
-    if (!pick) return null;
-    if (nome === null) {
-      const corte = Math.min(...[idxPos, pick.index].filter((v) => v >= 0));
-      nome = clean(rest.slice(0, corte));
+    if (cur || row.length) { row.push(cur); rows.push(row); }
+    return rows.filter((r) => r.some((c) => String(c).trim()));
+  }
+  function parseTabela(rows) {
+    if (!rows.length) return { itens: [], ruins: [] };
+    const hi = Math.max(0, rows.slice(0, 15).findIndex((r) => r.some((x) => /ticker|indicativa|bid mercado|offer mercado|^taxa|^ativo$|^papel$/.test(norm(x)))));
+    rows = rows.slice(hi);
+    const h = rows[0].map(norm);
+    const anb = parseAnbima(rows, h);
+    if (anb) return { anbima: anb, itens: [], ruins: [] };
+    const find = (re) => h.findIndex((x) => re.test(x));
+    const c = {
+      tk: find(/^ticker|^codigo|^cod\.|^ativo$|^papel$/), em: find(/emissor/), ix: find(/^indexador/), vc: find(/^vencimento/),
+      du: find(/^duration/), rt: find(/^rating/), bid: find(/^bid mercado|^bid$/), off: find(/^offer mercado|^offer$/),
+      cli: find(/tax.*min.*max|taxa cliente/), tx: find(/^taxa$|^taxa |spread/),
+    };
+    if (c.tk < 0 || (c.bid < 0 && c.off < 0 && c.cli < 0 && c.tx < 0)) {
+      return parseTexto(rows.map((r) => r.join("\t")).join("\n"));
     }
-    nome = clean(nome || "");
-    if (!nome) return null;
-    const taxa = toNum(pick[0]);
-    if (!isFinite(taxa)) return null;
-    const k = nome.toUpperCase().replace(/\s+/g, " ");
-    return { k, nome, idx: idx || "", taxa };
+    const itens = [], ruins = [];
+    rows.slice(1).forEach((r) => {
+      const tk = String(r[c.tk] || "").trim();
+      if (!tk) { ruins.push(r.join(" ")); return; }
+      const it = { k: keyNorm(tk) };
+      if (c.em >= 0 && r[c.em]) it.e = String(r[c.em]).trim();
+      if (c.ix >= 0) it.i = idxMap(r[c.ix]);
+      if (c.vc >= 0 && r[c.vc]) it.v = String(r[c.vc]).trim();
+      if (c.du >= 0) { const d = parseFloat(String(r[c.du]).replace(",", ".")); if (isFinite(d)) it.d = d; }
+      if (c.rt >= 0 && r[c.rt]) it.r = String(r[c.rt]).trim();
+      if (c.bid >= 0) { const v = rate(r[c.bid]); if (v !== null) it.b = v; }
+      if (c.off >= 0) { const v = rate(r[c.off]); if (v !== null) it.o = v; }
+      if (c.cli >= 0) { const v = cliMax(r[c.cli]); if (v !== null) it.c = v; }
+      if (c.tx >= 0) { const v = rate(r[c.tx]); if (v !== null) it.t = v; }
+      itens.push(it);
+    });
+    return { itens, ruins };
+  }
+  function dataBR(s) {
+    s = String(s || "").trim();
+    let m = s.match(/^(\d{4})(\d{2})(\d{2})$/) || s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return m[1] + "-" + m[2] + "-" + m[3];
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+    if (m) { let y = +m[3]; if (y < 100) y += 2000; return y + "-" + pad(+m[2]) + "-" + pad(+m[1]); }
+    return null;
+  }
+  function parseAnbima(rows, h) {
+    const ti = h.findIndex((x) => /^titulo/.test(x)), ix = h.findIndex((x) => /indicativa/.test(x)), vc = h.findIndex((x) => /vencimento/.test(x));
+    if (ti < 0 || ix < 0 || vc < 0) return null;
+    const rf = h.findIndex((x) => /referencia/.test(x));
+    let ref = null; const ntnb = [];
+    rows.slice(1).forEach((r) => {
+      if (!/^NTN-?B$/i.test(String(r[ti] || "").trim())) return;
+      const venc = dataBR(r[vc]); const tx = numBR(r[ix]);
+      if (!venc || tx === null) return;
+      if (rf >= 0 && !ref) ref = dataBR(r[rf]);
+      ntnb.push({ k: "NTN-B " + venc.slice(0, 4), venc, tx });
+    });
+    if (!ntnb.length) return null;
+    ntnb.sort((a, b) => a.venc.localeCompare(b.venc));
+    return { ref, ntnb };
+  }
+  function lerArquivo(file) {
+    return new Promise((resolve, reject) => {
+      const isXls = /\.xlsx?$/i.test(file.name);
+      const fr = new FileReader();
+      fr.onerror = () => reject(new Error("leitura"));
+      if (isXls) {
+        fr.onload = async () => {
+          try {
+            await carregarXLSX();
+            const wb = XLSX.read(new Uint8Array(fr.result), { type: "array" });
+            const ws = wb.Sheets[wb.SheetNames[0]];
+            resolve(parseTabela(XLSX.utils.sheet_to_json(ws, { header: 1, raw: false, defval: "" })));
+          } catch (e) { reject(e); }
+        };
+        fr.readAsArrayBuffer(file);
+      } else {
+        fr.onload = () => {
+          const bytes = new Uint8Array(fr.result);
+          let txt = new TextDecoder("utf-8").decode(bytes);
+          if (txt.includes("\uFFFD")) txt = new TextDecoder("windows-1252").decode(bytes);
+          resolve(parseTabela(splitCSV(txt.replace(/^\uFEFF/, ""))));
+        };
+        fr.readAsArrayBuffer(file);
+      }
+    });
+  }
+  let xlsxP = null;
+  function carregarXLSX() {
+    if (window.XLSX) return Promise.resolve();
+    if (!xlsxP) xlsxP = new Promise((res, rej) => {
+      const s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+      s.onload = res; s.onerror = () => { xlsxP = null; rej(new Error("xlsx")); }; document.head.append(s);
+    });
+    return xlsxP;
+  }
+  function horaDoNome(name) {
+    const m = name.match(/(\d{2})[_\-.](\d{2})[_\-.](\d{4})[_\-. ]?(\d{2})[:h_\-]?(\d{2})/);
+    if (!m) return null;
+    const d = new Date(+m[3], +m[2] - 1, +m[1], +m[4], +m[5]);
+    return isNaN(d) ? null : d;
   }
 
-  /* ---------- Storage (db, com fallback local) ---------- */
+  /* ---------- Armazenamento (db, com fallback local) ---------- */
   let db = null, canWrite = true;
   const local = {
-    read() { try { return JSON.parse(localStorage.getItem("spreads.v1") || "{}"); } catch { return {}; } },
-    write(o) { try { localStorage.setItem("spreads.v1", JSON.stringify(o)); } catch {} },
+    read(k) { try { return JSON.parse(localStorage.getItem(k) || "{}"); } catch { return {}; } },
+    write(k, o) { try { localStorage.setItem(k, JSON.stringify(o)); } catch {} },
   };
-  const subs = { day: null, days: null };
-  const listeners = { day: () => {}, days: () => {} };
-
+  const subs = {}; const listeners = {};
   function subscribeDays(cb) {
-    listeners.days = cb;
-    if (subs.days) subs.days();
-    if (!db) { cb(Object.keys(local.read()).sort().reverse()); return; }
-    subs.days = db.collection("dias").onSnapshot(
-      (s) => cb(s.docs.map((d) => d.id).sort().reverse()),
-      () => {}
-    );
+    listeners.days = cb; if (subs.days) subs.days();
+    if (!db) { cb(Object.keys(local.read("spreads.v2")).sort().reverse()); return; }
+    subs.days = db.collection("dias").onSnapshot((s) => cb(s.docs.map((d) => d.id).sort().reverse()), () => {});
   }
-
   let timer = null;
   function subscribeDay(dia, cb) {
-    listeners.day = cb;
-    if (subs.day) { subs.day(); subs.day = null; }
-    if (!db) { cb((local.read()[dia] || []).slice().sort((a, b) => a.t.localeCompare(b.t))); return; }
+    listeners.day = cb; if (subs.day) { subs.day(); subs.day = null; }
+    if (!db) { cb((local.read("spreads.v2")[dia] || []).slice().sort((a, b) => a.t.localeCompare(b.t))); return; }
     clearTimeout(timer);
     timer = setTimeout(() => setConn("O armazenamento ainda não respondeu. Os dados podem estar desatualizados."), 10000);
     subs.day = db.collection("dias/" + dia + "/envios").orderBy("t").onSnapshot(
@@ -282,10 +473,14 @@ Também aceita colar direto do Excel."></textarea>
       (e) => { clearTimeout(timer); setConn("Não foi possível ler os envios (" + e.code + ")."); }
     );
   }
-
+  function subscribeCad(cb) {
+    listeners.cad = cb; if (subs.cad) subs.cad();
+    if (!db) { cb(local.read("spreads.cad")); return; }
+    subs.cad = db.collection("papeis").onSnapshot((s) => { const o = {}; s.docs.forEach((d) => { const v = d.data(); if (v && v.k) o[v.k] = v; }); cb(o); }, () => {});
+  }
   async function addEnvio(dia, envio) {
     if (!db) {
-      const o = local.read(); (o[dia] = o[dia] || []).push({ id: "l" + Date.now(), ...envio }); local.write(o);
+      const o = local.read("spreads.v2"); (o[dia] = o[dia] || []).push({ id: "l" + Date.now(), ...envio }); local.write("spreads.v2", o);
       subscribeDay(dia, listeners.day); subscribeDays(listeners.days); return;
     }
     const diaRef = db.doc("dias/" + dia);
@@ -293,131 +488,264 @@ Também aceita colar direto do Excel."></textarea>
     if (!snap.exists) await diaRef.set({ criadoEm: envio.t });
     await db.collection("dias/" + dia + "/envios").add(envio);
   }
-
-  async function delEnvio(dia, id) {
+  async function delEnvio(dia, id, ultimo) {
     if (!db) {
-      const o = local.read(); o[dia] = (o[dia] || []).filter((e) => e.id !== id); if (!o[dia].length) delete o[dia]; local.write(o);
+      const o = local.read("spreads.v2"); o[dia] = (o[dia] || []).filter((e) => e.id !== id); if (!o[dia].length) delete o[dia]; local.write("spreads.v2", o);
       subscribeDay(dia, listeners.day); subscribeDays(listeners.days); return;
     }
     await db.doc("dias/" + dia + "/envios/" + id).delete();
-    if (envios.length === 1) await db.doc("dias/" + dia).delete();
+    if (ultimo) await db.doc("dias/" + dia).delete();
   }
-
+  async function salvarCad(k, val) {
+    if (!db) {
+      const o = local.read("spreads.cad"); if (val) o[k] = { k, ...val }; else delete o[k]; local.write("spreads.cad", o); subscribeCad(listeners.cad); return;
+    }
+    const ref = db.doc("papeis/" + docId(k));
+    if (val) await ref.set({ k, ...val }); else await ref.delete();
+  }
+  function subscribeAnbima(cb) {
+    listeners.anb = cb; if (subs.anb) subs.anb();
+    if (!db) { cb(local.read("spreads.anb")); return; }
+    subs.anb = db.collection("anbima").onSnapshot((s) => { const o = {}; s.docs.forEach((d) => { const v = d.data(); if (v && v.ntnb) o[d.id] = v; }); cb(o); }, () => {});
+  }
+  async function salvarAnbima(ref, ntnb) {
+    const doc = { ref, ntnb, carregadoEm: new Date().toISOString() };
+    if (!db) { const o = local.read("spreads.anb"); o[ref] = doc; local.write("spreads.anb", o); subscribeAnbima(listeners.anb); return; }
+    await db.doc("anbima/" + ref).set(doc);
+  }
   function setConn(t) { $("conn").textContent = t; }
 
-  /* ---------- State + render ---------- */
-  let dia = hojeKey(), envios = [], dias = [];
-  $("dia").value = dia;
+  /* ---------- Estado e cálculo ---------- */
+  let dia = hojeKey(), envios = [], dias = [], cad = {}, anbAll = {}, anbDia = null;
+  let lado = "o", fIdx = "Todos", limite = 150;
+  try { lado = localStorage.getItem("spreads.lado") || "o"; } catch {}
+  $("lado").value = lado; $("dia").value = dia;
+
+  const valor = (it) => {
+    if (!it) return null;
+    const v = it[lado];
+    if (v !== undefined && v !== null) return v;
+    if (it.t !== undefined && it.b === undefined && it.o === undefined && it.c === undefined) return it.t;
+    return null;
+  };
+  const ntnbYear = (k) => { const m = k.match(/^NTN-?B\D*(\d{4})/); return m ? +m[1] : null; };
 
   function computar() {
     const map = new Map(); const order = [];
     envios.forEach((env, ei) => {
       (env.itens || []).forEach((it) => {
         let r = map.get(it.k);
-        if (!r) { r = { k: it.k, nome: it.nome, idx: it.idx, serie: new Array(envios.length).fill(null), baseEnv: ei }; map.set(it.k, r); order.push(r); }
-        r.serie[ei] = it.taxa; if (it.idx) r.idx = it.idx;
+        if (!r) { r = { k: it.k, serie: new Array(envios.length).fill(null), raw: new Array(envios.length).fill(null) }; map.set(it.k, r); order.push(r); }
+        r.raw[ei] = it; r.serie[ei] = valor(it);
+        if (it.e) r.e = it.e; if (it.i) r.i = it.i; if (it.v) r.v = it.v; if (it.d !== undefined) r.d = it.d; if (it.r) r.r = it.r;
       });
     });
-    order.forEach((r, i) => {
-      const vals = r.serie.map((v, i2) => [v, i2]).filter(([v]) => v !== null);
-      r.ordem = i;
-      r.base = vals[0][0];
-      r.atual = vals[vals.length - 1][0];
-      r.ultimoEnv = vals[vals.length - 1][1];
-      r.prev = vals.length > 1 ? vals[vals.length - 2][0] : null;
-      const mult = r.idx === "%CDI" ? 1 : 100;
-      r.unid = r.idx === "%CDI" ? "p.p." : "bps";
-      r.delta = (r.atual - r.base) * mult;
-      r.dPrev = r.prev === null ? null : (r.atual - r.prev) * mult;
-      r.novo = r.baseEnv > 0;
-      const tol = r.idx === "%CDI" ? 0.05 : 0.5;
-      r.st = Math.abs(r.delta) < tol ? "flat" : r.delta > 0 ? "up" : "down";
+    // NTN-Bs: ANBIMA do dia (ou a mais recente anterior) + NTN-Bs coladas no envio
+    const anbKeys = Object.keys(anbAll).filter((d) => d <= dia).sort();
+    anbDia = anbKeys.length ? anbAll[anbKeys[anbKeys.length - 1]] : null;
+    const refs = new Map();
+    (anbDia ? anbDia.ntnb : []).forEach((n) => refs.set(n.k, { k: n.k, venc: n.venc, anb: n.tx, row: null }));
+    order.filter((r) => ntnbYear(r.k)).forEach((r) => {
+      const x = refs.get(r.k) || { k: r.k, venc: ntnbYear(r.k) + "-07-01", anb: null };
+      x.row = r; refs.set(r.k, x);
     });
+    const refList = [...refs.values()];
+    const valAt = (row, ei) => { for (let j = ei; j >= 0; j--) if (row.serie[j] !== null) return row.serie[j]; return row.serie.find((v) => v !== null) ?? null; };
+    order.forEach((r, i) => {
+      r.ordem = i;
+      if (!r.i && ntnbYear(r.k)) r.i = "IPCA+";
+      const vals = r.serie.map((v, j) => [v, j]).filter(([v]) => v !== null);
+      r.tem = vals.length > 0;
+      const c = cad[r.k] || {};
+      r.emis = typeof c.emissao === "number" ? c.emissao : null;
+      r.mult = r.i === "%CDI" ? 1 : 100; r.unid = r.i === "%CDI" ? "p.p." : "bps";
+      if (!r.tem) { r.st = "none"; return; }
+      r.baseEnv = vals[0][1]; r.base = vals[0][0];
+      r.ultimoEnv = vals[vals.length - 1][1]; r.atual = vals[vals.length - 1][0];
+      r.prev = vals.length > 1 ? vals[vals.length - 2][0] : null;
+      r.delta = (r.atual - r.base) * r.mult;
+      r.dPrev = r.prev === null ? null : (r.atual - r.prev) * r.mult;
+      r.dEmis = r.emis === null ? null : (r.atual - r.emis) * r.mult;
+      r.novo = r.baseEnv > 0;
+      const tol = r.unid === "p.p." ? 0.05 : 0.5;
+      r.st = Math.abs(r.delta) < tol ? "flat" : r.delta > 0 ? "up" : "down";
+      // NTN-B de referência (de-para pelo vencimento mais próximo)
+      r.ref = null;
+      if (r.i === "IPCA+" && !ntnbYear(r.k) && refList.length) {
+        let ref = c.ntnb ? refs.get(keyNorm(c.ntnb)) || null : null;
+        const pv = vencISO(r.v);
+        if (!ref && pv) {
+          const t = Date.parse(pv);
+          ref = refList.slice().sort((a, b) => Math.abs(Date.parse(a.venc) - t) - Math.abs(Date.parse(b.venc) - t))[0];
+        }
+        if (ref) {
+          const at = (ei) => { if (ref.row) { const v = valAt(ref.row, ei); if (v !== null) return v; } return ref.anb; };
+          const b0 = at(r.baseEnv), b1 = at(r.ultimoEnv);
+          if (b0 !== null && b1 !== null) {
+            r.ref = ref.k; r.refVenc = ref.venc; r.refTx = b1; r.refFonte = ref.row && valAt(ref.row, r.ultimoEnv) !== null ? "envio" : "ANBIMA";
+            r.spBase = (r.base - b0) * 100; r.spAtual = (r.atual - b1) * 100; r.spDelta = r.spAtual - r.spBase;
+            r.refAuto = !c.ntnb;
+          }
+        }
+      }
+      if (r.ref) { const x = refs.get(r.ref); x.n = (x.n || 0) + 1; }
+    });
+    refsCache = refList;
     return order;
   }
 
-  const fmtTaxa = (r, v) => r.idx === "%CDI" ? br(v, 2) + "%" : br(v, 2) + "%";
-  const fmtDelta = (d, unid) => {
-    if (d === null) return "—";
+  const fmtTaxa = (r, v) => v === null || v === undefined ? "—" : br(v, 2) + "%";
+  const fmtDelta = (d, unid, semUnid) => {
+    if (d === null || d === undefined) return "—";
     const dec = unid === "p.p." ? 2 : 1;
-    const s = d > 0 ? "+" : d < 0 ? "−" : "";
-    return s + br(Math.abs(d), dec) + " " + unid;
+    const s = d > 0.0001 ? "+" : d < -0.0001 ? "−" : "";
+    return s + br(Math.abs(d), dec) + (semUnid ? "" : " " + unid);
   };
+  const sgn = (v) => (v < -0.5 ? "−" : "") + br(Math.abs(v), 0);
+  const clsDelta = (d, unid) => d === null || d === undefined ? "flat" : Math.abs(d) < (unid === "p.p." ? 0.05 : 0.5) ? "flat" : d > 0 ? "up" : "down";
 
   function spark(r) {
     const pts = r.serie.map((v, i) => [i, v]).filter(([, v]) => v !== null);
-    const W = 88, H = 26, P = 3;
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg");
-    svg.setAttribute("class", "spark"); svg.setAttribute("width", W); svg.setAttribute("height", H); svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-    svg.setAttribute("aria-hidden", "true");
-    if (pts.length < 2) {
-      const c = document.createElementNS(svgNS, "circle"); c.setAttribute("cx", W - P); c.setAttribute("cy", H / 2); c.setAttribute("r", 2.5); c.setAttribute("fill", "var(--muted)"); svg.appendChild(c); return svg;
-    }
+    const W = 80, H = 24, P = 3, NS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("class", "spark"); svg.setAttribute("width", W); svg.setAttribute("height", H); svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("aria-hidden", "true");
+    const dot = (cx, cy, fill) => { const c = document.createElementNS(NS, "circle"); c.setAttribute("cx", cx); c.setAttribute("cy", cy); c.setAttribute("r", 2.5); c.setAttribute("fill", fill); svg.appendChild(c); };
+    if (pts.length < 2) { dot(W - P, H / 2, "var(--muted)"); return svg; }
     const n = Math.max(envios.length - 1, 1);
     const vs = pts.map((p) => p[1]); let lo = Math.min(...vs), hi = Math.max(...vs);
     if (hi - lo < 1e-9) { lo -= 0.01; hi += 0.01; }
-    const x = (i) => P + (i / n) * (W - 2 * P);
-    const y = (v) => H - P - ((v - lo) / (hi - lo)) * (H - 2 * P);
+    const x = (i) => P + (i / n) * (W - 2 * P), y = (v) => H - P - ((v - lo) / (hi - lo)) * (H - 2 * P);
     const color = r.st === "up" ? "var(--abriu)" : r.st === "down" ? "var(--fechou)" : "var(--flat)";
-    const base = document.createElementNS(svgNS, "line");
-    base.setAttribute("x1", P); base.setAttribute("x2", W - P); base.setAttribute("y1", y(r.base)); base.setAttribute("y2", y(r.base));
-    base.setAttribute("stroke", "var(--line)"); base.setAttribute("stroke-dasharray", "2 2"); svg.appendChild(base);
-    const pl = document.createElementNS(svgNS, "polyline");
+    const ln = document.createElementNS(NS, "line");
+    ln.setAttribute("x1", P); ln.setAttribute("x2", W - P); ln.setAttribute("y1", y(r.base)); ln.setAttribute("y2", y(r.base));
+    ln.setAttribute("stroke", "var(--line)"); ln.setAttribute("stroke-dasharray", "2 2"); svg.appendChild(ln);
+    const pl = document.createElementNS(NS, "polyline");
     pl.setAttribute("points", pts.map(([i, v]) => x(i).toFixed(1) + "," + y(v).toFixed(1)).join(" "));
     pl.setAttribute("fill", "none"); pl.setAttribute("stroke", color); pl.setAttribute("stroke-width", "1.6"); pl.setAttribute("stroke-linejoin", "round");
     svg.appendChild(pl);
-    const [li, lv] = pts[pts.length - 1];
-    const c = document.createElementNS(svgNS, "circle"); c.setAttribute("cx", x(li)); c.setAttribute("cy", y(lv)); c.setAttribute("r", 2.6); c.setAttribute("fill", color); svg.appendChild(c);
+    const [li, lv] = pts[pts.length - 1]; dot(x(li), y(lv), color);
     return svg;
   }
 
-  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
-
+  /* ---------- Render ---------- */
   function renderKpis(rows) {
     const k = $("kpis"); k.replaceChildren();
-    const bps = rows.filter((r) => r.unid === "bps");
-    const up = rows.filter((r) => r.st === "up").length, down = rows.filter((r) => r.st === "down").length;
+    const ok = rows.filter((r) => r.tem);
+    const bps = ok.filter((r) => r.unid === "bps");
+    const up = ok.filter((r) => r.st === "up").length, down = ok.filter((r) => r.st === "down").length;
     const media = bps.length ? bps.reduce((a, r) => a + r.delta, 0) / bps.length : null;
     const maxUp = bps.filter((r) => r.delta > 0).sort((a, b) => b.delta - a.delta)[0];
     const maxDn = bps.filter((r) => r.delta < 0).sort((a, b) => a.delta - b.delta)[0];
+    const sp = ok.filter((r) => r.ref);
+    const spMed = sp.length ? sp.reduce((a, r) => a + r.spAtual, 0) / sp.length : null;
+    const spD = sp.length ? sp.reduce((a, r) => a + r.spDelta, 0) / sp.length : null;
+    const em = ok.filter((r) => r.dEmis !== null);
+    const emMed = em.length ? em.reduce((a, r) => a + (r.unid === "bps" ? r.dEmis : 0), 0) / Math.max(em.filter((r) => r.unid === "bps").length, 1) : null;
     const items = [
       ["Abertura (base)", envios[0] ? fmtHora(envios[0].t) : "—", envios[0] ? (envios[0].itens || []).length + " papéis fixados" : "sem envio ainda"],
       ["Último envio", envios.length ? fmtHora(envios[envios.length - 1].t) : "—", envios.length + (envios.length === 1 ? " envio no dia" : " envios no dia")],
-      ["Abriram / fecharam", rows.length ? up + " / " + down : "—", rows.length ? (rows.length - up - down) + " estáveis" : ""],
-      ["Δ médio (bps)", media === null ? "—" : fmtDelta(media, "bps").replace(" bps", ""), "papéis em taxa/spread", media === null ? "" : media > 0.5 ? "up" : media < -0.5 ? "down" : ""],
-      ["Maior abertura", maxUp ? "+" + br(maxUp.delta, 1) : "—", maxUp ? maxUp.nome : "nenhum papel abriu", "up"],
-      ["Maior fechamento", maxDn ? "−" + br(-maxDn.delta, 1) : "—", maxDn ? maxDn.nome : "nenhum papel fechou", "down"],
+      ["Abriram / fecharam", ok.length ? up + " / " + down : "—", ok.length ? (ok.length - up - down) + " estáveis · " + ok.length + " com taxa" : ""],
+      ["Δ médio no dia", media === null ? "—" : fmtDelta(media, "bps", true), "bps, papéis em taxa/spread", clsDelta(media, "bps")],
+      ["Maior abertura", maxUp ? "+" + br(maxUp.delta, 1) : "—", maxUp ? maxUp.k + " · bps" : "nenhum papel abriu", "up"],
+      ["Maior fechamento", maxDn ? "−" + br(-maxDn.delta, 1) : "—", maxDn ? maxDn.k + " · bps" : "nenhum papel fechou", "down"],
+      ["Spread médio s/ NTN-B", spMed === null ? "—" : sgn(spMed), spMed === null ? "cole as NTN-Bs no envio" : "bps · Δ dia " + fmtDelta(spD, "bps", true) + " · " + sp.length + " papéis"],
+      ["Δ médio vs emissão", emMed === null ? "—" : fmtDelta(emMed, "bps", true), em.length ? "bps · " + em.length + " com emissão" : "cadastre a taxa de emissão", clsDelta(emMed, "bps")],
     ];
     items.forEach(([l, v, s, cls]) => {
-      const d = el("div", "kpi"); d.append(el("span", "lbl", l), el("span", "val" + (cls && v !== "—" ? " " + cls : ""), v), el("span", "sub", s)); k.append(d);
+      const d = el("div", "kpi"); d.append(el("span", "lbl", l), el("span", "val" + (cls && v !== "—" && cls !== "flat" ? " " + cls : ""), v), el("span", "sub", s)); k.append(d);
     });
+  }
+
+  function filtrar(rows) {
+    const q = norm($("busca").value);
+    const soMov = $("soMov").checked, soEmis = $("soEmis").checked;
+    let list = rows.filter((r) => r.tem
+      && (fIdx === "Todos" || (fIdx === "NTN-B" ? ntnbYear(r.k) : r.i === fIdx && !ntnbYear(r.k)))
+      && (!q || norm(r.k).includes(q) || norm(r.e).includes(q))
+      && (!soMov || r.st === "up" || r.st === "down")
+      && (!soEmis || r.emis !== null));
+    const o = $("ordem").value;
+    const nz = (v, d) => (v === null || v === undefined ? d : v);
+    if (o === "abriu") list.sort((a, b) => b.delta - a.delta);
+    else if (o === "fechou") list.sort((a, b) => a.delta - b.delta);
+    else if (o === "emis") list.sort((a, b) => nz(b.dEmis, -1e9) - nz(a.dEmis, -1e9));
+    else if (o === "spread") list.sort((a, b) => nz(b.spAtual, -1e9) - nz(a.spAtual, -1e9));
+    else if (o === "dur") list.sort((a, b) => nz(a.d, 1e9) - nz(b.d, 1e9));
+    else if (o === "nome") list.sort((a, b) => a.k.localeCompare(b.k));
+    return list;
+  }
+
+  function emissaoCell(r) {
+    const td = el("td", "num");
+    const abrir = () => {
+      const inp = el("input", "cellinput"); inp.type = "text"; inp.inputMode = "decimal";
+      inp.value = r.emis === null ? "" : br(r.emis, 2); inp.setAttribute("aria-label", "Taxa de emissão de " + r.k);
+      let done = false;
+      const fim = async (salvar) => {
+        if (done) return; done = true;
+        if (salvar) {
+          const v = numBR(inp.value);
+          const atual = cad[r.k] || {};
+          const novo = { ...atual }; delete novo.k;
+          if (v === null) delete novo.emissao; else novo.emissao = v;
+          try { await salvarCad(r.k, Object.keys(novo).length ? novo : null); toast(v === null ? "Emissão removida de " + r.k + "." : "Emissão de " + r.k + " salva: " + br(v, 2) + "%."); }
+          catch (e) { toast("Não foi possível salvar (" + (e.code || "erro") + ")."); }
+        }
+        renderTabela(rowsCache);
+      };
+      inp.addEventListener("keydown", (e) => { if (e.key === "Enter") fim(true); if (e.key === "Escape") fim(false); });
+      inp.addEventListener("blur", () => fim(true));
+      td.replaceChildren(inp); inp.focus(); inp.select();
+    };
+    if (!canWrite) { td.textContent = r.emis === null ? "—" : fmtTaxa(r, r.emis); return td; }
+    const b = el("button", r.emis === null ? "linkbtn" : "linkbtn val", r.emis === null ? "+ emissão" : fmtTaxa(r, r.emis));
+    b.type = "button"; b.onclick = abrir; td.append(b); return td;
   }
 
   function renderTabela(rows) {
     const tb = $("tbody"); tb.replaceChildren();
-    $("vazio").hidden = rows.length > 0;
-    const q = $("busca").value.trim().toUpperCase();
-    let list = rows.filter((r) => !q || r.k.includes(q));
-    const o = $("ordem").value;
-    if (o === "abriu") list.sort((a, b) => b.delta - a.delta);
-    else if (o === "fechou") list.sort((a, b) => a.delta - b.delta);
-    else if (o === "nome") list.sort((a, b) => a.k.localeCompare(b.k));
-    list.forEach((r) => {
+    $("vazio").hidden = envios.length > 0;
+    const list = filtrar(rows);
+    const vis = list.slice(0, limite);
+    vis.forEach((r) => {
       const tr = el("tr");
-      const t1 = el("td"); t1.append(el("span", "papel", r.nome)); if (r.idx) t1.append(el("span", "idx", r.idx));
-      const t2 = el("td", "num"); t2.textContent = fmtTaxa(r, r.base);
-      if (r.novo) { t2.append(el("div", "small", "desde " + fmtHora(envios[r.baseEnv].t))); }
-      const t3 = el("td", "num", fmtTaxa(r, r.atual));
-      if (r.ultimoEnv < envios.length - 1) t3.append(el("div", "small", "visto às " + fmtHora(envios[r.ultimoEnv].t)));
+      const t1 = el("td"); t1.append(el("span", "papel", r.k)); if (r.i) t1.append(el("span", "idx", r.i));
+      const meta = [r.e, r.r, r.v].filter(Boolean).join(" · "); if (meta) { const s = el("span", "emissor", meta); s.title = meta; t1.append(s); }
+      const tD = el("td", "num", r.d === undefined ? "—" : br(r.d, 2));
+      const tE = emissaoCell(r);
+      const t2 = el("td", "num", fmtTaxa(r, r.base)); if (r.novo) t2.append(el("span", "sub2", "desde " + fmtHora(envios[r.baseEnv].t)));
+      const t3 = el("td", "num", fmtTaxa(r, r.atual)); if (r.ultimoEnv < envios.length - 1) t3.append(el("span", "sub2", "visto às " + fmtHora(envios[r.ultimoEnv].t)));
       const t4 = el("td", "delta " + r.st, fmtDelta(r.delta, r.unid));
-      const dp = r.dPrev; const stp = dp === null ? "flat" : Math.abs(dp) < (r.unid === "p.p." ? 0.05 : 0.5) ? "flat" : dp > 0 ? "up" : "down";
-      const t5 = el("td", "delta " + stp, fmtDelta(dp, r.unid));
-      const t6 = el("td"); t6.append(spark(r));
-      const t7 = el("td");
-      t7.append(el("span", "pill " + r.st, r.st === "up" ? "abriu" : r.st === "down" ? "fechou" : "estável"));
-      if (r.novo) { t7.append(document.createTextNode(" ")); t7.append(el("span", "pill base", "novo")); }
-      tr.append(t1, t2, t3, t4, t5, t6, t7); tb.append(tr);
+      if (r.dPrev !== null && envios.length > 2) { const s = el("span", "sub2", "último: " + fmtDelta(r.dPrev, r.unid, true)); t4.append(s); }
+      const t5 = el("td", "delta " + clsDelta(r.dEmis, r.unid), fmtDelta(r.dEmis, r.unid));
+      const t6 = el("td", "num");
+      if (r.ref) {
+        t6.append(el("span", "delta", sgn(r.spAtual) + " bps"));
+        t6.append(el("span", "sub2", "abertura " + sgn(r.spBase) + " · Δ " + fmtDelta(r.spDelta, "bps", true)));
+        const s = el("span", "sub2", r.ref + " " + br(r.refTx, 2) + "% · " + r.refFonte + (r.refAuto ? "" : " · fixa")); t6.append(s);
+      } else t6.textContent = "—";
+      const t7 = el("td"); t7.append(spark(r));
+      const t8 = el("td");
+      t8.append(el("span", "pill " + r.st, r.st === "up" ? "abriu" : r.st === "down" ? "fechou" : "estável"));
+      if (r.novo) { t8.append(document.createTextNode(" ")); t8.append(el("span", "pill base", "novo")); }
+      tr.append(t1, tD, tE, t2, t3, t4, t5, t6, t7, t8); tb.append(tr);
+    });
+    const semTaxa = rows.filter((r) => !r.tem).length;
+    $("more").hidden = list.length <= limite;
+    $("moreBtn").textContent = "Mostrar mais " + Math.min(150, list.length - limite) + " de " + (list.length - limite) + " restantes";
+    if (envios.length && !list.length) {
+      const tr = el("tr"); const td = el("td", "small", "Nenhum papel com taxa neste filtro." + (semTaxa ? " " + semTaxa + " papéis não têm " + $("lado").selectedOptions[0].text + " — troque o campo de taxa." : ""));
+      td.colSpan = 10; td.style.textAlign = "center"; td.style.padding = "20px"; tr.append(td); tb.append(tr);
+    }
+  }
+
+  function renderFiltroIdx(rows) {
+    const c = $("fidx"); c.replaceChildren();
+    const cont = { Todos: 0 };
+    rows.filter((r) => r.tem).forEach((r) => { cont.Todos++; const g = ntnbYear(r.k) ? "NTN-B" : r.i || "Outros"; cont[g] = (cont[g] || 0) + 1; });
+    ["Todos", "IPCA+", "CDI+", "PRÉ", "%CDI", "NTN-B"].filter((g) => g === "Todos" || cont[g]).forEach((g) => {
+      const b = el("button", "chip", g + " " + (cont[g] || 0)); b.type = "button"; b.setAttribute("aria-pressed", fIdx === g ? "true" : "false");
+      b.onclick = () => { fIdx = g; limite = 150; renderFiltroIdx(rowsCache); renderTabela(rowsCache); }; c.append(b);
     });
   }
 
@@ -430,15 +758,14 @@ Também aceita colar direto do Excel."></textarea>
       const i = envios.indexOf(env);
       const li = el("li");
       li.append(el("span", "h", fmtHora(env.t)));
-      li.append(el("span", "meta", (env.itens || []).length + " papéis"));
+      const m = el("span", "meta", (env.itens || []).length + " papéis" + (env.fonte ? " · " + env.fonte : "")); m.title = env.fonte || ""; li.append(m);
       if (i === 0) li.append(el("span", "pill base", "abertura"));
       if (canWrite) {
-        const b = el("button", "btn danger", confirmando.has(env.id) ? "Confirmar exclusão" : "Excluir");
-        b.type = "button";
+        const b = el("button", "btn danger", confirmando.has(env.id) ? "Confirmar" : "Excluir"); b.type = "button";
         b.onclick = async () => {
           if (!confirmando.has(env.id)) { confirmando.add(env.id); renderHist(); setTimeout(() => { confirmando.delete(env.id); renderHist(); }, 4000); return; }
           confirmando.delete(env.id); b.disabled = true;
-          try { await delEnvio(dia, env.id); toast(i === 0 ? "Abertura excluída. O próximo envio virou a base." : "Envio excluído."); }
+          try { await delEnvio(dia, env.id, envios.length === 1); toast(i === 0 ? "Abertura excluída. O próximo envio virou a base." : "Envio excluído."); }
           catch (e) { toast("Não foi possível excluir (" + (e.code || "erro") + ")."); b.disabled = false; }
         };
         li.append(b);
@@ -449,103 +776,204 @@ Também aceita colar direto do Excel."></textarea>
 
   function renderDias() {
     const c = $("dias"); c.replaceChildren();
-    const lista = [...new Set([hojeKey(), ...dias])].sort().reverse().slice(0, 6);
-    lista.forEach((d) => {
+    [...new Set([hojeKey(), ...dias])].sort().reverse().slice(0, 6).forEach((d) => {
       const b = el("button", "chip", d === hojeKey() ? "Hoje" : fmtDia(d)); b.type = "button";
-      b.setAttribute("aria-pressed", d === dia ? "true" : "false");
-      b.onclick = () => trocarDia(d); c.append(b);
+      b.setAttribute("aria-pressed", d === dia ? "true" : "false"); b.onclick = () => trocarDia(d); c.append(b);
     });
   }
 
-  let rowsCache = [];
-  function renderAll() {
-    rowsCache = computar();
-    renderKpis(rowsCache); renderTabela(rowsCache); renderHist(); renderDias(); renderPreview();
+  function renderRefs() {
+    const tb = $("refbody"); tb.replaceChildren();
+    $("anbinfo").textContent = anbDia ? "ANBIMA " + fmtDia(anbDia.ref) + (anbDia.ref < dia ? " (última disponível)" : "") : "sem ANBIMA";
+    if (!refsCache.length) {
+      const tr = el("tr"); const td = el("td", "small", "Suba o arquivo de taxas indicativas da ANBIMA (ms" + dia.slice(8, 10) + dia.slice(5, 7) + dia.slice(2, 4) + ".txt ou o Excel de títulos públicos) no campo de upload acima.");
+      td.colSpan = 4; td.style.whiteSpace = "normal"; td.style.textAlign = "left"; tr.append(td); tb.append(tr); return;
+    }
+    refsCache.slice().sort((a, b) => a.venc.localeCompare(b.venc)).forEach((x) => {
+      const tr = el("tr");
+      const v = x.row && x.row.tem ? x.row.atual : x.anb;
+      const [y, m, d] = x.venc.split("-");
+      tr.append(el("td", "papel", x.k), el("td", "num", d + "/" + m + "/" + y.slice(2)), el("td", "num", v === null ? "—" : br(v, 2) + "%"), el("td", "num", String(x.n || 0)));
+      tb.append(tr);
+    });
   }
 
+  function renderCad() {
+    const tb = $("cadbody"); tb.replaceChildren();
+    const ks = Object.keys(cad).sort();
+    $("cadcount").textContent = ks.length ? ks.length + " papéis cadastrados · vale para todos os dias" : "Fixo por papel · vale para todos os dias";
+    const dl = $("ntnbs"); dl.replaceChildren();
+    rowsCache.filter((r) => ntnbYear(r.k)).forEach((r) => { const o = el("option"); o.value = r.k; dl.append(o); });
+    if (!ks.length) { const tr = el("tr"); const td = el("td", "small", "Nenhum papel cadastrado. Use “+ emissão” na tabela ou cadastre vários abaixo."); td.colSpan = 4; tr.append(td); tb.append(tr); return; }
+    ks.forEach((k) => {
+      const c = cad[k]; const tr = el("tr");
+      tr.append(el("td", "papel", k));
+      const tdE = el("td"); const iE = el("input", "n"); iE.value = typeof c.emissao === "number" ? br(c.emissao, 2) : ""; iE.inputMode = "decimal"; iE.setAttribute("aria-label", "Emissão " + k); iE.disabled = !canWrite; tdE.append(iE);
+      const tdN = el("td"); tdN.style.textAlign = "left"; const iN = el("input"); iN.value = c.ntnb || ""; iN.placeholder = "automática pelo vencimento"; iN.setAttribute("list", "ntnbs"); iN.setAttribute("aria-label", "NTN-B " + k); iN.disabled = !canWrite; tdN.append(iN);
+      const salvar = async () => {
+        const e = numBR(iE.value), n = iN.value.trim();
+        const novo = {}; if (e !== null) novo.emissao = e; if (n) novo.ntnb = keyNorm(n);
+        if (novo.emissao === c.emissao && (novo.ntnb || "") === (c.ntnb || "")) return;
+        try { await salvarCad(k, Object.keys(novo).length ? novo : null); toast("Cadastro de " + k + " salvo."); } catch (er) { toast("Não foi possível salvar (" + (er.code || "erro") + ")."); }
+      };
+      iE.addEventListener("change", salvar); iN.addEventListener("change", salvar);
+      const tdX = el("td"); if (canWrite) { const b = el("button", "btn danger", "Remover"); b.type = "button"; b.onclick = async () => { try { await salvarCad(k, null); } catch {} }; tdX.append(b); }
+      tr.append(tdE, tdN, tdX); tb.append(tr);
+    });
+  }
+
+  let rowsCache = [], refsCache = [];
+  function renderAll() {
+    rowsCache = computar();
+    renderKpis(rowsCache); renderFiltroIdx(rowsCache); renderTabela(rowsCache); renderHist(); renderDias(); renderRefs(); renderCad(); renderPreview();
+  }
   function trocarDia(d) {
-    dia = d; $("dia").value = d; envios = []; renderAll();
+    dia = d; $("dia").value = d; envios = []; limite = 150; renderAll();
     subscribeDay(dia, (list) => { envios = list; renderAll(); });
   }
 
   /* ---------- Entrada ---------- */
+  let arq = null; // {nome, itens, ruins, quando}
+  function juntar() {
+    const m = new Map();
+    if (arq) arq.itens.forEach((it) => m.set(it.k, it));
+    const txt = parseTexto($("texto").value);
+    txt.itens.forEach((it) => m.set(it.k, { ...(m.get(it.k) || {}), ...it }));
+    return { itens: [...m.values()], ruins: txt.ruins };
+  }
   function renderPreview() {
-    const txt = $("texto").value;
     $("basenote").hidden = envios.length > 0;
     const p = $("preview"); p.replaceChildren();
-    if (!txt.trim()) { p.textContent = "Nada colado ainda."; $("registrar").disabled = true; return; }
-    const { itens, ruins } = parseTexto(txt);
-    p.append(document.createTextNode(itens.length + (itens.length === 1 ? " papel reconhecido" : " papéis reconhecidos")));
-    if (itens.length) p.append(document.createTextNode(": " + itens.slice(0, 6).map((i) => i.nome + " " + br(i.taxa, 2)).join(" · ") + (itens.length > 6 ? " …" : "")));
-    if (ruins.length) { p.append(el("br")); p.append(el("span", "bad", ruins.length + (ruins.length === 1 ? " linha ignorada: " : " linhas ignoradas: ") + ruins.slice(0, 2).join(" / "))); }
+    const { itens, ruins } = juntar();
+    if (!itens.length && !ruins.length) { p.textContent = "Nada carregado ainda."; $("registrar").disabled = true; return; }
+    const ntn = itens.filter((i) => ntnbYear(i.k)).length;
+    const comLado = itens.filter((i) => valor(i) !== null).length;
+    p.append(document.createTextNode(itens.length + (itens.length === 1 ? " papel" : " papéis") + " · " + comLado + " com " + $("lado").selectedOptions[0].text + (ntn ? " · " + ntn + " NTN-B" : "")));
+    if (arq && arq.quando) { p.append(el("br")); p.append(document.createTextNode("Horário do arquivo: " + pad(arq.quando.getHours()) + ":" + pad(arq.quando.getMinutes()) + (keyOf(arq.quando) !== dia ? " de " + fmtDia(keyOf(arq.quando)) + " (vai para esse dia)" : ""))); }
+    if (ruins.length) { p.append(el("br")); p.append(el("span", "bad", ruins.length + (ruins.length === 1 ? " linha ignorada: " : " linhas ignoradas: ") + ruins.slice(0, 2).join(" / ").slice(0, 120))); }
     $("registrar").disabled = !itens.length || !canWrite;
   }
-
+  async function carregar(file) {
+    $("fileinfo").textContent = "Lendo " + file.name + "…";
+    try {
+      const r = await lerArquivo(file);
+      if (r.anbima) {
+        let ref = r.anbima.ref;
+        if (!ref) { const m = file.name.match(/ms(\d{2})(\d{2})(\d{2})/i); ref = m ? "20" + m[3] + "-" + m[2] + "-" + m[1] : dia; }
+        await salvarAnbima(ref, r.anbima.ntnb);
+        $("fileinfo").textContent = "ANBIMA " + fmtDia(ref) + " · " + r.anbima.ntnb.length + " NTN-Bs salvas como referência";
+        toast("Taxas indicativas ANBIMA de " + fmtDia(ref) + " salvas: " + r.anbima.ntnb.length + " NTN-Bs.");
+        renderPreview(); return;
+      }
+      arq = { nome: file.name, itens: r.itens, ruins: r.ruins, quando: horaDoNome(file.name) };
+      $("fileinfo").textContent = file.name + " · " + r.itens.length + " papéis";
+    } catch (e) {
+      arq = null; $("fileinfo").textContent = e && e.message === "xlsx" ? "Não consegui carregar o leitor de Excel. Exporte como CSV e tente de novo." : "Não consegui ler " + file.name + ".";
+    }
+    renderPreview();
+  }
+  $("arquivo").addEventListener("change", (e) => { const f = e.target.files[0]; if (f) carregar(f); e.target.value = ""; });
+  const drop = $("drop");
+  ["dragenter", "dragover"].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+  drop.addEventListener("drop", (e) => { const f = e.dataTransfer.files[0]; if (f) carregar(f); });
   $("texto").addEventListener("input", renderPreview);
-  $("busca").addEventListener("input", () => renderTabela(rowsCache));
-  $("ordem").addEventListener("change", () => renderTabela(rowsCache));
-  $("dia").addEventListener("change", (e) => { if (e.target.value) trocarDia(e.target.value); });
-  $("exemplo").onclick = () => {
-    $("texto").value = envios.length
-      ? "VALE38\tIPCA+ 6,41%\nNTN-B 2035\tIPCA+ 7,55%\nRAIZ23\tCDI+ 1,12%\nPETR27\tIPCA+ 6,19%\nLCA EXEMPLO\t97% CDI"
-      : "VALE38\tIPCA+ 6,45%\nNTN-B 2035\tIPCA+ 7,52%\nRAIZ23\tCDI+ 1,15%\nPETR27\tIPCA+ 6,22%\nLCA EXEMPLO\t98% CDI";
-    renderPreview(); $("texto").focus();
-  };
+  $("limpar").onclick = () => { arq = null; $("texto").value = ""; $("fileinfo").textContent = ""; renderPreview(); };
 
   $("form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const { itens } = parseTexto($("texto").value);
-    if (!itens.length) return;
+    const { itens } = juntar(); if (!itens.length) return;
     const btn = $("registrar"); btn.disabled = true; btn.textContent = "Registrando…";
-    const eraBase = envios.length === 0;
+    const quando = arq && arq.quando ? arq.quando : new Date();
+    const alvo = keyOf(quando);
+    if (alvo !== dia) trocarDia(alvo);
+    const eraBase = envios.length === 0 || envios.every((x) => x.t > quando.toISOString());
+    const fonte = [arq ? arq.nome : null, $("texto").value.trim() ? "colado" : null].filter(Boolean).join(" + ");
     try {
-      await addEnvio(dia, { t: new Date().toISOString(), itens, n: itens.length });
-      $("texto").value = ""; renderPreview();
-      toast(eraBase ? "Abertura registrada: " + itens.length + " papéis fixados como base." : "Envio registrado e comparado com a abertura.");
+      await addEnvio(alvo, { t: quando.toISOString(), itens, n: itens.length, fonte });
+      arq = null; $("texto").value = ""; $("fileinfo").textContent = "";
+      toast(eraBase ? "Abertura de " + fmtDia(alvo) + " registrada: " + itens.length + " papéis fixados como base." : "Envio das " + pad(quando.getHours()) + ":" + pad(quando.getMinutes()) + " registrado e comparado com a abertura.");
     } catch (err) {
-      toast(err && err.code === "quota_exceeded" ? "Armazenamento cheio. Exclua dias antigos." : "Não foi possível registrar (" + ((err && err.code) || "erro") + ").");
+      toast(err && err.code === "quota_exceeded" ? "Armazenamento cheio. Exclua dias antigos." : err && err.code === "invalid_argument" ? "Arquivo grande demais para um envio ou sem permissão de escrita." : "Não foi possível registrar (" + ((err && err.code) || "erro") + ").");
     } finally { btn.textContent = "Registrar envio"; renderPreview(); }
   });
 
+  /* ---------- Cadastro em lote ---------- */
+  function parseBulk() {
+    const ok = [], bad = [];
+    $("bulk").value.split(/\r?\n/).map((l) => l.trim()).filter(Boolean).forEach((l) => {
+      const c = l.split(/;|\t|\|/).map((s) => s.trim());
+      const k = keyNorm(c[0] || ""); const e = numBR((c[1] || "").replace(/[^\d.,]/g, ""));
+      if (!k || (e === null && !c[2])) { bad.push(l); return; }
+      ok.push({ k, emissao: e, ntnb: c[2] ? keyNorm(c[2]) : "" });
+    });
+    return { ok, bad };
+  }
+  $("bulk").addEventListener("input", () => {
+    const { ok, bad } = parseBulk();
+    $("bulkprev").textContent = ok.length + " para salvar" + (bad.length ? " · " + bad.length + " ignoradas" : "");
+    $("bulkbtn").disabled = !ok.length || !canWrite;
+  });
+  $("bulkform").addEventListener("submit", async (e) => {
+    e.preventDefault(); const { ok } = parseBulk(); if (!ok.length) return;
+    $("bulkbtn").disabled = true; let n = 0;
+    for (const it of ok) {
+      const val = {}; if (it.emissao !== null) val.emissao = it.emissao; if (it.ntnb) val.ntnb = it.ntnb;
+      const prev = cad[it.k] || {}; const merged = { ...prev, ...val }; delete merged.k;
+      try { await salvarCad(it.k, merged); n++; } catch {}
+    }
+    $("bulk").value = ""; $("bulkprev").textContent = ""; toast(n + " papéis cadastrados.");
+  });
+
+  /* ---------- Filtros ---------- */
+  $("busca").addEventListener("input", () => { limite = 150; renderTabela(rowsCache); });
+  $("ordem").addEventListener("change", () => renderTabela(rowsCache));
+  $("soMov").addEventListener("change", () => { limite = 150; renderTabela(rowsCache); });
+  $("soEmis").addEventListener("change", () => { limite = 150; renderTabela(rowsCache); });
+  $("lado").addEventListener("change", (e) => { lado = e.target.value; try { localStorage.setItem("spreads.lado", lado); } catch {} renderAll(); });
+  $("moreBtn").onclick = () => { limite += 150; renderTabela(rowsCache); };
+  $("dia").addEventListener("change", (e) => { if (e.target.value) trocarDia(e.target.value); });
+
   /* ---------- Copiar resumo ---------- */
   $("copiar").onclick = async () => {
-    if (!rowsCache.length) { toast("Sem dados para copiar."); return; }
-    const linhas = ["Spreads " + fmtDia(dia) + " · abertura " + fmtHora(envios[0].t) + " → " + fmtHora(envios[envios.length - 1].t)];
-    rowsCache.forEach((r) => linhas.push(r.nome + (r.idx ? " (" + r.idx + ")" : "") + ": " + br(r.base, 2) + "% → " + br(r.atual, 2) + "% (" + fmtDelta(r.delta, r.unid) + ")"));
+    const list = filtrar(rowsCache);
+    if (!list.length) { toast("Sem dados para copiar."); return; }
+    const linhas = ["Spreads " + fmtDia(dia) + " (" + $("lado").selectedOptions[0].text + ") · abertura " + fmtHora(envios[0].t) + " → " + fmtHora(envios[envios.length - 1].t)];
+    list.slice(0, 60).forEach((r) => {
+      let s = r.k + (r.i ? " (" + r.i + ")" : "") + ": " + br(r.base, 2) + "% → " + br(r.atual, 2) + "% (" + fmtDelta(r.delta, r.unid) + ")";
+      if (r.emis !== null) s += " | emissão " + br(r.emis, 2) + "% (" + fmtDelta(r.dEmis, r.unid) + ")";
+      if (r.ref) s += " | spread s/ " + r.ref + ": " + sgn(r.spAtual) + " bps";
+      linhas.push(s);
+    });
     const txt = linhas.join("\n");
-    try { await navigator.clipboard.writeText(txt); toast("Resumo copiado."); }
+    try { await navigator.clipboard.writeText(txt); toast("Resumo copiado (" + Math.min(list.length, 60) + " papéis do filtro atual)."); }
     catch { $("texto").value = txt; $("texto").select(); toast("Copie o texto selecionado na caixa de envio."); }
   };
 
   let toastT = null;
   function toast(msg) {
     let t = document.querySelector(".toast"); if (!t) { t = el("div", "toast"); t.setAttribute("role", "status"); document.body.append(t); }
-    t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 3200);
+    t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 3600);
   }
 
-  /* ---------- Boot ---------- */
-  setInterval(() => { $("hora").textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); }, 15000);
-  $("hora").textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-
-  renderAll();
-  subscribeDays((d) => { dias = d; renderDias(); });
-  subscribeDay(dia, (list) => { envios = list; renderAll(); });
-
+  /* ---------- Início ---------- */
+  const tick = () => { $("hora").textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); };
+  tick(); setInterval(tick, 15000);
+  const ligar = () => {
+    subscribeDays((d) => { dias = d; renderDias(); });
+    subscribeCad((o) => { cad = o; renderAll(); });
+    subscribeAnbima((o) => { anbAll = o; renderAll(); });
+    subscribeDay(dia, (list) => { envios = list; renderAll(); });
+  };
+  renderAll(); ligar();
   (async () => {
     try {
       const got = window.claude && typeof window.claude.use === "function" ? await window.claude.use("db") : null;
       if (got) {
         db = got;
-        try {
-          const user = await window.claude.use("user");
-          const w = user ? await user.can("data.write") : null;
-          if (w === false) { canWrite = false; setConn("Você tem acesso só de leitura a este painel."); }
-        } catch {}
-        subscribeDays((d) => { dias = d; renderDias(); });
-        subscribeDay(dia, (list) => { envios = list; renderAll(); });
-      } else {
-        setConn("Modo local: os envios ficam só neste navegador. Abra logado no claude.ai para salvar na nuvem.");
-      }
+        try { const user = await window.claude.use("user"); const w = user ? await user.can("data.write") : null; if (w === false) { canWrite = false; setConn("Você tem acesso só de leitura a este painel."); } } catch {}
+        ligar();
+      } else setConn("Modo local: os envios ficam só neste navegador. Abra logado no claude.ai para salvar na nuvem.");
     } catch { setConn("Modo local: os envios ficam só neste navegador."); }
   })();
 })();
