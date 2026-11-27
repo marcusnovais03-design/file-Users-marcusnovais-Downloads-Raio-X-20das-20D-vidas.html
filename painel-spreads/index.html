@@ -73,7 +73,9 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute
 th:first-child,td:first-child{text-align:left}
 th[data-sort]{cursor:pointer;user-select:none}
 th[data-sort]:hover{color:var(--ink)}
-th[data-sort] .arr{display:inline-block;width:1em;text-align:center;color:var(--accent)}
+th[data-sort] .arr{display:inline-block;width:1.1em;margin-left:2px;text-align:center;color:var(--accent)}
+th[data-sort] .arr.off{color:var(--muted);opacity:.6}
+th[data-sort]:hover .arr.off{opacity:1}
 th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--ink)}
 td{padding:7px 12px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;vertical-align:middle}
 tr:last-child td{border-bottom:0}
@@ -1028,10 +1030,10 @@ VALE38  IPCA+ 6,45%"></textarea>
       if (!th.dataset.label) th.dataset.label = th.textContent;
       const on = th === lastTh && !!sortKey;
       th.textContent = th.dataset.label;
-      const arr = el("span", "arr", on ? (sortDir === "asc" ? "▲" : "▼") : "");
+      const arr = el("span", on ? "arr" : "arr off", on ? (sortDir === "asc" ? "▲" : "▼") : "⇅");
       th.append(arr);
       th.setAttribute("aria-sort", on ? (sortDir === "asc" ? "ascending" : "descending") : "none");
-      th.tabIndex = 0; th.title = "Ordenar: clique para decrescente/crescente";
+      th.tabIndex = 0; th.title = on ? (sortDir === "desc" ? "Decrescente. Clique para crescente" : "Crescente. Clique para decrescente") : "Clique para ordenar (decrescente, depois crescente)";
     });
     $("ordemReset").hidden = !sortKey;
   }
