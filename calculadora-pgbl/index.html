@@ -53,14 +53,9 @@ p{margin:0}
 .brand .who{display:flex;align-items:center;gap:10px}
 .mark{width:38px;height:38px;border-radius:10px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:700 1rem var(--f-display)}
 .brand small{display:block;color:var(--muted);font-size:.8rem}
-.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:center}
+.hero{display:grid;grid-template-columns:1fr;gap:28px;align-items:center}
 .hero > *{min-width:0}
 .hero p.lead{font-size:1.08rem;color:var(--muted);margin-top:12px;max-width:52ch}
-.sample{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:10px}
-.sample .tag{justify-self:start;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;background:var(--surface-2);color:var(--muted);padding:3px 8px;border-radius:999px}
-.sample .big{font:700 2.1rem/1 var(--f-display);color:var(--good)}
-.sample dl{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin:4px 0 0;font-size:.92rem}
-.sample dt{color:var(--muted)} .sample dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:720px){.hero{grid-template-columns:1fr}}
 
 /* Formulário em etapas */
@@ -167,16 +162,6 @@ details ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.88rem;colo
       <h1>Quanto do seu Imposto de Renda pode voltar para o seu patrimônio?</h1>
       <p class="lead">Quem declara no modelo completo pode deduzir até 12% da renda bruta tributável aportando em PGBL. Em 2 minutos você vê quanto falta aportar, quanto deixa de pagar de IR este ano e quanto esse imposto adiado pode render até a aposentadoria.</p>
     </div>
-    <aside class="sample" aria-label="Exemplo de resultado">
-      <span class="tag">Exemplo</span>
-      <p class="muted" style="font-size:.9rem">Salário de R$ 15.000, 2 dependentes, plano de saúde de R$ 2.000/mês</p>
-      <div class="big num" id="sampleBig">—</div>
-      <p class="muted" style="font-size:.88rem">a menos de IR por ano usando o limite do PGBL</p>
-      <dl>
-        <dt>Aporte para o limite</dt><dd id="sampleLim">—</dd>
-        <dt>Resgatando após 10 anos, a mais vs. investimento comum</dt><dd id="sampleProj">—</dd>
-      </dl>
-    </aside>
   </section>
 
   <!-- FORMULÁRIO -->
@@ -401,14 +386,6 @@ $("whats").addEventListener("input", (e) => {
 });
 $("advName").textContent = CONFIG.assessor; $("advTitle").textContent = CONFIG.titulo;
 
-/* ===================== EXEMPLO DO TOPO ===================== */
-(() => {
-  const ex = calcular({ salario: 15000, outras: 0, pgblAno: 0, ferias: true, contribui: true, saude: 2000, eduPropria: 0, deps: 2, eduDeps: 0, pensao: 0 });
-  const cx = cenarios(ex.falta, ex.economia, CONFIG.taxaAnual);
-  $("sampleBig").textContent = brl0(ex.economia);
-  $("sampleLim").textContent = brl0(ex.falta);
-  $("sampleProj").textContent = "+" + brl0(cx.ideal.diff);
-})();
 
 /* ===================== FLUXO DO FORMULÁRIO ===================== */
 let step = 1; const TOTAL = 3;
