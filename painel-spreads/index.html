@@ -1,0 +1,552 @@
+<title>Painel de Spreads</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: mesa de operação — faixa de resumo no topo, tabela de papéis à esquerda, caixa de envio + histórico à direita */
+:root{
+  --bg:#f3f5f7; --panel:#ffffff; --ink:#14202b; --muted:#5d6b78; --line:#dde3e9; --soft:#eef2f5;
+  --accent:#0d6e8a; --accent-ink:#ffffff;
+  --abriu:#c0392b; --abriu-bg:#fbeae8; --fechou:#16804a; --fechou-bg:#e4f4ea; --flat:#6b7785; --flat-bg:#eef1f4;
+  --base:#8a5a00; --base-bg:#fbf1dc;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e151c; --panel:#151f29; --ink:#e4ebf1; --muted:#90a0ae; --line:#263442; --soft:#1b2733;
+  --accent:#4cb3d1; --accent-ink:#06202a;
+  --abriu:#ff7b6b; --abriu-bg:#3a1c1a; --fechou:#55d08a; --fechou-bg:#143024; --flat:#93a1ae; --flat-bg:#1f2b37;
+  --base:#f0bf5a; --base-bg:#33280f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e151c; --panel:#151f29; --ink:#e4ebf1; --muted:#90a0ae; --line:#263442; --soft:#1b2733;
+  --accent:#4cb3d1; --accent-ink:#06202a;
+  --abriu:#ff7b6b; --abriu-bg:#3a1c1a; --fechou:#55d08a; --fechou-bg:#143024; --flat:#93a1ae; --flat-bg:#1f2b37;
+  --base:#f0bf5a; --base-bg:#33280f; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+.wrap{max-width:1280px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+header.top h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.daybar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.daybar input[type=date]{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:3px 10px;font-size:12px;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.status{font-size:12px;color:var(--muted)}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.kpi{background:var(--panel);padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.kpi .val{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:20px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .val.up{color:var(--abriu)} .kpi .val.down{color:var(--fechou)}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}.side{order:-1}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;min-width:0}
+.panel h2{margin:0;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.phead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tools select,.tools input{background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font-size:13px}
+.btn{border:1px solid var(--line);background:var(--soft);border-radius:6px;padding:6px 10px;font-size:13px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.danger{color:var(--abriu)}
+
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;text-align:right;padding:8px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--panel)}
+th:first-child,td:first-child{text-align:left}
+td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--soft)}
+.papel{font-weight:600}
+.idx{font-size:11px;color:var(--muted);font-family:var(--mono);margin-left:6px}
+.delta{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:600}
+.delta.up{color:var(--abriu)} .delta.down{color:var(--fechou)} .delta.flat{color:var(--flat)}
+.small{font-size:12px;color:var(--muted)}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;letter-spacing:.02em}
+.pill.up{background:var(--abriu-bg);color:var(--abriu)}
+.pill.down{background:var(--fechou-bg);color:var(--fechou)}
+.pill.flat{background:var(--flat-bg);color:var(--flat)}
+.pill.base{background:var(--base-bg);color:var(--base)}
+svg.spark{display:block;margin-left:auto}
+
+.empty{padding:28px 18px;text-align:center;color:var(--muted);display:flex;flex-direction:column;gap:8px;align-items:center}
+.empty strong{color:var(--ink);font-size:15px}
+
+.side{display:flex;flex-direction:column;gap:16px}
+.entry{padding:14px;display:flex;flex-direction:column;gap:10px}
+.entry textarea{width:100%;min-height:170px;resize:vertical;background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:10px;font-family:var(--mono);font-size:12.5px;line-height:1.5}
+.basenote{font-size:12px;padding:8px 10px;border-radius:6px;background:var(--base-bg);color:var(--base)}
+.preview{font-size:12px;color:var(--muted)}
+.preview .bad{color:var(--abriu)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.hist{list-style:none;margin:0;padding:0}
+.hist li{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--line)}
+.hist li:last-child{border-bottom:0}
+.hist .h{font-family:var(--mono);font-weight:600}
+.hist .meta{flex:1;min-width:0;font-size:12px;color:var(--muted)}
+.legend{font-size:12px;color:var(--muted);padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:14px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:13px;z-index:20}
+@media (prefers-reduced-motion:no-preference){tbody tr{transition:background .15s}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Painel de Spreads</h1>
+      <p>O primeiro envio do dia vira a base fixa. Cada novo envio é comparado com ela.</p>
+    </div>
+    <div class="daybar">
+      <label for="dia" class="small">Dia</label>
+      <input type="date" id="dia">
+      <div class="chips" id="dias"></div>
+    </div>
+  </header>
+
+  <section class="kpis" id="kpis" aria-label="Resumo do dia"></section>
+
+  <div class="grid">
+    <section class="panel" aria-label="Papéis">
+      <div class="phead">
+        <h2>Papéis · abertura x atual</h2>
+        <div class="tools">
+          <input type="search" id="busca" placeholder="Filtrar papel" aria-label="Filtrar papel">
+          <select id="ordem" aria-label="Ordenar">
+            <option value="ordem">Ordem do envio</option>
+            <option value="abriu">Mais abriram</option>
+            <option value="fechou">Mais fecharam</option>
+            <option value="nome">Papel A–Z</option>
+          </select>
+          <button class="btn" id="copiar" type="button">Copiar resumo</button>
+        </div>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr>
+            <th>Papel</th><th>Abertura</th><th>Atual</th><th>Δ vs abertura</th><th>Δ último envio</th><th>Intradia</th><th>Status</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div id="vazio" class="empty" hidden>
+        <strong>Nenhum envio neste dia</strong>
+        <span>Cole as taxas na caixa “Novo envio”. O primeiro envio fica gravado como abertura.</span>
+      </div>
+      <div class="legend">
+        <span><span class="pill up">abriu</span> taxa subiu desde a abertura</span>
+        <span><span class="pill down">fechou</span> taxa caiu (papel valorizou)</span>
+        <span><span class="pill base">novo</span> entrou depois; base é a 1ª vez que apareceu</span>
+        <span>Δ em bps (1 bp = 0,01 p.p.). Em % do CDI, Δ em p.p.</span>
+      </div>
+    </section>
+
+    <aside class="side">
+      <section class="panel">
+        <div class="phead"><h2>Novo envio</h2><span class="status" id="hora"></span></div>
+        <form class="entry" id="form">
+          <div class="basenote" id="basenote" hidden>Este será o envio de abertura do dia e ficará fixo como base.</div>
+          <textarea id="texto" spellcheck="false" placeholder="Cole aqui, um papel por linha. Ex.:
+VALE38  IPCA+ 6,45%
+NTN-B 2035  IPCA+ 7,52%
+RAIZ23  CDI+ 1,15%
+LCA XYZ  98% CDI
+Também aceita colar direto do Excel."></textarea>
+          <div class="preview" id="preview">Nada colado ainda.</div>
+          <div class="row">
+            <button class="btn" type="button" id="exemplo">Colar exemplo</button>
+            <button class="btn primary" type="submit" id="registrar" disabled>Registrar envio</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="phead"><h2>Envios do dia</h2><span class="status" id="nEnvios"></span></div>
+        <ul class="hist" id="hist"></ul>
+      </section>
+      <p class="status" id="conn">Conectando ao armazenamento…</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const pad = (n) => String(n).padStart(2, "0");
+  const hojeKey = () => { const d = new Date(); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); };
+  const fmtDia = (k) => { const [y, m, d] = k.split("-"); return d + "/" + m; };
+  const fmtHora = (iso) => { const d = new Date(iso); return pad(d.getHours()) + ":" + pad(d.getMinutes()); };
+  const br = (n, dec = 2) => n.toLocaleString("pt-BR", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+
+  /* ---------- Parser ---------- */
+  const IDX = [
+    { re: /%\s*(do\s+)?CDI/i, k: "%CDI" },
+    { re: /IPCA\s*\+/i, k: "IPCA+" },
+    { re: /CDI\s*\+/i, k: "CDI+" },
+    { re: /IGP-?M\s*\+/i, k: "IGP-M+" },
+    { re: /\bpr[ée](fixad[oa])?\b/i, k: "PRÉ" },
+  ];
+  const NUM = /(?<![A-Za-z0-9])\d+(?:[.,]\d+)?/g;
+  const toNum = (s) => parseFloat(s.replace(",", "."));
+  const clean = (s) => s.replace(/[\s:\-–|;=]+$/g, "").replace(/^[\s\-–•*]+/g, "").trim();
+
+  function parseTexto(txt) {
+    const lines = txt.split(/\r?\n/).map((l) => l.replace(/\u00a0/g, " ").trim()).filter(Boolean);
+    const out = new Map(); const ruins = [];
+    let colNome = -1, colTaxa = -1;
+    lines.forEach((line, i) => {
+      const cells = line.split(/\t|;|\|/).map((s) => s.trim());
+      if (i === 0 && cells.length > 1 && !line.match(NUM)) {
+        cells.forEach((c, j) => {
+          if (colTaxa < 0 && /taxa|spread|yield|rentab/i.test(c)) colTaxa = j;
+          if (colNome < 0 && /ativo|papel|c[óo]digo|ticker|emiss|nome/i.test(c)) colNome = j;
+        });
+        return;
+      }
+      const r = parseLinha(line, cells, colNome, colTaxa);
+      if (r) out.set(r.k, r); else ruins.push(line);
+    });
+    return { itens: [...out.values()], ruins };
+  }
+
+  function parseLinha(line, cells, colNome, colTaxa) {
+    let nome = null, rest = line;
+    const nonEmpty = cells.filter(Boolean);
+    if (cells.length > 1 && nonEmpty.length > 1) {
+      nome = cells[colNome >= 0 ? colNome : 0] || nonEmpty[0];
+      rest = colTaxa >= 0 && cells[colTaxa] ? cells[colTaxa] + " " + cells.filter((_, j) => j !== colTaxa && j !== (colNome >= 0 ? colNome : 0)).join(" ")
+                                            : cells.filter((c) => c !== nome).join(" ");
+    }
+    let idx = null, idxPos = -1;
+    for (const d of IDX) { const m = rest.match(d.re); if (m) { idx = d.k; idxPos = m.index; break; } }
+    const nums = [...rest.matchAll(NUM)];
+    let pick = null;
+    if (colTaxa >= 0 && nome !== null) pick = nums[0] || null;
+    else if (idx === "%CDI") pick = nums.filter((m) => m.index < idxPos).pop() || null;
+    else if (idx) pick = nums.find((m) => m.index > idxPos) || null;
+    else pick = nums[nums.length - 1] || null;
+    if (!pick) return null;
+    if (nome === null) {
+      const corte = Math.min(...[idxPos, pick.index].filter((v) => v >= 0));
+      nome = clean(rest.slice(0, corte));
+    }
+    nome = clean(nome || "");
+    if (!nome) return null;
+    const taxa = toNum(pick[0]);
+    if (!isFinite(taxa)) return null;
+    const k = nome.toUpperCase().replace(/\s+/g, " ");
+    return { k, nome, idx: idx || "", taxa };
+  }
+
+  /* ---------- Storage (db, com fallback local) ---------- */
+  let db = null, canWrite = true;
+  const local = {
+    read() { try { return JSON.parse(localStorage.getItem("spreads.v1") || "{}"); } catch { return {}; } },
+    write(o) { try { localStorage.setItem("spreads.v1", JSON.stringify(o)); } catch {} },
+  };
+  const subs = { day: null, days: null };
+  const listeners = { day: () => {}, days: () => {} };
+
+  function subscribeDays(cb) {
+    listeners.days = cb;
+    if (subs.days) subs.days();
+    if (!db) { cb(Object.keys(local.read()).sort().reverse()); return; }
+    subs.days = db.collection("dias").onSnapshot(
+      (s) => cb(s.docs.map((d) => d.id).sort().reverse()),
+      () => {}
+    );
+  }
+
+  let timer = null;
+  function subscribeDay(dia, cb) {
+    listeners.day = cb;
+    if (subs.day) { subs.day(); subs.day = null; }
+    if (!db) { cb((local.read()[dia] || []).slice().sort((a, b) => a.t.localeCompare(b.t))); return; }
+    clearTimeout(timer);
+    timer = setTimeout(() => setConn("O armazenamento ainda não respondeu. Os dados podem estar desatualizados."), 10000);
+    subs.day = db.collection("dias/" + dia + "/envios").orderBy("t").onSnapshot(
+      (s) => {
+        if (!s.metadata.fromCache) { clearTimeout(timer); setConn("Salvo na nuvem · sincroniza entre seus dispositivos."); }
+        cb(s.docs.map((d) => ({ id: d.id, ...d.data() })));
+      },
+      (e) => { clearTimeout(timer); setConn("Não foi possível ler os envios (" + e.code + ")."); }
+    );
+  }
+
+  async function addEnvio(dia, envio) {
+    if (!db) {
+      const o = local.read(); (o[dia] = o[dia] || []).push({ id: "l" + Date.now(), ...envio }); local.write(o);
+      subscribeDay(dia, listeners.day); subscribeDays(listeners.days); return;
+    }
+    const diaRef = db.doc("dias/" + dia);
+    const snap = await diaRef.get();
+    if (!snap.exists) await diaRef.set({ criadoEm: envio.t });
+    await db.collection("dias/" + dia + "/envios").add(envio);
+  }
+
+  async function delEnvio(dia, id) {
+    if (!db) {
+      const o = local.read(); o[dia] = (o[dia] || []).filter((e) => e.id !== id); if (!o[dia].length) delete o[dia]; local.write(o);
+      subscribeDay(dia, listeners.day); subscribeDays(listeners.days); return;
+    }
+    await db.doc("dias/" + dia + "/envios/" + id).delete();
+    if (envios.length === 1) await db.doc("dias/" + dia).delete();
+  }
+
+  function setConn(t) { $("conn").textContent = t; }
+
+  /* ---------- State + render ---------- */
+  let dia = hojeKey(), envios = [], dias = [];
+  $("dia").value = dia;
+
+  function computar() {
+    const map = new Map(); const order = [];
+    envios.forEach((env, ei) => {
+      (env.itens || []).forEach((it) => {
+        let r = map.get(it.k);
+        if (!r) { r = { k: it.k, nome: it.nome, idx: it.idx, serie: new Array(envios.length).fill(null), baseEnv: ei }; map.set(it.k, r); order.push(r); }
+        r.serie[ei] = it.taxa; if (it.idx) r.idx = it.idx;
+      });
+    });
+    order.forEach((r, i) => {
+      const vals = r.serie.map((v, i2) => [v, i2]).filter(([v]) => v !== null);
+      r.ordem = i;
+      r.base = vals[0][0];
+      r.atual = vals[vals.length - 1][0];
+      r.ultimoEnv = vals[vals.length - 1][1];
+      r.prev = vals.length > 1 ? vals[vals.length - 2][0] : null;
+      const mult = r.idx === "%CDI" ? 1 : 100;
+      r.unid = r.idx === "%CDI" ? "p.p." : "bps";
+      r.delta = (r.atual - r.base) * mult;
+      r.dPrev = r.prev === null ? null : (r.atual - r.prev) * mult;
+      r.novo = r.baseEnv > 0;
+      const tol = r.idx === "%CDI" ? 0.05 : 0.5;
+      r.st = Math.abs(r.delta) < tol ? "flat" : r.delta > 0 ? "up" : "down";
+    });
+    return order;
+  }
+
+  const fmtTaxa = (r, v) => r.idx === "%CDI" ? br(v, 2) + "%" : br(v, 2) + "%";
+  const fmtDelta = (d, unid) => {
+    if (d === null) return "—";
+    const dec = unid === "p.p." ? 2 : 1;
+    const s = d > 0 ? "+" : d < 0 ? "−" : "";
+    return s + br(Math.abs(d), dec) + " " + unid;
+  };
+
+  function spark(r) {
+    const pts = r.serie.map((v, i) => [i, v]).filter(([, v]) => v !== null);
+    const W = 88, H = 26, P = 3;
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("class", "spark"); svg.setAttribute("width", W); svg.setAttribute("height", H); svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.setAttribute("aria-hidden", "true");
+    if (pts.length < 2) {
+      const c = document.createElementNS(svgNS, "circle"); c.setAttribute("cx", W - P); c.setAttribute("cy", H / 2); c.setAttribute("r", 2.5); c.setAttribute("fill", "var(--muted)"); svg.appendChild(c); return svg;
+    }
+    const n = Math.max(envios.length - 1, 1);
+    const vs = pts.map((p) => p[1]); let lo = Math.min(...vs), hi = Math.max(...vs);
+    if (hi - lo < 1e-9) { lo -= 0.01; hi += 0.01; }
+    const x = (i) => P + (i / n) * (W - 2 * P);
+    const y = (v) => H - P - ((v - lo) / (hi - lo)) * (H - 2 * P);
+    const color = r.st === "up" ? "var(--abriu)" : r.st === "down" ? "var(--fechou)" : "var(--flat)";
+    const base = document.createElementNS(svgNS, "line");
+    base.setAttribute("x1", P); base.setAttribute("x2", W - P); base.setAttribute("y1", y(r.base)); base.setAttribute("y2", y(r.base));
+    base.setAttribute("stroke", "var(--line)"); base.setAttribute("stroke-dasharray", "2 2"); svg.appendChild(base);
+    const pl = document.createElementNS(svgNS, "polyline");
+    pl.setAttribute("points", pts.map(([i, v]) => x(i).toFixed(1) + "," + y(v).toFixed(1)).join(" "));
+    pl.setAttribute("fill", "none"); pl.setAttribute("stroke", color); pl.setAttribute("stroke-width", "1.6"); pl.setAttribute("stroke-linejoin", "round");
+    svg.appendChild(pl);
+    const [li, lv] = pts[pts.length - 1];
+    const c = document.createElementNS(svgNS, "circle"); c.setAttribute("cx", x(li)); c.setAttribute("cy", y(lv)); c.setAttribute("r", 2.6); c.setAttribute("fill", color); svg.appendChild(c);
+    return svg;
+  }
+
+  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+
+  function renderKpis(rows) {
+    const k = $("kpis"); k.replaceChildren();
+    const bps = rows.filter((r) => r.unid === "bps");
+    const up = rows.filter((r) => r.st === "up").length, down = rows.filter((r) => r.st === "down").length;
+    const media = bps.length ? bps.reduce((a, r) => a + r.delta, 0) / bps.length : null;
+    const maxUp = bps.filter((r) => r.delta > 0).sort((a, b) => b.delta - a.delta)[0];
+    const maxDn = bps.filter((r) => r.delta < 0).sort((a, b) => a.delta - b.delta)[0];
+    const items = [
+      ["Abertura (base)", envios[0] ? fmtHora(envios[0].t) : "—", envios[0] ? (envios[0].itens || []).length + " papéis fixados" : "sem envio ainda"],
+      ["Último envio", envios.length ? fmtHora(envios[envios.length - 1].t) : "—", envios.length + (envios.length === 1 ? " envio no dia" : " envios no dia")],
+      ["Abriram / fecharam", rows.length ? up + " / " + down : "—", rows.length ? (rows.length - up - down) + " estáveis" : ""],
+      ["Δ médio (bps)", media === null ? "—" : fmtDelta(media, "bps").replace(" bps", ""), "papéis em taxa/spread", media === null ? "" : media > 0.5 ? "up" : media < -0.5 ? "down" : ""],
+      ["Maior abertura", maxUp ? "+" + br(maxUp.delta, 1) : "—", maxUp ? maxUp.nome : "nenhum papel abriu", "up"],
+      ["Maior fechamento", maxDn ? "−" + br(-maxDn.delta, 1) : "—", maxDn ? maxDn.nome : "nenhum papel fechou", "down"],
+    ];
+    items.forEach(([l, v, s, cls]) => {
+      const d = el("div", "kpi"); d.append(el("span", "lbl", l), el("span", "val" + (cls && v !== "—" ? " " + cls : ""), v), el("span", "sub", s)); k.append(d);
+    });
+  }
+
+  function renderTabela(rows) {
+    const tb = $("tbody"); tb.replaceChildren();
+    $("vazio").hidden = rows.length > 0;
+    const q = $("busca").value.trim().toUpperCase();
+    let list = rows.filter((r) => !q || r.k.includes(q));
+    const o = $("ordem").value;
+    if (o === "abriu") list.sort((a, b) => b.delta - a.delta);
+    else if (o === "fechou") list.sort((a, b) => a.delta - b.delta);
+    else if (o === "nome") list.sort((a, b) => a.k.localeCompare(b.k));
+    list.forEach((r) => {
+      const tr = el("tr");
+      const t1 = el("td"); t1.append(el("span", "papel", r.nome)); if (r.idx) t1.append(el("span", "idx", r.idx));
+      const t2 = el("td", "num"); t2.textContent = fmtTaxa(r, r.base);
+      if (r.novo) { t2.append(el("div", "small", "desde " + fmtHora(envios[r.baseEnv].t))); }
+      const t3 = el("td", "num", fmtTaxa(r, r.atual));
+      if (r.ultimoEnv < envios.length - 1) t3.append(el("div", "small", "visto às " + fmtHora(envios[r.ultimoEnv].t)));
+      const t4 = el("td", "delta " + r.st, fmtDelta(r.delta, r.unid));
+      const dp = r.dPrev; const stp = dp === null ? "flat" : Math.abs(dp) < (r.unid === "p.p." ? 0.05 : 0.5) ? "flat" : dp > 0 ? "up" : "down";
+      const t5 = el("td", "delta " + stp, fmtDelta(dp, r.unid));
+      const t6 = el("td"); t6.append(spark(r));
+      const t7 = el("td");
+      t7.append(el("span", "pill " + r.st, r.st === "up" ? "abriu" : r.st === "down" ? "fechou" : "estável"));
+      if (r.novo) { t7.append(document.createTextNode(" ")); t7.append(el("span", "pill base", "novo")); }
+      tr.append(t1, t2, t3, t4, t5, t6, t7); tb.append(tr);
+    });
+  }
+
+  const confirmando = new Set();
+  function renderHist() {
+    const ul = $("hist"); ul.replaceChildren();
+    $("nEnvios").textContent = envios.length ? envios.length + (envios.length === 1 ? " envio" : " envios") : "";
+    if (!envios.length) { ul.append(el("li", "small", "Sem envios em " + fmtDia(dia) + ".")); return; }
+    envios.slice().reverse().forEach((env) => {
+      const i = envios.indexOf(env);
+      const li = el("li");
+      li.append(el("span", "h", fmtHora(env.t)));
+      li.append(el("span", "meta", (env.itens || []).length + " papéis"));
+      if (i === 0) li.append(el("span", "pill base", "abertura"));
+      if (canWrite) {
+        const b = el("button", "btn danger", confirmando.has(env.id) ? "Confirmar exclusão" : "Excluir");
+        b.type = "button";
+        b.onclick = async () => {
+          if (!confirmando.has(env.id)) { confirmando.add(env.id); renderHist(); setTimeout(() => { confirmando.delete(env.id); renderHist(); }, 4000); return; }
+          confirmando.delete(env.id); b.disabled = true;
+          try { await delEnvio(dia, env.id); toast(i === 0 ? "Abertura excluída. O próximo envio virou a base." : "Envio excluído."); }
+          catch (e) { toast("Não foi possível excluir (" + (e.code || "erro") + ")."); b.disabled = false; }
+        };
+        li.append(b);
+      }
+      ul.append(li);
+    });
+  }
+
+  function renderDias() {
+    const c = $("dias"); c.replaceChildren();
+    const lista = [...new Set([hojeKey(), ...dias])].sort().reverse().slice(0, 6);
+    lista.forEach((d) => {
+      const b = el("button", "chip", d === hojeKey() ? "Hoje" : fmtDia(d)); b.type = "button";
+      b.setAttribute("aria-pressed", d === dia ? "true" : "false");
+      b.onclick = () => trocarDia(d); c.append(b);
+    });
+  }
+
+  let rowsCache = [];
+  function renderAll() {
+    rowsCache = computar();
+    renderKpis(rowsCache); renderTabela(rowsCache); renderHist(); renderDias(); renderPreview();
+  }
+
+  function trocarDia(d) {
+    dia = d; $("dia").value = d; envios = []; renderAll();
+    subscribeDay(dia, (list) => { envios = list; renderAll(); });
+  }
+
+  /* ---------- Entrada ---------- */
+  function renderPreview() {
+    const txt = $("texto").value;
+    $("basenote").hidden = envios.length > 0;
+    const p = $("preview"); p.replaceChildren();
+    if (!txt.trim()) { p.textContent = "Nada colado ainda."; $("registrar").disabled = true; return; }
+    const { itens, ruins } = parseTexto(txt);
+    p.append(document.createTextNode(itens.length + (itens.length === 1 ? " papel reconhecido" : " papéis reconhecidos")));
+    if (itens.length) p.append(document.createTextNode(": " + itens.slice(0, 6).map((i) => i.nome + " " + br(i.taxa, 2)).join(" · ") + (itens.length > 6 ? " …" : "")));
+    if (ruins.length) { p.append(el("br")); p.append(el("span", "bad", ruins.length + (ruins.length === 1 ? " linha ignorada: " : " linhas ignoradas: ") + ruins.slice(0, 2).join(" / "))); }
+    $("registrar").disabled = !itens.length || !canWrite;
+  }
+
+  $("texto").addEventListener("input", renderPreview);
+  $("busca").addEventListener("input", () => renderTabela(rowsCache));
+  $("ordem").addEventListener("change", () => renderTabela(rowsCache));
+  $("dia").addEventListener("change", (e) => { if (e.target.value) trocarDia(e.target.value); });
+  $("exemplo").onclick = () => {
+    $("texto").value = envios.length
+      ? "VALE38\tIPCA+ 6,41%\nNTN-B 2035\tIPCA+ 7,55%\nRAIZ23\tCDI+ 1,12%\nPETR27\tIPCA+ 6,19%\nLCA EXEMPLO\t97% CDI"
+      : "VALE38\tIPCA+ 6,45%\nNTN-B 2035\tIPCA+ 7,52%\nRAIZ23\tCDI+ 1,15%\nPETR27\tIPCA+ 6,22%\nLCA EXEMPLO\t98% CDI";
+    renderPreview(); $("texto").focus();
+  };
+
+  $("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const { itens } = parseTexto($("texto").value);
+    if (!itens.length) return;
+    const btn = $("registrar"); btn.disabled = true; btn.textContent = "Registrando…";
+    const eraBase = envios.length === 0;
+    try {
+      await addEnvio(dia, { t: new Date().toISOString(), itens, n: itens.length });
+      $("texto").value = ""; renderPreview();
+      toast(eraBase ? "Abertura registrada: " + itens.length + " papéis fixados como base." : "Envio registrado e comparado com a abertura.");
+    } catch (err) {
+      toast(err && err.code === "quota_exceeded" ? "Armazenamento cheio. Exclua dias antigos." : "Não foi possível registrar (" + ((err && err.code) || "erro") + ").");
+    } finally { btn.textContent = "Registrar envio"; renderPreview(); }
+  });
+
+  /* ---------- Copiar resumo ---------- */
+  $("copiar").onclick = async () => {
+    if (!rowsCache.length) { toast("Sem dados para copiar."); return; }
+    const linhas = ["Spreads " + fmtDia(dia) + " · abertura " + fmtHora(envios[0].t) + " → " + fmtHora(envios[envios.length - 1].t)];
+    rowsCache.forEach((r) => linhas.push(r.nome + (r.idx ? " (" + r.idx + ")" : "") + ": " + br(r.base, 2) + "% → " + br(r.atual, 2) + "% (" + fmtDelta(r.delta, r.unid) + ")"));
+    const txt = linhas.join("\n");
+    try { await navigator.clipboard.writeText(txt); toast("Resumo copiado."); }
+    catch { $("texto").value = txt; $("texto").select(); toast("Copie o texto selecionado na caixa de envio."); }
+  };
+
+  let toastT = null;
+  function toast(msg) {
+    let t = document.querySelector(".toast"); if (!t) { t = el("div", "toast"); t.setAttribute("role", "status"); document.body.append(t); }
+    t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 3200);
+  }
+
+  /* ---------- Boot ---------- */
+  setInterval(() => { $("hora").textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); }, 15000);
+  $("hora").textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+
+  renderAll();
+  subscribeDays((d) => { dias = d; renderDias(); });
+  subscribeDay(dia, (list) => { envios = list; renderAll(); });
+
+  (async () => {
+    try {
+      const got = window.claude && typeof window.claude.use === "function" ? await window.claude.use("db") : null;
+      if (got) {
+        db = got;
+        try {
+          const user = await window.claude.use("user");
+          const w = user ? await user.can("data.write") : null;
+          if (w === false) { canWrite = false; setConn("Você tem acesso só de leitura a este painel."); }
+        } catch {}
+        subscribeDays((d) => { dias = d; renderDias(); });
+        subscribeDay(dia, (list) => { envios = list; renderAll(); });
+      } else {
+        setConn("Modo local: os envios ficam só neste navegador. Abra logado no claude.ai para salvar na nuvem.");
+      }
+    } catch { setConn("Modo local: os envios ficam só neste navegador."); }
+  })();
+})();
+</script>
