@@ -786,7 +786,7 @@ VALE38  IPCA+ 6,45%"></textarea>
     const tb = $("refbody"); tb.replaceChildren();
     $("anbinfo").textContent = anbDia ? "ANBIMA " + fmtDia(anbDia.ref) + (anbDia.ref < dia ? " (última disponível)" : "") : "sem ANBIMA";
     if (!refsCache.length) {
-      const tr = el("tr"); const td = el("td", "small", "Suba o arquivo de taxas indicativas da ANBIMA (ms" + dia.slice(8, 10) + dia.slice(5, 7) + dia.slice(2, 4) + ".txt ou o Excel de títulos públicos) no campo de upload acima.");
+      const tr = el("tr"); const td = el("td", "small", "Suba o arquivo de taxas indicativas da ANBIMA (ms" + dia.slice(2, 4) + dia.slice(5, 7) + dia.slice(8, 10) + ".txt ou o Excel de títulos públicos) no campo de upload acima.");
       td.colSpan = 4; td.style.whiteSpace = "normal"; td.style.textAlign = "left"; tr.append(td); tb.append(tr); return;
     }
     refsCache.slice().sort((a, b) => a.venc.localeCompare(b.venc)).forEach((x) => {
@@ -859,7 +859,7 @@ VALE38  IPCA+ 6,45%"></textarea>
       const r = await lerArquivo(file);
       if (r.anbima) {
         let ref = r.anbima.ref;
-        if (!ref) { const m = file.name.match(/ms(\d{2})(\d{2})(\d{2})/i); ref = m ? "20" + m[3] + "-" + m[2] + "-" + m[1] : dia; }
+        if (!ref) { const m = file.name.match(/ms(\d{2})(\d{2})(\d{2})/i); ref = m ? "20" + m[1] + "-" + m[2] + "-" + m[3] : dia; }
         await salvarAnbima(ref, r.anbima.ntnb);
         $("fileinfo").textContent = "ANBIMA " + fmtDia(ref) + " · " + r.anbima.ntnb.length + " NTN-Bs salvas como referência";
         toast("Taxas indicativas ANBIMA de " + fmtDia(ref) + " salvas: " + r.anbima.ntnb.length + " NTN-Bs.");
