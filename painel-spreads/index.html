@@ -182,7 +182,7 @@ details.bulkwrap summary{cursor:pointer;padding:10px 14px;border-top:1px solid v
         <span><span class="pill base">novo</span> entrou depois da abertura</span>
         <span>Δ em bps (1 bp = 0,01 p.p.); em % do CDI, em p.p.</span>
         <span>Spread s/ NTN-B (spread over): taxa IPCA+ do papel − taxa indicativa ANBIMA da NTN-B de vencimento mais próximo (ou a fixada no cadastro). NTN-B colada no envio tem prioridade.</span>
-        <span>Clique em “+ emissão” para cadastrar a taxa de emissão de um papel.</span>
+        <span>Emissão: debêntures vêm do SND/ANBIMA (debentures.com.br) pelo código CETIP; CRI/CRA e ajustes, clique em “+ emissão”. Cadastro manual tem prioridade.</span>
       </div>
     </section>
 
@@ -541,10 +541,14 @@ VALE38  IPCA+ 6,45%"></textarea>
     if (!db) { const o = local.read("spreads.anb"); o[ref] = doc; local.write("spreads.anb", o); subscribeAnbima(listeners.anb); return; }
     await db.doc("anbima/" + ref).set(doc);
   }
+  function subscribeSnd(cb) {
+    if (!db) return;
+    db.doc("ref/emissoes").onSnapshot((d) => { const v = d.exists ? d.data() : null; cb(v); }, () => {});
+  }
   function setConn(t) { $("conn").textContent = t; }
 
   /* ---------- Estado e cálculo ---------- */
-  let dia = hojeKey(), envios = [], dias = [], cad = {}, anbAll = {}, anbDia = null;
+  let dia = hojeKey(), envios = [], dias = [], cad = {}, anbAll = {}, anbDia = null, snd = {}, sndMeta = null;
   let lado = "o", fIdx = "Todos", limite = 150, sortKey = null, sortDir = "desc";
   try { lado = localStorage.getItem("spreads.lado") || "o"; } catch {}
   $("lado").value = lado; $("dia").value = dia;
@@ -585,7 +589,12 @@ VALE38  IPCA+ 6,45%"></textarea>
       const vals = r.serie.map((v, j) => [v, j]).filter(([v]) => v !== null);
       r.tem = vals.length > 0;
       const c = cad[r.k] || {};
-      r.emis = typeof c.emissao === "number" ? c.emissao : null;
+      r.emis = typeof c.emissao === "number" ? c.emissao : null; r.emisFonte = r.emis !== null ? "manual" : null;
+      if (r.emis === null && snd[r.k]) {
+        const x = snd[r.k];
+        const v = r.i === "%CDI" ? x.p : x.s;
+        if (typeof v === "number") { r.emis = v; r.emisFonte = "SND"; r.emisData = x.d; }
+      }
       r.mult = r.i === "%CDI" ? 1 : 100; r.unid = r.i === "%CDI" ? "p.p." : "bps";
       if (!r.tem) { r.st = "none"; return; }
       r.baseEnv = vals[0][1]; r.base = vals[0][0];
@@ -728,7 +737,9 @@ VALE38  IPCA+ 6,45%"></textarea>
     };
     if (!canWrite) { td.textContent = r.emis === null ? "—" : fmtTaxa(r, r.emis); return td; }
     const b = el("button", r.emis === null ? "linkbtn" : "linkbtn val", r.emis === null ? "+ emissão" : fmtTaxa(r, r.emis));
-    b.type = "button"; b.onclick = abrir; td.append(b); return td;
+    b.type = "button"; b.onclick = abrir; td.append(b);
+    if (r.emisFonte === "SND") { b.title = "Taxa de emissão do SND/ANBIMA (debentures.com.br)" + (r.emisData ? ", emitida em " + r.emisData : "") + ". Clique para sobrescrever."; td.append(el("span", "sub2", "SND" + (r.emisData ? " · " + r.emisData.slice(3) : ""))); }
+    return td;
   }
 
   function renderTabela(rows) {
@@ -1072,6 +1083,7 @@ VALE38  IPCA+ 6,45%"></textarea>
     subscribeDays((d) => { dias = d; renderDias(); });
     subscribeCad((o) => { cad = o; renderAll(); });
     subscribeAnbima((o) => { anbAll = o; renderAll(); });
+    subscribeSnd((v) => { snd = (v && v.papeis) || {}; sndMeta = v; renderAll(); });
     subscribeDay(dia, (list) => { envios = list; renderAll(); });
   };
   renderAll(); ligar();
