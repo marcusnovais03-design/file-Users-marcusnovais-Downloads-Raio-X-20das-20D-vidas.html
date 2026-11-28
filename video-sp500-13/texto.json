@@ -1,0 +1,24 @@
+{
+  "fonte_titulo": "fonts/Montserrat-SemiBold.ttf",
+  "fonte_caixa": "fonts/Montserrat-Medium.ttf",
+  "fonte_negrito": "fonts/Montserrat-ExtraBold.ttf",
+  "titulo": ["Se nos últimos 10 anos", "você tivesse investido", "R$ 500 por mês + R$ 1.000 do 13º", "no S&P 500 em dólar..."],
+  "titulo_cores": ["#FFFFFF", "#FFFFFF", "#D62828", "#FFFFFF"],
+  "titulo_escala": 1.25,
+  "titulo_escalas": [0.8, 0.8, 0.8, 0.8],
+  "titulo_pad": 0.6,
+  "titulo_espaco": 1.5,
+  "titulo_y": 0.05,
+  "caixas": [
+    ["Você investiu: R$ 70 mil", "Hoje teria: mais de R$ 200 mil 💵"]
+  ],
+  "caixas_negrito": [0],
+  "caixa_escala": 1.35,
+  "caixa_gap": 14,
+  "caixas_y": 0.5,
+  "rodape": ["Não precisa de muito dinheiro para", "começar a construir patrimônio 👇"],
+  "rodape_destaque": true,
+  "rodape_escala": 1.3,
+  "rodape_y": 0.64,
+  "rodape_em": 0
+}
