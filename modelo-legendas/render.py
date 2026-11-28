@@ -35,6 +35,7 @@ EMOJI_FONT = "/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf"
 
 def split_emoji(line):
     """Separa emoji no fim da linha (ex.: 'Veja por que 👇')."""
+    line = line.rstrip("\ufe0f")  # remove seletor de variação (ex.: 🛍️)
     if line and ord(line[-1]) >= 0x1F000:
         return line[:-1].rstrip(), line[-1]
     return line, None

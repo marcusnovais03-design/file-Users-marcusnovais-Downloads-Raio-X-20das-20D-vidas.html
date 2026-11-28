@@ -1,8 +1,9 @@
 {
   "linhas": [
-    "Se nos últimos 10 anos você",
-    "tivesse investido *R$ 500 por mês*",
-    "+ *R$ 1.000 do 13º* no S&P 500",
+    "Se nos últimos 10 anos, em vez de",
+    "gastar *R$ 1.000 na Black Friday* 🛍️",
+    "você tivesse investido esse valor",
+    "+ *R$ 500 por mês* no S&P 500",
     "em dólar...",
     "",
     "Hoje teria *mais de R$ 200 mil*. 💵",
@@ -12,7 +13,7 @@
     "patrimônio. 👇"
   ],
   "tamanho_titulo": 50,
-  "y": 0.33,
+  "y": 0.31,
   "tamanho": 50,
   "passo": 1.32,
   "escurecer": 0.4
